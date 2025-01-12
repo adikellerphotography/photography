@@ -5,13 +5,17 @@ import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "./ThemeToggle";
+import LanguageToggle from "./LanguageToggle";
+import { useLanguage } from "@/hooks/use-language";
 
 export default function Navbar() {
+  const { language } = useLanguage();
+
   const navigationItems = [
-    { href: "/", label: "Home" },
-    { href: "/gallery", label: "Gallery" },
-    { href: "/about", label: "About" },
-    { href: "/pricing", label: "Pricing" },
+    { href: "/", label: language === "en" ? "Home" : "בית" },
+    { href: "/gallery", label: language === "en" ? "Gallery" : "גלריה" },
+    { href: "/about", label: language === "en" ? "About" : "אודות" },
+    { href: "/pricing", label: language === "en" ? "Pricing" : "מחירים" },
   ];
 
   return (
@@ -36,11 +40,13 @@ export default function Navbar() {
               </NavigationMenuItem>
             ))}
           </NavigationMenuList>
+          <LanguageToggle />
           <ThemeToggle />
         </div>
 
         {/* Mobile Navigation */}
         <div className="md:hidden flex items-center gap-2">
+          <LanguageToggle />
           <ThemeToggle />
           <Sheet>
             <SheetTrigger asChild>
