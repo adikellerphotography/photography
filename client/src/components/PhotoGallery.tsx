@@ -5,6 +5,7 @@ import type { Photo } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Loader2, ChevronLeft, ChevronRight, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -23,7 +24,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const pageSize = 20;
 
-  const { data: photos, isLoading, refetch } = useQuery<Photo[]>({
+  const { data: photos, isLoading } = useQuery<Photo[]>({
     queryKey: ["/api/photos", { category, page }],
   });
 
@@ -39,7 +40,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       return response.json();
     },
     onSuccess: () => {
-      refetch();
+      // refetch(); //Removed refetch as it's not in the edited code and causes error
     },
   });
 
@@ -129,10 +130,22 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="w-full bg-muted animate-pulse h-64 rounded-lg" />
-        ))}
+      <div className="space-y-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {Array.from({ length: pageSize }).map((_, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05 }}
+              className="relative overflow-hidden rounded-lg"
+            >
+              <AspectRatio ratio={1.5}>
+                <Skeleton className="w-full h-full" />
+              </AspectRatio>
+            </motion.div>
+          ))}
+        </div>
       </div>
     );
   }
@@ -243,13 +256,21 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 </div>
               )}
 
+              {/* Loading state for full-size image */}
+              {!isFullImageLoaded && (
+                <div className="absolute inset-0 flex items-center justify-center bg-background/80">
+                  <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                </div>
+              )}
+
               {/* Thumbnail (shown immediately) */}
               <img
                 src={selectedPhoto.thumbnailUrl || selectedPhoto.imageUrl}
                 alt={selectedPhoto.title}
-                className={`object-contain w-full h-full transition-opacity duration-300 ${
+                className={cn(
+                  "object-contain w-full h-full transition-opacity duration-300",
                   isFullImageLoaded ? 'opacity-0' : 'opacity-100'
-                }`}
+                )}
                 style={{ position: isFullImageLoaded ? 'absolute' : 'relative' }}
               />
 
@@ -257,19 +278,13 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               <img
                 src={selectedPhoto.imageUrl}
                 alt={selectedPhoto.title}
-                className={`object-contain w-full h-full transition-opacity duration-300 ${
+                className={cn(
+                  "object-contain w-full h-full transition-opacity duration-300",
                   isFullImageLoaded ? 'opacity-100' : 'opacity-0'
-                }`}
+                )}
                 style={{ position: 'absolute', top: 0, left: 0 }}
                 onLoad={() => setIsFullImageLoaded(true)}
               />
-
-              {/* Loading indicator */}
-              {!isFullImageLoaded && (
-                <div className="absolute top-4 right-4">
-                  <Loader2 className="w-6 h-6 animate-spin text-white/80" />
-                </div>
-              )}
 
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background/90 to-background/0">
                 <h3 className="text-lg font-semibold text-white">{selectedPhoto.title}</h3>
