@@ -1,6 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { eq, and, desc } from "drizzle-orm";
+import { eq, and, desc, sql } from "drizzle-orm";
 import { db } from "@db";
 import { photos, categories, photoLikes } from "@db/schema";
 import path from "path";
@@ -28,27 +28,27 @@ export function registerRoutes(app: Express): Server {
   // Initialize thumbnails for existing photos
   generateMissingThumbnails().catch(console.error);
 
-  // Get all categories with their first photo
+  // Get all categories with a random photo from each
   app.get("/api/categories-with-photos", async (_req, res) => {
     try {
       const categoriesList = await db.select().from(categories).orderBy(categories.displayOrder);
 
       const categoriesWithPhotos = await Promise.all(
         categoriesList.map(async (category) => {
-          // Get first photo for this category
-          const firstPhoto = await db
+          // Get random photo for this category
+          const randomPhoto = await db
             .select()
             .from(photos)
             .where(eq(photos.category, category.name))
-            .orderBy(photos.displayOrder)
+            .orderBy(sql`RANDOM()`)
             .limit(1);
 
           return {
             ...category,
-            firstPhoto: firstPhoto[0] ? {
-              imageUrl: `/assets/${category.name.replace(/\s+/g, '_')}/${firstPhoto[0].imageUrl}`,
-              thumbnailUrl: firstPhoto[0].thumbnailUrl ?
-                `/assets/${category.name.replace(/\s+/g, '_')}/${firstPhoto[0].thumbnailUrl}` :
+            firstPhoto: randomPhoto[0] ? {
+              imageUrl: `/assets/${category.name.replace(/\s+/g, '_')}/${randomPhoto[0].imageUrl}`,
+              thumbnailUrl: randomPhoto[0].thumbnailUrl ?
+                `/assets/${category.name.replace(/\s+/g, '_')}/${randomPhoto[0].thumbnailUrl}` :
                 undefined
             } : undefined
           };
@@ -435,7 +435,7 @@ export function registerRoutes(app: Express): Server {
           })
           .onConflictDoUpdate({
             target: categories.name,
-            set: { 
+            set: {
               displayOrder: cat.order,
               description: cat.description
             }
