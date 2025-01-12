@@ -7,6 +7,7 @@ import path from "path";
 import express from "express";
 import { generateThumbnail } from "./utils/image";
 import { generateMissingThumbnails } from "./utils/generate-thumbnails";
+import { scanAndProcessImages } from "./utils/scan-images";
 
 export function registerRoutes(app: Express): Server {
   const httpServer = createServer(app);
@@ -47,8 +48,8 @@ export function registerRoutes(app: Express): Server {
             ...category,
             firstPhoto: firstPhoto[0] ? {
               imageUrl: `/assets/${category.name.replace(/\s+/g, '_')}/${firstPhoto[0].imageUrl}`,
-              thumbnailUrl: firstPhoto[0].thumbnailUrl ? 
-                `/assets/${category.name.replace(/\s+/g, '_')}/${firstPhoto[0].thumbnailUrl}` : 
+              thumbnailUrl: firstPhoto[0].thumbnailUrl ?
+                `/assets/${category.name.replace(/\s+/g, '_')}/${firstPhoto[0].thumbnailUrl}` :
                 undefined
             } : undefined
           };
@@ -100,8 +101,8 @@ export function registerRoutes(app: Express): Server {
           return {
             ...photo,
             imageUrl: `/assets/${categoryPath}/${photo.imageUrl}`,
-            thumbnailUrl: photo.thumbnailUrl ? 
-              `/assets/${categoryPath}/${photo.thumbnailUrl}` : 
+            thumbnailUrl: photo.thumbnailUrl ?
+              `/assets/${categoryPath}/${photo.thumbnailUrl}` :
               undefined,
             isLiked: liked.length > 0,
           };
@@ -289,12 +290,12 @@ export function registerRoutes(app: Express): Server {
 
         // Ensure category exists with correct display order
         await db.insert(categories)
-          .values({ 
-            name: "Bat Mitsva", 
+          .values({
+            name: "Bat Mitsva",
             displayOrder: 1,
             description: "Bat Mitsva celebrations and ceremonies"
           })
-          .onConflictDoUpdate({ 
+          .onConflictDoUpdate({
             target: categories.name,
             set: { displayOrder: 1 }
           });
@@ -372,12 +373,12 @@ export function registerRoutes(app: Express): Server {
 
         // Ensure Yoga category exists with correct display order (after Bat Mitsva)
         await db.insert(categories)
-          .values({ 
-            name: "Yoga", 
+          .values({
+            name: "Yoga",
             displayOrder: 2,  // After Bat Mitsva which has displayOrder 1
             description: "Yoga photography sessions"
           })
-          .onConflictDoUpdate({ 
+          .onConflictDoUpdate({
             target: categories.name,
             set: { displayOrder: 2 }
           });
@@ -400,6 +401,17 @@ export function registerRoutes(app: Express): Server {
     } catch (error) {
       console.error('Error fetching categories:', error);
       res.status(500).json({ error: "Failed to fetch categories" });
+    }
+  });
+
+  // Scan and process all images
+  app.post("/api/photos/scan", async (_req, res) => {
+    try {
+      await scanAndProcessImages();
+      res.json({ message: "Successfully scanned and processed all images" });
+    } catch (error) {
+      console.error('Error scanning images:', error);
+      res.status(500).json({ error: "Failed to scan images" });
     }
   });
 
