@@ -18,7 +18,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const pageSize = 20;
 
   const { data: photos, isLoading } = useQuery<Photo[]>({
-    queryKey: ["/api/photos", category, page],
+    queryKey: ["/api/photos", { category, page }],
   });
 
   // Save scroll position when opening a photo
@@ -48,7 +48,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   if (!photos || photos.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-muted-foreground">No photos found</p>
+        <p className="text-muted-foreground">No photos found in this category</p>
       </div>
     );
   }
@@ -66,7 +66,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
             onClick={() => setSelectedPhoto(photo)}
             className="relative overflow-hidden rounded-lg cursor-pointer"
           >
-            <AspectRatio ratio={4/3}>
+            <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
               <img
                 src={photo.thumbnailUrl || photo.imageUrl}
                 alt={photo.title}
