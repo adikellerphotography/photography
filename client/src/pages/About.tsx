@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import SocialLinks from "@/components/SocialLinks";
 import { useTranslation } from "@/hooks/use-translation";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 export default function About() {
   const { t } = useTranslation();
@@ -13,6 +14,19 @@ export default function About() {
         className="container mx-auto px-4 py-16"
       >
         <div className="max-w-3xl mx-auto">
+          {/* Portrait Image Section */}
+          <div className="mb-12 w-full max-w-md mx-auto">
+            <AspectRatio ratio={1}>
+              <div className="relative w-full h-full overflow-hidden rounded-full border-4 border-background shadow-xl">
+                <img
+                  src="/assets/IMG_1133.jpg"
+                  alt="Portrait"
+                  className="object-cover w-full h-full"
+                />
+              </div>
+            </AspectRatio>
+          </div>
+
           <h1 className="text-3xl font-bold mb-8">About Me</h1>
 
           <div className="prose prose-gray dark:prose-invert max-w-none space-y-8">
