@@ -26,7 +26,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const pageSize = 20;
   const [isNextImageLoaded, setIsNextImageLoaded] = useState(false);
   const [transitionDirection, setTransitionDirection] = useState<'next' | 'prev' | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const {
     data,
@@ -80,37 +79,27 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     },
   });
 
-  // Enhanced history management
+  useEffect(() => {
+    if (selectedPhoto) {
+      const state = { photo: selectedPhoto, index: selectedIndex };
+      window.history.pushState(state, '', window.location.pathname + window.location.search);
+    }
+  }, [selectedPhoto, selectedIndex]);
+
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
       if (event.state?.photo) {
         setSelectedPhoto(event.state.photo);
         setSelectedIndex(event.state.index);
-        setIsDialogOpen(true);
       } else {
         setSelectedPhoto(null);
         setSelectedIndex(0);
-        setIsDialogOpen(false);
       }
     };
 
     window.addEventListener('popstate', handlePopState);
-
-    // Check if we should show a photo on initial load
-    const urlParams = new URLSearchParams(window.location.search);
-    const photoId = urlParams.get('photo');
-    if (photoId && photos.length > 0) {
-      const photo = photos.find(p => p.id.toString() === photoId);
-      const index = photos.findIndex(p => p.id.toString() === photoId);
-      if (photo && index !== -1) {
-        setSelectedPhoto(photo);
-        setSelectedIndex(index);
-        setIsDialogOpen(true);
-      }
-    }
-
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [photos]);
+  }, []);
 
   useEffect(() => {
     setIsFullImageLoaded(false);
@@ -118,10 +107,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   }, [selectedPhoto]);
 
   useEffect(() => {
-    if (!isDialogOpen && scrollPosition > 0) {
+    if (!selectedPhoto && scrollPosition > 0) {
       window.scrollTo(0, scrollPosition);
     }
-  }, [isDialogOpen, scrollPosition]);
+  }, [selectedPhoto, scrollPosition]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -131,23 +120,12 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
         navigatePhotos("prev");
       } else if (e.key === "ArrowRight") {
         navigatePhotos("next");
-      } else if (e.key === "Escape") {
-        handleClose();
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedPhoto, photos, selectedIndex]);
-
-  const handleClose = () => {
-    setIsDialogOpen(false);
-    setSelectedPhoto(null);
-    // Remove the photo parameter from URL without adding to history
-    const url = new URL(window.location.href);
-    url.searchParams.delete('photo');
-    window.history.replaceState({}, '', url.toString());
-  };
 
   const navigatePhotos = (direction: "next" | "prev") => {
     if (!photos) return;
@@ -168,30 +146,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     setSelectedIndex(newIndex);
     setSelectedPhoto(newPhoto);
 
-    // Update URL and history state
-    const url = new URL(window.location.href);
-    url.searchParams.set('photo', newPhoto.id.toString());
-    window.history.replaceState(
-      { photo: newPhoto, index: newIndex },
-      '',
-      url.toString()
-    );
-  };
-
-  const handlePhotoClick = (photo: Photo, index: number) => {
-    setScrollPosition(window.scrollY);
-    setSelectedPhoto(photo);
-    setSelectedIndex(index);
-    setIsDialogOpen(true);
-
-    // Update URL and history state
-    const url = new URL(window.location.href);
-    url.searchParams.set('photo', photo.id.toString());
-    window.history.pushState(
-      { photo, index },
-      '',
-      url.toString()
-    );
+    const state = { photo: newPhoto, index: newIndex };
+    window.history.pushState(state, '', window.location.pathname + window.location.search);
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -223,6 +179,19 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     likeMutation.mutate(photo.id);
     setTimeout(() => setShowHeart(false), 1000);
   };
+
+  useEffect(() => {
+    if (selectedPhoto && photos) {
+      const nextIndex = (selectedIndex + 1) % photos.length;
+      const prevIndex = selectedIndex === 0 ? photos.length - 1 : selectedIndex - 1;
+
+      const nextImage = new Image();
+      nextImage.src = photos[nextIndex].imageUrl;
+
+      const prevImage = new Image();
+      prevImage.src = photos[prevIndex].imageUrl;
+    }
+  }, [selectedPhoto, photos, selectedIndex]);
 
   if (isLoading) {
     return (
@@ -263,7 +232,11 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            onClick={() => handlePhotoClick(photo, index)}
+            onClick={() => {
+              setSelectedPhoto(photo);
+              setSelectedIndex(index);
+              setScrollPosition(window.scrollY);
+            }}
             className="relative overflow-hidden rounded-lg cursor-pointer group"
           >
             <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
@@ -295,7 +268,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
         </div>
       )}
 
-      <Dialog open={isDialogOpen} onOpenChange={(open) => !open && handleClose()}>
+      <Dialog open={!!selectedPhoto} onOpenChange={(open) => !open && setSelectedPhoto(null)}>
         <DialogContent 
           className="max-w-[90vw] max-h-[90vh] w-full h-full p-0"
           onTouchStart={handleTouchStart}
