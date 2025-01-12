@@ -7,6 +7,7 @@ export const photos = pgTable("photos", {
   description: text("description"),
   category: varchar("category", { length: 50 }).notNull(),
   imageUrl: text("image_url").notNull(),
+  thumbnailUrl: text("thumbnail_url"), // Making it nullable initially
   uploadedAt: timestamp("uploaded_at").defaultNow(),
   displayOrder: serial("display_order"),
 });

@@ -53,7 +53,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
         const orientations: Record<string, 'horizontal' | 'vertical'> = {};
         await Promise.all(
           photos.map(async (photo) => {
-            orientations[photo.id] = await getImageOrientation(photo.imageUrl);
+            orientations[photo.id] = await getImageOrientation(photo.thumbnailUrl);
           })
         );
         setImageOrientations(orientations);
@@ -91,7 +91,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
             >
               <AspectRatio ratio={isVertical ? 2/3 : 4/3}>
                 <img
-                  src={photo.imageUrl}
+                  src={photo.thumbnailUrl}
                   alt={photo.title}
                   className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
                   loading="lazy"
