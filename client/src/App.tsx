@@ -17,38 +17,40 @@ function Router() {
   const [location] = useLocation();
 
   return (
-    <>
-      <Navbar />
-      <AnimatePresence mode="wait">
-        <Switch key={location}>
-          <Route path="/">
-            <PageTransition>
-              <Home />
-            </PageTransition>
-          </Route>
-          <Route path="/gallery">
-            <PageTransition>
-              <Gallery />
-            </PageTransition>
-          </Route>
-          <Route path="/about">
-            <PageTransition>
-              <About />
-            </PageTransition>
-          </Route>
-          <Route path="/pricing">
-            <PageTransition>
-              <Pricing />
-            </PageTransition>
-          </Route>
-          <Route>
-            <PageTransition>
-              <NotFound />
-            </PageTransition>
-          </Route>
-        </Switch>
-      </AnimatePresence>
-    </>
+    <div className="min-h-screen flex flex-col">
+      <Navbar className="z-50" />
+      <div className="flex-1 relative">
+        <AnimatePresence mode="wait" initial={false}>
+          <Switch key={location}>
+            <Route path="/">
+              <PageTransition>
+                <Home />
+              </PageTransition>
+            </Route>
+            <Route path="/gallery">
+              <PageTransition>
+                <Gallery />
+              </PageTransition>
+            </Route>
+            <Route path="/about">
+              <PageTransition>
+                <About />
+              </PageTransition>
+            </Route>
+            <Route path="/pricing">
+              <PageTransition>
+                <Pricing />
+              </PageTransition>
+            </Route>
+            <Route>
+              <PageTransition>
+                <NotFound />
+              </PageTransition>
+            </Route>
+          </Switch>
+        </AnimatePresence>
+      </div>
+    </div>
   );
 }
 
