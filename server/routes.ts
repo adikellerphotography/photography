@@ -75,11 +75,11 @@ export function registerRoutes(app: Express): Server {
         ? db.select().from(photos).where(eq(photos.category, category))
         : db.select().from(photos);
 
-      // Execute query with pagination
+      // Execute query with pagination and random ordering
       const results = await baseQuery
         .limit(pageSize)
         .offset((page - 1) * pageSize)
-        .orderBy(photos.displayOrder);
+        .orderBy(sql`RANDOM()`);
 
       // Get likes for each photo for the current IP
       const photosWithLikes = await Promise.all(
