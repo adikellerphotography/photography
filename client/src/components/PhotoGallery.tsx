@@ -75,10 +75,28 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   });
 
   useEffect(() => {
-    if (selectedPhoto && galleryRef.current) {
-      setScrollPosition(window.scrollY);
+    if (selectedPhoto) {
+      // Push a new state when photo is selected
+      const state = { photo: selectedPhoto, index: selectedIndex };
+      window.history.pushState(state, '', window.location.pathname + window.location.search);
     }
-  }, [selectedPhoto]);
+  }, [selectedPhoto, selectedIndex]);
+
+  useEffect(() => {
+    // Handle back/forward navigation
+    const handlePopState = (event: PopStateEvent) => {
+      if (event.state?.photo) {
+        setSelectedPhoto(event.state.photo);
+        setSelectedIndex(event.state.index);
+      } else {
+        setSelectedPhoto(null);
+        setSelectedIndex(0);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   useEffect(() => {
     setIsFullImageLoaded(false);
@@ -117,8 +135,13 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       newIndex = 0;
     }
 
+    const newPhoto = photos[newIndex];
     setSelectedIndex(newIndex);
-    setSelectedPhoto(photos[newIndex]);
+    setSelectedPhoto(newPhoto);
+
+    // Update history state
+    const state = { photo: newPhoto, index: newIndex };
+    window.history.pushState(state, '', window.location.pathname + window.location.search);
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -193,6 +216,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
             onClick={() => {
               setSelectedPhoto(photo);
               setSelectedIndex(index);
+              setScrollPosition(window.scrollY);
             }}
             className="relative overflow-hidden rounded-lg cursor-pointer group"
           >

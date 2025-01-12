@@ -35,6 +35,9 @@ export default function Gallery() {
       // Otherwise use the first category
       else if (!activeCategory) {
         setActiveCategory(categories[0].name);
+        // Update URL without triggering navigation
+        const newUrl = `/gallery?category=${encodeURIComponent(categories[0].name)}`;
+        window.history.replaceState(null, '', newUrl);
       }
     }
   }, [categoryFromUrl, categories, activeCategory]);
@@ -123,8 +126,9 @@ export default function Gallery() {
           value={activeCategory}
           onValueChange={(value) => {
             setActiveCategory(value);
+            // Update URL with proper history state
             const newUrl = `/gallery?category=${encodeURIComponent(value)}`;
-            window.history.pushState(null, '', newUrl);
+            window.history.pushState({ category: value }, '', newUrl);
           }}
           className="space-y-8"
         >
