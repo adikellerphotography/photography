@@ -1,16 +1,27 @@
-import { SiFacebook, SiInstagram } from "react-icons/si";
+import { SiFacebook, SiInstagram, SiPinterest } from "react-icons/si";
+import { MdEmail } from "react-icons/md";
 
 export default function SocialLinks() {
   const socialLinks = [
     {
       icon: SiFacebook,
-      href: "https://facebook.com",
+      href: "https://www.facebook.com/adi.keller.16",
       label: "Facebook"
     },
     {
       icon: SiInstagram,
-      href: "https://instagram.com",
+      href: "https://instagram.com/adi.keller.photography",
       label: "Instagram"
+    },
+    {
+      icon: SiPinterest,
+      href: "https://pin.it/6JpMIdk",
+      label: "Pinterest"
+    },
+    {
+      icon: MdEmail,
+      href: "mailto:adi.keller.photography@gmail.com",
+      label: "Email"
     }
   ];
 
