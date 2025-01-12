@@ -198,20 +198,27 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            whileHover={{ scale: 1.02 }}
             onClick={() => {
               setSelectedPhoto(photo);
               setSelectedIndex(index);
             }}
-            className="relative overflow-hidden rounded-lg cursor-pointer"
+            className="relative overflow-hidden rounded-lg cursor-pointer group"
           >
             <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
-              <img
-                src={photo.thumbnailUrl || photo.imageUrl}
-                alt={photo.title}
-                className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
-                loading="lazy"
-              />
+              <div className="relative w-full h-full overflow-hidden">
+                <img
+                  src={photo.thumbnailUrl || photo.imageUrl}
+                  alt={photo.title}
+                  className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <p className="text-white text-sm font-medium truncate">
+                    {photo.title}
+                  </p>
+                </div>
+              </div>
             </AspectRatio>
           </motion.div>
         ))}

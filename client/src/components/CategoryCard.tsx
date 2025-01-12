@@ -14,14 +14,17 @@ export default function CategoryCard({ name, description, imageUrl, thumbnailUrl
 
   return (
     <Link href={`/gallery?category=${encodeURIComponent(name)}`}>
-      <Card className="group cursor-pointer overflow-hidden">
-        <AspectRatio ratio={3/2}>
+      <Card className="group cursor-pointer overflow-hidden hover:shadow-lg transition-shadow duration-300">
+        <AspectRatio ratio={3/2} className="bg-muted overflow-hidden">
           {displayUrl ? (
-            <img
-              src={displayUrl}
-              alt={name}
-              className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
-            />
+            <div className="relative w-full h-full overflow-hidden">
+              <img
+                src={displayUrl}
+                alt={name}
+                className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </div>
           ) : (
             <div className="w-full h-full bg-muted flex items-center justify-center">
               <span className="text-muted-foreground">No preview available</span>
@@ -29,7 +32,9 @@ export default function CategoryCard({ name, description, imageUrl, thumbnailUrl
           )}
         </AspectRatio>
         <CardContent className="p-4">
-          <h3 className="text-lg font-semibold">{name}</h3>
+          <h3 className="text-lg font-semibold group-hover:text-primary transition-colors duration-300">
+            {name}
+          </h3>
           {description && (
             <p className="text-sm text-muted-foreground mt-1">{description}</p>
           )}
