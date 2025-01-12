@@ -1,6 +1,7 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
+import { useTranslation } from "@/hooks/use-translation";
 
 interface CategoryCardProps {
   name: string;
@@ -10,6 +11,7 @@ interface CategoryCardProps {
 }
 
 export default function CategoryCard({ name, description, imageUrl, thumbnailUrl }: CategoryCardProps) {
+  const { t } = useTranslation();
   const displayUrl = thumbnailUrl || imageUrl;
 
   return (
@@ -27,7 +29,7 @@ export default function CategoryCard({ name, description, imageUrl, thumbnailUrl
             </div>
           ) : (
             <div className="w-full h-full bg-muted flex items-center justify-center">
-              <span className="text-muted-foreground">No preview available</span>
+              <span className="text-muted-foreground">{t("common.noPreview")}</span>
             </div>
           )}
         </AspectRatio>

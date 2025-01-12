@@ -2,7 +2,7 @@ import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "@/hooks/use-theme";
-import { LanguageProvider } from "@/hooks/use-language";
+import { LanguageProvider, useLanguage } from "@/hooks/use-language";
 import Navbar from "@/components/Navbar";
 import BackgroundPattern from "@/components/BackgroundPattern";
 import Home from "@/pages/home";
@@ -11,12 +11,22 @@ import About from "@/pages/About";
 import Pricing from "@/pages/Pricing";
 import NotFound from "@/pages/not-found";
 import { Toaster } from "@/components/ui/toaster";
+import React from 'react';
+
+function Layout({ children }: { children: React.ReactNode }) {
+  const { language } = useLanguage();
+  return (
+    <div dir={language === "he" ? "rtl" : "ltr"}>
+      <BackgroundPattern />
+      <Navbar />
+      {children}
+    </div>
+  );
+}
 
 function Router() {
   return (
-    <>
-      <BackgroundPattern />
-      <Navbar />
+    <Layout>
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/gallery" component={Gallery} />
@@ -24,7 +34,7 @@ function Router() {
         <Route path="/pricing" component={Pricing} />
         <Route component={NotFound} />
       </Switch>
-    </>
+    </Layout>
   );
 }
 
