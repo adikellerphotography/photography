@@ -1,7 +1,6 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Phone } from "lucide-react";
+import { SiWhatsapp } from "react-icons/si";
 import { useTranslation } from "@/hooks/use-translation";
-import { Button } from "@/components/ui/button";
 
 export default function PhoneDialog() {
   const { t } = useTranslation();
@@ -10,22 +9,20 @@ export default function PhoneDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="rounded-full hover:bg-accent"
+        <button
+          className="text-muted-foreground hover:text-foreground transition-colors"
+          aria-label={t("contact.phone")}
         >
-          <Phone className="w-5 h-5" />
-          <span className="sr-only">{t("contact.phone")}</span>
-        </Button>
+          <SiWhatsapp className="w-6 h-6" />
+        </button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <div className="flex flex-col items-center justify-center space-y-4 py-4">
-          <Phone className="w-12 h-12 text-primary" />
-          <h2 className="text-xl font-semibold">{t("contact.callMe")}</h2>
+          <SiWhatsapp className="w-12 h-12 text-muted-foreground" />
+          <h2 className="text-xl font-semibold text-foreground">{t("contact.callMe")}</h2>
           <a
             href={`tel:${phoneNumber}`}
-            className="text-2xl font-bold text-primary hover:underline"
+            className="text-2xl font-bold text-muted-foreground hover:text-foreground transition-colors"
           >
             {phoneNumber}
           </a>
