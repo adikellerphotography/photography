@@ -17,22 +17,23 @@ export default function BackgroundPattern() {
             height="100"
             patternTransform="rotate(45)"
           >
+            {/* Gentle curved lines with varying thickness and opacity */}
             <path
-              d="M 0,50 Q 25,0 50,50 T 100,50"
+              d="M 0,50 C 20,20 30,80 50,50 S 80,20 100,50"
               fill="none"
               stroke="currentColor"
-              strokeWidth="1"
+              strokeWidth="0.8"
               className="text-foreground"
             />
             <path
-              d="M 0,25 Q 25,-25 50,25 T 100,25"
+              d="M 0,25 C 20,-5 30,55 50,25 S 80,-5 100,25"
               fill="none"
               stroke="currentColor"
               strokeWidth="0.5"
               className="text-foreground"
             />
             <path
-              d="M 0,75 Q 25,125 50,75 T 100,75"
+              d="M 0,75 C 20,45 30,105 50,75 S 80,45 100,75"
               fill="none"
               stroke="currentColor"
               strokeWidth="0.5"
