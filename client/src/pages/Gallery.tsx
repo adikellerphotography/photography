@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import PhotoGallery from "@/components/PhotoGallery";
@@ -6,6 +6,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Category } from "@/lib/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLocation } from "wouter";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Gallery() {
   const { data: categories, isLoading: categoriesLoading } = useQuery<Category[]>({
@@ -19,6 +21,9 @@ export default function Gallery() {
 
   // Set the initial category from URL or first available category
   const [activeCategory, setActiveCategory] = useState<string>('');
+  const [showLeftScroll, setShowLeftScroll] = useState(false);
+  const [showRightScroll, setShowRightScroll] = useState(false);
+  const tabsListRef = useRef<HTMLDivElement>(null);
 
   // Update active category when categories load or URL changes
   useEffect(() => {
@@ -33,6 +38,35 @@ export default function Gallery() {
       }
     }
   }, [categoryFromUrl, categories, activeCategory]);
+
+  // Check scroll shadows visibility
+  const checkScroll = () => {
+    if (tabsListRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = tabsListRef.current;
+      setShowLeftScroll(scrollLeft > 0);
+      setShowRightScroll(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, [categories]);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (tabsListRef.current) {
+      const scrollAmount = 200;
+      tabsListRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handleScroll = () => {
+    checkScroll();
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -59,7 +93,7 @@ export default function Gallery() {
           <div className="animate-pulse">
             <div className="h-8 w-48 bg-muted rounded mb-8" />
             <div className="h-12 w-full bg-muted rounded mb-8" />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div key={i} className="h-64 bg-muted rounded" />
               ))}
@@ -94,13 +128,47 @@ export default function Gallery() {
           }}
           className="space-y-8"
         >
-          <TabsList className="flex flex-wrap gap-2">
-            {categories.map((category) => (
-              <TabsTrigger key={category.id} value={category.name}>
-                {category.name}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+          <div className="relative">
+            {showLeftScroll && (
+              <Button
+                variant="outline"
+                size="icon"
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm"
+                onClick={() => scroll('left')}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+            )}
+
+            <div 
+              className="overflow-x-auto scrollbar-hide relative"
+              onScroll={handleScroll}
+              ref={tabsListRef}
+            >
+              <TabsList className="inline-flex min-w-full justify-start px-8 border-0">
+                {categories.map((category) => (
+                  <TabsTrigger 
+                    key={category.id} 
+                    value={category.name}
+                    className="min-w-[120px]"
+                  >
+                    {category.name}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </div>
+
+            {showRightScroll && (
+              <Button
+                variant="outline"
+                size="icon"
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm"
+                onClick={() => scroll('right')}
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
 
           <motion.div variants={itemVariants}>
             {categories.map((category) => (
