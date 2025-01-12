@@ -27,7 +27,7 @@ export const categories = pgTable("categories", {
 
 export const photoLikes = pgTable("photo_likes", {
   id: serial("id").primaryKey(),
-  photoId: integer("photo_id").references(() => photos.id).notNull(),
+  photoId: integer("photo_id").references(() => photos.id, { onDelete: 'CASCADE' }).notNull(),
   ipAddress: text("ip_address").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
@@ -36,3 +36,5 @@ export const insertCategorySchema = createInsertSchema(categories);
 export const selectCategorySchema = createSelectSchema(categories);
 export type InsertCategory = typeof categories.$inferInsert;
 export type SelectCategory = typeof categories.$inferSelect;
+
+export type PhotoLike = typeof photoLikes.$inferSelect;

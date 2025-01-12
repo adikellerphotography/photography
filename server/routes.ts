@@ -162,7 +162,9 @@ export function registerRoutes(app: Express): Server {
   // Initial photo import
   app.post("/api/photos/import", async (_req, res) => {
     try {
-      // First clear existing photos
+      // First clear existing photo likes to avoid foreign key constraint violations
+      await db.delete(photoLikes);
+      // Then clear existing photos
       await db.delete(photos);
 
       // Define Bat Mitsva photos
