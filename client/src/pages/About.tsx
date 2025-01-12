@@ -20,7 +20,7 @@ export default function About() {
               <div className="relative w-full h-full overflow-hidden rounded-full border-4 border-background shadow-xl">
                 <img
                   src="/assets/IMG_1133.jpg"
-                  alt="Portrait"
+                  alt=""
                   className="object-cover w-full h-full"
                 />
               </div>
