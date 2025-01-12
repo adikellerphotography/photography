@@ -50,7 +50,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Navigation */}
-          <div className="md:hidden flex items-center gap-1 px-2">
+          <div className="md:hidden flex items-center gap-2 ml-auto mr-2">
             <LanguageToggle />
             <ThemeToggle />
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
