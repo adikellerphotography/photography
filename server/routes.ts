@@ -13,7 +13,17 @@ export function registerRoutes(app: Express): Server {
 
   // Serve static files from attached_assets and its subdirectories
   const assetsPath = path.join(process.cwd(), 'attached_assets');
-  app.use('/assets', express.static(assetsPath));
+  // Enable directory listing and proper MIME types
+  app.use('/assets', express.static(assetsPath, {
+    setHeaders: (res, filePath) => {
+      // Set proper content type for images
+      if (filePath.endsWith('.jpg') || filePath.endsWith('.jpeg')) {
+        res.setHeader('Content-Type', 'image/jpeg');
+      } else if (filePath.endsWith('.png')) {
+        res.setHeader('Content-Type', 'image/png');
+      }
+    }
+  }));
 
   // Initialize thumbnails for existing photos
   generateMissingThumbnails().catch(console.error);
@@ -36,8 +46,10 @@ export function registerRoutes(app: Express): Server {
           return {
             ...category,
             firstPhoto: firstPhoto[0] ? {
-              imageUrl: `/assets/${firstPhoto[0].category}/${firstPhoto[0].imageUrl}`,
-              thumbnailUrl: firstPhoto[0].thumbnailUrl ? `/assets/${firstPhoto[0].category}/${firstPhoto[0].thumbnailUrl}` : undefined
+              imageUrl: `/assets/${category.name.replace(/\s+/g, '_')}/${firstPhoto[0].imageUrl}`,
+              thumbnailUrl: firstPhoto[0].thumbnailUrl ? 
+                `/assets/${category.name.replace(/\s+/g, '_')}/${firstPhoto[0].thumbnailUrl}` : 
+                undefined
             } : undefined
           };
         })
@@ -82,10 +94,15 @@ export function registerRoutes(app: Express): Server {
               )
             );
 
+          // Replace spaces with underscores in category name for URLs
+          const categoryPath = photo.category.replace(/\s+/g, '_');
+
           return {
             ...photo,
-            imageUrl: `/assets/${photo.category}/${photo.imageUrl}`,
-            thumbnailUrl: photo.thumbnailUrl ? `/assets/${photo.category}/${photo.thumbnailUrl}` : undefined,
+            imageUrl: `/assets/${categoryPath}/${photo.imageUrl}`,
+            thumbnailUrl: photo.thumbnailUrl ? 
+              `/assets/${categoryPath}/${photo.thumbnailUrl}` : 
+              undefined,
             isLiked: liked.length > 0,
           };
         })
