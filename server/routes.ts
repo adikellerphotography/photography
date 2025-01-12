@@ -58,16 +58,17 @@ export function registerRoutes(app: Express): Server {
       const pageSize = Number(req.query.pageSize) || 20;
       const ipAddress = req.ip;
 
-      let query = db.select().from(photos);
+      // Start with a base query
+      const query = db.select().from(photos);
 
+      // Only apply category filter if a specific category is requested
       if (category && typeof category === 'string') {
-        query = query.where(eq(photos.category, category));
+        query.where(eq(photos.category, category));
       }
 
-      const offset = (page - 1) * pageSize;
       const results = await query
         .limit(pageSize)
-        .offset(offset)
+        .offset((page - 1) * pageSize)
         .orderBy(photos.displayOrder);
 
       // Get likes for each photo for the current IP
