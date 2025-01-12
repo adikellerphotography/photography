@@ -1,4 +1,4 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "@/hooks/use-theme";
@@ -11,10 +11,35 @@ import About from "@/pages/About";
 import Pricing from "@/pages/Pricing";
 import NotFound from "@/pages/not-found";
 import { Toaster } from "@/components/ui/toaster";
-import React from 'react';
+import { useEffect } from 'react';
 
 function Layout({ children }: { children: React.ReactNode }) {
   const { language } = useLanguage();
+  const [location] = useLocation();
+
+  // Handle browser back button
+  useEffect(() => {
+    const handlePopState = (event: PopStateEvent) => {
+      // Prevent default behavior if we have internal state to handle
+      if (event.state) {
+        event.preventDefault();
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Update history state when route changes
+  useEffect(() => {
+    // Don't push state if it's the initial load
+    if (window.history.state === null) {
+      window.history.replaceState({ path: location }, '', location);
+    } else {
+      window.history.pushState({ path: location }, '', location);
+    }
+  }, [location]);
+
   return (
     <div dir={language === "he" ? "rtl" : "ltr"}>
       <BackgroundPattern />
