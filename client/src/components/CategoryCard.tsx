@@ -10,15 +10,23 @@ interface CategoryCardProps {
 }
 
 export default function CategoryCard({ name, description, imageUrl, thumbnailUrl }: CategoryCardProps) {
+  const displayUrl = thumbnailUrl || imageUrl;
+
   return (
     <Link href={`/gallery?category=${encodeURIComponent(name)}`}>
       <Card className="group cursor-pointer overflow-hidden">
         <AspectRatio ratio={3/2}>
-          <img
-            src={thumbnailUrl || imageUrl || '/placeholder.jpg'}
-            alt={name}
-            className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
-          />
+          {displayUrl ? (
+            <img
+              src={displayUrl}
+              alt={name}
+              className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+            />
+          ) : (
+            <div className="w-full h-full bg-muted flex items-center justify-center">
+              <span className="text-muted-foreground">No preview available</span>
+            </div>
+          )}
         </AspectRatio>
         <CardContent className="p-4">
           <h3 className="text-lg font-semibold">{name}</h3>
