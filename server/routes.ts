@@ -130,9 +130,7 @@ export function registerRoutes(app: Express): Server {
         // Update likes count
         await db
           .update(photos)
-          .set({
-            likesCount: photos.likesCount - 1,
-          })
+          .set({ likesCount: photos.likesCount - 1 })
           .where(eq(photos.id, photoId));
 
         res.json({ liked: false });
@@ -146,9 +144,7 @@ export function registerRoutes(app: Express): Server {
         // Update likes count
         await db
           .update(photos)
-          .set({
-            likesCount: photos.likesCount + 1,
-          })
+          .set({ likesCount: photos.likesCount + 1 })
           .where(eq(photos.id, photoId));
 
         res.json({ liked: true });
@@ -159,11 +155,54 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
-  // Initial photo import (replaced with append functionality)
+  // Add new photos to Bat Mitsva gallery
   app.post("/api/photos/import", async (_req, res) => {
     try {
-      // Define new Bat Mitsva photos to add
-      const newBatMitsvaPhotos = [
+      // All Bat Mitsva photos
+      const allBatMitsvaPhotos = [
+        // First batch
+        'M68A0072-Edit Large.jpeg',
+        'IMG_8772_2-Edi333t Large.jpeg',
+        'IMG_8705-Edit_5 Large.jpeg',
+        'IMG_8613-Edit Large.jpeg',
+        'IMG_7383-Edit Large.jpeg',
+        'IMG_7023-Edit-2 Large.jpeg',
+        'IMG_6916-Edit Large.jpeg',
+        'IMG_6901-Edit Large.jpeg',
+        'IMG_6797-Edit Large.jpeg',
+        'IMG_6788-Edit-2 Large.jpeg',
+        'IMG_6449-Edit-2 Large.jpeg',
+        'IMG_4737-Edit-2 Large.jpeg',
+        'IMG_4541-Edit Large.jpeg',
+        'IMG_3863-Edit Large.jpeg',
+        'IMG_3623-Edit Large.jpeg',
+        'IMG_0266-Edit Large.jpeg',
+        'IMG_0652-Edit Large.jpeg',
+        'IMG_3326-Edit-Edit-2 Large.jpeg',
+        '0Z9A7935-Edit_c Large.jpeg',
+        '0Z9A1019-Edit-Edit-2 Large.jpeg',
+        // Second batch
+        'M68A1645-Edit Large.jpeg',
+        'M68A1636-Edit Large.jpeg',
+        'M68A1601-Edit-Edit-Edit Large.jpeg',
+        'M68A1579-Edit Large.jpeg',
+        'M68A1544-Edit-2 Large.jpeg',
+        'M68A1428-Edit-2 Large.jpeg',
+        'M68A1179-Edit Large.jpeg',
+        'M68A1155-Edit-Edit Large.jpeg',
+        'M68A1153-Edit-2 Large.jpeg',
+        'M68A1142-Edit-Edit-2 Large.jpeg',
+        'M68A1113-Edit Large.jpeg',
+        'M68A0978-Edit Large.jpeg',
+        'M68A0959-Edit Large.jpeg',
+        'M68A0928-Edit-Edit-2 Large.jpeg',
+        'M68A0863-Edit Large.jpeg',
+        'M68A0863-Edit-2 Large.jpeg',
+        'M68A0765-Edit-Edit Large.jpeg',
+        'M68A0544-Edit Large.jpeg',
+        'M68A0460-Edit-2 Large.jpeg',
+        'M68A0288-Edit Large.jpeg',
+        // Third batch
         'M68A7513-Edit-3 Large.jpeg',
         'M68A6026-Edit Large.jpeg',
         'M68A5912-Edit Large.jpeg',
@@ -183,37 +222,67 @@ export function registerRoutes(app: Express): Server {
         'M68A2032-Edit Large.jpeg',
         'M68A1788-Edit-Edit-2 Large.jpeg',
         'M68A1724-Edit Large.jpeg',
-        'M68A1697-Edit-Edit Large.jpeg'
+        'M68A1697-Edit-Edit Large.jpeg',
+        // Fourth batch
+        'M68A9805-Edit Large.jpeg',
+        'M68A9744-Edit-3 Large.jpeg',
+        'M68A9567-Edit-2 Large.jpeg',
+        'M68A9608-Edit-2 Large.jpeg',
+        'M68A9628-Edit Large.jpeg',
+        'M68A9158-Edit Large.jpeg',
+        'M68A9120-Edit Large.jpeg',
+        'M68A8976-Edit Large.jpeg',
+        'M68A8807-Edit-2 Large.jpeg',
+        'M68A8544-Edit Large.jpeg',
+        'M68A8246-Edit Large.jpeg'
       ];
 
-      // Get the current maximum display order
-      const lastPhoto = await db
-        .select()
+      // Get existing photos to avoid duplicates
+      const existingPhotos = await db
+        .select({ imageUrl: photos.imageUrl })
         .from(photos)
-        .where(eq(photos.category, "Bat Mitsva"))
-        .orderBy(desc(photos.displayOrder))
-        .limit(1);
+        .where(eq(photos.category, "Bat Mitsva"));
 
-      const startOrder = lastPhoto.length > 0 ? lastPhoto[0].displayOrder + 1 : 1;
+      const existingUrls = new Set(existingPhotos.map(p => p.imageUrl));
 
-      // Shuffle the new photos array for random order
-      const shuffledNewPhotos = [...newBatMitsvaPhotos].sort(() => Math.random() - 0.5);
+      // Filter out any photos that already exist
+      const newPhotos = allBatMitsvaPhotos.filter(photo => !existingUrls.has(photo));
 
-      // Insert new photos with continuing display order
-      for (const [index, photo] of shuffledNewPhotos.entries()) {
-        await db.insert(photos).values({
-          title: photo.replace(/\.[^/.]+$/, ""),
-          category: "Bat Mitsva",
-          imageUrl: photo,
-          displayOrder: startOrder + index,
-          likesCount: 0
-        });
+      // If there are new photos to add
+      if (newPhotos.length > 0) {
+        // Get the current maximum display order
+        const lastPhoto = await db
+          .select()
+          .from(photos)
+          .where(eq(photos.category, "Bat Mitsva"))
+          .orderBy(desc(photos.displayOrder))
+          .limit(1);
+
+        const startOrder = lastPhoto.length > 0 ? lastPhoto[0].displayOrder + 1 : 1;
+
+        // Insert new photos with continuing display order
+        for (let i = 0; i < newPhotos.length; i++) {
+          const photo = newPhotos[i];
+          await db.insert(photos).values({
+            title: photo.replace(/\.[^/.]+$/, ""),
+            category: "Bat Mitsva",
+            imageUrl: photo,
+            displayOrder: startOrder + i
+          });
+        }
+
+        // Ensure category exists
+        await db.insert(categories)
+          .values({ name: "Bat Mitsva", displayOrder: 1 })
+          .onConflictDoNothing();
+
+        res.json({ message: `Successfully imported ${newPhotos.length} new photos` });
+      } else {
+        res.json({ message: "No new photos to import" });
       }
-
-      res.json({ message: "Additional photos imported successfully" });
     } catch (error) {
-      console.error('Error importing additional photos:', error);
-      res.status(500).json({ error: "Failed to import additional photos" });
+      console.error('Error importing photos:', error);
+      res.status(500).json({ error: "Failed to import photos" });
     }
   });
 
