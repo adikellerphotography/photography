@@ -7,9 +7,11 @@ import { cn } from "@/lib/utils";
 import ThemeToggle from "./ThemeToggle";
 import LanguageToggle from "./LanguageToggle";
 import { useLanguage } from "@/hooks/use-language";
+import { useState } from "react";
 
 export default function Navbar() {
   const { language } = useLanguage();
+  const [isOpen, setIsOpen] = useState(false);
 
   const navigationItems = [
     { href: "/", label: language === "en" ? "Home" : "בית", icon: Home },
@@ -50,7 +52,7 @@ export default function Navbar() {
         <div className="md:hidden flex items-center gap-2">
           <LanguageToggle />
           <ThemeToggle />
-          <Sheet>
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
                 <Menu className="h-5 w-5" />
@@ -63,7 +65,10 @@ export default function Navbar() {
                   const Icon = item.icon;
                   return (
                     <Link key={item.href} href={item.href}>
-                      <a className="flex items-center gap-3 px-2 py-2 text-lg hover:text-primary transition-colors">
+                      <a 
+                        className="flex items-center gap-3 px-2 py-2 text-lg hover:text-primary transition-colors"
+                        onClick={() => setIsOpen(false)}
+                      >
                         <Icon className="h-5 w-5" />
                         {item.label}
                       </a>

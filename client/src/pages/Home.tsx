@@ -30,14 +30,14 @@ export default function Home() {
   return (
     <div className="min-h-screen" dir={language === "he" ? "rtl" : "ltr"}>
       {/* Hero Section */}
-      <section className="relative h-screen">
+      <section className="relative min-h-screen">
         <div className="absolute inset-0">
           <img
             src="/attached_assets/M68A0863-Edit.jpg"
             alt="Bat Mitzva"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-gray-900/60 backdrop-blur-[2px]" />
         </div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
