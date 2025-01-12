@@ -1,12 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import type { Photo } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Loader2, ChevronLeft, ChevronRight, Heart } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface PhotoGalleryProps {
   category?: string;
@@ -22,24 +21,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const pageSize = 20;
 
-  const { data: photos, isLoading, refetch } = useQuery<Photo[]>({
+  const { data: photos, isLoading } = useQuery<Photo[]>({
     queryKey: ["/api/photos", { category, page }],
-  });
-
-  const likeMutation = useMutation({
-    mutationFn: async (photoId: number) => {
-      const response = await fetch(`/api/photos/${photoId}/like`, {
-        method: 'POST',
-        credentials: 'include',
-      });
-      if (!response.ok) {
-        throw new Error('Failed to like photo');
-      }
-      return response.json();
-    },
-    onSuccess: () => {
-      refetch();
-    },
   });
 
   // Save scroll position when opening a photo
@@ -121,11 +104,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     setTouchStart(null);
   };
 
-  const handleLike = async (e: React.MouseEvent, photoId: number) => {
-    e.stopPropagation();
-    likeMutation.mutate(photoId);
-  };
-
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -158,7 +136,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               setSelectedPhoto(photo);
               setSelectedIndex(index);
             }}
-            className="relative overflow-hidden rounded-lg cursor-pointer group"
+            className="relative overflow-hidden rounded-lg cursor-pointer"
           >
             <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
               <img
@@ -168,20 +146,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 loading="lazy"
               />
             </AspectRatio>
-            <button
-              onClick={(e) => handleLike(e, photo.id)}
-              className={cn(
-                "absolute top-2 right-2 p-2 rounded-full transition-opacity",
-                "bg-black/50 hover:bg-black/70 opacity-0 group-hover:opacity-100",
-                photo.isLiked && "text-red-500"
-              )}
-              aria-label={photo.isLiked ? "Unlike photo" : "Like photo"}
-            >
-              <Heart className={cn("w-5 h-5", photo.isLiked ? "fill-current" : "fill-none")} />
-              {photo.likesCount > 0 && (
-                <span className="ml-1 text-sm">{photo.likesCount}</span>
-              )}
-            </button>
           </motion.div>
         ))}
       </div>
@@ -226,29 +190,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 aria-label="Next photo"
               >
                 <ChevronRight className="w-6 h-6 text-white" />
-              </button>
-
-              {/* Like button */}
-              <button
-                onClick={(e) => handleLike(e, selectedPhoto.id)}
-                className={cn(
-                  "absolute top-4 left-1/2 -translate-x-1/2 p-3 rounded-full",
-                  "bg-black/50 hover:bg-black/70 transition-colors",
-                  selectedPhoto.isLiked && "text-red-500"
-                )}
-                aria-label={selectedPhoto.isLiked ? "Unlike photo" : "Like photo"}
-              >
-                <Heart 
-                  className={cn(
-                    "w-8 h-8",
-                    selectedPhoto.isLiked ? "fill-current" : "fill-none"
-                  )} 
-                />
-                {selectedPhoto.likesCount > 0 && (
-                  <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-white text-sm">
-                    {selectedPhoto.likesCount}
-                  </span>
-                )}
               </button>
 
               {/* Thumbnail (shown immediately) */}
