@@ -34,7 +34,7 @@ export default function Home() {
         <div className="absolute inset-0">
           <img
             src="/assets/M68A0863-Edit.jpg"
-            alt="Bat Mitzva"
+            alt=""
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gray-900/60 backdrop-blur-[2px]" />
@@ -80,7 +80,7 @@ export default function Home() {
                         <div className="relative w-full h-full">
                           <img
                             src={getCategoryImage(category.name)}
-                            alt={category.name}
+                            alt=""
                             className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent">
