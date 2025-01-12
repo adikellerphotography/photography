@@ -15,7 +15,7 @@ export default function Home() {
       {/* Hero Section */}
       <div className="bg-background py-24 px-4">
         <div className="container mx-auto max-w-4xl text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
             {t("home.title")}
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
