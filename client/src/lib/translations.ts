@@ -7,7 +7,7 @@ export const translations = {
       pricing: "Pricing",
     },
     home: {
-      title: "Capturing Life's Beautiful Moments",
+      title: "Where Art Meets the Lens",
       subtitle: "Professional photography services specializing in family portraits, events, and personal photography sessions that tell your unique story.",
       galleryTitle: "Photo Galleries",
       featuredWork: "Featured Work",
@@ -88,7 +88,7 @@ export const translations = {
       pricing: "מחירים",
     },
     home: {
-      title: "מנציחים רגעים יפים בחיים",
+      title: "היכן שאומנות פוגשת את העדשה",
       subtitle: "שירותי צילום מקצועיים המתמחים בצילומי משפחה, אירועים וסשנים אישיים המספרים את הסיפור הייחודי שלך",
       galleryTitle: "גלריות תמונות",
       featuredWork: "עבודות נבחרות",
