@@ -35,74 +35,50 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     }
   }, [selectedPhoto, scrollPosition]);
 
-  const getImageOrientation = (imageUrl: string): Promise<'horizontal' | 'vertical'> => {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => {
-        resolve(img.width >= img.height ? 'horizontal' : 'vertical');
-      };
-      img.src = imageUrl;
-    });
-  };
-
-  const [imageOrientations, setImageOrientations] = useState<Record<string, 'horizontal' | 'vertical'>>({});
-
-  useEffect(() => {
-    const loadOrientations = async () => {
-      if (photos) {
-        const orientations: Record<string, 'horizontal' | 'vertical'> = {};
-        await Promise.all(
-          photos.map(async (photo) => {
-            orientations[photo.id] = await getImageOrientation(photo.thumbnailUrl);
-          })
-        );
-        setImageOrientations(orientations);
-      }
-    };
-    loadOrientations();
-  }, [photos]);
-
   if (isLoading) {
-    return <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {Array.from({ length: 6 }).map((_, i) => (
-        <div key={i} className="w-full bg-muted animate-pulse h-64 rounded-lg" />
-      ))}
-    </div>;
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="w-full bg-muted animate-pulse h-64 rounded-lg" />
+        ))}
+      </div>
+    );
+  }
+
+  if (!photos || photos.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-muted-foreground">No photos found</p>
+      </div>
+    );
   }
 
   return (
     <div className="space-y-8" ref={galleryRef}>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-auto gap-4">
-        {photos?.map((photo, index) => {
-          const orientation = imageOrientations[photo.id];
-          const isVertical = orientation === 'vertical';
-
-          return (
-            <motion.div
-              key={photo.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{ scale: 1.02 }}
-              onClick={() => setSelectedPhoto(photo)}
-              className={`relative overflow-hidden rounded-lg cursor-pointer ${
-                isVertical ? 'row-span-2' : ''
-              }`}
-            >
-              <AspectRatio ratio={isVertical ? 2/3 : 4/3}>
-                <img
-                  src={photo.thumbnailUrl}
-                  alt={photo.title}
-                  className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
-                  loading="lazy"
-                />
-              </AspectRatio>
-            </motion.div>
-          );
-        })}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {photos.map((photo, index) => (
+          <motion.div
+            key={photo.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            whileHover={{ scale: 1.02 }}
+            onClick={() => setSelectedPhoto(photo)}
+            className="relative overflow-hidden rounded-lg cursor-pointer"
+          >
+            <AspectRatio ratio={4/3}>
+              <img
+                src={photo.thumbnailUrl || photo.imageUrl}
+                alt={photo.title}
+                className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
+                loading="lazy"
+              />
+            </AspectRatio>
+          </motion.div>
+        ))}
       </div>
 
-      {photos && photos.length >= pageSize && (
+      {photos.length >= pageSize && (
         <div className="flex justify-center">
           <Button 
             variant="outline"
@@ -114,7 +90,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       )}
 
       <Dialog open={!!selectedPhoto} onOpenChange={(open) => !open && setSelectedPhoto(null)}>
-        <DialogContent className="max-w-4xl w-full h-[80vh]">
+        <DialogContent className="max-w-[90vw] max-h-[90vh] w-full h-full p-0">
           {selectedPhoto && (
             <div className="relative w-full h-full">
               <img
@@ -123,9 +99,9 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 className="object-contain w-full h-full"
               />
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background/90 to-background/0">
-                <h3 className="text-lg font-semibold">{selectedPhoto.title}</h3>
+                <h3 className="text-lg font-semibold text-white">{selectedPhoto.title}</h3>
                 {selectedPhoto.description && (
-                  <p className="text-sm text-muted-foreground">{selectedPhoto.description}</p>
+                  <p className="text-sm text-white/80">{selectedPhoto.description}</p>
                 )}
               </div>
             </div>

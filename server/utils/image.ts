@@ -5,7 +5,7 @@ import fs from 'fs/promises';
 export async function generateThumbnail(imagePath: string): Promise<string> {
   const ext = path.extname(imagePath);
   const thumbnailPath = imagePath.replace(ext, `-thumb${ext}`);
-  
+
   await sharp(imagePath)
     .resize(600, 800, {
       fit: 'inside',
@@ -17,5 +17,5 @@ export async function generateThumbnail(imagePath: string): Promise<string> {
     })
     .toFile(thumbnailPath);
 
-  return thumbnailPath;
+  return path.basename(thumbnailPath);
 }

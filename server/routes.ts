@@ -8,7 +8,7 @@ import express from "express";
 import { generateThumbnail } from "./utils/image";
 import { generateMissingThumbnails } from "./utils/generate-thumbnails";
 
-export function registerRoutes(app: Express) {
+export function registerRoutes(app: Express): Server {
   const httpServer = createServer(app);
 
   // Serve static files from attached_assets
@@ -26,7 +26,7 @@ export function registerRoutes(app: Express) {
       let query = db.select().from(photos);
 
       if (category) {
-        query = query.where(eq(photos.category, category as string));
+        query = query.where(eq(photos.category, String(category)));
       }
 
       const offset = ((Number(page) || 1) - 1) * Number(pageSize);
@@ -63,15 +63,8 @@ export function registerRoutes(app: Express) {
   // Initial photo import
   app.post("/api/photos/import", async (_req, res) => {
     try {
-      // Bat Mitsva photos
-      const batMitsvaPhotos = [
-        'IMG_3623-Edit.jpg', 'IMG_6916-Edit.jpg', 'IMG_8613-Edit.jpg',
-        'IMG_8705-Edit_5.jpg', 'IMG_8772_2-Edi333t.jpg', 'M68A0863-Edit.jpg',
-        'M68A1153-Edit-2.jpg', 'M68A1543-Edit-2.jpg', 'M68A1579-Edit.jpg',
-        'M68A1601-Edit-Edit-Edit.jpg', 'M68A2406-Edit-Edit.jpg', 'M68A4619-Edit.jpg',
-        'M68A6026-Edit.jpg', 'M68A7513-Edit-3.jpg', 'M68A9120-Edit.jpg',
-        'M68A9628-Edit.jpg', 'M68A9805-Edit.jpg'
-      ];
+      // First clear existing photos
+      await db.delete(photos);
 
       // Family photos
       const familyPhotos = [
@@ -82,22 +75,14 @@ export function registerRoutes(app: Express) {
         'M68A9203-Edit.jpg', 'M68A9494-Edit.jpg'
       ];
 
-      // Insert Bat Mitsva photos
-      for (const photo of batMitsvaPhotos) {
-        await db.insert(photos).values({
-          title: photo.replace(/\.[^/.]+$/, ""),
-          category: "Bat Mitsva",
-          imageUrl: photo,
-        }).onConflictDoNothing();
-      }
-
       // Insert Family photos
       for (const photo of familyPhotos) {
         await db.insert(photos).values({
           title: photo.replace(/\.[^/.]+$/, ""),
           category: "Family",
           imageUrl: photo,
-        }).onConflictDoNothing();
+          displayOrder: familyPhotos.indexOf(photo) + 1
+        });
       }
 
       res.json({ message: "Photos imported successfully" });

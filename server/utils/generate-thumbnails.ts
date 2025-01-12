@@ -2,7 +2,7 @@ import { db } from "@db";
 import { photos } from "@db/schema";
 import { generateThumbnail } from "./image";
 import path from "path";
-import { eq } from "drizzle-orm";
+import { eq, isNull } from "drizzle-orm";
 
 export async function generateMissingThumbnails() {
   try {
@@ -10,21 +10,21 @@ export async function generateMissingThumbnails() {
     const photosWithoutThumbnails = await db
       .select()
       .from(photos)
-      .where(eq(photos.thumbnailUrl, null));
+      .where(isNull(photos.thumbnailUrl));
 
     console.log(`Found ${photosWithoutThumbnails.length} photos without thumbnails`);
 
     // Generate thumbnails for each photo
     for (const photo of photosWithoutThumbnails) {
       try {
-        const fullImagePath = path.join(process.cwd(), 'attached_assets', path.basename(photo.imageUrl));
+        const fullImagePath = path.join(process.cwd(), 'attached_assets', photo.imageUrl);
         const thumbnailPath = await generateThumbnail(fullImagePath);
-        
+
         // Update the photo record with the thumbnail path
         await db
           .update(photos)
           .set({
-            thumbnailUrl: path.basename(thumbnailPath),
+            thumbnailUrl: thumbnailPath,
           })
           .where(eq(photos.id, photo.id));
 
