@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import type { Photo } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Loader2 } from "lucide-react";
 
 interface PhotoGalleryProps {
   category?: string;
@@ -13,6 +14,7 @@ interface PhotoGalleryProps {
 export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [page, setPage] = useState(1);
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
+  const [isFullImageLoaded, setIsFullImageLoaded] = useState(false);
   const galleryRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
   const pageSize = 20;
@@ -26,6 +28,11 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     if (selectedPhoto && galleryRef.current) {
       setScrollPosition(window.scrollY);
     }
+  }, [selectedPhoto]);
+
+  // Reset full image loaded state when selected photo changes
+  useEffect(() => {
+    setIsFullImageLoaded(false);
   }, [selectedPhoto]);
 
   // Restore scroll position when closing photo
@@ -93,11 +100,34 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
         <DialogContent className="max-w-[90vw] max-h-[90vh] w-full h-full p-0">
           {selectedPhoto && (
             <div className="relative w-full h-full">
+              {/* Thumbnail (shown immediately) */}
+              <img
+                src={selectedPhoto.thumbnailUrl || selectedPhoto.imageUrl}
+                alt={selectedPhoto.title}
+                className={`object-contain w-full h-full transition-opacity duration-300 ${
+                  isFullImageLoaded ? 'opacity-0' : 'opacity-100'
+                }`}
+                style={{ position: isFullImageLoaded ? 'absolute' : 'relative' }}
+              />
+
+              {/* Full resolution image (loads in background) */}
               <img
                 src={selectedPhoto.imageUrl}
                 alt={selectedPhoto.title}
-                className="object-contain w-full h-full"
+                className={`object-contain w-full h-full transition-opacity duration-300 ${
+                  isFullImageLoaded ? 'opacity-100' : 'opacity-0'
+                }`}
+                style={{ position: 'absolute', top: 0, left: 0 }}
+                onLoad={() => setIsFullImageLoaded(true)}
               />
+
+              {/* Loading indicator */}
+              {!isFullImageLoaded && (
+                <div className="absolute top-4 right-4">
+                  <Loader2 className="w-6 h-6 animate-spin text-white/80" />
+                </div>
+              )}
+
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background/90 to-background/0">
                 <h3 className="text-lg font-semibold text-white">{selectedPhoto.title}</h3>
                 {selectedPhoto.description && (
