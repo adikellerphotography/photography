@@ -20,9 +20,11 @@ export default function PhoneDialog() {
         </button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
-        <div className="flex flex-col items-center justify-center space-y-6 py-6 [dir='rtl']:text-left">
+        <div className="flex flex-col items-center justify-center space-y-6 py-6">
           <SiWhatsapp className="w-12 h-12 text-muted-foreground" />
-          <h2 className="text-xl font-semibold text-foreground text-center">{t("contact.callMe")}</h2>
+          <h2 className="text-xl font-semibold text-foreground text-center">
+            {t("contact.callMe")}
+          </h2>
 
           <div className="flex flex-col gap-4 w-full max-w-xs">
             <a
