@@ -7,6 +7,7 @@ export default {
     extend: {
       fontFamily: {
         cormorant: ["Cormorant Garamond", "serif"],
+        quicksand: ["Quicksand", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
