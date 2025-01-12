@@ -5,22 +5,28 @@ import PhotoGallery from "@/components/PhotoGallery";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Category } from "@/lib/types";
 import { Card, CardContent } from "@/components/ui/card";
+import { useLocation } from "wouter";
 
 export default function Gallery() {
   const { data: categories, isLoading } = useQuery<Category[]>({
     queryKey: ["/api/categories"],
   });
 
-  // Set the first category as default if available
-  const defaultCategory = categories?.[0]?.name;
+  // Get category from URL search params
+  const [location] = useLocation();
+  const searchParams = new URLSearchParams(window.location.search);
+  const categoryFromUrl = searchParams.get('category');
+
+  // Set the initial category from URL or first available category
+  const defaultCategory = categoryFromUrl || categories?.[0]?.name;
   const [activeCategory, setActiveCategory] = useState<string>(defaultCategory || '');
 
-  // Update active category when categories load
+  // Update active category when categories load or URL changes
   useEffect(() => {
-    if (defaultCategory && !activeCategory) {
-      setActiveCategory(defaultCategory);
+    if ((categoryFromUrl || defaultCategory) && categories?.some(c => c.name === (categoryFromUrl || defaultCategory))) {
+      setActiveCategory(categoryFromUrl || defaultCategory);
     }
-  }, [defaultCategory]);
+  }, [categoryFromUrl, defaultCategory, categories]);
 
   const containerVariants = {
     hidden: { opacity: 0 },

@@ -11,7 +11,7 @@ interface CategoryCardProps {
 
 export default function CategoryCard({ name, description, imageUrl, thumbnailUrl }: CategoryCardProps) {
   return (
-    <Link href={`/gallery/${name.toLowerCase()}`}>
+    <Link href={`/gallery?category=${encodeURIComponent(name)}`}>
       <Card className="group cursor-pointer overflow-hidden">
         <AspectRatio ratio={3/2}>
           <img
