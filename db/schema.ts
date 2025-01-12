@@ -1,4 +1,4 @@
-import { pgTable, text, serial, timestamp, varchar } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, varchar, integer } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 export const photos = pgTable("photos", {
@@ -10,6 +10,7 @@ export const photos = pgTable("photos", {
   thumbnailUrl: text("thumbnail_url"), 
   uploadedAt: timestamp("uploaded_at").defaultNow(),
   displayOrder: serial("display_order"),
+  likesCount: integer("likes_count").default(0),
 });
 
 export const insertPhotoSchema = createInsertSchema(photos);
@@ -22,6 +23,13 @@ export const categories = pgTable("categories", {
   name: varchar("name", { length: 50 }).notNull().unique(),
   description: text("description"),
   displayOrder: serial("display_order"),
+});
+
+export const photoLikes = pgTable("photo_likes", {
+  id: serial("id").primaryKey(),
+  photoId: integer("photo_id").references(() => photos.id).notNull(),
+  ipAddress: text("ip_address").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
 export const insertCategorySchema = createInsertSchema(categories);
