@@ -21,11 +21,11 @@ export default function Navbar() {
   ];
 
   return (
-    <NavigationMenu className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-      <div className="w-full md:container md:mx-auto h-16 flex items-center justify-between">
+    <NavigationMenu className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b w-full">
+      <div className="flex items-center justify-between h-16 w-full">
         <Link href="/">
-          <a className="text-lg font-cormorant leading-tight px-4">
-            Adi Keller<br />Photography
+          <a className="text-lg font-cormorant px-4">
+            Adi Keller Photography
           </a>
         </Link>
 
