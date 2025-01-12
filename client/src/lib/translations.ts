@@ -8,7 +8,7 @@ export const translations = {
     },
     home: {
       title: "Where Art Meets the Lens",
-      subtitle: "Professional photography services specializing in family portraits, events, and personal photography sessions that tell your unique story.",
+      subtitle: "Artistic portrait photography, transforming storytelling moments into stunning and emotionally captivating works of photographic art.",
       galleryTitle: "Photo Galleries",
       featuredWork: "Featured Work",
     },
@@ -89,7 +89,7 @@ export const translations = {
     },
     home: {
       title: "היכן שאומנות פוגשת את העדשה",
-      subtitle: "שירותי צילום מקצועיים המתמחים בצילומי משפחה, אירועים וסשנים אישיים המספרים את הסיפור הייחודי שלך",
+      subtitle: "צילום פורטרטים אומנותי, הופך רגעים מספרי סיפורים ליצירות צילום מרהיבות ומרגשות",
       galleryTitle: "גלריות תמונות",
       featuredWork: "עבודות נבחרות",
     },
