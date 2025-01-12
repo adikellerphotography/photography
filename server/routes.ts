@@ -11,7 +11,7 @@ import { generateMissingThumbnails } from "./utils/generate-thumbnails";
 export function registerRoutes(app: Express): Server {
   const httpServer = createServer(app);
 
-  // Serve static files from attached_assets
+  // Serve static files from attached_assets and its subdirectories
   const assetsPath = path.join(process.cwd(), 'attached_assets');
   app.use('/assets', express.static(assetsPath));
 
@@ -36,8 +36,8 @@ export function registerRoutes(app: Express): Server {
           return {
             ...category,
             firstPhoto: firstPhoto[0] ? {
-              imageUrl: `/assets/${firstPhoto[0].imageUrl}`,
-              thumbnailUrl: firstPhoto[0].thumbnailUrl ? `/assets/${firstPhoto[0].thumbnailUrl}` : null
+              imageUrl: `/assets/${category.name}/${firstPhoto[0].imageUrl}`,
+              thumbnailUrl: firstPhoto[0].thumbnailUrl ? `/assets/${category.name}/${firstPhoto[0].thumbnailUrl}` : null
             } : undefined
           };
         })
@@ -84,8 +84,8 @@ export function registerRoutes(app: Express): Server {
 
           return {
             ...photo,
-            imageUrl: `/assets/${photo.imageUrl}`,
-            thumbnailUrl: photo.thumbnailUrl ? `/assets/${photo.thumbnailUrl}` : null,
+            imageUrl: `/assets/${photo.category}/${photo.imageUrl}`,
+            thumbnailUrl: photo.thumbnailUrl ? `/assets/${photo.category}/${photo.thumbnailUrl}` : null,
             isLiked: liked.length > 0,
           };
         })
@@ -270,10 +270,17 @@ export function registerRoutes(app: Express): Server {
           });
         }
 
-        // Ensure category exists
+        // Ensure category exists with correct display order
         await db.insert(categories)
-          .values({ name: "Bat Mitsva", displayOrder: 1 })
-          .onConflictDoNothing();
+          .values({ 
+            name: "Bat Mitsva", 
+            displayOrder: 1,
+            description: "Bat Mitsva celebrations and ceremonies"
+          })
+          .onConflictDoUpdate({ 
+            target: categories.name,
+            set: { displayOrder: 1 }
+          });
 
         res.json({ message: `Successfully imported ${newPhotos.length} new photos` });
       } else {
@@ -284,6 +291,7 @@ export function registerRoutes(app: Express): Server {
       res.status(500).json({ error: "Failed to import photos" });
     }
   });
+
   // Add a new route for importing Yoga photos
   app.post("/api/photos/import-yoga", async (_req, res) => {
     try {

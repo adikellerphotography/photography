@@ -4,7 +4,9 @@ import fs from 'fs/promises';
 
 export async function generateThumbnail(imagePath: string): Promise<string> {
   const ext = path.extname(imagePath);
-  const thumbnailPath = imagePath.replace(ext, `-thumb${ext}`);
+  const categoryName = path.basename(path.dirname(imagePath));
+  const fileName = path.basename(imagePath);
+  const thumbnailPath = path.join(process.cwd(), 'attached_assets', categoryName, fileName.replace(ext, `-thumb${ext}`));
 
   await sharp(imagePath)
     .resize(600, 800, {
