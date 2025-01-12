@@ -18,6 +18,38 @@ export function registerRoutes(app: Express): Server {
   // Initialize thumbnails for existing photos
   generateMissingThumbnails().catch(console.error);
 
+  // Get all categories with their first photo
+  app.get("/api/categories-with-photos", async (_req, res) => {
+    try {
+      const categoriesList = await db.select().from(categories).orderBy(categories.displayOrder);
+
+      const categoriesWithPhotos = await Promise.all(
+        categoriesList.map(async (category) => {
+          // Get first photo for this category
+          const firstPhoto = await db
+            .select()
+            .from(photos)
+            .where(eq(photos.category, category.name))
+            .orderBy(photos.displayOrder)
+            .limit(1);
+
+          return {
+            ...category,
+            firstPhoto: firstPhoto[0] ? {
+              imageUrl: `/assets/${firstPhoto[0].imageUrl}`,
+              thumbnailUrl: firstPhoto[0].thumbnailUrl ? `/assets/${firstPhoto[0].thumbnailUrl}` : null
+            } : undefined
+          };
+        })
+      );
+
+      res.json(categoriesWithPhotos);
+    } catch (error) {
+      console.error('Error fetching categories with photos:', error);
+      res.status(500).json({ error: "Failed to fetch categories with photos" });
+    }
+  });
+
   // Get all photos with optional category filter and pagination
   app.get("/api/photos", async (req, res) => {
     try {
@@ -85,6 +117,15 @@ export function registerRoutes(app: Express): Server {
           'M68A9100-Edit-2.jpg',
           'M68A9203-Edit.jpg',
           'M68A9494-Edit.jpg'
+        ],
+        "Kids": [
+          'IMG_4704-Edit.jpg'
+        ],
+        "Women": [
+          'M68A1950-Edit.jpg'
+        ],
+        "Yoga": [
+          'M68A1153-Edit-2.jpg'
         ]
       };
 
@@ -103,7 +144,10 @@ export function registerRoutes(app: Express): Server {
       // Initialize categories
       await db.insert(categories).values([
         { name: "Bat Mitsva", displayOrder: 1 },
-        { name: "Family", displayOrder: 2 }
+        { name: "Family", displayOrder: 2 },
+        { name: "Kids", displayOrder: 3 },
+        { name: "Women", displayOrder: 4 },
+        { name: "Yoga", displayOrder: 5 }
       ]).onConflictDoNothing();
 
       res.json({ message: "Photos imported successfully" });
