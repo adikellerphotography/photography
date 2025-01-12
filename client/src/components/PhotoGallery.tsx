@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useInfiniteQuery } from "@tanstack/react-query";
 import type { Photo } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -14,19 +14,53 @@ interface PhotoGalleryProps {
 }
 
 export default function PhotoGallery({ category }: PhotoGalleryProps) {
-  const [page, setPage] = useState(1);
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [isFullImageLoaded, setIsFullImageLoaded] = useState(false);
   const [showHeart, setShowHeart] = useState(false);
   const galleryRef = useRef<HTMLDivElement>(null);
+  const loaderRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const pageSize = 20;
 
-  const { data: photos, isLoading } = useQuery<Photo[]>({
-    queryKey: ["/api/photos", { category, page }],
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading
+  } = useInfiniteQuery({
+    queryKey: ["/api/photos", { category }],
+    queryFn: async ({ pageParam = 1 }) => {
+      const response = await fetch(`/api/photos?category=${category}&page=${pageParam}&pageSize=${pageSize}`);
+      if (!response.ok) throw new Error('Network response was not ok');
+      return response.json();
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.length === pageSize ? allPages.length + 1 : undefined;
+    },
   });
+
+  // Combine all photos from all pages
+  const photos = data?.pages.flat() || [];
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const likeMutation = useMutation({
     mutationFn: async (photoId: number) => {
@@ -38,9 +72,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
         throw new Error('Failed to like photo');
       }
       return response.json();
-    },
-    onSuccess: () => {
-      // refetch(); //Removed refetch as it's not in the edited code and causes error
     },
   });
 
@@ -186,14 +217,13 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
         ))}
       </div>
 
-      {photos.length >= pageSize && (
-        <div className="flex justify-center">
-          <Button 
-            variant="outline"
-            onClick={() => setPage(p => p + 1)}
-          >
-            Load More
-          </Button>
+      {/* Infinite scroll loader */}
+      {(hasNextPage || isFetchingNextPage) && (
+        <div 
+          ref={loaderRef}
+          className="flex justify-center py-8"
+        >
+          <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
         </div>
       )}
 
