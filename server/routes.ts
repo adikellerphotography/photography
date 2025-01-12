@@ -1,8 +1,8 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { eq, and } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { db } from "@db";
-import { photos, categories, photoLikes } from "@db/schema";
+import { photos, categories } from "@db/schema";
 import path from "path";
 import express from "express";
 import { generateThumbnail } from "./utils/image";
@@ -56,7 +56,6 @@ export function registerRoutes(app: Express): Server {
       const { category } = req.query;
       const page = Number(req.query.page) || 1;
       const pageSize = Number(req.query.pageSize) || 20;
-      const ipAddress = req.ip;
 
       let query = db.select().from(photos);
 
@@ -71,92 +70,17 @@ export function registerRoutes(app: Express): Server {
         .offset(offset)
         .orderBy(photos.displayOrder);
 
-      // Get likes for each photo for the current IP
-      const photosWithLikes = await Promise.all(
-        results.map(async (photo) => {
-          const liked = await db
-            .select()
-            .from(photoLikes)
-            .where(
-              and(
-                eq(photoLikes.photoId, photo.id),
-                eq(photoLikes.ipAddress, ipAddress)
-              )
-            );
+      // Transform the results to include full asset paths
+      const transformedResults = results.map(photo => ({
+        ...photo,
+        imageUrl: `/assets/${photo.imageUrl}`,
+        thumbnailUrl: photo.thumbnailUrl ? `/assets/${photo.thumbnailUrl}` : null,
+      }));
 
-          return {
-            ...photo,
-            imageUrl: `/assets/${photo.imageUrl}`,
-            thumbnailUrl: photo.thumbnailUrl ? `/assets/${photo.thumbnailUrl}` : null,
-            isLiked: liked.length > 0,
-          };
-        })
-      );
-
-      res.json(photosWithLikes);
+      res.json(transformedResults);
     } catch (error) {
       console.error('Error fetching photos:', error);
       res.status(500).json({ error: "Failed to fetch photos" });
-    }
-  });
-
-  // Like/Unlike a photo
-  app.post("/api/photos/:id/like", async (req, res) => {
-    try {
-      const photoId = parseInt(req.params.id);
-      const ipAddress = req.ip;
-
-      // Check if the user has already liked this photo
-      const existingLike = await db
-        .select()
-        .from(photoLikes)
-        .where(
-          and(
-            eq(photoLikes.photoId, photoId),
-            eq(photoLikes.ipAddress, ipAddress)
-          )
-        );
-
-      if (existingLike.length > 0) {
-        // Unlike: Remove the like
-        await db
-          .delete(photoLikes)
-          .where(
-            and(
-              eq(photoLikes.photoId, photoId),
-              eq(photoLikes.ipAddress, ipAddress)
-            )
-          );
-
-        // Update likes count
-        await db
-          .update(photos)
-          .set({
-            likesCount: photos.likesCount - 1,
-          })
-          .where(eq(photos.id, photoId));
-
-        res.json({ liked: false });
-      } else {
-        // Like: Add new like
-        await db.insert(photoLikes).values({
-          photoId,
-          ipAddress,
-        });
-
-        // Update likes count
-        await db
-          .update(photos)
-          .set({
-            likesCount: photos.likesCount + 1,
-          })
-          .where(eq(photos.id, photoId));
-
-        res.json({ liked: true });
-      }
-    } catch (error) {
-      console.error('Error handling photo like:', error);
-      res.status(500).json({ error: "Failed to process like" });
     }
   });
 
@@ -212,8 +136,7 @@ export function registerRoutes(app: Express): Server {
             title: photo.replace(/\.[^/.]+$/, ""),
             category: category,
             imageUrl: photo,
-            displayOrder: index + 1,
-            likesCount: 0 // Initialize likes count to 0
+            displayOrder: index + 1
           });
         }
       }
