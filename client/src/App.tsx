@@ -5,37 +5,45 @@ import { ThemeProvider } from "@/hooks/use-theme";
 import { LanguageProvider, useLanguage } from "@/hooks/use-language";
 import Navbar from "@/components/Navbar";
 import BackgroundPattern from "@/components/BackgroundPattern";
-import Home from "@/pages/home";
+import Home from "@/pages/Home";
 import Gallery from "@/pages/Gallery";
 import About from "@/pages/About";
 import Pricing from "@/pages/Pricing";
 import NotFound from "@/pages/not-found";
 import { Toaster } from "@/components/ui/toaster";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 function Layout({ children }: { children: React.ReactNode }) {
   const { language } = useLanguage();
   const [location] = useLocation();
+  const [navigationStack, setNavigationStack] = useState<string[]>([location]);
 
-  // Handle browser back button
+  // Handle mobile back button
   useEffect(() => {
-    const handlePopState = (event: PopStateEvent) => {
-      // Prevent default behavior if we have internal state to handle
-      if (event.state) {
-        event.preventDefault();
+    const handleBackButton = (e: PopStateEvent) => {
+      e.preventDefault();
+
+      // Get previous location from our stack
+      const newStack = [...navigationStack];
+      if (newStack.length > 1) {
+        newStack.pop(); // Remove current location
+        const previousLocation = newStack[newStack.length - 1];
+        setNavigationStack(newStack);
+        window.history.pushState({ path: previousLocation }, '', previousLocation);
       }
+
+      return false;
     };
 
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
+    window.addEventListener('popstate', handleBackButton);
+    return () => window.removeEventListener('popstate', handleBackButton);
+  }, [navigationStack]);
 
-  // Update history state when route changes
+  // Update navigation stack when route changes
   useEffect(() => {
-    // Don't push state if it's the initial load
-    if (window.history.state === null) {
-      window.history.replaceState({ path: location }, '', location);
-    } else {
+    // Only add to stack if it's a new location
+    if (navigationStack[navigationStack.length - 1] !== location) {
+      setNavigationStack(prev => [...prev, location]);
       window.history.pushState({ path: location }, '', location);
     }
   }, [location]);
