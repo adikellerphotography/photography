@@ -21,65 +21,67 @@ export default function Navbar() {
   ];
 
   return (
-    <NavigationMenu className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b w-full">
-      <div className="flex items-center justify-between h-16 w-full">
-        <Link href="/">
-          <a className="text-lg font-cormorant px-4">
-            Adi Keller Photography
-          </a>
-        </Link>
+    <div className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b w-full">
+      <NavigationMenu className="w-full">
+        <div className="w-full flex items-center justify-between h-16">
+          <Link href="/">
+            <a className="text-lg font-cormorant px-4">
+              Adi Keller Photography
+            </a>
+          </Link>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-4 px-4">
-          <NavigationMenuList>
-            {navigationItems.map((item) => (
-              <NavigationMenuItem key={item.href}>
-                <Link href={item.href}>
-                  <NavigationMenuLink className={cn(
-                    "group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer"
-                  )}>
-                    {item.label}
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-            ))}
-          </NavigationMenuList>
-          <LanguageToggle />
-          <ThemeToggle />
-        </div>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-4 px-4">
+            <NavigationMenuList>
+              {navigationItems.map((item) => (
+                <NavigationMenuItem key={item.href}>
+                  <Link href={item.href}>
+                    <NavigationMenuLink className={cn(
+                      "group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer"
+                    )}>
+                      {item.label}
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+              ))}
+            </NavigationMenuList>
+            <LanguageToggle />
+            <ThemeToggle />
+          </div>
 
-        {/* Mobile Navigation */}
-        <div className="md:hidden flex items-center">
-          <LanguageToggle />
-          <ThemeToggle />
-          <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="px-4">
-                <Menu className="h-5 w-5" />
-                <span className="sr-only">Toggle menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-[240px] sm:w-[280px]">
-              <nav className="flex flex-col gap-4 mt-6">
-                {navigationItems.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <Link key={item.href} href={item.href}>
-                      <a 
-                        className="flex items-center gap-3 px-2 py-2 text-lg hover:text-primary transition-colors"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        <Icon className="h-5 w-5" />
-                        {item.label}
-                      </a>
-                    </Link>
-                  );
-                })}
-              </nav>
-            </SheetContent>
-          </Sheet>
+          {/* Mobile Navigation */}
+          <div className="md:hidden flex items-center">
+            <LanguageToggle />
+            <ThemeToggle />
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="px-4">
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Toggle menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[240px] sm:w-[280px]">
+                <nav className="flex flex-col gap-4 mt-6">
+                  {navigationItems.map((item) => {
+                    const Icon = item.icon;
+                    return (
+                      <Link key={item.href} href={item.href}>
+                        <a 
+                          className="flex items-center gap-3 px-2 py-2 text-lg hover:text-primary transition-colors"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          <Icon className="h-5 w-5" />
+                          {item.label}
+                        </a>
+                      </Link>
+                    );
+                  })}
+                </nav>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
-      </div>
-    </NavigationMenu>
+      </NavigationMenu>
+    </div>
   );
 }
