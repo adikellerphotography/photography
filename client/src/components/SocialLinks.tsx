@@ -1,5 +1,6 @@
 import { SiFacebook, SiInstagram, SiPinterest } from "react-icons/si";
 import { MdEmail } from "react-icons/md";
+import PhoneDialog from "./PhoneDialog";
 
 export default function SocialLinks() {
   const socialLinks = [
@@ -39,6 +40,7 @@ export default function SocialLinks() {
           <Icon className="w-6 h-6" />
         </a>
       ))}
+      <PhoneDialog />
     </div>
   );
 }

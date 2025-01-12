@@ -12,6 +12,10 @@ export const translations = {
       galleryTitle: "Photo Galleries",
       featuredWork: "Featured Work",
     },
+    contact: {
+      phone: "Phone Number",
+      callMe: "Call Me",
+    },
     about: {
       title: "About Me",
       welcome: "Welcome to my photography world. I'm passionate about capturing life's precious moments and turning them into lasting memories.",
@@ -82,6 +86,10 @@ export const translations = {
       subtitle: "שירותי צילום מקצועיים המתמחים בצילומי משפחה, אירועים וסשנים אישיים המספרים את הסיפור הייחודי שלך",
       galleryTitle: "גלריות תמונות",
       featuredWork: "עבודות נבחרות",
+    },
+    contact: {
+      phone: "מספר טלפון",
+      callMe: "התקשרו אליי",
     },
     about: {
       title: "אודותיי",
