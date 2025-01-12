@@ -306,7 +306,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   <motion.div
                     initial={{ opacity: 0, scale: 0.3 }}
                     animate={{ 
-                      opacity: [0, 1, 1, 0],
+                      opacity: [0, 0.8, 0.8, 0],
                       scale: [0.3, 1.2, 1, 0.3]
                     }}
                     transition={{ 
@@ -326,7 +326,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                         ease: "easeInOut"
                       }}
                     >
-                      <Heart className="w-24 h-24 text-white stroke-[1.5] drop-shadow-lg" />
+                      <Heart className="w-16 h-16 text-white/80 stroke-[1.5] drop-shadow-lg" />
                     </motion.div>
                   </motion.div>
                 )}
