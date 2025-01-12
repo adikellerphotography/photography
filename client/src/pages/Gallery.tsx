@@ -8,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useLocation } from "wouter";
 
 export default function Gallery() {
-  const { data: categories, isLoading } = useQuery<Category[]>({
+  const { data: categories, isLoading: categoriesLoading } = useQuery<Category[]>({
     queryKey: ["/api/categories"],
   });
 
@@ -18,15 +18,21 @@ export default function Gallery() {
   const categoryFromUrl = searchParams.get('category');
 
   // Set the initial category from URL or first available category
-  const defaultCategory = categoryFromUrl || categories?.[0]?.name;
-  const [activeCategory, setActiveCategory] = useState<string>(defaultCategory || '');
+  const [activeCategory, setActiveCategory] = useState<string>('');
 
   // Update active category when categories load or URL changes
   useEffect(() => {
-    if ((categoryFromUrl || defaultCategory) && categories?.some(c => c.name === (categoryFromUrl || defaultCategory))) {
-      setActiveCategory(categoryFromUrl || defaultCategory);
+    if (categories && categories.length > 0) {
+      // If we have a category from URL and it exists in our categories, use it
+      if (categoryFromUrl && categories.some(c => c.name === categoryFromUrl)) {
+        setActiveCategory(categoryFromUrl);
+      } 
+      // Otherwise use the first category
+      else if (!activeCategory) {
+        setActiveCategory(categories[0].name);
+      }
     }
-  }, [categoryFromUrl, defaultCategory, categories]);
+  }, [categoryFromUrl, categories, activeCategory]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -46,7 +52,7 @@ export default function Gallery() {
     }
   };
 
-  if (isLoading) {
+  if (categoriesLoading || !categories || categories.length === 0) {
     return (
       <div className="min-h-screen pt-16">
         <div className="container mx-auto px-4 py-16">
@@ -81,11 +87,15 @@ export default function Gallery() {
 
         <Tabs 
           value={activeCategory}
-          onValueChange={setActiveCategory}
+          onValueChange={(value) => {
+            setActiveCategory(value);
+            const newUrl = `/gallery?category=${encodeURIComponent(value)}`;
+            window.history.pushState(null, '', newUrl);
+          }}
           className="space-y-8"
         >
           <TabsList className="flex flex-wrap gap-2">
-            {categories?.map((category) => (
+            {categories.map((category) => (
               <TabsTrigger key={category.id} value={category.name}>
                 {category.name}
               </TabsTrigger>
@@ -93,7 +103,7 @@ export default function Gallery() {
           </TabsList>
 
           <motion.div variants={itemVariants}>
-            {categories?.map((category) => (
+            {categories.map((category) => (
               <TabsContent key={category.id} value={category.name}>
                 <Card>
                   <CardContent className="pt-6">
