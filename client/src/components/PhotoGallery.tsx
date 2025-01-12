@@ -23,6 +23,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const pageSize = 20;
+  const [isNextImageLoaded, setIsNextImageLoaded] = useState(false);
+  const [transitionDirection, setTransitionDirection] = useState<'next' | 'prev' | null>(null);
 
   const {
     data,
@@ -127,6 +129,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const navigatePhotos = (direction: "next" | "prev") => {
     if (!photos) return;
 
+    setTransitionDirection(direction);
+    setIsFullImageLoaded(false);
+    setIsNextImageLoaded(false);
+
     let newIndex = direction === "next" ? selectedIndex + 1 : selectedIndex - 1;
 
     if (newIndex < 0) {
@@ -173,6 +179,20 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     likeMutation.mutate(photo.id);
     setTimeout(() => setShowHeart(false), 1000);
   };
+
+  useEffect(() => {
+    if (selectedPhoto && photos) {
+      const nextIndex = (selectedIndex + 1) % photos.length;
+      const prevIndex = selectedIndex === 0 ? photos.length - 1 : selectedIndex - 1;
+
+      // Preload next and previous images
+      const nextImage = new Image();
+      nextImage.src = photos[nextIndex].imageUrl;
+
+      const prevImage = new Image();
+      prevImage.src = photos[prevIndex].imageUrl;
+    }
+  }, [selectedPhoto, photos, selectedIndex]);
 
   if (isLoading) {
     return (
@@ -305,32 +325,33 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 </div>
               )}
 
-              {!isFullImageLoaded && (
-                <div className="absolute inset-0 flex items-center justify-center bg-background/80">
-                  <Loader2 className="w-8 h-8 animate-spin text-primary" />
-                </div>
-              )}
+              <div className="relative w-full h-full overflow-hidden">
+                {/* Thumbnail/placeholder image */}
+                <img
+                  src={selectedPhoto.thumbnailUrl || selectedPhoto.imageUrl}
+                  alt={selectedPhoto.title}
+                  className="absolute inset-0 w-full h-full object-contain"
+                  style={{ 
+                    opacity: isFullImageLoaded ? 0 : 1,
+                    transition: 'opacity 0.3s ease-in-out'
+                  }}
+                />
 
-              <img
-                src={selectedPhoto.thumbnailUrl || selectedPhoto.imageUrl}
-                alt={selectedPhoto.title}
-                className={cn(
-                  "object-contain w-full h-full transition-opacity duration-300",
-                  isFullImageLoaded ? 'opacity-0' : 'opacity-100'
-                )}
-                style={{ position: isFullImageLoaded ? 'absolute' : 'relative' }}
-              />
-
-              <img
-                src={selectedPhoto.imageUrl}
-                alt={selectedPhoto.title}
-                className={cn(
-                  "object-contain w-full h-full transition-opacity duration-300",
-                  isFullImageLoaded ? 'opacity-100' : 'opacity-0'
-                )}
-                style={{ position: 'absolute', top: 0, left: 0 }}
-                onLoad={() => setIsFullImageLoaded(true)}
-              />
+                {/* Full-size image */}
+                <img
+                  src={selectedPhoto.imageUrl}
+                  alt={selectedPhoto.title}
+                  className="absolute inset-0 w-full h-full object-contain"
+                  style={{ 
+                    opacity: isFullImageLoaded ? 1 : 0,
+                    transition: 'opacity 0.3s ease-in-out'
+                  }}
+                  onLoad={() => {
+                    setIsFullImageLoaded(true);
+                    setTransitionDirection(null);
+                  }}
+                />
+              </div>
 
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background/90 to-background/0">
                 <h3 className="text-lg font-semibold text-white">{selectedPhoto.title}</h3>
