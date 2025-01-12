@@ -8,7 +8,6 @@ import ThemeToggle from "./ThemeToggle";
 import LanguageToggle from "./LanguageToggle";
 import { useLanguage } from "@/hooks/use-language";
 import { useState } from "react";
-import Logo from "./Logo";
 
 export default function Navbar() {
   const { language } = useLanguage();
@@ -26,8 +25,8 @@ export default function Navbar() {
       <NavigationMenu className="w-full">
         <div className="w-full flex items-center justify-between h-16">
           <Link href="/">
-            <a className="pl-4">
-              <Logo />
+            <a className="text-lg font-cormorant pl-4">
+              Adi Keller Photography
             </a>
           </Link>
 
