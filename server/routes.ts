@@ -58,15 +58,13 @@ export function registerRoutes(app: Express): Server {
       const pageSize = Number(req.query.pageSize) || 20;
       const ipAddress = req.ip;
 
-      // Start with a base query
-      const query = db.select().from(photos);
+      // Build query with category filter
+      const baseQuery = category && typeof category === 'string' 
+        ? db.select().from(photos).where(eq(photos.category, category))
+        : db.select().from(photos);
 
-      // Only apply category filter if a specific category is requested
-      if (category && typeof category === 'string') {
-        query.where(eq(photos.category, category));
-      }
-
-      const results = await query
+      // Execute query with pagination
+      const results = await baseQuery
         .limit(pageSize)
         .offset((page - 1) * pageSize)
         .orderBy(photos.displayOrder);
