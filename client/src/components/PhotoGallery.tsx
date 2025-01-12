@@ -6,18 +6,33 @@ import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Loader2, ChevronLeft, ChevronRight, Heart } from "lucide-react";
+import { Loader2, ChevronLeft, ChevronRight, Heart, LayoutGrid } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface PhotoGalleryProps {
   category?: string;
 }
+
+type GridLayout = "2-col" | "3-col" | "4-col";
+
+const gridLayouts = {
+  "2-col": "grid-cols-1 sm:grid-cols-2",
+  "3-col": "grid-cols-1 sm:grid-cols-2 md:grid-cols-3",
+  "4-col": "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+};
 
 export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [isFullImageLoaded, setIsFullImageLoaded] = useState(false);
   const [showHeart, setShowHeart] = useState(false);
+  const [gridLayout, setGridLayout] = useState<GridLayout>("3-col");
   const galleryRef = useRef<HTMLDivElement>(null);
   const loaderRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -42,7 +57,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     },
   });
 
-  // Combine all photos from all pages
   const photos = data?.pages.flat() || [];
 
   useEffect(() => {
@@ -75,27 +89,23 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     },
   });
 
-  // Save scroll position when opening a photo
   useEffect(() => {
     if (selectedPhoto && galleryRef.current) {
       setScrollPosition(window.scrollY);
     }
   }, [selectedPhoto]);
 
-  // Reset states when selected photo changes
   useEffect(() => {
     setIsFullImageLoaded(false);
     setShowHeart(false);
   }, [selectedPhoto]);
 
-  // Restore scroll position when closing photo
   useEffect(() => {
     if (!selectedPhoto && scrollPosition > 0) {
       window.scrollTo(0, scrollPosition);
     }
   }, [selectedPhoto, scrollPosition]);
 
-  // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!photos || !selectedPhoto) return;
@@ -116,7 +126,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
     let newIndex = direction === "next" ? selectedIndex + 1 : selectedIndex - 1;
 
-    // Handle wrapping
     if (newIndex < 0) {
       newIndex = photos.length - 1;
     } else if (newIndex >= photos.length) {
@@ -127,7 +136,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     setSelectedPhoto(photos[newIndex]);
   };
 
-  // Touch handlers for swipe
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchStart(e.touches[0].clientX);
   };
@@ -138,7 +146,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     const currentTouch = e.touches[0].clientX;
     const diff = touchStart - currentTouch;
 
-    // Threshold for swipe (50px)
     if (Math.abs(diff) > 50) {
       if (diff > 0) {
         navigatePhotos("next");
@@ -159,10 +166,22 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     setTimeout(() => setShowHeart(false), 1000);
   };
 
+  const handleLayoutChange = (layout: GridLayout) => {
+    setGridLayout(layout);
+    localStorage.setItem("preferred-grid-layout", layout);
+  };
+
+  useEffect(() => {
+    const savedLayout = localStorage.getItem("preferred-grid-layout") as GridLayout;
+    if (savedLayout && gridLayouts[savedLayout]) {
+      setGridLayout(savedLayout);
+    }
+  }, []);
+
   if (isLoading) {
     return (
       <div className="space-y-8">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className={cn("grid gap-4", gridLayouts[gridLayout])}>
           {Array.from({ length: pageSize }).map((_, i) => (
             <motion.div
               key={i}
@@ -191,7 +210,29 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   return (
     <div className="space-y-8" ref={galleryRef}>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="flex justify-end mb-4">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm">
+              <LayoutGrid className="h-4 w-4 mr-2" />
+              Layout
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => handleLayoutChange("2-col")}>
+              2 Columns
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleLayoutChange("3-col")}>
+              3 Columns
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleLayoutChange("4-col")}>
+              4 Columns
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      <div className={cn("grid gap-4", gridLayouts[gridLayout])}>
         {photos.map((photo, index) => (
           <motion.div
             key={photo.id}
@@ -224,7 +265,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
         ))}
       </div>
 
-      {/* Infinite scroll loader */}
       {(hasNextPage || isFetchingNextPage) && (
         <div 
           ref={loaderRef}
@@ -246,7 +286,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               className="relative w-full h-full"
               onDoubleClick={() => handleDoubleClick(selectedPhoto)}
             >
-              {/* Navigation buttons */}
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -268,7 +307,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 <ChevronRight className="w-6 h-6 text-white" />
               </button>
 
-              {/* Heart animation on double click */}
               <AnimatePresence>
                 {showHeart && (
                   <motion.div
@@ -286,21 +324,18 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 )}
               </AnimatePresence>
 
-              {/* Permanent heart indicator */}
               {selectedPhoto.isLiked && (
                 <div className="absolute top-4 right-4 z-20">
                   <Heart className="w-6 h-6 text-white fill-current" />
                 </div>
               )}
 
-              {/* Loading state for full-size image */}
               {!isFullImageLoaded && (
                 <div className="absolute inset-0 flex items-center justify-center bg-background/80">
                   <Loader2 className="w-8 h-8 animate-spin text-primary" />
                 </div>
               )}
 
-              {/* Thumbnail (shown immediately) */}
               <img
                 src={selectedPhoto.thumbnailUrl || selectedPhoto.imageUrl}
                 alt={selectedPhoto.title}
@@ -311,7 +346,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 style={{ position: isFullImageLoaded ? 'absolute' : 'relative' }}
               />
 
-              {/* Full resolution image (loads in background) */}
               <img
                 src={selectedPhoto.imageUrl}
                 alt={selectedPhoto.title}
