@@ -51,11 +51,9 @@ export default function Navbar() {
 
           {/* Mobile Navigation */}
           <div className="md:hidden flex items-center gap-2 pr-4">
-            <LanguageToggle />
-            <ThemeToggle />
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" className="h-9 w-9 p-0">
                   <Menu className="h-5 w-5" />
                   <span className="sr-only">Toggle menu</span>
                 </Button>
@@ -79,6 +77,8 @@ export default function Navbar() {
                 </nav>
               </SheetContent>
             </Sheet>
+            <LanguageToggle />
+            <ThemeToggle />
           </div>
         </div>
       </NavigationMenu>
