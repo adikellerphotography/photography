@@ -11,7 +11,7 @@ export default function LanguageToggle() {
       onClick={() => setLanguage(language === "en" ? "he" : "en")}
       className="w-10 h-10 font-bold"
     >
-      {language === "en" ? "עב" : "EN"}
+      {language === "en" ? "HE" : "EN"}
       <span className="sr-only">Toggle language</span>
     </Button>
   );

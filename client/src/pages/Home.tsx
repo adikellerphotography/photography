@@ -6,14 +6,19 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import type { Category } from "@/lib/types";
 import SocialLinks from "@/components/SocialLinks";
 import PhotoGallery from "@/components/PhotoGallery";
+import { useTranslation } from "@/hooks/use-translation";
+import { useLanguage } from "@/hooks/use-language";
 
 export default function Home() {
   const { data: categories } = useQuery<Category[]>({
     queryKey: ["/api/categories"],
   });
 
+  const { t } = useTranslation();
+  const { language } = useLanguage();
+
   return (
-    <div className="min-h-screen pt-16">
+    <div className="min-h-screen pt-16" dir={language === "he" ? "rtl" : "ltr"}>
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 md:py-24">
         <motion.div
@@ -22,10 +27,10 @@ export default function Home() {
           className="max-w-3xl mx-auto text-center space-y-6"
         >
           <h1 className="text-4xl md:text-6xl font-bold">
-            Capturing Life's Beautiful Moments
+            {t("home.title")}
           </h1>
           <p className="text-lg text-muted-foreground">
-            Professional photography services for all your special occasions
+            {t("home.subtitle")}
           </p>
           <SocialLinks />
         </motion.div>
@@ -38,7 +43,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           className="space-y-8"
         >
-          <h2 className="text-2xl font-semibold mb-8">Photo Galleries</h2>
+          <h2 className="text-2xl font-semibold mb-8">{t("home.galleryTitle")}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {categories?.map((category, index) => (
               <motion.div
@@ -82,7 +87,7 @@ export default function Home() {
       </section>
 
       <section className="container mx-auto px-4 py-16">
-        <h2 className="text-2xl font-semibold mb-8">Featured Work</h2>
+        <h2 className="text-2xl font-semibold mb-8">{t("home.featuredWork")}</h2>
         <PhotoGallery />
       </section>
     </div>
