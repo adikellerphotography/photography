@@ -5,7 +5,7 @@ export default function BackgroundPattern() {
     <div className="fixed inset-0 -z-10 h-full w-full">
       <div className="absolute inset-0 bg-background" />
       <svg
-        className="absolute inset-0 h-full w-full opacity-[0.03] dark:opacity-[0.04]"
+        className="absolute inset-0 h-full w-full opacity-[0.025] dark:opacity-[0.04]"
         viewBox="0 0 1000 1000"
         preserveAspectRatio="none"
       >
@@ -13,31 +13,66 @@ export default function BackgroundPattern() {
           <pattern
             id="wave-pattern"
             patternUnits="userSpaceOnUse"
-            width="200"
-            height="200"
-            patternTransform="rotate(10)"
+            width="400"
+            height="400"
+            patternTransform="rotate(15)"
           >
-            {/* Multiple overlapping wave paths for depth */}
+            {/* Base wave layer */}
             <path
-              d="M0,100 C50,80 100,120 200,100 M0,100 C50,120 150,80 200,100"
+              d="M0,200 
+                C100,160 150,240 400,200 
+                M0,200 
+                C150,240 250,160 400,200"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              className="text-foreground/60"
+            />
+
+            {/* Secondary waves with different phases */}
+            <path
+              d="M0,100 
+                C100,60 150,140 400,100 
+                M0,100 
+                C150,140 250,60 400,100"
               fill="none"
               stroke="currentColor"
               strokeWidth="1"
-              className="text-foreground"
+              className="text-foreground/40"
             />
+
             <path
-              d="M0,50 C50,30 100,70 200,50 M0,50 C50,70 150,30 200,50"
+              d="M0,300 
+                C100,260 150,340 400,300 
+                M0,300 
+                C150,340 250,260 400,300"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1"
+              className="text-foreground/40"
+            />
+
+            {/* Subtle detail waves */}
+            <path
+              d="M0,150 
+                C100,130 150,170 400,150 
+                M0,150 
+                C150,170 250,130 400,150"
               fill="none"
               stroke="currentColor"
               strokeWidth="0.5"
-              className="text-foreground/80"
+              className="text-foreground/30"
             />
+
             <path
-              d="M0,150 C50,130 100,170 200,150 M0,150 C50,170 150,130 200,150"
+              d="M0,250 
+                C100,230 150,270 400,250 
+                M0,250 
+                C150,270 250,230 400,250"
               fill="none"
               stroke="currentColor"
-              strokeWidth="0.75"
-              className="text-foreground/90"
+              strokeWidth="0.5"
+              className="text-foreground/30"
             />
           </pattern>
         </defs>
