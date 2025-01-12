@@ -81,14 +81,12 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   useEffect(() => {
     if (selectedPhoto) {
-      // Push a new state when photo is selected
       const state = { photo: selectedPhoto, index: selectedIndex };
       window.history.pushState(state, '', window.location.pathname + window.location.search);
     }
   }, [selectedPhoto, selectedIndex]);
 
   useEffect(() => {
-    // Handle back/forward navigation
     const handlePopState = (event: PopStateEvent) => {
       if (event.state?.photo) {
         setSelectedPhoto(event.state.photo);
@@ -148,7 +146,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     setSelectedIndex(newIndex);
     setSelectedPhoto(newPhoto);
 
-    // Update history state
     const state = { photo: newPhoto, index: newIndex };
     window.history.pushState(state, '', window.location.pathname + window.location.search);
   };
@@ -188,7 +185,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       const nextIndex = (selectedIndex + 1) % photos.length;
       const prevIndex = selectedIndex === 0 ? photos.length - 1 : selectedIndex - 1;
 
-      // Preload next and previous images
       const nextImage = new Image();
       nextImage.src = photos[nextIndex].imageUrl;
 
@@ -312,30 +308,25 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                     animate={{ opacity: 1, scale: 1.5 }}
                     exit={{ opacity: 0, scale: 0.5 }}
                     transition={{ duration: 0.3 }}
-                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none"
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none flex items-center justify-center"
                   >
-                    <Heart className={cn(
-                      "w-16 h-16",
-                      selectedPhoto.isLiked ? "text-white fill-current" : "text-white/50"
-                    )} />
+                    <Heart className="w-16 h-16 text-white stroke-[1.5]" />
                   </motion.div>
                 )}
               </AnimatePresence>
 
               {selectedPhoto.isLiked && (
                 <div className="absolute top-4 right-4 z-20">
-                  <Heart className="w-6 h-6 text-white fill-current" />
+                  <Heart className="w-6 h-6 text-white stroke-[1.5]" />
                 </div>
               )}
 
-              {/* Add ShareDialog here */}
               <ShareDialog 
                 imageUrl={selectedPhoto.imageUrl} 
                 title={selectedPhoto.title}
               />
 
               <div className="relative w-full h-full overflow-hidden">
-                {/* Thumbnail/placeholder image */}
                 <img
                   src={selectedPhoto.thumbnailUrl || selectedPhoto.imageUrl}
                   alt={selectedPhoto.title}
@@ -346,7 +337,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   }}
                 />
 
-                {/* Full-size image */}
                 <img
                   src={selectedPhoto.imageUrl}
                   alt={selectedPhoto.title}
