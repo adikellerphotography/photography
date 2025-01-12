@@ -26,7 +26,7 @@ export default function PhoneDialog() {
             <h2 className="text-xl font-semibold text-foreground">
               {t("contact.callMe")}
             </h2>
-            <p className="text-2xl font-semibold text-blue-500">Adi Keller</p>
+            <p className="text-2xl font-semibold text-blue-300">Adi Keller</p>
           </div>
 
           <div className="flex flex-col gap-4 w-full max-w-xs">

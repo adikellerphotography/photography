@@ -243,7 +243,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               <div className="relative w-full h-full overflow-hidden">
                 <img
                   src={photo.thumbnailUrl || photo.imageUrl}
-                  alt={photo.title}
+                  alt=""
                   className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
                 />
@@ -346,7 +346,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               <div className="relative w-full h-full overflow-hidden">
                 <img
                   src={selectedPhoto.thumbnailUrl || selectedPhoto.imageUrl}
-                  alt={selectedPhoto.title}
+                  alt=""
                   className="absolute inset-0 w-full h-full object-contain"
                   style={{ 
                     opacity: isFullImageLoaded ? 0 : 1,
@@ -356,7 +356,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
                 <img
                   src={selectedPhoto.imageUrl}
-                  alt={selectedPhoto.title}
+                  alt=""
                   className="absolute inset-0 w-full h-full object-contain"
                   style={{ 
                     opacity: isFullImageLoaded ? 1 : 0,
