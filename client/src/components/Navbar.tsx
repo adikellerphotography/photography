@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
+import { Menu, Home, Image, User, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "./ThemeToggle";
 import LanguageToggle from "./LanguageToggle";
@@ -12,10 +12,10 @@ export default function Navbar() {
   const { language } = useLanguage();
 
   const navigationItems = [
-    { href: "/", label: language === "en" ? "Home" : "בית" },
-    { href: "/gallery", label: language === "en" ? "Gallery" : "גלריה" },
-    { href: "/about", label: language === "en" ? "About" : "אודות" },
-    { href: "/pricing", label: language === "en" ? "Pricing" : "מחירים" },
+    { href: "/", label: language === "en" ? "Home" : "בית", icon: Home },
+    { href: "/gallery", label: language === "en" ? "Gallery" : "גלריה", icon: Image },
+    { href: "/about", label: language === "en" ? "About" : "אודות", icon: User },
+    { href: "/pricing", label: language === "en" ? "Pricing" : "מחירים", icon: CreditCard },
   ];
 
   return (
@@ -58,14 +58,18 @@ export default function Navbar() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[240px] sm:w-[280px]">
-              <nav className="flex flex-col gap-4">
-                {navigationItems.map((item) => (
-                  <Link key={item.href} href={item.href}>
-                    <a className="block px-2 py-1 text-lg hover:text-primary">
-                      {item.label}
-                    </a>
-                  </Link>
-                ))}
+              <nav className="flex flex-col gap-4 mt-6">
+                {navigationItems.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <Link key={item.href} href={item.href}>
+                      <a className="flex items-center gap-3 px-2 py-2 text-lg hover:text-primary transition-colors">
+                        <Icon className="h-5 w-5" />
+                        {item.label}
+                      </a>
+                    </Link>
+                  );
+                })}
               </nav>
             </SheetContent>
           </Sheet>
