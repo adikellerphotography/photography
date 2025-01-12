@@ -14,9 +14,8 @@ import { Toaster } from "@/components/ui/toaster";
 import React from 'react';
 
 function Layout({ children }: { children: React.ReactNode }) {
-  const { language } = useLanguage();
   return (
-    <div dir={language === "he" ? "rtl" : "ltr"}>
+    <div>
       <BackgroundPattern />
       <Navbar />
       {children}

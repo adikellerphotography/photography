@@ -7,7 +7,6 @@ import type { Category } from "@/lib/types";
 import SocialLinks from "@/components/SocialLinks";
 import PhotoGallery from "@/components/PhotoGallery";
 import { useTranslation } from "@/hooks/use-translation";
-import { useLanguage } from "@/hooks/use-language";
 
 export default function Home() {
   const { data: categories } = useQuery<Category[]>({
@@ -15,7 +14,6 @@ export default function Home() {
   });
 
   const { t } = useTranslation();
-  const { language } = useLanguage();
 
   // Function to get category image based on category name
   const getCategoryImage = (categoryName: string) => {
@@ -28,7 +26,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen" dir={language === "he" ? "rtl" : "ltr"}>
+    <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative min-h-screen">
         <div className="absolute inset-0">
