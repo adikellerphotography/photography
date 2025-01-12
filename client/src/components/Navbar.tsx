@@ -22,15 +22,15 @@ export default function Navbar() {
 
   return (
     <NavigationMenu className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-      <div className="container mx-auto h-16 flex items-center justify-between md:px-4 px-0">
+      <div className="w-full md:container md:mx-auto h-16 flex items-center justify-between">
         <Link href="/">
-          <a className="text-xl font-cormorant font-semibold tracking-wider italic px-4 md:px-0">
+          <a className="text-xl font-cormorant font-semibold tracking-wider italic px-4">
             Adi Keller Photography
           </a>
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-4 px-4">
           <NavigationMenuList>
             {navigationItems.map((item) => (
               <NavigationMenuItem key={item.href}>
