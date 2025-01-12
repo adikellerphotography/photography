@@ -18,6 +18,10 @@ export const translations = {
       messageWhatsApp: "Message on WhatsApp",
       call: "Call Me",
     },
+    share: {
+      sharePhoto: "Share Photo",
+      shareVia: "Share via",
+    },
     about: {
       title: "About Me",
       welcome: "Welcome to my photography world. I'm passionate about capturing life's precious moments and turning them into lasting memories.",
@@ -94,6 +98,10 @@ export const translations = {
       callMe: "יצירת קשר",
       messageWhatsApp: "הודעה בוואטסאפ",
       call: "התקשרו אליי",
+    },
+    share: {
+      sharePhoto: "שתף תמונה",
+      shareVia: "שתף באמצעות",
     },
     about: {
       title: "אודותיי",

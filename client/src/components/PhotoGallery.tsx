@@ -8,6 +8,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Loader2, ChevronLeft, ChevronRight, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
+import ShareDialog from "./ShareDialog";
 
 interface PhotoGalleryProps {
   category?: string;
@@ -37,11 +38,13 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     queryFn: async ({ pageParam = 1 }) => {
       const response = await fetch(`/api/photos?category=${category}&page=${pageParam}&pageSize=${pageSize}`);
       if (!response.ok) throw new Error('Network response was not ok');
-      return response.json();
+      const data: Photo[] = await response.json();
+      return data;
     },
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.length === pageSize ? allPages.length + 1 : undefined;
     },
+    initialPageParam: 1
   });
 
   const photos = data?.pages.flat() || [];
@@ -324,6 +327,12 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   <Heart className="w-6 h-6 text-white fill-current" />
                 </div>
               )}
+
+              {/* Add ShareDialog here */}
+              <ShareDialog 
+                imageUrl={selectedPhoto.imageUrl} 
+                title={selectedPhoto.title}
+              />
 
               <div className="relative w-full h-full overflow-hidden">
                 {/* Thumbnail/placeholder image */}
