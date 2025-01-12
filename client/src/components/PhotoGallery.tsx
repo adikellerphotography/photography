@@ -304,13 +304,30 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               <AnimatePresence>
                 {showHeart && (
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1.5 }}
-                    exit={{ opacity: 0, scale: 0.5 }}
-                    transition={{ duration: 0.3 }}
-                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none flex items-center justify-center"
+                    initial={{ opacity: 0, scale: 0.3 }}
+                    animate={{ 
+                      opacity: [0, 1, 1, 0],
+                      scale: [0.3, 1.2, 1, 0.3]
+                    }}
+                    transition={{ 
+                      duration: 1,
+                      times: [0, 0.2, 0.8, 1],
+                      ease: "easeInOut"
+                    }}
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none"
                   >
-                    <Heart className="w-16 h-16 text-white stroke-[1.5]" />
+                    <motion.div
+                      animate={{ 
+                        rotate: [0, -10, 10, 0],
+                      }}
+                      transition={{ 
+                        duration: 0.5, 
+                        times: [0, 0.2, 0.8, 1],
+                        ease: "easeInOut"
+                      }}
+                    >
+                      <Heart className="w-24 h-24 text-white stroke-[1.5] drop-shadow-lg" />
+                    </motion.div>
                   </motion.div>
                 )}
               </AnimatePresence>
