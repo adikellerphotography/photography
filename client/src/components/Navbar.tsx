@@ -50,37 +50,42 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Navigation */}
-          <div className="md:hidden flex items-center ml-auto px-4">
-            <div className="flex items-center gap-2 border-r border-border pr-2 mr-2">
+          <div className="md:hidden flex items-center ml-auto">
+            {/* Theme and Language toggles with right border */}
+            <div className="flex items-center gap-2 px-2">
               <LanguageToggle />
               <ThemeToggle />
             </div>
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-9 w-9 p-0">
-                  <Menu className="h-5 w-5" />
-                  <span className="sr-only">Toggle menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[240px] sm:w-[280px]">
-                <nav className="flex flex-col gap-4 mt-6">
-                  {navigationItems.map((item) => {
-                    const Icon = item.icon;
-                    return (
-                      <Link key={item.href} href={item.href}>
-                        <a 
-                          className="flex items-center gap-3 px-2 py-2 text-lg hover:text-primary transition-colors"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          <Icon className="h-5 w-5" />
-                          {item.label}
-                        </a>
-                      </Link>
-                    );
-                  })}
-                </nav>
-              </SheetContent>
-            </Sheet>
+
+            {/* Menu button with padding */}
+            <div className="pl-2 pr-4">
+              <Sheet open={isOpen} onOpenChange={setIsOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon" className="h-9 w-9 p-0">
+                    <Menu className="h-5 w-5" />
+                    <span className="sr-only">Toggle menu</span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-[240px] sm:w-[280px]">
+                  <nav className="flex flex-col gap-4 mt-6">
+                    {navigationItems.map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <Link key={item.href} href={item.href}>
+                          <a 
+                            className="flex items-center gap-3 px-2 py-2 text-lg hover:text-primary transition-colors"
+                            onClick={() => setIsOpen(false)}
+                          >
+                            <Icon className="h-5 w-5" />
+                            {item.label}
+                          </a>
+                        </Link>
+                      );
+                    })}
+                  </nav>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
         </div>
       </NavigationMenu>
