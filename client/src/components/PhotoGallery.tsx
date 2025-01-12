@@ -223,12 +223,13 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 {showHeart && (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1.5 }}
+                    animate={{ opacity: 1, scale: 2 }}
                     exit={{ opacity: 0, scale: 0.5 }}
-                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20"
+                    transition={{ duration: 0.3 }}
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none"
                   >
                     <Heart className={cn(
-                      "w-16 h-16",
+                      "w-24 h-24",
                       selectedPhoto.isLiked ? "text-white fill-current" : "text-white/50"
                     )} />
                   </motion.div>
