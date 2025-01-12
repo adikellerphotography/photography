@@ -59,17 +59,26 @@ export const translations = {
           "Rush delivery available"
         ]
       }
+    },
+    gallery: {
+      noPhotos: "No photos found in this category",
+      loading: "Loading more photos...",
+      photoGalleries: "Photo Galleries",
+    },
+    common: {
+      loading: "Loading...",
+      noPreview: "No preview available",
     }
   },
   he: {
     nav: {
-      home: "בית",
+      home: "ראשי",
       gallery: "גלריה",
       about: "אודות",
       pricing: "מחירים",
     },
     home: {
-      title: "מנציחים את הרגעים היפים בחיים",
+      title: "מנציחים רגעים יפים בחיים",
       subtitle: "שירותי צילום מקצועיים לכל האירועים המיוחדים שלכם",
       galleryTitle: "גלריות תמונות",
       featuredWork: "עבודות נבחרות",
@@ -121,6 +130,15 @@ export const translations = {
           "אפשרות למשלוח מהיר"
         ]
       }
+    },
+    gallery: {
+      noPhotos: "לא נמצאו תמונות בקטגוריה זו",
+      loading: "טוען תמונות נוספות...",
+      photoGalleries: "גלריות תמונות",
+    },
+    common: {
+      loading: "טוען...",
+      noPreview: "אין תצוגה מקדימה",
     }
   }
 };
