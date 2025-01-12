@@ -6,33 +6,18 @@ import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Loader2, ChevronLeft, ChevronRight, Heart, LayoutGrid } from "lucide-react";
+import { Loader2, ChevronLeft, ChevronRight, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 interface PhotoGalleryProps {
   category?: string;
 }
-
-type GridLayout = "2-col" | "3-col" | "4-col";
-
-const gridLayouts = {
-  "2-col": "grid-cols-1 sm:grid-cols-2",
-  "3-col": "grid-cols-1 sm:grid-cols-2 md:grid-cols-3",
-  "4-col": "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-};
 
 export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [isFullImageLoaded, setIsFullImageLoaded] = useState(false);
   const [showHeart, setShowHeart] = useState(false);
-  const [gridLayout, setGridLayout] = useState<GridLayout>("3-col");
   const galleryRef = useRef<HTMLDivElement>(null);
   const loaderRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -166,22 +151,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     setTimeout(() => setShowHeart(false), 1000);
   };
 
-  const handleLayoutChange = (layout: GridLayout) => {
-    setGridLayout(layout);
-    localStorage.setItem("preferred-grid-layout", layout);
-  };
-
-  useEffect(() => {
-    const savedLayout = localStorage.getItem("preferred-grid-layout") as GridLayout;
-    if (savedLayout && gridLayouts[savedLayout]) {
-      setGridLayout(savedLayout);
-    }
-  }, []);
-
   if (isLoading) {
     return (
       <div className="space-y-8">
-        <div className={cn("grid gap-4", gridLayouts[gridLayout])}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {Array.from({ length: pageSize }).map((_, i) => (
             <motion.div
               key={i}
@@ -210,29 +183,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   return (
     <div className="space-y-8" ref={galleryRef}>
-      <div className="flex justify-end mb-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm">
-              <LayoutGrid className="h-4 w-4 mr-2" />
-              Layout
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => handleLayoutChange("2-col")}>
-              2 Columns
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleLayoutChange("3-col")}>
-              3 Columns
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleLayoutChange("4-col")}>
-              4 Columns
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-
-      <div className={cn("grid gap-4", gridLayouts[gridLayout])}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {photos.map((photo, index) => (
           <motion.div
             key={photo.id}
