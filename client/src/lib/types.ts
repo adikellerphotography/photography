@@ -4,8 +4,11 @@ export interface Photo {
   description?: string;
   category: string;
   imageUrl: string;
+  thumbnailUrl?: string;
+  isLiked?: boolean;
   uploadedAt: Date;
   displayOrder: number;
+  likesCount?: number;
 }
 
 export interface Category {
@@ -13,4 +16,8 @@ export interface Category {
   name: string;
   description?: string;
   displayOrder: number;
+  firstPhoto?: {
+    imageUrl: string;
+    thumbnailUrl?: string;
+  };
 }

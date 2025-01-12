@@ -36,8 +36,8 @@ export function registerRoutes(app: Express): Server {
           return {
             ...category,
             firstPhoto: firstPhoto[0] ? {
-              imageUrl: `/assets/${category.name}/${firstPhoto[0].imageUrl}`,
-              thumbnailUrl: firstPhoto[0].thumbnailUrl ? `/assets/${category.name}/${firstPhoto[0].thumbnailUrl}` : null
+              imageUrl: `/assets/${firstPhoto[0].category}/${firstPhoto[0].imageUrl}`,
+              thumbnailUrl: firstPhoto[0].thumbnailUrl ? `/assets/${firstPhoto[0].category}/${firstPhoto[0].thumbnailUrl}` : undefined
             } : undefined
           };
         })
@@ -85,7 +85,7 @@ export function registerRoutes(app: Express): Server {
           return {
             ...photo,
             imageUrl: `/assets/${photo.category}/${photo.imageUrl}`,
-            thumbnailUrl: photo.thumbnailUrl ? `/assets/${photo.category}/${photo.thumbnailUrl}` : null,
+            thumbnailUrl: photo.thumbnailUrl ? `/assets/${photo.category}/${photo.thumbnailUrl}` : undefined,
             isLiked: liked.length > 0,
           };
         })
