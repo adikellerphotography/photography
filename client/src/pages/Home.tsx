@@ -42,7 +42,7 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative h-full container mx-auto px-4 py-16 md:py-24 flex flex-col justify-center items-center text-white"
+          className="relative h-full container mx-auto px-4 pt-32 md:pt-24 pb-16 flex flex-col justify-center items-center text-white"
         >
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <h1 className="text-4xl md:text-6xl font-bold font-cormorant">
