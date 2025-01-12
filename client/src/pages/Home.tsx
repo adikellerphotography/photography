@@ -18,21 +18,31 @@ export default function Home() {
   const { language } = useLanguage();
 
   return (
-    <div className="min-h-screen pt-16" dir={language === "he" ? "rtl" : "ltr"}>
+    <div className="min-h-screen" dir={language === "he" ? "rtl" : "ltr"}>
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-16 md:py-24">
+      <section className="relative h-screen">
+        <div className="absolute inset-0">
+          <img
+            src="/attached_assets/M68A0863-Edit.jpg"
+            alt="Bat Mitzva"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-3xl mx-auto text-center space-y-6"
+          className="relative h-full container mx-auto px-4 py-16 md:py-24 flex flex-col justify-center items-center text-white"
         >
-          <h1 className="text-4xl md:text-6xl font-bold">
-            {t("home.title")}
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            {t("home.subtitle")}
-          </p>
-          <SocialLinks />
+          <div className="max-w-3xl mx-auto text-center space-y-6">
+            <h1 className="text-4xl md:text-6xl font-bold font-cormorant">
+              {t("home.title")}
+            </h1>
+            <p className="text-lg text-white/80">
+              {t("home.subtitle")}
+            </p>
+            <SocialLinks />
+          </div>
         </motion.div>
       </section>
 
