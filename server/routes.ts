@@ -14,7 +14,6 @@ export function registerRoutes(app: Express): Server {
 
   // Serve static files from attached_assets and its subdirectories
   const assetsPath = path.join(process.cwd(), 'attached_assets');
-  // Enable directory listing and proper MIME types
   app.use('/assets', express.static(assetsPath, {
     setHeaders: (res, filePath) => {
       // Set proper content type for images
@@ -375,12 +374,12 @@ export function registerRoutes(app: Express): Server {
         await db.insert(categories)
           .values({
             name: "Yoga",
-            displayOrder: 2,  // After Bat Mitsva which has displayOrder 1
+            displayOrder: 4,  // Adjusted order
             description: "Yoga photography sessions"
           })
           .onConflictDoUpdate({
             target: categories.name,
-            set: { displayOrder: 2 }
+            set: { displayOrder: 4 }
           });
 
         res.json({ message: `Successfully imported ${newPhotos.length} new yoga photos` });
@@ -414,6 +413,42 @@ export function registerRoutes(app: Express): Server {
       res.status(500).json({ error: "Failed to scan images" });
     }
   });
+
+  // Set up category order
+  app.post("/api/categories/setup", async (_req, res) => {
+    try {
+      const categoryOrder = [
+        { name: "Bat Mitsva", order: 1, description: "Bat Mitsva celebrations and ceremonies" },
+        { name: "Kids", order: 2, description: "Children photography sessions" },
+        { name: "Family", order: 3, description: "Family portraits and gatherings" },
+        { name: "Yoga", order: 4, description: "Yoga photography sessions" },
+        { name: "Women", order: 5, description: "Women portraits and professional shots" },
+        { name: "Modeling", order: 6, description: "Professional modeling photography" }
+      ];
+
+      for (const cat of categoryOrder) {
+        await db.insert(categories)
+          .values({
+            name: cat.name,
+            displayOrder: cat.order,
+            description: cat.description
+          })
+          .onConflictDoUpdate({
+            target: categories.name,
+            set: { 
+              displayOrder: cat.order,
+              description: cat.description
+            }
+          });
+      }
+
+      res.json({ message: "Categories order updated successfully" });
+    } catch (error) {
+      console.error('Error setting up categories:', error);
+      res.status(500).json({ error: "Failed to set up categories" });
+    }
+  });
+
 
   return httpServer;
 }
