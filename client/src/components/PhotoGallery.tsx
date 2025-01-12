@@ -5,7 +5,7 @@ import type { Photo } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Loader2 } from "lucide-react";
+import { Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface PhotoGalleryProps {
   category?: string;
@@ -14,9 +14,11 @@ interface PhotoGalleryProps {
 export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [page, setPage] = useState(1);
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [isFullImageLoaded, setIsFullImageLoaded] = useState(false);
   const galleryRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
   const pageSize = 20;
 
   const { data: photos, isLoading } = useQuery<Photo[]>({
@@ -41,6 +43,66 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       window.scrollTo(0, scrollPosition);
     }
   }, [selectedPhoto, scrollPosition]);
+
+  // Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!photos || !selectedPhoto) return;
+
+      if (e.key === "ArrowLeft") {
+        navigatePhotos("prev");
+      } else if (e.key === "ArrowRight") {
+        navigatePhotos("next");
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedPhoto, photos, selectedIndex]);
+
+  const navigatePhotos = (direction: "next" | "prev") => {
+    if (!photos) return;
+
+    let newIndex = direction === "next" ? selectedIndex + 1 : selectedIndex - 1;
+
+    // Handle wrapping
+    if (newIndex < 0) {
+      newIndex = photos.length - 1;
+    } else if (newIndex >= photos.length) {
+      newIndex = 0;
+    }
+
+    setSelectedIndex(newIndex);
+    setSelectedPhoto(photos[newIndex]);
+  };
+
+  // Touch handlers for swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.touches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!touchStart || !photos) return;
+
+    const currentTouch = e.touches[0].clientX;
+    const diff = touchStart - currentTouch;
+
+    // Threshold for swipe (50px)
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        // Swipe left -> next photo
+        navigatePhotos("next");
+      } else {
+        // Swipe right -> previous photo
+        navigatePhotos("prev");
+      }
+      setTouchStart(null);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setTouchStart(null);
+  };
 
   if (isLoading) {
     return (
@@ -70,7 +132,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
             whileHover={{ scale: 1.02 }}
-            onClick={() => setSelectedPhoto(photo)}
+            onClick={() => {
+              setSelectedPhoto(photo);
+              setSelectedIndex(index);
+            }}
             className="relative overflow-hidden rounded-lg cursor-pointer"
           >
             <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
@@ -97,9 +162,36 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       )}
 
       <Dialog open={!!selectedPhoto} onOpenChange={(open) => !open && setSelectedPhoto(null)}>
-        <DialogContent className="max-w-[90vw] max-h-[90vh] w-full h-full p-0">
+        <DialogContent 
+          className="max-w-[90vw] max-h-[90vh] w-full h-full p-0"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           {selectedPhoto && (
             <div className="relative w-full h-full">
+              {/* Navigation buttons */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigatePhotos("prev");
+                }}
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-black/50 p-2 rounded-full hover:bg-black/70 transition-colors"
+                aria-label="Previous photo"
+              >
+                <ChevronLeft className="w-6 h-6 text-white" />
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigatePhotos("next");
+                }}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-black/50 p-2 rounded-full hover:bg-black/70 transition-colors"
+                aria-label="Next photo"
+              >
+                <ChevronRight className="w-6 h-6 text-white" />
+              </button>
+
               {/* Thumbnail (shown immediately) */}
               <img
                 src={selectedPhoto.thumbnailUrl || selectedPhoto.imageUrl}
