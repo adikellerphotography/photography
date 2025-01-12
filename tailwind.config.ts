@@ -7,6 +7,7 @@ export default {
     extend: {
       fontFamily: {
         cormorant: ["Cormorant Garamond", "serif"],
+        poppins: ["Poppins", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",

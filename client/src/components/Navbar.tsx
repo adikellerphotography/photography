@@ -25,7 +25,7 @@ export default function Navbar() {
       <NavigationMenu className="w-full">
         <div className="w-full flex items-center h-14">
           <Link href="/">
-            <a className="text-lg font-cormorant px-4">
+            <a className="text-lg font-poppins font-medium tracking-wide px-4">
               Adi Keller Photography
             </a>
           </Link>
