@@ -1,4 +1,4 @@
-import { pgTable, text, serial, timestamp, varchar, integer, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 export const photos = pgTable("photos", {
@@ -10,7 +10,6 @@ export const photos = pgTable("photos", {
   thumbnailUrl: text("thumbnail_url"), // Making it nullable initially
   uploadedAt: timestamp("uploaded_at").defaultNow(),
   displayOrder: serial("display_order"),
-  isFeatured: boolean("is_featured").default(false),
 });
 
 export const insertPhotoSchema = createInsertSchema(photos);
@@ -23,7 +22,6 @@ export const categories = pgTable("categories", {
   name: varchar("name", { length: 50 }).notNull().unique(),
   description: text("description"),
   displayOrder: serial("display_order"),
-  featuredPhotoId: integer("featured_photo_id").references(() => photos.id),
 });
 
 export const insertCategorySchema = createInsertSchema(categories);
