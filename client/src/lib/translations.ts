@@ -14,7 +14,9 @@ export const translations = {
     },
     contact: {
       phone: "Phone Number",
-      callMe: "Call Me",
+      callMe: "Contact Me",
+      messageWhatsApp: "Message on WhatsApp",
+      call: "Call Me",
     },
     about: {
       title: "About Me",
@@ -89,7 +91,9 @@ export const translations = {
     },
     contact: {
       phone: "מספר טלפון",
-      callMe: "התקשרו אליי",
+      callMe: "יצירת קשר",
+      messageWhatsApp: "הודעה בוואטסאפ",
+      call: "התקשרו אליי",
     },
     about: {
       title: "אודותיי",
