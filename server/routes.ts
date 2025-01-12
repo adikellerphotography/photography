@@ -59,7 +59,7 @@ export function registerRoutes(app: Express): Server {
       const ipAddress = req.ip;
 
       // Build query with category filter
-      const baseQuery = category && typeof category === 'string' 
+      const baseQuery = category && typeof category === 'string'
         ? db.select().from(photos).where(eq(photos.category, category))
         : db.select().from(photos);
 
@@ -282,6 +282,88 @@ export function registerRoutes(app: Express): Server {
     } catch (error) {
       console.error('Error importing photos:', error);
       res.status(500).json({ error: "Failed to import photos" });
+    }
+  });
+  // Add a new route for importing Yoga photos
+  app.post("/api/photos/import-yoga", async (_req, res) => {
+    try {
+      // All Yoga photos
+      const allYogaPhotos = [
+        'IMG_7010-Edit Large.jpeg',
+        'IMG_1573-Edit Large.jpeg',
+        'IMG_5337-Edit Large.jpeg',
+        'M68A7667-Edit Large.jpeg',
+        'M68A7560-Edit Large.jpeg',
+        'M68A7039-Edit-Edit-Edit Large.jpeg',
+        'IMG_5609-Edit Large.jpeg',
+        'IMG_5581-Edit Large.jpeg',
+        'M68A7680-Edit-Edit-Edit Large.jpeg',
+        'IMG_6922-Edit Large.jpeg',
+        'M68A6954-Edit3 Large.jpeg',
+        'IMG_7111-Edit Large.jpeg',
+        'M68A6910-Edit Large.jpeg',
+        'IMG_5273-Edit-2 Large.jpeg',
+        'IMG_6911-Edit Large.jpeg',
+        'M68A6826-Edit-Edit Large.jpeg',
+        'IMG_5447-Edit-2 Large.jpeg',
+        'M68A1996-Edit Large.jpeg',
+        'IMG_6962-Edit Large.jpeg',
+        'M68A6759-Edit Large.jpeg'
+      ];
+
+      // Get existing photos to avoid duplicates
+      const existingPhotos = await db
+        .select({ imageUrl: photos.imageUrl })
+        .from(photos)
+        .where(eq(photos.category, "Yoga"));
+
+      const existingUrls = new Set(existingPhotos.map(p => p.imageUrl));
+
+      // Filter out any photos that already exist
+      const newPhotos = allYogaPhotos.filter(photo => !existingUrls.has(photo));
+
+      // If there are new photos to add
+      if (newPhotos.length > 0) {
+        // Get the current maximum display order for Yoga category
+        const lastPhoto = await db
+          .select()
+          .from(photos)
+          .where(eq(photos.category, "Yoga"))
+          .orderBy(desc(photos.displayOrder))
+          .limit(1);
+
+        const startOrder = lastPhoto.length > 0 ? lastPhoto[0].displayOrder + 1 : 1;
+
+        // Insert new photos with continuing display order
+        for (let i = 0; i < newPhotos.length; i++) {
+          const photo = newPhotos[i];
+          await db.insert(photos).values({
+            title: photo.replace(/\.[^/.]+$/, ""),
+            category: "Yoga",
+            imageUrl: photo,
+            displayOrder: startOrder + i
+          });
+        }
+
+        // Ensure Yoga category exists with correct display order (after Bat Mitsva)
+        await db.insert(categories)
+          .values({ 
+            name: "Yoga", 
+            displayOrder: 2,  // After Bat Mitsva which has displayOrder 1
+            description: "Yoga photography sessions"
+          })
+          .onConflictDoUpdate({ 
+            target: categories.name,
+            set: { displayOrder: 2 }
+          });
+
+        res.json({ message: `Successfully imported ${newPhotos.length} new yoga photos` });
+      } else {
+        res.json({ message: "No new photos to import" });
+      }
+    } catch (error) {
+      console.error('Error importing yoga photos:', error);
+      res.status(500).json({ error: "Failed to import yoga photos" });
     }
   });
 
