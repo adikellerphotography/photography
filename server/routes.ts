@@ -164,26 +164,26 @@ export function registerRoutes(app: Express): Server {
     try {
       // Define new Bat Mitsva photos to add
       const newBatMitsvaPhotos = [
-        'M68A1645-Edit Large.jpeg',
-        'M68A1636-Edit Large.jpeg',
-        'M68A1601-Edit-Edit-Edit Large.jpeg',
-        'M68A1579-Edit Large.jpeg',
-        'M68A1544-Edit-2 Large.jpeg',
-        'M68A1428-Edit-2 Large.jpeg',
-        'M68A1179-Edit Large.jpeg',
-        'M68A1155-Edit-Edit Large.jpeg',
-        'M68A1153-Edit-2 Large.jpeg',
-        'M68A1142-Edit-Edit-2 Large.jpeg',
-        'M68A1113-Edit Large.jpeg',
-        'M68A0978-Edit Large.jpeg',
-        'M68A0959-Edit Large.jpeg',
-        'M68A0928-Edit-Edit-2 Large.jpeg',
-        'M68A0863-Edit Large.jpeg',
-        'M68A0863-Edit-2 Large.jpeg',
-        'M68A0765-Edit-Edit Large.jpeg',
-        'M68A0544-Edit Large.jpeg',
-        'M68A0460-Edit-2 Large.jpeg',
-        'M68A0288-Edit Large.jpeg'
+        'M68A7513-Edit-3 Large.jpeg',
+        'M68A6026-Edit Large.jpeg',
+        'M68A5912-Edit Large.jpeg',
+        'M68A5559-Edit-2 Large.jpeg',
+        'M68A4737-Edit Large.jpeg',
+        'M68A4619-Edit Large.jpeg',
+        'M68A4569-Edit Large.jpeg',
+        'M68A4524-Edit-Edit Large.jpeg',
+        'M68A4365-Edit Large.jpeg',
+        'M68A4130-Edit Large.jpeg',
+        'M68A2939-Edit-Edit Large.jpeg',
+        'M68A2406-Edit-Edit Large.jpeg',
+        'M68A2385-Edit Large.jpeg',
+        'M68A2178-Edit Large.jpeg',
+        'M68A2253-Edit-Edit-2 Large.jpeg',
+        'M68A2233-Edit-3 Large.jpeg',
+        'M68A2032-Edit Large.jpeg',
+        'M68A1788-Edit-Edit-2 Large.jpeg',
+        'M68A1724-Edit Large.jpeg',
+        'M68A1697-Edit-Edit Large.jpeg'
       ];
 
       // Get the current maximum display order
