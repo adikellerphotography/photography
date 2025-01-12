@@ -35,18 +35,18 @@ export default function Home() {
             alt=""
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gray-900/60 backdrop-blur-[2px]" />
+          <div className="absolute inset-0 bg-gray-900/30 backdrop-blur-[1px]" />
         </div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative h-full container mx-auto px-4 pt-32 md:pt-24 pb-16 flex flex-col justify-center items-center text-white"
+          className="relative h-full container mx-auto px-4 pt-32 md:pt-24 pb-16 flex flex-col justify-center items-center"
         >
           <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h1 className="text-4xl md:text-6xl font-bold font-cormorant">
+            <h1 className="text-4xl md:text-6xl font-bold font-cormorant text-white drop-shadow-lg">
               {t("home.title")}
             </h1>
-            <p className="text-lg text-white/80">
+            <p className="text-lg text-white/90 drop-shadow-md">
               {t("home.subtitle")}
             </p>
             <SocialLinks />
