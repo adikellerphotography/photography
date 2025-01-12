@@ -15,7 +15,7 @@ export default function About() {
       >
         <div className="max-w-3xl mx-auto">
           {/* Portrait Image Section */}
-          <div className="mb-12 w-full max-w-md mx-auto">
+          <div className="mb-12 w-full max-w-[280px] mx-auto">
             <AspectRatio ratio={1}>
               <div className="relative w-full h-full overflow-hidden rounded-full border-4 border-background shadow-xl">
                 <img
