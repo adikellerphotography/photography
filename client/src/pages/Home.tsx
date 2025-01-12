@@ -17,6 +17,16 @@ export default function Home() {
   const { t } = useTranslation();
   const { language } = useLanguage();
 
+  // Function to get category image based on category name
+  const getCategoryImage = (categoryName: string) => {
+    switch(categoryName.toLowerCase()) {
+      case 'kids':
+        return '/attached_assets/IMG_4704-Edit.jpg';
+      default:
+        return `/placeholder/${categoryName.toLowerCase()}.jpg`;
+    }
+  };
+
   return (
     <div className="min-h-screen" dir={language === "he" ? "rtl" : "ltr"}>
       {/* Hero Section */}
@@ -69,7 +79,7 @@ export default function Home() {
                       <AspectRatio ratio={4/3}>
                         <div className="relative w-full h-full">
                           <img
-                            src={`/placeholder/${category.name.toLowerCase()}.jpg`}
+                            src={getCategoryImage(category.name)}
                             alt={category.name}
                             className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
                           />
