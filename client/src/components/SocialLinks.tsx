@@ -27,14 +27,14 @@ export default function SocialLinks() {
   ];
 
   return (
-    <div className="flex space-x-4">
+    <div className="flex space-x-4 rtl:space-x-reverse">
       {socialLinks.map(({ icon: Icon, href, label }) => (
         <a
           key={label}
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-muted-foreground hover:text-foreground transition-colors"
+          className="text-muted-foreground hover:text-foreground transition-colors [dir='rtl']:[&:not(:first-child)]:mr-4"
           aria-label={label}
         >
           <Icon className="w-6 h-6" />
