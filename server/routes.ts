@@ -67,5 +67,55 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
+  // Initial photo import with categories
+  app.post("/api/photos/import", async (_req, res) => {
+    try {
+      // First clear existing photos
+      await db.delete(photos);
+
+      // Define photos by category
+      const photosByCategory = {
+        "Bat Mitsva": [
+          'IMG_3623-Edit.jpg',
+          'IMG_6916-Edit.jpg',
+          'IMG_8613-Edit.jpg',
+          'IMG_8705-Edit_5.jpg',
+          'IMG_8772_2-Edi333t.jpg'
+        ],
+        "Family": [
+          'M68A2437-Edit.jpg',
+          'M68A2630-Edit-1.jpg',
+          'M68A5762-Edit-2.jpg',
+          'M68A9100-Edit-2.jpg',
+          'M68A9203-Edit.jpg',
+          'M68A9494-Edit.jpg'
+        ]
+      };
+
+      // Insert photos for each category
+      for (const [category, photoList] of Object.entries(photosByCategory)) {
+        for (const [index, photo] of photoList.entries()) {
+          await db.insert(photos).values({
+            title: photo.replace(/\.[^/.]+$/, ""),
+            category: category,
+            imageUrl: photo,
+            displayOrder: index + 1
+          });
+        }
+      }
+
+      // Initialize categories
+      await db.insert(categories).values([
+        { name: "Bat Mitsva", displayOrder: 1 },
+        { name: "Family", displayOrder: 2 }
+      ]).onConflictDoNothing();
+
+      res.json({ message: "Photos imported successfully" });
+    } catch (error) {
+      console.error('Error importing photos:', error);
+      res.status(500).json({ error: "Failed to import photos" });
+    }
+  });
+
   return httpServer;
 }
