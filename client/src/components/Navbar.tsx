@@ -1,5 +1,8 @@
 import { Link } from "wouter";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "./ThemeToggle";
 
@@ -18,7 +21,8 @@ export default function Navbar() {
           <a className="text-xl font-semibold">Adi Keller Photography</a>
         </Link>
 
-        <div className="flex items-center gap-4">
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-4">
           <NavigationMenuList>
             {navigationItems.map((item) => (
               <NavigationMenuItem key={item.href}>
@@ -33,6 +37,30 @@ export default function Navbar() {
             ))}
           </NavigationMenuList>
           <ThemeToggle />
+        </div>
+
+        {/* Mobile Navigation */}
+        <div className="md:hidden flex items-center gap-2">
+          <ThemeToggle />
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Menu className="h-5 w-5" />
+                <span className="sr-only">Toggle menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[240px] sm:w-[280px]">
+              <nav className="flex flex-col gap-4">
+                {navigationItems.map((item) => (
+                  <Link key={item.href} href={item.href}>
+                    <a className="block px-2 py-1 text-lg hover:text-primary">
+                      {item.label}
+                    </a>
+                  </Link>
+                ))}
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </NavigationMenu>
