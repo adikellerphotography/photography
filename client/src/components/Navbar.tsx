@@ -25,7 +25,7 @@ export default function Navbar() {
       <NavigationMenu className="w-full">
         <div className="w-full flex items-center justify-between h-16">
           <Link href="/">
-            <a className="text-lg font-cormorant px-4">
+            <a className="text-lg font-cormorant pl-4">
               Adi Keller Photography
             </a>
           </Link>
@@ -50,7 +50,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Navigation */}
-          <div className="md:hidden flex items-center gap-2 ml-auto mr-2">
+          <div className="md:hidden flex items-center gap-2 pr-4">
             <LanguageToggle />
             <ThemeToggle />
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
