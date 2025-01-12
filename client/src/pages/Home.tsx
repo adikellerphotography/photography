@@ -21,7 +21,7 @@ export default function Home() {
   const getCategoryImage = (categoryName: string) => {
     switch(categoryName.toLowerCase()) {
       case 'kids':
-        return '/attached_assets/IMG_4704-Edit.jpg';
+        return '/assets/IMG_4704-Edit.jpg';
       default:
         return `/placeholder/${categoryName.toLowerCase()}.jpg`;
     }
@@ -33,7 +33,7 @@ export default function Home() {
       <section className="relative min-h-screen">
         <div className="absolute inset-0">
           <img
-            src="/attached_assets/M68A0863-Edit.jpg"
+            src="/assets/M68A0863-Edit.jpg"
             alt="Bat Mitzva"
             className="w-full h-full object-cover"
           />
