@@ -45,7 +45,7 @@ export default function ShareDialog({ imageUrl, title }: ShareDialogProps) {
         <Button
           variant="outline"
           size="icon"
-          className="absolute top-4 right-16 z-20 bg-background/80 backdrop-blur-sm"
+          className="absolute top-4 left-4 z-20 bg-background/80 backdrop-blur-sm"
         >
           <Share2 className="w-5 h-5" />
           <span className="sr-only">{t("share.sharePhoto")}</span>
