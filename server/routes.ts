@@ -1,6 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { eq, and } from "drizzle-orm";
+import { eq, and, desc } from "drizzle-orm";
 import { db } from "@db";
 import { photos, categories, photoLikes } from "@db/schema";
 import path from "path";
@@ -159,61 +159,61 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
-  // Initial photo import
+  // Initial photo import (replaced with append functionality)
   app.post("/api/photos/import", async (_req, res) => {
     try {
-      // First clear existing photo likes to avoid foreign key constraint violations
-      await db.delete(photoLikes);
-      // Then clear existing photos
-      await db.delete(photos);
-
-      // Define Bat Mitsva photos
-      const batMitsvaPhotos = [
-        'M68A0072-Edit Large.jpeg',
-        'IMG_8772_2-Edi333t Large.jpeg',
-        'IMG_8705-Edit_5 Large.jpeg',
-        'IMG_8613-Edit Large.jpeg',
-        'IMG_7383-Edit Large.jpeg',
-        'IMG_7023-Edit-2 Large.jpeg',
-        'IMG_6916-Edit Large.jpeg',
-        'IMG_6901-Edit Large.jpeg',
-        'IMG_6797-Edit Large.jpeg',
-        'IMG_6788-Edit-2 Large.jpeg',
-        'IMG_6449-Edit-2 Large.jpeg',
-        'IMG_4737-Edit-2 Large.jpeg',
-        'IMG_4541-Edit Large.jpeg',
-        'IMG_3863-Edit Large.jpeg',
-        'IMG_3623-Edit Large.jpeg',
-        'IMG_0266-Edit Large.jpeg',
-        'IMG_0652-Edit Large.jpeg',
-        'IMG_3326-Edit-Edit-2 Large.jpeg',
-        '0Z9A7935-Edit_c Large.jpeg',
-        '0Z9A1019-Edit-Edit-2 Large.jpeg'
+      // Define new Bat Mitsva photos to add
+      const newBatMitsvaPhotos = [
+        'M68A1645-Edit Large.jpeg',
+        'M68A1636-Edit Large.jpeg',
+        'M68A1601-Edit-Edit-Edit Large.jpeg',
+        'M68A1579-Edit Large.jpeg',
+        'M68A1544-Edit-2 Large.jpeg',
+        'M68A1428-Edit-2 Large.jpeg',
+        'M68A1179-Edit Large.jpeg',
+        'M68A1155-Edit-Edit Large.jpeg',
+        'M68A1153-Edit-2 Large.jpeg',
+        'M68A1142-Edit-Edit-2 Large.jpeg',
+        'M68A1113-Edit Large.jpeg',
+        'M68A0978-Edit Large.jpeg',
+        'M68A0959-Edit Large.jpeg',
+        'M68A0928-Edit-Edit-2 Large.jpeg',
+        'M68A0863-Edit Large.jpeg',
+        'M68A0863-Edit-2 Large.jpeg',
+        'M68A0765-Edit-Edit Large.jpeg',
+        'M68A0544-Edit Large.jpeg',
+        'M68A0460-Edit-2 Large.jpeg',
+        'M68A0288-Edit Large.jpeg'
       ];
 
-      // Shuffle the photos array for random order
-      const shuffledPhotos = [...batMitsvaPhotos].sort(() => Math.random() - 0.5);
+      // Get the current maximum display order
+      const lastPhoto = await db
+        .select()
+        .from(photos)
+        .where(eq(photos.category, "Bat Mitsva"))
+        .orderBy(desc(photos.displayOrder))
+        .limit(1);
 
-      // Insert photos with random display order
-      for (const [index, photo] of shuffledPhotos.entries()) {
+      const startOrder = lastPhoto.length > 0 ? lastPhoto[0].displayOrder + 1 : 1;
+
+      // Shuffle the new photos array for random order
+      const shuffledNewPhotos = [...newBatMitsvaPhotos].sort(() => Math.random() - 0.5);
+
+      // Insert new photos with continuing display order
+      for (const [index, photo] of shuffledNewPhotos.entries()) {
         await db.insert(photos).values({
           title: photo.replace(/\.[^/.]+$/, ""),
           category: "Bat Mitsva",
           imageUrl: photo,
-          displayOrder: index + 1,
+          displayOrder: startOrder + index,
           likesCount: 0
         });
       }
 
-      // Ensure category exists
-      await db.insert(categories).values([
-        { name: "Bat Mitsva", displayOrder: 1 }
-      ]).onConflictDoNothing();
-
-      res.json({ message: "Photos imported successfully" });
+      res.json({ message: "Additional photos imported successfully" });
     } catch (error) {
-      console.error('Error importing photos:', error);
-      res.status(500).json({ error: "Failed to import photos" });
+      console.error('Error importing additional photos:', error);
+      res.status(500).json({ error: "Failed to import additional photos" });
     }
   });
 
