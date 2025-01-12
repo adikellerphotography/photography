@@ -6,10 +6,12 @@ interface LogoProps {
 
 export default function Logo({ className }: LogoProps) {
   return (
-    <div className={cn("flex items-center", className)}>
+    <div className={cn("flex flex-col pt-3", className)}>
       <span className="font-cormorant text-lg tracking-wide">
         Adi Keller
-        <span className="block -mt-1.5 text-sm text-muted-foreground">Photography</span>
+        <span className="block -mt-1.5 text-sm text-muted-foreground">
+          Photography
+        </span>
       </span>
     </div>
   );
