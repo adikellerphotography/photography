@@ -9,39 +9,54 @@ import { useTranslation } from "@/hooks/use-translation";
 import { useEffect } from "react";
 
 export default function Home() {
-  const { data: categories } = useQuery<Category[]>({
+  const { data: categories, isLoading, error } = useQuery<Category[]>({
     queryKey: ["/api/categories"],
   });
 
   const { t } = useTranslation();
 
+  // Filter out the before_and_after category and log the filtered categories
+  const displayCategories = categories?.filter(
+    category => category?.name?.toLowerCase() !== 'before and after'
+  ) || [];
+
   useEffect(() => {
-    if (categories) {
-      console.log('Categories loaded:', categories.map(c => ({
+    if (displayCategories?.length > 0) {
+      console.log('Categories loaded:', displayCategories.map(c => ({
         name: c.name,
         firstPhoto: c.firstPhoto
       })));
     }
-  }, [categories]);
+  }, [displayCategories]);
 
-  const getCategoryImage = (categoryName: string) => {
-    const imageMap: Record<string, string> = {
-      'Bat Mitsva': '/assets/Bat_Mitsva/M68A0863-Edit Large.jpeg',
-      'Family': '/assets/Family/IMG_3472-Edit Large.jpeg',
-      'Kids': '/assets/Kids/IMG_1083-Edit Large.jpeg',
-      'Events': '/assets/Events/events-coverage.jpg',
-      'Portraits': '/assets/Portraits/portrait-session.jpg',
-      'Nature': '/assets/Nature/nature-photography.jpg',
-      'Wedding': '/assets/Wedding/wedding-photography.jpg',
-      'Modeling': '/assets/Modeling/M68A0065-Edit Large.jpeg',
-      'Women': '/assets/Women/IMG_0095-Edit-Edit Large.jpeg',
-      'Yoga': '/assets/Yoga/IMG_1350-Edit-Edit Large.jpeg'
-    };
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen pt-16">
+        <div className="container mx-auto px-4 py-16">
+          <div className="animate-pulse space-y-8">
+            <div className="h-12 w-64 bg-muted rounded" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="aspect-[4/3] bg-muted rounded" />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-    const fallbackImage = '/assets/placeholder-category.jpg';
-    console.log('Getting image for category:', categoryName, imageMap[categoryName] || fallbackImage);
-    return imageMap[categoryName] || fallbackImage;
-  };
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen pt-16">
+        <div className="container mx-auto px-4 py-16">
+          <p className="text-destructive">Error loading categories. Please try again later.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pt-16">
@@ -73,13 +88,14 @@ export default function Home() {
         >
           <h2 className="text-2xl font-semibold mb-6">{t("home.galleryTitle")}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categories?.map((category, index) => {
-              const imageUrl = category.firstPhoto?.imageUrl || getCategoryImage(category.name);
-              console.log(`Category ${category.name} image:`, imageUrl);
+            {displayCategories.map((category, index) => {
+              if (!category?.name) return null;
+
+              const imageUrl = category.firstPhoto?.imageUrl || `/assets/${category.name.replace(/\s+/g, '_')}/${encodeURIComponent('cover.jpg')}`;
 
               return (
                 <motion.div
-                  key={category.id}
+                  key={category.id || index}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
