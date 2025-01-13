@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu, Home, Image, User, CreditCard, Info as InfoIcon } from "lucide-react";
+import { Menu, Home, Image, User, CreditCard, Info as InfoIcon, Split } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "./ThemeToggle";
 import LanguageToggle from "./LanguageToggle";
@@ -16,6 +16,7 @@ export default function Navbar() {
   const navigationItems = [
     { href: "/", label: language === "en" ? "Home" : "בית", icon: Home },
     { href: "/gallery", label: language === "en" ? "Gallery" : "גלריה", icon: Image },
+    { href: "/before-after", label: language === "en" ? "Before & After" : "לפני ואחרי", icon: Split },
     { href: "/pricing", label: language === "en" ? "Pricing" : "מחירים", icon: CreditCard },
     { href: "/info", label: language === "en" ? "Session Info" : "מידע על הצילומים", icon: InfoIcon },
     { href: "/about", label: language === "en" ? "About" : "אודות", icon: User },

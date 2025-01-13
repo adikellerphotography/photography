@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
@@ -47,7 +47,7 @@ export default function BeforeAfter() {
         className="container mx-auto px-4 py-16"
       >
         <h1 className="text-3xl font-bold mb-8">
-          Before & After
+          {t("beforeAfter.title", "Before & After")}
         </h1>
 
         <div className="space-y-16">

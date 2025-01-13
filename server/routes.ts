@@ -39,10 +39,10 @@ export function registerRoutes(app: Express): Server {
 
       // Group raw and edited images
       files.forEach(file => {
-        if (file.endsWith('-1.jpg') || file.endsWith('-1.jpeg')) {
-          const baseName = file.slice(0, -6); // Remove '-1.jpg' or '-1.jpeg'
+        if (file.endsWith('-1 Large.jpg') || file.endsWith('-1 Large.jpeg')) {
+          const baseName = file.slice(0, -11); // Remove '-1 Large.jpg' or '-1 Large.jpeg'
           const editedFile = files.find(f => 
-            f === `${baseName}-2.jpg` || f === `${baseName}-2.jpeg`
+            f === `${baseName}-2 Large.jpg` || f === `${baseName}-2 Large.jpeg`
           );
 
           if (editedFile) {
@@ -62,6 +62,7 @@ export function registerRoutes(app: Express): Server {
         editedImage: `/assets/before_and_after/${encodeURIComponent(files.edited)}`
       }));
 
+      console.log('Found before/after images:', images);
       res.json(images);
     } catch (error) {
       console.error('Error fetching before/after images:', error);
