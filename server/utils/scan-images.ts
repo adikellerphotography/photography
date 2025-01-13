@@ -22,12 +22,12 @@ function formatTitle(fileName: string, category: string): string {
   title = title.replace(/\s+/g, ' ').trim();
 
   // Add category-specific prefixes and formatting
-  switch (category) {
-    case 'Kids':
+  switch (category.toLowerCase()) {
+    case 'kids':
       return `Children's Portrait${title ? ': ' + title : ''}`;
-    case 'Family':
+    case 'family':
       return `Family Portrait${title ? ': ' + title : ''}`;
-    case 'Bat Mitsva':
+    case 'bat mitsva':
       return `Bat Mitzvah Portrait Session${title ? ': ' + title : ''}`;
     default:
       return title || category;
@@ -55,16 +55,14 @@ export async function scanAndProcessImages() {
       console.log(`Processing category: ${categoryName} from path: ${categoryPath}`);
 
       // Ensure category exists in database
-      await db.insert(categories)
-        .values({
+      const existingCategory = await db.select().from(categories).where(eq(categories.name, categoryName));
+
+      if (existingCategory.length === 0) {
+        await db.insert(categories).values({
           name: categoryName,
-          displayOrder: 1,
           description: `${categoryName} photography collection`
-        })
-        .onConflictDoUpdate({
-          target: categories.name,
-          set: { description: `${categoryName} photography collection` }
         });
+      }
 
       // Get all images in this category
       const files = await fs.readdir(fullPath);
@@ -108,7 +106,7 @@ export async function scanAndProcessImages() {
               category: categoryName,
               imageUrl: imageFile,
               thumbnailUrl,
-              displayOrder: 1
+              description: `${categoryName} photography - ${title}`
             });
 
             console.log(`Added new photo: ${imageFile} in category ${categoryName} with title: ${title}`);
