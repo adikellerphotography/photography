@@ -11,7 +11,8 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseDown = () => {
+  const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault();
     setIsDragging(true);
   };
 
@@ -21,22 +22,21 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
 
   const handleMove = useCallback(
     (clientX: number) => {
-      if (!containerRef.current) return;
+      if (!containerRef.current || !isDragging) return;
 
       const container = containerRef.current;
       const rect = container.getBoundingClientRect();
-      const x = clientX - rect.left;
+      const x = Math.min(Math.max(0, clientX - rect.left), rect.width);
       const percentage = (x / rect.width) * 100;
 
-      setSliderPosition(Math.min(Math.max(percentage, 0), 100));
+      setSliderPosition(percentage);
     },
-    []
+    [isDragging]
   );
 
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
       if (!isDragging) return;
-      e.preventDefault();
       handleMove(e.clientX);
     },
     [isDragging, handleMove]
@@ -67,60 +67,65 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
   return (
     <div
       ref={containerRef}
-      className="relative w-full aspect-[16/9] overflow-hidden rounded-lg bg-muted"
+      className="relative w-full aspect-[16/9] overflow-hidden rounded-lg bg-muted select-none"
       onMouseDown={handleMouseDown}
       onTouchStart={handleMouseDown}
     >
       {/* After image (base layer) */}
-      <img
-        src={afterImage}
-        alt="After"
-        className="absolute inset-0 w-full h-full object-cover"
-        loading="lazy"
-      />
-
-      {/* Before image (overlay) */}
-      <div
-        className="absolute inset-0 overflow-hidden"
-        style={{ width: `${sliderPosition}%` }}
-      >
+      <div className="absolute inset-0">
         <img
-          src={beforeImage}
-          alt="Before"
-          className="absolute inset-0 w-full h-full object-cover"
+          src={afterImage}
+          alt="After"
+          className="w-full h-full object-cover"
           loading="lazy"
         />
       </div>
 
-      {/* Slider handle */}
+      {/* Before image (overlay) with clip effect */}
       <div
-        className="absolute inset-y-0"
-        style={{ left: `${sliderPosition}%` }}
+        className="absolute inset-0"
+        style={{
+          clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`
+        }}
       >
-        <div className="absolute inset-y-0 -left-px w-0.5 bg-white shadow-[0_0_10px_rgba(0,0,0,0.3)]" />
-        <motion.div
-          className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow-lg cursor-grab active:cursor-grabbing flex items-center justify-center"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="rotate-90 text-gray-600"
-          >
-            <path
-              d="M2.66667 5.33333L8 10.6667L13.3333 5.33333"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </motion.div>
+        <img
+          src={beforeImage}
+          alt="Before"
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
       </div>
+
+      {/* Slider line */}
+      <div
+        className="absolute inset-y-0 w-0.5 bg-white shadow-[0_0_10px_rgba(0,0,0,0.3)]"
+        style={{ left: `${sliderPosition}%` }}
+      />
+
+      {/* Slider handle */}
+      <motion.div
+        className="absolute top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow-lg cursor-grab active:cursor-grabbing flex items-center justify-center"
+        style={{ left: `${sliderPosition}%`, x: "-50%" }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="rotate-90 text-gray-600"
+        >
+          <path
+            d="M2.66667 5.33333L8 10.6667L13.3333 5.33333"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </motion.div>
     </div>
   );
 }
