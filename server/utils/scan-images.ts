@@ -50,8 +50,14 @@ function formatTitle(fileName: string, category: string): string {
 
 export async function scanAndProcessImages() {
   try {
+    console.log('Starting image scan process...');
     const assetsPath = path.join(process.cwd(), 'attached_assets');
     const categoriesPath = path.join(assetsPath, 'categories');
+
+    // Clean up existing data
+    await db.delete(photos);
+    await db.delete(categories);
+    console.log('Cleaned up existing database records');
 
     // Get all directories in the categories folder
     const entries = await fs.readdir(categoriesPath, { withFileTypes: true });
@@ -61,21 +67,10 @@ export async function scanAndProcessImages() {
 
     console.log(`Found ${categoryDirs.length} category directories in categories folder`);
 
-    // Also scan root level directories for other categories (like before_and_after)
-    const rootEntries = await fs.readdir(assetsPath, { withFileTypes: true });
-    const rootCategoryDirs = rootEntries.filter(entry => 
-      entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'categories'
-    );
-
-    console.log(`Found ${rootCategoryDirs.length} additional category directories in root`);
-    const allCategoryDirs = [...categoryDirs, ...rootCategoryDirs];
-
-    for (const dir of allCategoryDirs) {
+    for (const dir of categoryDirs) {
       const categoryPath = dir.name;
       const categoryName = categoryPath.replace(/_/g, ' '); // Convert underscores to spaces for DB
-      const fullPath = dir.path === categoriesPath ? 
-        path.join(categoriesPath, categoryPath) : 
-        path.join(assetsPath, categoryPath);
+      const fullPath = path.join(categoriesPath, categoryPath);
 
       console.log(`Processing category: ${categoryName} from path: ${fullPath}`);
 
@@ -103,37 +98,30 @@ export async function scanAndProcessImages() {
       // Process each image
       for (const imageFile of imageFiles) {
         try {
-          // Check if image already exists in database
-          const existingPhoto = await db.select()
-            .from(photos)
-            .where(eq(photos.imageUrl, imageFile));
+          const imagePath = path.join(fullPath, imageFile);
+          let thumbnailUrl;
 
-          if (existingPhoto.length === 0) {
-            const imagePath = path.join(fullPath, imageFile);
-            let thumbnailUrl;
-
-            try {
-              thumbnailUrl = await generateThumbnail(imagePath);
-              console.log(`Generated thumbnail for ${imageFile}: ${thumbnailUrl}`);
-            } catch (error) {
-              console.error(`Error generating thumbnail for ${imageFile}:`, error);
-              thumbnailUrl = undefined;
-            }
-
-            // Generate a meaningful title for the photo
-            const title = formatTitle(imageFile, categoryName);
-
-            // Insert new photo
-            await db.insert(photos).values({
-              title,
-              category: categoryName,
-              imageUrl: imageFile,
-              thumbnailUrl,
-              displayOrder: 1
-            });
-
-            console.log(`Added new photo: ${imageFile} in category ${categoryName} with title: ${title}`);
+          try {
+            thumbnailUrl = await generateThumbnail(imagePath);
+            console.log(`Generated thumbnail for ${imageFile}: ${thumbnailUrl}`);
+          } catch (error) {
+            console.error(`Error generating thumbnail for ${imageFile}:`, error);
+            thumbnailUrl = undefined;
           }
+
+          // Generate a meaningful title for the photo
+          const title = formatTitle(imageFile, categoryName);
+
+          // Insert new photo
+          await db.insert(photos).values({
+            title,
+            category: categoryName,
+            imageUrl: imageFile,
+            thumbnailUrl: thumbnailUrl ? path.basename(thumbnailUrl) : null,
+            displayOrder: 1
+          });
+
+          console.log(`Added new photo: ${imageFile} in category ${categoryName} with title: ${title}`);
         } catch (error) {
           console.error(`Error processing image ${imageFile}:`, error);
         }

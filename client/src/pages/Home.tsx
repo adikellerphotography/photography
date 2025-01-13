@@ -24,25 +24,6 @@ export default function Home() {
     }
   }, [categories]);
 
-  const getCategoryImage = (categoryName: string) => {
-    const imageMap: Record<string, string> = {
-      'Bat Mitsva': '/assets/Bat_Mitsva/M68A0863-Edit Large.jpeg',
-      'Family': '/assets/Family/IMG_3472-Edit Large.jpeg',
-      'Kids': '/assets/Kids/IMG_1083-Edit Large.jpeg',
-      'Events': '/assets/Events/events-coverage.jpg',
-      'Portraits': '/assets/Portraits/portrait-session.jpg',
-      'Nature': '/assets/Nature/nature-photography.jpg',
-      'Wedding': '/assets/Wedding/wedding-photography.jpg',
-      'Modeling': '/assets/Modeling/M68A0065-Edit Large.jpeg',
-      'Women': '/assets/Women/IMG_0095-Edit-Edit Large.jpeg',
-      'Yoga': '/assets/Yoga/IMG_1350-Edit-Edit Large.jpeg'
-    };
-
-    const fallbackImage = '/assets/placeholder-category.jpg';
-    console.log('Getting image for category:', categoryName, imageMap[categoryName] || fallbackImage);
-    return imageMap[categoryName] || fallbackImage;
-  };
-
   return (
     <div className="min-h-screen pt-16">
       {/* Hero Section */}
@@ -74,7 +55,7 @@ export default function Home() {
           <h2 className="text-2xl font-semibold mb-6">{t("home.galleryTitle")}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {categories?.map((category, index) => {
-              const imageUrl = category.firstPhoto?.imageUrl || getCategoryImage(category.name);
+              const imageUrl = category.firstPhoto?.imageUrl || '/assets/placeholder-category.jpg';
               console.log(`Category ${category.name} image:`, imageUrl);
 
               return (

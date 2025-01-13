@@ -10,18 +10,16 @@ import fs from "fs/promises";
 
 export function registerRoutes(app: Express): Server {
   const httpServer = createServer(app);
+  const assetsPath = path.join(process.cwd(), 'attached_assets');
 
   // Serve static files from attached_assets and its subdirectories
-  const assetsPath = path.join(process.cwd(), 'attached_assets');
   app.use('/assets', express.static(assetsPath, {
     setHeaders: (res, filePath) => {
-      // Ensure proper content type for images
       if (filePath.toLowerCase().endsWith('.jpg') || filePath.toLowerCase().endsWith('.jpeg')) {
         res.setHeader('Content-Type', 'image/jpeg');
       } else if (filePath.toLowerCase().endsWith('.png')) {
         res.setHeader('Content-Type', 'image/png');
       }
-      // Set cache control headers
       res.setHeader('Cache-Control', 'public, max-age=31536000');
     },
     dotfiles: 'ignore',
@@ -38,12 +36,12 @@ export function registerRoutes(app: Express): Server {
 
       console.log('Fetching photos with params:', { category, page, pageSize });
 
-      let query = db.select().from(photos);
+      const query = db.select().from(photos);
 
       if (category && typeof category === 'string') {
         const decodedCategory = decodeURIComponent(category);
         console.log('Filtering by category:', decodedCategory);
-        query = query.where(eq(photos.category, decodedCategory));
+        query.where(eq(photos.category, decodedCategory));
       }
 
       const results = await query
@@ -56,24 +54,23 @@ export function registerRoutes(app: Express): Server {
       // Process photos and add full URLs
       const processedPhotos = results.map(photo => {
         const categoryPath = photo.category.replace(/\s+/g, '_');
-        const basePath = ['Bat Mitsva', 'Family', 'Kids', 'Modeling', 'Women', 'Yoga']
-          .includes(photo.category) ? 'categories/' : '';
+        const photoUrl = `/assets/categories/${categoryPath}/${encodeURIComponent(photo.imageUrl)}`;
+        const thumbnailUrl = photo.thumbnailUrl ? 
+          `/assets/categories/${categoryPath}/${encodeURIComponent(photo.thumbnailUrl)}` : 
+          undefined;
 
         const processedPhoto = {
           ...photo,
-          imageUrl: `/assets/${basePath}${categoryPath}/${encodeURIComponent(photo.imageUrl)}`,
-          thumbnailUrl: photo.thumbnailUrl ? 
-            `/assets/${basePath}${categoryPath}/${encodeURIComponent(photo.thumbnailUrl)}` : 
-            undefined,
+          imageUrl: photoUrl,
+          thumbnailUrl: thumbnailUrl,
           isLiked: false
         };
 
         console.log('Processing photo:', {
           id: processedPhoto.id,
           category: processedPhoto.category,
-          originalPath: photo.imageUrl,
-          processedPath: processedPhoto.imageUrl,
-          thumbnailPath: processedPhoto.thumbnailUrl
+          imageUrl: photoUrl,
+          thumbnailUrl: thumbnailUrl
         });
 
         return processedPhoto;
@@ -92,11 +89,9 @@ export function registerRoutes(app: Express): Server {
       const beforeAfterPath = path.join(assetsPath, 'before_and_after');
       const files = await fs.readdir(beforeAfterPath);
 
-      // Group matching before and after images
       const imageSets: { id: number; beforeImage: string; afterImage: string; title: string; }[] = [];
       const imageMap = new Map<string, string>();
 
-      // First, collect all images
       files.forEach(file => {
         if (file.endsWith(' Large.jpeg') || file.endsWith(' Large.jpg')) {
           const base = file.replace(/-[12] Large\.(jpeg|jpg)$/, '');
@@ -104,7 +99,6 @@ export function registerRoutes(app: Express): Server {
         }
       });
 
-      // Then, create pairs
       let id = 1;
       imageMap.forEach((value, key) => {
         const beforeFile = files.find(f => f.startsWith(key) && f.includes('-1 Large'));
@@ -143,19 +137,20 @@ export function registerRoutes(app: Express): Server {
             .limit(1);
 
           const categoryPath = category.name.replace(/\s+/g, '_');
-          const basePath = ['Bat Mitsva', 'Family', 'Kids', 'Modeling', 'Women', 'Yoga']
-            .includes(category.name) ? 'categories/' : '';
 
-          console.log(`Processing category: ${category.name}, path: ${basePath}${categoryPath}`);
+          console.log(`Processing category: ${category.name}`);
 
           if (categoryPhotos[0]) {
+            const photoUrl = `/assets/categories/${categoryPath}/${encodeURIComponent(categoryPhotos[0].imageUrl)}`;
+            const thumbnailUrl = categoryPhotos[0].thumbnailUrl ?
+              `/assets/categories/${categoryPath}/${encodeURIComponent(categoryPhotos[0].thumbnailUrl)}` :
+              undefined;
+
             const photoData = {
               ...category,
               firstPhoto: {
-                imageUrl: `/assets/${basePath}${categoryPath}/${encodeURIComponent(categoryPhotos[0].imageUrl)}`,
-                thumbnailUrl: categoryPhotos[0].thumbnailUrl ?
-                  `/assets/${basePath}${categoryPath}/${encodeURIComponent(categoryPhotos[0].thumbnailUrl)}` :
-                  undefined
+                imageUrl: photoUrl,
+                thumbnailUrl: thumbnailUrl
               }
             };
             console.log('Category photo data:', photoData.firstPhoto);
