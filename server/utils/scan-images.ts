@@ -51,21 +51,33 @@ function formatTitle(fileName: string, category: string): string {
 export async function scanAndProcessImages() {
   try {
     const assetsPath = path.join(process.cwd(), 'attached_assets');
+    const categoriesPath = path.join(assetsPath, 'categories');
 
-    // Get all directories (categories)
-    const entries = await fs.readdir(assetsPath, { withFileTypes: true });
+    // Get all directories in the categories folder
+    const entries = await fs.readdir(categoriesPath, { withFileTypes: true });
     const categoryDirs = entries.filter(entry => 
       entry.isDirectory() && !entry.name.startsWith('.')
     );
 
-    console.log(`Found ${categoryDirs.length} category directories`);
+    console.log(`Found ${categoryDirs.length} category directories in categories folder`);
 
-    for (const dir of categoryDirs) {
+    // Also scan root level directories for other categories (like before_and_after)
+    const rootEntries = await fs.readdir(assetsPath, { withFileTypes: true });
+    const rootCategoryDirs = rootEntries.filter(entry => 
+      entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'categories'
+    );
+
+    console.log(`Found ${rootCategoryDirs.length} additional category directories in root`);
+    const allCategoryDirs = [...categoryDirs, ...rootCategoryDirs];
+
+    for (const dir of allCategoryDirs) {
       const categoryPath = dir.name;
       const categoryName = categoryPath.replace(/_/g, ' '); // Convert underscores to spaces for DB
-      const fullPath = path.join(assetsPath, categoryPath);
+      const fullPath = dir.path === categoriesPath ? 
+        path.join(categoriesPath, categoryPath) : 
+        path.join(assetsPath, categoryPath);
 
-      console.log(`Processing category: ${categoryName} from path: ${categoryPath}`);
+      console.log(`Processing category: ${categoryName} from path: ${fullPath}`);
 
       // Ensure category exists in database
       await db.insert(categories)

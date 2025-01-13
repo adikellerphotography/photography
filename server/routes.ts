@@ -38,7 +38,6 @@ export function registerRoutes(app: Express): Server {
 
       console.log('Fetching photos with params:', { category, page, pageSize });
 
-      // Build query with category filter
       let query = db.select().from(photos);
 
       if (category && typeof category === 'string') {
@@ -47,7 +46,6 @@ export function registerRoutes(app: Express): Server {
         query = query.where(eq(photos.category, decodedCategory));
       }
 
-      // Execute query with pagination
       const results = await query
         .limit(pageSize)
         .offset((page - 1) * pageSize)
@@ -58,11 +56,14 @@ export function registerRoutes(app: Express): Server {
       // Process photos and add full URLs
       const processedPhotos = results.map(photo => {
         const categoryPath = photo.category.replace(/\s+/g, '_');
+        const basePath = ['Bat Mitsva', 'Family', 'Kids', 'Modeling', 'Women', 'Yoga']
+          .includes(photo.category) ? 'categories/' : '';
+
         const processedPhoto = {
           ...photo,
-          imageUrl: `/assets/${categoryPath}/${encodeURIComponent(photo.imageUrl)}`,
+          imageUrl: `/assets/${basePath}${categoryPath}/${encodeURIComponent(photo.imageUrl)}`,
           thumbnailUrl: photo.thumbnailUrl ? 
-            `/assets/${categoryPath}/${encodeURIComponent(photo.thumbnailUrl)}` : 
+            `/assets/${basePath}${categoryPath}/${encodeURIComponent(photo.thumbnailUrl)}` : 
             undefined,
           isLiked: false
         };
@@ -142,15 +143,18 @@ export function registerRoutes(app: Express): Server {
             .limit(1);
 
           const categoryPath = category.name.replace(/\s+/g, '_');
-          console.log(`Processing category: ${category.name}, path: ${categoryPath}`);
+          const basePath = ['Bat Mitsva', 'Family', 'Kids', 'Modeling', 'Women', 'Yoga']
+            .includes(category.name) ? 'categories/' : '';
+
+          console.log(`Processing category: ${category.name}, path: ${basePath}${categoryPath}`);
 
           if (categoryPhotos[0]) {
             const photoData = {
               ...category,
               firstPhoto: {
-                imageUrl: `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].imageUrl)}`,
+                imageUrl: `/assets/${basePath}${categoryPath}/${encodeURIComponent(categoryPhotos[0].imageUrl)}`,
                 thumbnailUrl: categoryPhotos[0].thumbnailUrl ?
-                  `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].thumbnailUrl)}` :
+                  `/assets/${basePath}${categoryPath}/${encodeURIComponent(categoryPhotos[0].thumbnailUrl)}` :
                   undefined
               }
             };
