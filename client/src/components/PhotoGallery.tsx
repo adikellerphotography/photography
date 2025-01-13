@@ -314,7 +314,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                       times: [0, 0.2, 0.8, 1],
                       ease: "easeInOut"
                     }}
-                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none"
+                    className="absolute inset-0 flex items-center justify-center z-50 pointer-events-none"
                   >
                     <motion.div
                       animate={{ 
@@ -326,7 +326,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                         ease: "easeInOut"
                       }}
                     >
-                      <Heart className="w-16 h-16 text-white/80 stroke-[1.5] drop-shadow-lg" />
+                      <Heart className="w-12 h-12 text-white/90 stroke-[2] filter drop-shadow-lg" />
                     </motion.div>
                   </motion.div>
                 )}
@@ -334,7 +334,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
               {selectedPhoto.isLiked && (
                 <div className="absolute top-4 right-4 z-20">
-                  <Heart className="w-6 h-6 text-white stroke-[1.5]" />
+                  <Heart className="w-5 h-5 text-white fill-white stroke-[2]" />
                 </div>
               )}
 
