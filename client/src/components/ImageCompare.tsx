@@ -9,14 +9,14 @@ interface ImageCompareProps {
 export default function ImageCompare({ beforeImage, afterImage }: ImageCompareProps) {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
-  const [imageOrientation, setImageOrientation] = useState<'landscape' | 'portrait' | null>(null);
+  const [dimensions, setDimensions] = useState<{ width: number; height: number } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
   const handleImageLoad = () => {
     if (imageRef.current) {
       const { naturalWidth, naturalHeight } = imageRef.current;
-      setImageOrientation(naturalWidth >= naturalHeight ? 'landscape' : 'portrait');
+      setDimensions({ width: naturalWidth, height: naturalHeight });
     }
   };
 
@@ -73,83 +73,83 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
     };
   }, [handleMouseMove, handleTouchMove]);
 
-  return (
-    <div
-      ref={containerRef}
-      className={`relative overflow-hidden rounded-lg bg-muted select-none ${
-        imageOrientation === 'landscape' 
-          ? 'w-full aspect-[16/9]' 
-          : 'w-auto max-w-full h-[80vh]'
-      }`}
-      onMouseDown={handleMouseDown}
-      onTouchStart={handleMouseDown}
-    >
-      {/* After image (base layer) */}
-      <div className="absolute inset-0">
-        <img
-          ref={imageRef}
-          src={afterImage}
-          alt="After"
-          className={`object-contain ${
-            imageOrientation === 'landscape'
-              ? 'w-full h-auto'
-              : 'h-full w-auto mx-auto'
-          }`}
-          onLoad={handleImageLoad}
-          loading="lazy"
-        />
-      </div>
+  if (!dimensions) {
+    return (
+      <div className="relative w-full h-0 pb-[75%] bg-muted animate-pulse rounded-lg" />
+    );
+  }
 
-      {/* Before image (overlay) with clip effect */}
-      <div
-        className="absolute inset-0"
-        style={{
-          clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`
+  return (
+    <div className="relative w-full">
+      <div 
+        className="grid grid-cols-1 grid-rows-1" 
+        style={{ 
+          aspectRatio: `${dimensions.width} / ${dimensions.height}`,
         }}
       >
-        <img
-          src={beforeImage}
-          alt="Before"
-          className={`object-contain ${
-            imageOrientation === 'landscape'
-              ? 'w-full h-auto'
-              : 'h-full w-auto mx-auto'
-          }`}
-          loading="lazy"
-        />
-      </div>
-
-      {/* Slider line */}
-      <div
-        className="absolute inset-y-0 w-0.5 bg-white shadow-[0_0_10px_rgba(0,0,0,0.3)]"
-        style={{ left: `${sliderPosition}%` }}
-      />
-
-      {/* Slider handle */}
-      <motion.div
-        className="absolute top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow-lg cursor-grab active:cursor-grabbing flex items-center justify-center"
-        style={{ left: `${sliderPosition}%`, x: "-50%" }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-      >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="text-gray-600"
+        <div 
+          ref={containerRef} 
+          className="col-start-1 row-start-1 relative w-full h-full overflow-hidden rounded-lg"
+          onMouseDown={handleMouseDown} 
+          onTouchStart={handleMouseDown}
         >
-          {/* Bidirectional arrow icon */}
-          <path
-            d="M2 8h12M4 5l-3 3 3 3M12 5l3 3-3 3"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+          {/* After image */}
+          <img
+            ref={imageRef}
+            src={afterImage}
+            alt="After"
+            className="w-full h-full object-contain"
+            onLoad={handleImageLoad}
+            loading="lazy"
           />
-        </svg>
-      </motion.div>
+
+          {/* Before image with clip mask */}
+          <div 
+            className="absolute inset-0"
+            style={{
+              clipPath: `inset(0 ${100 - sliderPosition}% 0 0)`
+            }}
+          >
+            <img
+              src={beforeImage}
+              alt="Before"
+              className="w-full h-full object-contain"
+              loading="lazy"
+            />
+          </div>
+
+          {/* Slider */}
+          <div
+            className="absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_10px_rgba(0,0,0,0.3)]"
+            style={{ left: `${sliderPosition}%` }}
+          />
+
+          {/* Handle */}
+          <motion.div
+            className="absolute top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow-lg cursor-grab active:cursor-grabbing flex items-center justify-center"
+            style={{ left: `${sliderPosition}%`, x: "-50%" }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="text-gray-600"
+            >
+              <path
+                d="M2 8h12M4 5l-3 3 3 3M12 5l3 3-3 3"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </motion.div>
+        </div>
+      </div>
     </div>
   );
 }
