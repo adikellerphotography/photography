@@ -57,13 +57,13 @@ export default function Navbar() {
               <ThemeToggle />
             </div>
 
-            {/* Menu button floating on the right */}
+            {/* Menu button floating on the right with slightly brighter background */}
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
                 <Button 
                   variant="ghost" 
                   size="icon" 
-                  className="h-14 w-14 rounded-none border-r border-l"
+                  className="h-14 w-14 rounded-none border-l bg-accent/30 hover:bg-accent/50 transition-colors"
                 >
                   <Menu className="h-5 w-5" />
                   <span className="sr-only">Toggle menu</span>
