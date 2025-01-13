@@ -17,12 +17,20 @@ export default function Home() {
 
   // Function to get category image based on category name
   const getCategoryImage = (categoryName: string) => {
-    switch(categoryName.toLowerCase()) {
-      case 'kids':
-        return '/assets/IMG_4704-Edit.jpg';
-      default:
-        return `/placeholder/${categoryName.toLowerCase()}.jpg`;
-    }
+    const imageMap: Record<string, string> = {
+      'Kids': '/assets/IMG_4704-Edit.jpg',
+      'Bat Mitsva': '/assets/M68A0863-Edit.jpg',
+      'Family': '/assets/family-portrait.jpg',
+      'Events': '/assets/events-coverage.jpg',
+      'Portraits': '/assets/portrait-session.jpg',
+      'Nature': '/assets/nature-photography.jpg',
+      'Wedding': '/assets/wedding-photography.jpg',
+      'Modeling': '/assets/model-portfolio.jpg',
+      'Women': '/assets/women-portraits.jpg',
+      'Yoga': '/assets/yoga-session.jpg'
+    };
+
+    return imageMap[categoryName] || '/assets/placeholder-category.jpg';
   };
 
   return (
@@ -77,14 +85,14 @@ export default function Home() {
                       <AspectRatio ratio={4/3}>
                         <div className="relative w-full h-full">
                           <img
-                            src={getCategoryImage(category.name)}
+                            src={category.firstPhoto?.imageUrl || getCategoryImage(category.name)}
                             alt=""
                             className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent">
                             <div className="absolute bottom-0 left-0 right-0 p-4">
                               <h3 className="text-xl font-semibold text-white">
-                                {category.name}
+                                {t(`categories.${category.name}`)}
                               </h3>
                               {category.description && (
                                 <p className="text-sm text-white/80">
