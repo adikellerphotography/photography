@@ -43,6 +43,11 @@ export default function Home() {
     return imageMap[categoryName] || fallbackImage;
   };
 
+  // Filter out the "before and after" category
+  const displayCategories = categories?.filter(category => 
+    category.name.toLowerCase() !== 'before and after'
+  );
+
   return (
     <div className="min-h-screen pt-16">
       {/* Hero Section */}
@@ -73,7 +78,7 @@ export default function Home() {
         >
           <h2 className="text-2xl font-semibold mb-6">{t("home.galleryTitle")}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categories?.map((category, index) => {
+            {displayCategories?.map((category, index) => {
               const imageUrl = category.firstPhoto?.imageUrl || getCategoryImage(category.name);
               console.log(`Category ${category.name} image:`, imageUrl);
 
