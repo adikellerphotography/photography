@@ -76,7 +76,7 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
   return (
     <div
       ref={containerRef}
-      className="relative overflow-hidden select-none w-full"
+      className="relative overflow-hidden rounded-lg select-none w-full"
       onMouseDown={handleMouseDown}
       onTouchStart={handleMouseDown}
     >
