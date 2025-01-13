@@ -63,13 +63,22 @@ export async function scanAndProcessImages() {
     console.log('Starting image scan process...');
     const assetsPath = path.join(process.cwd(), 'attached_assets');
 
+    // Ensure assets directory exists
+    try {
+      await fs.access(assetsPath);
+    } catch (error) {
+      console.log('Creating attached_assets directory...');
+      await fs.mkdir(assetsPath, { recursive: true });
+      return; // Exit early if no assets directory existed
+    }
+
     // Clear existing photos before reindexing
     console.log('Clearing existing photo records...');
     await db.delete(photos);
 
     // Get all directories (categories)
     const entries = await fs.readdir(assetsPath, { withFileTypes: true });
-    const categoryDirs = entries.filter(entry => 
+    const categoryDirs = entries.filter(entry =>
       entry.isDirectory() && !entry.name.startsWith('.')
     );
 
@@ -83,69 +92,73 @@ export async function scanAndProcessImages() {
 
       console.log(`Processing category: ${categoryName} from path: ${categoryPath}`);
 
-      // Ensure category exists in database
-      await db.insert(categories)
-        .values({
-          name: categoryName,
-          displayOrder: 1,
-          description: `${categoryName} photography collection`
-        })
-        .onConflictDoUpdate({
-          target: categories.name,
-          set: { description: `${categoryName} photography collection` }
-        });
-
-      // Get all images in this category
-      const files = await fs.readdir(fullPath);
-      const imageFiles = files.filter(file => 
-        /\.(jpg|jpeg|png)$/i.test(file) && 
-        !file.toLowerCase().includes('-thumb') && // Exclude thumbnail files
-        !file.toLowerCase().includes('placeholder') // Exclude placeholder images
-      );
-
-      console.log(`Found ${imageFiles.length} images in ${categoryName}`);
-
-      // Sort files to process main images first
-      imageFiles.sort((a, b) => {
-        const aIsMain = isMainImage(a);
-        const bIsMain = isMainImage(b);
-        return bIsMain ? 1 : aIsMain ? -1 : 0;
-      });
-
-      // Process each image
-      let displayOrderCounter = 1;
-      for (const imageFile of imageFiles) {
-        try {
-          const imagePath = path.join(fullPath, imageFile);
-          let thumbnailUrl;
-
-          try {
-            thumbnailUrl = await generateThumbnail(imagePath);
-            console.log(`Generated thumbnail for ${imageFile}: ${thumbnailUrl}`);
-          } catch (error) {
-            console.error(`Error generating thumbnail for ${imageFile}:`, error);
-            thumbnailUrl = undefined;
-          }
-
-          // Generate a meaningful title for the photo
-          const title = formatTitle(imageFile, categoryName);
-
-          // Set display order: main images get highest priority (1000)
-          const displayOrder = isMainImage(imageFile) ? 1000 : displayOrderCounter++;
-
-          // Insert new photo
-          await db.insert(photos).values({
-            title,
-            category: categoryName,
-            imageUrl: imageFile,
-            thumbnailUrl,
-            displayOrder
+      try {
+        // Ensure category exists in database
+        await db.insert(categories)
+          .values({
+            name: categoryName,
+            displayOrder: 1,
+            description: `${categoryName} photography collection`
+          })
+          .onConflictDoUpdate({
+            target: categories.name,
+            set: { description: `${categoryName} photography collection` }
           });
 
-          console.log(`Added photo: ${imageFile} in category ${categoryName} with title: ${title} and display order: ${displayOrder}`);
-        } catch (error) {
-          console.error(`Error processing image ${imageFile}:`, error);
+        // Get all images in this category
+        const files = await fs.readdir(fullPath);
+        const imageFiles = files.filter(file =>
+          /\.(jpg|jpeg|png)$/i.test(file) &&
+          !file.toLowerCase().includes('-thumb') && // Exclude thumbnail files
+          !file.toLowerCase().includes('placeholder') // Exclude placeholder images
+        );
+
+        console.log(`Found ${imageFiles.length} images in ${categoryName}`);
+
+        // Sort files to process main images first
+        imageFiles.sort((a, b) => {
+          const aIsMain = isMainImage(a);
+          const bIsMain = isMainImage(b);
+          return bIsMain ? 1 : aIsMain ? -1 : 0;
+        });
+
+        // Process each image
+        let displayOrderCounter = 1;
+        for (const imageFile of imageFiles) {
+          try {
+            const imagePath = path.join(fullPath, imageFile);
+            let thumbnailUrl;
+
+            try {
+              thumbnailUrl = await generateThumbnail(imagePath);
+              console.log(`Generated thumbnail for ${imageFile}: ${thumbnailUrl}`);
+            } catch (error) {
+              console.error(`Error generating thumbnail for ${imageFile}:`, error);
+              thumbnailUrl = undefined;
+            }
+
+            // Generate a meaningful title for the photo
+            const title = formatTitle(imageFile, categoryName);
+
+            // Set display order: main images get highest priority (1000)
+            const displayOrder = isMainImage(imageFile) ? 1000 : displayOrderCounter++;
+
+            // Insert new photo
+            await db.insert(photos).values({
+              title,
+              category: categoryName,
+              imageUrl: imageFile,
+              thumbnailUrl,
+              displayOrder
+            });
+
+            console.log(`Added photo: ${imageFile} in category ${categoryName} with title: ${title} and display order: ${displayOrder}`);
+          } catch (error) {
+            console.error(`Error processing image ${imageFile}:`, error);
+          }
         }
+      } catch (error) {
+        console.error(`Error processing category ${categoryName}:`, error);
       }
     }
 
