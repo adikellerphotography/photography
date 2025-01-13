@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu, Home, Image, User, CreditCard, Info as InfoIcon } from "lucide-react";
+import { Menu, Home, Image, User, CreditCard, Info as InfoIcon, SplitSquareVertical } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "./ThemeToggle";
 import LanguageToggle from "./LanguageToggle";
@@ -16,6 +16,7 @@ export default function Navbar() {
   const navigationItems = [
     { href: "/", label: language === "en" ? "Home" : "בית", icon: Home },
     { href: "/gallery", label: language === "en" ? "Gallery" : "גלריה", icon: Image },
+    { href: "/before-and-after", label: language === "en" ? "Before & After" : "לפני ואחרי", icon: SplitSquareVertical },
     { href: "/pricing", label: language === "en" ? "Pricing" : "מחירים", icon: CreditCard },
     { href: "/info", label: language === "en" ? "Session Info" : "מידע על הצילומים", icon: InfoIcon },
     { href: "/about", label: language === "en" ? "About" : "אודות", icon: User },
@@ -26,9 +27,9 @@ export default function Navbar() {
       <NavigationMenu className="w-full">
         <div className="w-full flex items-center h-14">
           <Link href="/">
-            <a className="text-lg font-cormorant px-4">
+            <NavigationMenuLink className="text-lg font-cormorant px-4">
               Adi Keller Photography
-            </a>
+            </NavigationMenuLink>
           </Link>
 
           {/* Desktop Navigation */}

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "@/hooks/use-translation";
-import ImageCompare from "@/components/ImageCompare";
+import ImageCompare from "../components/ImageCompare";
 
 interface ComparisonSet {
   id: number;
@@ -31,6 +31,19 @@ export default function BeforeAndAfter() {
     );
   }
 
+  if (!comparisons?.length) {
+    return (
+      <div className="min-h-screen pt-16">
+        <div className="container mx-auto px-4 py-16">
+          <h1 className="text-3xl font-bold mb-8">{t("beforeAfter.title")}</h1>
+          <p className="text-lg text-muted-foreground">
+            {t("beforeAfter.noImages")}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen pt-16">
       <motion.div
@@ -46,7 +59,7 @@ export default function BeforeAndAfter() {
         </p>
 
         <div className="space-y-16">
-          {comparisons?.map((comparison) => (
+          {comparisons.map((comparison) => (
             <motion.div
               key={comparison.id}
               initial={{ opacity: 0, y: 20 }}
