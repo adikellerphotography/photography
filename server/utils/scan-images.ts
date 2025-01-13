@@ -60,6 +60,9 @@ export async function scanAndProcessImages() {
 
     console.log(`Found ${categoryDirs.length} category directories`);
 
+    // Delete all existing photos from the database before rescanning
+    await db.delete(photos);
+
     for (const dir of categoryDirs) {
       const categoryPath = dir.name;
       const categoryName = categoryPath.replace(/_/g, ' '); // Convert underscores to spaces for DB
@@ -91,37 +94,31 @@ export async function scanAndProcessImages() {
       // Process each image
       for (const imageFile of imageFiles) {
         try {
-          // Check if image already exists in database
-          const existingPhoto = await db.select()
-            .from(photos)
-            .where(eq(photos.imageUrl, imageFile));
+          const imagePath = path.join(fullPath, imageFile);
+          let thumbnailUrl;
 
-          if (existingPhoto.length === 0) {
-            const imagePath = path.join(fullPath, imageFile);
-            let thumbnailUrl;
-
-            try {
-              thumbnailUrl = await generateThumbnail(imagePath);
-              console.log(`Generated thumbnail for ${imageFile}: ${thumbnailUrl}`);
-            } catch (error) {
-              console.error(`Error generating thumbnail for ${imageFile}:`, error);
-              thumbnailUrl = undefined;
-            }
-
-            // Generate a meaningful title for the photo
-            const title = formatTitle(imageFile, categoryName);
-
-            // Insert new photo
-            await db.insert(photos).values({
-              title,
-              category: categoryName,
-              imageUrl: imageFile,
-              thumbnailUrl,
-              displayOrder: 1
-            });
-
-            console.log(`Added new photo: ${imageFile} in category ${categoryName} with title: ${title}`);
+          try {
+            // Force regenerate thumbnail
+            thumbnailUrl = await generateThumbnail(imagePath, true);
+            console.log(`Generated thumbnail for ${imageFile}: ${thumbnailUrl}`);
+          } catch (error) {
+            console.error(`Error generating thumbnail for ${imageFile}:`, error);
+            thumbnailUrl = undefined;
           }
+
+          // Generate a meaningful title for the photo
+          const title = formatTitle(imageFile, categoryName);
+
+          // Insert new photo
+          await db.insert(photos).values({
+            title,
+            category: categoryName,
+            imageUrl: imageFile,
+            thumbnailUrl,
+            displayOrder: 1
+          });
+
+          console.log(`Added new photo: ${imageFile} in category ${categoryName} with title: ${title}`);
         } catch (error) {
           console.error(`Error processing image ${imageFile}:`, error);
         }

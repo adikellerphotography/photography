@@ -76,21 +76,20 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
   return (
     <div
       ref={containerRef}
-      className="relative overflow-hidden rounded-lg select-none w-full"
+      className="relative overflow-hidden rounded-lg select-none max-h-[80vh] w-full"
+      style={{ aspectRatio: imageOrientation === 'landscape' ? '16/9' : '3/4' }}
       onMouseDown={handleMouseDown}
       onTouchStart={handleMouseDown}
     >
       {/* After image (base layer) */}
-      <div className="relative">
-        <img
-          ref={imageRef}
-          src={afterImage}
-          alt="After"
-          className="block w-full h-auto"
-          onLoad={handleImageLoad}
-          loading="lazy"
-        />
-      </div>
+      <img
+        ref={imageRef}
+        src={afterImage}
+        alt="After"
+        className="absolute inset-0 w-full h-full object-contain"
+        onLoad={handleImageLoad}
+        loading="lazy"
+      />
 
       {/* Before image (overlay) with clip effect */}
       <div
@@ -102,35 +101,35 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
         <img
           src={beforeImage}
           alt="Before"
-          className="block w-full h-auto"
+          className="absolute inset-0 w-full h-full object-contain"
           loading="lazy"
         />
       </div>
 
       {/* Slider line */}
       <div
-        className="absolute inset-y-0 w-0.5 bg-white shadow-[0_0_10px_rgba(0,0,0,0.3)]"
+        className="absolute inset-y-0 w-0.5 bg-white/80 shadow-[0_0_10px_rgba(0,0,0,0.3)]"
         style={{ left: `${sliderPosition}%` }}
       />
 
-      {/* Slider handle */}
+      {/* Slider handle with bidirectional arrow */}
       <motion.div
-        className="absolute top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow-lg cursor-grab active:cursor-grabbing flex items-center justify-center"
+        className="absolute top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-lg cursor-grab active:cursor-grabbing flex items-center justify-center"
         style={{ left: `${sliderPosition}%`, x: "-50%" }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
       >
         <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           className="text-gray-600"
         >
           {/* Bidirectional arrow icon */}
           <path
-            d="M2 8h12M4 5l-3 3 3 3M12 5l3 3-3 3"
+            d="M7.5 12L3.5 8M3.5 8L7.5 4M3.5 8H20.5M16.5 12L20.5 16M20.5 16L16.5 20M20.5 16H3.5"
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
