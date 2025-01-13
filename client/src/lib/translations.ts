@@ -24,11 +24,13 @@ export const translations = {
     },
     about: {
       title: "About Me",
-      welcome: "Welcome to my photography world. I'm passionate about capturing life's precious moments and turning them into lasting memories.",
+      welcome: "Welcome to my photography world. I'm passionate about capturing life's precious moments and turning them into lasting memories. Since 2018, I've dedicated myself to professional photography, creating timeless images that speak to the heart.",
       approachTitle: "My Approach",
-      approach: "Every photo session is unique, and I strive to create a comfortable and enjoyable experience while capturing authentic moments that tell your story.",
+      approach: "Every photo session is unique, and I strive to create a comfortable and enjoyable experience. I meticulously prepare for each session, bringing tailored posing ideas designed to reveal your authentic personality. My sessions are conducted exclusively outdoors, utilizing natural light to create soft, flattering photographs that capture genuine moments and tell your personal story.",
+      styleTitle: "Style",
+      style: "My photography style is clean, classic, and elegantly sophisticated. I believe in the power of simplicity and timelessness, creating images that will be cherished for generations. Attention to detail is paramount – from the subtle play of light and shadow to the careful composition of each shot. I focus on revealing the essence of each subject through carefully crafted, emotionally resonant imagery.",
       experienceTitle: "Experience",
-      experience: "With years of experience in professional photography, I specialize in various styles including family portraits, events, and artistic photography.",
+      experience: "With professional experience since 2018, I specialize in various photographic styles including family portraits, events, and artistic photography. My years of expertise have refined my ability to create stunning visual narratives that capture the depth and beauty of human experiences. Each session is an opportunity to transform fleeting moments into lasting, meaningful memories.",
       connect: "Connect With Me",
     },
     pricing: {
@@ -105,11 +107,13 @@ export const translations = {
     },
     about: {
       title: "אודותיי",
-      welcome: "ברוכים הבאים לעולם הצילום שלי. אני מתרגשת להנציח רגעים יקרים ולהפוך אותם לזכרונות נצח.",
+      welcome: "ברוכים הבאים לעולם הצילום שלי. אני מתרגשת להנציח רגעים יקרים ולהפוך אותם לזכרונות נצח. משנת 2018 הקדשתי את עצמי לצילום מקצועי, יוצרת תמונות על-זמניות המדברות אל הלב.",
       approachTitle: "הגישה שלי",
-      approach: "כל מפגש צילום הוא ייחודי, ואני שואפת ליצור חוויה נעימה ומהנה תוך כדי הנצחת רגעים אותנטיים שמספרים את הסיפור שלכם.",
+      approach: "כל מפגש צילום הוא ייחודי, ואני שואפת ליצור חוויה נעימה ומהנה. אני מתכוננת בקפידה לכל מפגש, מביאה רעיונות לפוזות המותאמות אישית ומיועדות לחשוף את האישיות האותנטית שלך. המפגשים שלי מתקיימים אך ורק בחוץ, תוך שימוש באור טבעי ליצירת תמונות רכות ומחמיאות הלוכדות רגעים אמיתיים ומספרות את הסיפור האישי שלך.",
+      styleTitle: "סגנון",
+      style: "סגנון הצילום שלי נקי, קלאסי ואלגנטי. אני מאמינה בכוח של הפשטות והעל-זמניות, יוצרת תמונות שיישמרו לדורות. תשומת לב לפרטים היא קריטית – מהמשחק העדין של אור וצל ועד להרכב הקפדני של כל תמונה. אני מתמקדת בחשיפת המהות של כל נושא דרך דימויים מעוצבים בקפידה ורגשיים.",
       experienceTitle: "ניסיון",
-      experience: "עם שנים של ניסיון בצילום מקצועי, אני מתמחה במגוון סגנונות כולל צילומי משפחה, אירועים וצילום אומנותי.",
+      experience: "עם ניסיון מקצועי משנת 2018, אני מתמחה בסגנונות צילום שונים כולל צילומי משפחה, אירועים וצילום אמנותי. שנות הניסיון שלי שיפרו את היכולת שלי ליצור נרטיבים חזותיים מרהיבים הלוכדים את העומק והיופי של החוויות האנושיות. כל מפגש הוא הזדמנות להפוך רגעים חולפים לזכרונות משמעותיים ונצחיים.",
       connect: "צרו קשר",
     },
     pricing: {
