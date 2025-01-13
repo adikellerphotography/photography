@@ -88,7 +88,6 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
           src={beforeImage}
           alt="Before"
           className="absolute inset-0 w-full h-full object-cover"
-          style={{ width: `${100 / (sliderPosition / 100)}%` }}
           loading="lazy"
         />
       </div>
