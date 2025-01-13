@@ -4,6 +4,7 @@ import { eq, and, desc, sql } from "drizzle-orm";
 import { db } from "@db";
 import { photos, categories } from "@db/schema";
 import path from "path";
+import fs from "fs/promises";
 import express from "express";
 import { scanAndProcessImages } from "./utils/scan-images";
 
@@ -27,6 +28,46 @@ export function registerRoutes(app: Express): Server {
     fallthrough: true,
     index: false
   }));
+
+  // Get before/after images
+  app.get("/api/before-after-images", async (_req, res) => {
+    try {
+      const beforeAfterPath = path.join(assetsPath, 'before_and_after');
+      const files = await fs.readdir(beforeAfterPath);
+
+      const imageMap = new Map<string, { raw: string; edited: string }>();
+
+      // Group raw and edited images
+      files.forEach(file => {
+        if (file.endsWith('-1.jpg') || file.endsWith('-1.jpeg')) {
+          const baseName = file.slice(0, -6); // Remove '-1.jpg' or '-1.jpeg'
+          const editedFile = files.find(f => 
+            f === `${baseName}-2.jpg` || f === `${baseName}-2.jpeg`
+          );
+
+          if (editedFile) {
+            imageMap.set(baseName, {
+              raw: file,
+              edited: editedFile
+            });
+          }
+        }
+      });
+
+      // Convert to array format
+      const images = Array.from(imageMap.entries()).map(([name, files], index) => ({
+        id: index + 1,
+        title: name.replace(/_/g, ' '),
+        rawImage: `/assets/before_and_after/${encodeURIComponent(files.raw)}`,
+        editedImage: `/assets/before_and_after/${encodeURIComponent(files.edited)}`
+      }));
+
+      res.json(images);
+    } catch (error) {
+      console.error('Error fetching before/after images:', error);
+      res.status(500).json({ error: "Failed to fetch before/after images" });
+    }
+  });
 
   // Get photos for a specific category
   app.get("/api/photos", async (req, res) => {
@@ -66,14 +107,6 @@ export function registerRoutes(app: Express): Server {
           isLiked: false
         };
 
-        console.log('Processing photo:', {
-          id: processedPhoto.id,
-          category: processedPhoto.category,
-          originalPath: photo.imageUrl,
-          processedPath: processedPhoto.imageUrl,
-          thumbnailPath: processedPhoto.thumbnailUrl
-        });
-
         return processedPhoto;
       });
 
@@ -100,7 +133,6 @@ export function registerRoutes(app: Express): Server {
             .limit(1);
 
           const categoryPath = category.name.replace(/\s+/g, '_');
-          console.log(`Processing category: ${category.name}, path: ${categoryPath}`);
 
           if (categoryPhotos[0]) {
             const photoData = {
