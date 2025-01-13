@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 type Language = "en" | "he";
 
@@ -19,11 +19,27 @@ const initialState: LanguageProviderState = {
 
 const LanguageProviderContext = createContext<LanguageProviderState>(initialState);
 
+const LANGUAGE_STORAGE_KEY = 'preferred_language';
+
 export function LanguageProvider({
   children,
   defaultLanguage = "en",
 }: LanguageProviderProps) {
-  const [language, setLanguage] = useState<Language>(defaultLanguage);
+  // Initialize from localStorage or default
+  const [language, setLanguageState] = useState<Language>(() => {
+    const stored = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+    return (stored as Language) || defaultLanguage;
+  });
+
+  const setLanguage = (newLanguage: Language) => {
+    setLanguageState(newLanguage);
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, newLanguage);
+  };
+
+  // Update document direction based on language
+  useEffect(() => {
+    document.documentElement.dir = language === 'he' ? 'rtl' : 'ltr';
+  }, [language]);
 
   return (
     <LanguageProviderContext.Provider value={{ language, setLanguage }}>

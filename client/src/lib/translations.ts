@@ -20,6 +20,17 @@ export const translations = {
       "Nature": "Nature",
       "Wedding": "Wedding",
     },
+    gallery: {
+      title: "Photo Gallery",
+      allPhotos: "All Photos",
+      filterByCategory: "Filter by Category",
+      noPhotos: "No photos found in this category",
+      loading: "Loading more photos...",
+      photoGalleries: "Photo Galleries",
+      viewLarger: "View Larger",
+      sharePhoto: "Share Photo",
+      downloadPhoto: "Download Photo",
+    },
     contact: {
       phone: "Phone Number",
       callMe: "Contact Me",
@@ -80,11 +91,6 @@ export const translations = {
         ]
       }
     },
-    gallery: {
-      noPhotos: "No photos found in this category",
-      loading: "Loading more photos...",
-      photoGalleries: "Photo Galleries",
-    },
     common: {
       loading: "Loading...",
       noPreview: "No preview available",
@@ -110,6 +116,17 @@ export const translations = {
       "Portraits": "פורטרטים",
       "Nature": "טבע",
       "Wedding": "חתונה",
+    },
+    gallery: {
+      title: "גלריית תמונות",
+      allPhotos: "כל התמונות",
+      filterByCategory: "סינון לפי קטגוריה",
+      noPhotos: "לא נמצאו תמונות בקטגוריה זו",
+      loading: "טוען תמונות נוספות...",
+      photoGalleries: "גלריות תמונות",
+      viewLarger: "הצג בגדול",
+      sharePhoto: "שתף תמונה",
+      downloadPhoto: "הורד תמונה",
     },
     contact: {
       phone: "מספר טלפון",
@@ -170,11 +187,6 @@ export const translations = {
           "אפשרות למשלוח מהיר"
         ]
       }
-    },
-    gallery: {
-      noPhotos: "לא נמצאו תמונות בקטגוריה זו",
-      loading: "טוען תמונות נוספות...",
-      photoGalleries: "גלריות תמונות",
     },
     common: {
       loading: "טוען...",
