@@ -25,21 +25,21 @@ export default function Home() {
   }, [categories]);
 
   const getCategoryImage = (categoryName: string) => {
-    // Use 1.jpeg for categories that have it
     const imageMap: Record<string, string> = {
-      'Bat Mitsva': '/assets/Bat_Mitsva/1.jpeg',
-      'Modeling': '/assets/Modeling/1.jpeg',
-      'Women': '/assets/Women/1.jpeg',
-      'Yoga': '/assets/Yoga/1.jpeg',
-      // For other categories, use their first known image
-      'Family': '/assets/Family/IMG_8400-Edit 2 Large.jpeg',
-      'Kids': '/assets/Kids/M68A1950-Edit Large.jpeg',
-      'Events': '/assets/Events/IMG_4159-Edit Large.jpeg',
-      'Nature': '/assets/Nature/M68A6325-Edit Large.jpeg'
+      'Bat Mitsva': '/assets/Bat_Mitsva/M68A0863-Edit Large.jpeg',
+      'Family': '/assets/Family/IMG_3472-Edit Large.jpeg',
+      'Kids': '/assets/Kids/IMG_1083-Edit Large.jpeg',
+      'Events': '/assets/Events/events-coverage.jpg',
+      'Portraits': '/assets/Portraits/portrait-session.jpg',
+      'Nature': '/assets/Nature/nature-photography.jpg',
+      'Wedding': '/assets/Wedding/wedding-photography.jpg',
+      'Modeling': '/assets/Modeling/M68A0065-Edit Large.jpeg',
+      'Women': '/assets/Women/IMG_0095-Edit-Edit Large.jpeg',
+      'Yoga': '/assets/Yoga/IMG_1350-Edit-Edit Large.jpeg'
     };
 
     const fallbackImage = '/assets/placeholder-category.jpg';
-    console.log(`Getting image for category:`, categoryName, imageMap[categoryName] || fallbackImage);
+    console.log('Getting image for category:', categoryName, imageMap[categoryName] || fallbackImage);
     return imageMap[categoryName] || fallbackImage;
   };
 
@@ -79,7 +79,6 @@ export default function Home() {
           <h2 className="text-2xl font-semibold mb-6">{t("home.galleryTitle")}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {displayCategories?.map((category, index) => {
-              // Prefer category.firstPhoto if available, otherwise fallback to our static mapping
               const imageUrl = category.firstPhoto?.imageUrl || getCategoryImage(category.name);
               console.log(`Category ${category.name} image:`, imageUrl);
 
