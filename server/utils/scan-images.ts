@@ -18,8 +18,8 @@ function formatTitle(fileName: string, category: string): string {
   // Replace underscores and dashes with spaces
   title = title.replace(/[_-]/g, ' ');
 
-  // Remove any double spaces and numbers
-  title = title.replace(/\s+/g, ' ').replace(/\d+/g, '').trim();
+  // Remove any double spaces
+  title = title.replace(/\s+/g, ' ').trim();
 
   // Add category-specific prefixes and formatting
   switch (category) {
@@ -67,41 +67,23 @@ export async function scanAndProcessImages() {
 
       console.log(`Processing category: ${categoryName} from path: ${categoryPath}`);
 
-      // Check for 1.jpeg in the category directory
-      const defaultThumb = '1.jpeg';
-      const thumbPath = path.join(fullPath, defaultThumb);
-      let thumbExists = false;
-
-      try {
-        await fs.access(thumbPath);
-        thumbExists = true;
-      } catch (error) {
-        console.log(`No ${defaultThumb} found for category ${categoryName}`);
-      }
-
       // Ensure category exists in database
       await db.insert(categories)
         .values({
           name: categoryName,
           displayOrder: 1,
-          description: `${categoryName} photography collection`,
-          thumbnailUrl: thumbExists ? defaultThumb : undefined
+          description: `${categoryName} photography collection`
         })
         .onConflictDoUpdate({
           target: categories.name,
-          set: { 
-            description: `${categoryName} photography collection`,
-            thumbnailUrl: thumbExists ? defaultThumb : undefined
-          }
+          set: { description: `${categoryName} photography collection` }
         });
 
       // Get all images in this category
       const files = await fs.readdir(fullPath);
       const imageFiles = files.filter(file => 
         /\.(jpg|jpeg|png)$/i.test(file) && 
-        !file.includes('-thumb') && // Exclude thumbnail files
-        !file.includes('1.jpeg') && // Skip the category thumbnail
-        !file.includes('1.jpg')     // Skip the category thumbnail
+        !file.includes('-thumb') // Exclude thumbnail files
       );
 
       console.log(`Found ${imageFiles.length} images in ${categoryName}`);

@@ -5,8 +5,10 @@ export interface Photo {
   category: string;
   imageUrl: string;
   thumbnailUrl?: string;
-  uploadedAt: string;
+  isLiked?: boolean;
+  uploadedAt: Date;
   displayOrder: number;
+  likesCount?: number;
 }
 
 export interface Category {
@@ -14,8 +16,10 @@ export interface Category {
   name: string;
   description?: string;
   displayOrder: number;
-  thumbnailUrl?: string;
+  firstPhoto?: {
+    imageUrl: string;
+    thumbnailUrl?: string;
+  };
 }
 
-// This is used in conjunction with the translations defined in lib/translations.ts
-export type TranslationKey = string;
+export type TranslationKey = keyof typeof translations['en'];

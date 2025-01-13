@@ -67,6 +67,10 @@ export default function BeforeAndAfter() {
               viewport={{ once: true }}
               className="space-y-4"
             >
+              {/* Only render title if it's not just a number */}
+              {!/^\d+$/.test(comparison.title.trim()) && (
+                <h2 className="text-xl font-semibold">{comparison.title}</h2>
+              )}
               <ImageCompare
                 beforeImage={comparison.beforeImage}
                 afterImage={comparison.afterImage}
