@@ -9,7 +9,7 @@ export const translations = {
       about: "About",
     },
     home: {
-      title: "Where Art Meets the Len",
+      title: "Where Art Meets the Lens",
       subtitle: "Artistic portrait photography, transforming storytelling moments into stunning works of photographic art.",
       galleryTitle: "Photo Galleries",
       featuredWork: "Featured Work",
@@ -122,7 +122,7 @@ export const translations = {
       about: "אודות",
     },
     home: {
-      title: "היכן שאומנות פוגשת את הלן",
+      title: "היכן שאומנות פוגשת את העדשה",
       subtitle: "צילום פורטרטים אומנותי, הופך רגעים מספרי סיפורים ליצירות צילום מרהיבות",
       galleryTitle: "גלריות תמונות",
       featuredWork: "עבודות נבחרות",
