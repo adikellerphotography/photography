@@ -36,11 +36,11 @@ export default function Home() {
   return (
     <div className="min-h-screen pt-16">
       {/* Hero Section */}
-      <section className="relative min-h-screen">
+      <section className="relative">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative h-full container mx-auto px-4 pt-32 md:pt-24 pb-16 flex flex-col justify-center items-center"
+          className="relative container mx-auto px-4 pt-16 pb-8 flex flex-col justify-center items-center"
         >
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <h1 className="text-4xl md:text-6xl font-bold font-cormorant">
@@ -55,13 +55,13 @@ export default function Home() {
       </section>
 
       {/* Gallery Categories Section */}
-      <section className="container mx-auto px-4 py-16">
+      <section className="container mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="space-y-8"
+          className="space-y-6"
         >
-          <h2 className="text-2xl font-semibold mb-8">{t("home.galleryTitle")}</h2>
+          <h2 className="text-2xl font-semibold mb-6">{t("home.galleryTitle")}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {categories?.map((category, index) => (
               <motion.div
@@ -104,8 +104,8 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <section className="container mx-auto px-4 py-16">
-        <h2 className="text-2xl font-semibold mb-8">{t("home.featuredWork")}</h2>
+      <section className="container mx-auto px-4 py-8">
+        <h2 className="text-2xl font-semibold mb-6">{t("home.featuredWork")}</h2>
         <PhotoGallery />
       </section>
     </div>
