@@ -5,17 +5,7 @@ import { photos, categories } from "@db/schema";
 import { generateThumbnail } from "./image";
 import { eq } from 'drizzle-orm';
 
-function isMainImage(fileName: string): boolean {
-  const normalizedName = fileName.toLowerCase();
-  return normalizedName === 'main.jpg' || normalizedName === 'main.jpeg';
-}
-
 function formatTitle(fileName: string, category: string): string {
-  // Skip formatting for main images as they're special cases
-  if (isMainImage(fileName)) {
-    return `${category} - Featured Image`;
-  }
-
   // Remove file extension and 'Large' suffix
   let title = fileName.replace(/\.(jpe?g|png)$/i, '').replace(/\s*Large$/i, '');
 
@@ -60,31 +50,16 @@ function formatTitle(fileName: string, category: string): string {
 
 export async function scanAndProcessImages() {
   try {
-    console.log('Starting image scan process...');
     const assetsPath = path.join(process.cwd(), 'attached_assets');
-
-    // Ensure assets directory exists
-    try {
-      await fs.access(assetsPath);
-    } catch (error) {
-      console.log('Creating attached_assets directory...');
-      await fs.mkdir(assetsPath, { recursive: true });
-      return; // Exit early if no assets directory existed
-    }
-
-    // Clear existing photos before reindexing
-    console.log('Clearing existing photo records...');
-    await db.delete(photos);
 
     // Get all directories (categories)
     const entries = await fs.readdir(assetsPath, { withFileTypes: true });
-    const categoryDirs = entries.filter(entry =>
+    const categoryDirs = entries.filter(entry => 
       entry.isDirectory() && !entry.name.startsWith('.')
     );
 
     console.log(`Found ${categoryDirs.length} category directories`);
 
-    // Process each category directory
     for (const dir of categoryDirs) {
       const categoryPath = dir.name;
       const categoryName = categoryPath.replace(/_/g, ' '); // Convert underscores to spaces for DB
@@ -92,40 +67,36 @@ export async function scanAndProcessImages() {
 
       console.log(`Processing category: ${categoryName} from path: ${categoryPath}`);
 
-      try {
-        // Ensure category exists in database
-        await db.insert(categories)
-          .values({
-            name: categoryName,
-            displayOrder: 1,
-            description: `${categoryName} photography collection`
-          })
-          .onConflictDoUpdate({
-            target: categories.name,
-            set: { description: `${categoryName} photography collection` }
-          });
-
-        // Get all images in this category
-        const files = await fs.readdir(fullPath);
-        const imageFiles = files.filter(file =>
-          /\.(jpg|jpeg|png)$/i.test(file) &&
-          !file.toLowerCase().includes('-thumb') && // Exclude thumbnail files
-          !file.toLowerCase().includes('placeholder') // Exclude placeholder images
-        );
-
-        console.log(`Found ${imageFiles.length} images in ${categoryName}`);
-
-        // Sort files to process main images first
-        imageFiles.sort((a, b) => {
-          const aIsMain = isMainImage(a);
-          const bIsMain = isMainImage(b);
-          return bIsMain ? 1 : aIsMain ? -1 : 0;
+      // Ensure category exists in database
+      await db.insert(categories)
+        .values({
+          name: categoryName,
+          displayOrder: 1,
+          description: `${categoryName} photography collection`
+        })
+        .onConflictDoUpdate({
+          target: categories.name,
+          set: { description: `${categoryName} photography collection` }
         });
 
-        // Process each image
-        let displayOrderCounter = 1;
-        for (const imageFile of imageFiles) {
-          try {
+      // Get all images in this category
+      const files = await fs.readdir(fullPath);
+      const imageFiles = files.filter(file => 
+        /\.(jpg|jpeg|png)$/i.test(file) && 
+        !file.includes('-thumb') // Exclude thumbnail files
+      );
+
+      console.log(`Found ${imageFiles.length} images in ${categoryName}`);
+
+      // Process each image
+      for (const imageFile of imageFiles) {
+        try {
+          // Check if image already exists in database
+          const existingPhoto = await db.select()
+            .from(photos)
+            .where(eq(photos.imageUrl, imageFile));
+
+          if (existingPhoto.length === 0) {
             const imagePath = path.join(fullPath, imageFile);
             let thumbnailUrl;
 
@@ -140,25 +111,20 @@ export async function scanAndProcessImages() {
             // Generate a meaningful title for the photo
             const title = formatTitle(imageFile, categoryName);
 
-            // Set display order: main images get highest priority (1000)
-            const displayOrder = isMainImage(imageFile) ? 1000 : displayOrderCounter++;
-
             // Insert new photo
             await db.insert(photos).values({
               title,
               category: categoryName,
               imageUrl: imageFile,
               thumbnailUrl,
-              displayOrder
+              displayOrder: 1
             });
 
-            console.log(`Added photo: ${imageFile} in category ${categoryName} with title: ${title} and display order: ${displayOrder}`);
-          } catch (error) {
-            console.error(`Error processing image ${imageFile}:`, error);
+            console.log(`Added new photo: ${imageFile} in category ${categoryName} with title: ${title}`);
           }
+        } catch (error) {
+          console.error(`Error processing image ${imageFile}:`, error);
         }
-      } catch (error) {
-        console.error(`Error processing category ${categoryName}:`, error);
       }
     }
 

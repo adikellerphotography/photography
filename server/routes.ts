@@ -1,6 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { eq, desc } from "drizzle-orm";
+import { eq, and, desc, sql } from "drizzle-orm";
 import { db } from "@db";
 import { photos, categories } from "@db/schema";
 import path from "path";
@@ -38,39 +38,50 @@ export function registerRoutes(app: Express): Server {
 
       console.log('Fetching photos with params:', { category, page, pageSize });
 
-      // Build base query
-      const query = db
-        .select()
-        .from(photos)
-        .limit(pageSize)
-        .offset((page - 1) * pageSize);
+      // Build query with category filter
+      let query = db.select().from(photos);
 
       if (category && typeof category === 'string') {
-        query.where(eq(photos.category, decodeURIComponent(category)));
+        const decodedCategory = decodeURIComponent(category);
+        console.log('Filtering by category:', decodedCategory);
+        query = query.where(eq(photos.category, decodedCategory));
       }
 
-      // Add ordering
-      query.orderBy(desc(photos.displayOrder));
+      // Execute query with pagination
+      const results = await query
+        .limit(pageSize)
+        .offset((page - 1) * pageSize)
+        .orderBy(desc(photos.displayOrder));
 
-      // Execute query
-      const results = await query;
+      console.log(`Found ${results.length} photos for category ${category}`);
 
       // Process photos and add full URLs
       const processedPhotos = results.map(photo => {
         const categoryPath = photo.category.replace(/\s+/g, '_');
-        return {
+        const processedPhoto = {
           ...photo,
           imageUrl: `/assets/${categoryPath}/${encodeURIComponent(photo.imageUrl)}`,
           thumbnailUrl: photo.thumbnailUrl ? 
             `/assets/${categoryPath}/${encodeURIComponent(photo.thumbnailUrl)}` : 
-            undefined
+            undefined,
+          isLiked: false
         };
+
+        console.log('Processing photo:', {
+          id: processedPhoto.id,
+          category: processedPhoto.category,
+          originalPath: photo.imageUrl,
+          processedPath: processedPhoto.imageUrl,
+          thumbnailPath: processedPhoto.thumbnailUrl
+        });
+
+        return processedPhoto;
       });
 
       res.json(processedPhotos);
     } catch (error: any) {
       console.error('Error fetching photos:', error);
-      res.status(500).json({ error: "Failed to fetch photos" });
+      res.status(500).json({ error: "Failed to fetch photos", details: error.message });
     }
   });
 
@@ -84,29 +95,24 @@ export function registerRoutes(app: Express): Server {
       const imageSets: { id: number; beforeImage: string; afterImage: string; title: string; }[] = [];
       const imageMap = new Map<string, string>();
 
+      // First, collect all images
       files.forEach(file => {
-        if (file.toLowerCase().includes('large.jpeg') || file.toLowerCase().includes('large.jpg')) {
-          const base = file.replace(/-[12] Large\.(jpeg|jpg)$/i, '');
+        if (file.endsWith(' Large.jpeg') || file.endsWith(' Large.jpg')) {
+          const base = file.replace(/-[12] Large\.(jpeg|jpg)$/, '');
           imageMap.set(base, (imageMap.get(base) || '') + file);
         }
       });
 
+      // Then, create pairs
       let id = 1;
-      imageMap.forEach((_, key) => {
-        const beforeFile = files.find(f => 
-          f.toLowerCase().startsWith(key.toLowerCase()) && 
-          f.toLowerCase().includes('-1 large')
-        );
-        const afterFile = files.find(f => 
-          f.toLowerCase().startsWith(key.toLowerCase()) && 
-          f.toLowerCase().includes('-2 large')
-        );
+      imageMap.forEach((value, key) => {
+        const beforeFile = files.find(f => f.startsWith(key) && f.includes('-1 Large'));
+        const afterFile = files.find(f => f.startsWith(key) && f.includes('-2 Large'));
 
         if (beforeFile && afterFile) {
-          const title = key.replace(/^\d+[-_]?/, '').replace(/[-_]/g, ' ').trim();
           imageSets.push({
             id: id++,
-            title,
+            title: key.replace(/_/g, ' '),
             beforeImage: `/assets/before_and_after/${encodeURIComponent(beforeFile)}`,
             afterImage: `/assets/before_and_after/${encodeURIComponent(afterFile)}`
           });
@@ -116,7 +122,7 @@ export function registerRoutes(app: Express): Server {
       res.json(imageSets);
     } catch (error: any) {
       console.error('Error fetching before/after images:', error);
-      res.status(500).json({ error: "Failed to fetch before/after images" });
+      res.status(500).json({ error: "Failed to fetch before/after images", details: error.message });
     }
   });
 
@@ -125,6 +131,7 @@ export function registerRoutes(app: Express): Server {
     try {
       const results = await db.select().from(categories).orderBy(categories.displayOrder);
 
+      // Get a photo for each category
       const categoriesWithPhotos = await Promise.all(
         results.map(async (category) => {
           const categoryPhotos = await db
@@ -134,9 +141,11 @@ export function registerRoutes(app: Express): Server {
             .orderBy(desc(photos.displayOrder))
             .limit(1);
 
+          const categoryPath = category.name.replace(/\s+/g, '_');
+          console.log(`Processing category: ${category.name}, path: ${categoryPath}`);
+
           if (categoryPhotos[0]) {
-            const categoryPath = category.name.replace(/\s+/g, '_');
-            return {
+            const photoData = {
               ...category,
               firstPhoto: {
                 imageUrl: `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].imageUrl)}`,
@@ -145,6 +154,8 @@ export function registerRoutes(app: Express): Server {
                   undefined
               }
             };
+            console.log('Category photo data:', photoData.firstPhoto);
+            return photoData;
           }
           return category;
         })
