@@ -1,13 +1,15 @@
-import { pgTable, text, serial, timestamp, varchar, integer, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
+// Basic categories table
 export const categories = pgTable("categories", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 50 }).notNull().unique(),
   description: text("description"),
-  displayOrder: integer("display_order").notNull().default(0),
+  displayOrder: serial("display_order").notNull(),
 });
 
+// Basic photos table
 export const photos = pgTable("photos", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
@@ -16,13 +18,7 @@ export const photos = pgTable("photos", {
   imageUrl: text("image_url").notNull(),
   thumbnailUrl: text("thumbnail_url"),
   uploadedAt: timestamp("uploaded_at").defaultNow(),
-  displayOrder: integer("display_order").notNull().default(0),
-  width: integer("width"),
-  height: integer("height"),
-  orientation: varchar("orientation", { length: 20 }),
-  isBeforeAfter: boolean("is_before_after").default(false),
-  beforeAfterGroup: varchar("before_after_group", { length: 100}),
-  isBeforeImage: boolean("is_before_image").default(false),
+  displayOrder: serial("display_order").notNull(),
 });
 
 // Create Zod schemas for type validation
@@ -36,12 +32,3 @@ export type Category = typeof categories.$inferSelect;
 export type InsertCategory = typeof categories.$inferInsert;
 export type Photo = typeof photos.$inferSelect;
 export type InsertPhoto = typeof photos.$inferInsert;
-
-export const photoLikes = pgTable("photo_likes", {
-  id: serial("id").primaryKey(),
-  photoId: integer("photo_id").references(() => photos.id, { onDelete: "cascade" }).notNull(),
-  ipAddress: text("ip_address").notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
-});
-
-export type PhotoLike = typeof photoLikes.$inferSelect;
