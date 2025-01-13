@@ -5,9 +5,14 @@ import { photos, categories } from "@db/schema";
 import { generateThumbnail } from "./image";
 import { eq } from 'drizzle-orm';
 
+function isMainImage(fileName: string): boolean {
+  const normalizedName = fileName.toLowerCase();
+  return normalizedName === 'main.jpg' || normalizedName === 'main.jpeg';
+}
+
 function formatTitle(fileName: string, category: string): string {
-  // Skip formatting for main.jpeg as it's a special case
-  if (fileName.toLowerCase() === 'main.jpeg') {
+  // Skip formatting for main images as they're special cases
+  if (isMainImage(fileName)) {
     return `${category} - Featured Image`;
   }
 
@@ -100,14 +105,15 @@ export async function scanAndProcessImages() {
 
       console.log(`Found ${imageFiles.length} images in ${categoryName}`);
 
-      // Sort files to process main.jpeg first
+      // Sort files to process main images first
       imageFiles.sort((a, b) => {
-        const aIsMain = a.toLowerCase() === 'main.jpeg';
-        const bIsMain = b.toLowerCase() === 'main.jpeg';
+        const aIsMain = isMainImage(a);
+        const bIsMain = isMainImage(b);
         return bIsMain ? 1 : aIsMain ? -1 : 0;
       });
 
       // Process each image
+      let displayOrderCounter = 1;
       for (const imageFile of imageFiles) {
         try {
           const imagePath = path.join(fullPath, imageFile);
@@ -124,8 +130,8 @@ export async function scanAndProcessImages() {
           // Generate a meaningful title for the photo
           const title = formatTitle(imageFile, categoryName);
 
-          // Set display order: main.jpeg gets highest priority
-          const displayOrder = imageFile.toLowerCase() === 'main.jpeg' ? 1000 : 1;
+          // Set display order: main images get highest priority (1000)
+          const displayOrder = isMainImage(imageFile) ? 1000 : displayOrderCounter++;
 
           // Insert new photo
           await db.insert(photos).values({
@@ -136,7 +142,7 @@ export async function scanAndProcessImages() {
             displayOrder
           });
 
-          console.log(`Added photo: ${imageFile} in category ${categoryName} with title: ${title}`);
+          console.log(`Added photo: ${imageFile} in category ${categoryName} with title: ${title} and display order: ${displayOrder}`);
         } catch (error) {
           console.error(`Error processing image ${imageFile}:`, error);
         }

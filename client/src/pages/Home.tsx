@@ -15,6 +15,11 @@ export default function Home() {
 
   const { t } = useTranslation();
 
+  // Filter out the "before and after" category
+  const filteredCategories = categories?.filter(category => 
+    !category.name.toLowerCase().includes('before') && !category.name.toLowerCase().includes('after')
+  );
+
   useEffect(() => {
     if (categories) {
       console.log('Categories loaded:', categories.map(c => ({
@@ -73,10 +78,7 @@ export default function Home() {
         >
           <h2 className="text-2xl font-semibold mb-6">{t("home.galleryTitle")}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categories?.filter(category => 
-              !category.name.toLowerCase().includes('before') && 
-              !category.name.toLowerCase().includes('after')
-            ).map((category, index) => {
+            {filteredCategories?.map((category, index) => {
               const imageUrl = category.firstPhoto?.imageUrl || getCategoryImage(category.name);
               console.log(`Category ${category.name} image:`, imageUrl);
 
