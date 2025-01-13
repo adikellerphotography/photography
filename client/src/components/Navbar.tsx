@@ -26,15 +26,11 @@ export default function Navbar() {
     <div className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
       <NavigationMenu className="w-full">
         <div className="w-full flex items-center h-14">
-          <NavigationMenuList>
-            <NavigationMenuItem className="h-14">
-              <Link href="/">
-                <NavigationMenuLink className="text-lg font-cormorant h-14 px-4 flex items-center cursor-pointer bg-accent/60 hover:bg-accent/80 transition-colors">
-                  Adi Keller Photography
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-          </NavigationMenuList>
+          <Link href="/">
+            <NavigationMenuLink className="text-lg font-cormorant px-4">
+              Adi Keller Photography
+            </NavigationMenuLink>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-4 ml-auto px-4">
@@ -63,12 +59,12 @@ export default function Navbar() {
               <ThemeToggle />
             </div>
 
-            {/* Menu button floating on the right with matching background */}
+            {/* Menu button floating on the right with brighter background */}
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
                   className="h-14 w-14 rounded-none border-l bg-accent/60 hover:bg-accent/80 transition-colors"
                 >
                   <Menu className="h-5 w-5" />
@@ -81,13 +77,13 @@ export default function Navbar() {
                     const Icon = item.icon;
                     return (
                       <Link key={item.href} href={item.href}>
-                        <button
-                          className="flex items-center gap-3 px-2 py-2 text-lg hover:text-primary transition-colors w-full text-left"
+                        <a 
+                          className="flex items-center gap-3 px-2 py-2 text-lg hover:text-primary transition-colors"
                           onClick={() => setIsOpen(false)}
                         >
                           <Icon className="h-5 w-5" />
                           {item.label}
-                        </button>
+                        </a>
                       </Link>
                     );
                   })}
