@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs/promises';
 import { db } from "@db";
 import { photos, categories } from "@db/schema";
-import { processImage } from "./image";
+import { generateThumbnail } from "./image";
 import { eq } from 'drizzle-orm';
 
 function formatTitle(fileName: string, category: string): string {
@@ -67,14 +67,11 @@ export async function scanAndProcessImages() {
 
       console.log(`Processing category: ${categoryName} from path: ${categoryPath}`);
 
-      // Check if category is "Before and After" for special handling
-      const isBeforeAfter = categoryName.toLowerCase() === 'before and after';
-
       // Ensure category exists in database
       await db.insert(categories)
         .values({
           name: categoryName,
-          displayOrder: isBeforeAfter ? 999 : 1, // Put Before/After at the end
+          displayOrder: 1,
           description: `${categoryName} photography collection`
         })
         .onConflictDoUpdate({
@@ -101,21 +98,18 @@ export async function scanAndProcessImages() {
 
           if (existingPhoto.length === 0) {
             const imagePath = path.join(fullPath, imageFile);
+            let thumbnailUrl;
 
-            // Process image and get its properties
-            const { thumbnailUrl, width, height, orientation } = await processImage(imagePath);
+            try {
+              thumbnailUrl = await generateThumbnail(imagePath);
+              console.log(`Generated thumbnail for ${imageFile}: ${thumbnailUrl}`);
+            } catch (error) {
+              console.error(`Error generating thumbnail for ${imageFile}:`, error);
+              thumbnailUrl = undefined;
+            }
 
             // Generate a meaningful title for the photo
             const title = formatTitle(imageFile, categoryName);
-
-            // Check if this is a before/after image
-            const isBeforeAfterImage = isBeforeAfter && /[-_][12]\s+Large\.(jpg|jpeg)$/i.test(imageFile);
-            const beforeAfterGroup = isBeforeAfterImage ? 
-              imageFile.replace(/[-_][12]\s+Large\.(jpg|jpeg)$/i, '') : 
-              null;
-            const isBeforeImage = isBeforeAfterImage ? 
-              /[-_]1\s+Large\.(jpg|jpeg)$/i.test(imageFile) : 
-              false;
 
             // Insert new photo
             await db.insert(photos).values({
@@ -123,13 +117,7 @@ export async function scanAndProcessImages() {
               category: categoryName,
               imageUrl: imageFile,
               thumbnailUrl,
-              displayOrder: 1,
-              width,
-              height,
-              orientation,
-              isBeforeAfter: isBeforeAfterImage,
-              beforeAfterGroup: beforeAfterGroup,
-              isBeforeImage: isBeforeImage
+              displayOrder: 1
             });
 
             console.log(`Added new photo: ${imageFile} in category ${categoryName} with title: ${title}`);
