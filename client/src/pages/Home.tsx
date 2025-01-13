@@ -7,6 +7,7 @@ import type { Category } from "@/lib/types";
 import SocialLinks from "@/components/SocialLinks";
 import PhotoGallery from "@/components/PhotoGallery";
 import { useTranslation } from "@/hooks/use-translation";
+import { useEffect } from "react";
 
 export default function Home() {
   const { data: categories } = useQuery<Category[]>({
@@ -15,22 +16,34 @@ export default function Home() {
 
   const { t } = useTranslation();
 
+  // Log categories data for debugging
+  useEffect(() => {
+    if (categories) {
+      console.log('Categories loaded:', categories.map(c => ({
+        name: c.name,
+        firstPhoto: c.firstPhoto
+      })));
+    }
+  }, [categories]);
+
   // Function to get category image based on category name
   const getCategoryImage = (categoryName: string) => {
     const imageMap: Record<string, string> = {
-      'Kids': '/assets/IMG_4704-Edit.jpg',
-      'Bat Mitsva': '/assets/M68A0863-Edit.jpg',
-      'Family': '/assets/family-portrait.jpg',
-      'Events': '/assets/events-coverage.jpg',
-      'Portraits': '/assets/portrait-session.jpg',
-      'Nature': '/assets/nature-photography.jpg',
-      'Wedding': '/assets/wedding-photography.jpg',
-      'Modeling': '/assets/model-portfolio.jpg',
-      'Women': '/assets/women-portraits.jpg',
-      'Yoga': '/assets/yoga-session.jpg'
+      'Bat Mitsva': '/assets/Bat_Mitsva/M68A0863-Edit Large.jpeg',
+      'Family': '/assets/Family/family-portrait.jpg',
+      'Kids': '/assets/Kids/IMG_4704-Edit.jpg',
+      'Events': '/assets/Events/events-coverage.jpg',
+      'Portraits': '/assets/Portraits/portrait-session.jpg',
+      'Nature': '/assets/Nature/nature-photography.jpg',
+      'Wedding': '/assets/Wedding/wedding-photography.jpg',
+      'Modeling': '/assets/Modeling/model-portfolio.jpg',
+      'Women': '/assets/Women/women-portraits.jpg',
+      'Yoga': '/assets/Yoga/yoga-session.jpg'
     };
 
-    return imageMap[categoryName] || '/assets/placeholder-category.jpg';
+    const fallbackImage = '/assets/placeholder-category.jpg';
+    console.log('Getting image for category:', categoryName, imageMap[categoryName] || fallbackImage);
+    return imageMap[categoryName] || fallbackImage;
   };
 
   return (
@@ -63,43 +76,54 @@ export default function Home() {
         >
           <h2 className="text-2xl font-semibold mb-6">{t("home.galleryTitle")}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categories?.map((category, index) => (
-              <motion.div
-                key={category.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.02 }}
-              >
-                <Link href={`/gallery?category=${category.name}`}>
-                  <Card className="cursor-pointer overflow-hidden">
-                    <CardContent className="p-0">
-                      <AspectRatio ratio={4/3}>
-                        <div className="relative w-full h-full">
-                          <img
-                            src={category.firstPhoto?.imageUrl || getCategoryImage(category.name)}
-                            alt=""
-                            className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent">
-                            <div className="absolute bottom-0 left-0 right-0 p-4">
-                              <h3 className="text-xl font-semibold text-white">
-                                {t(`categories.${category.name}`)}
-                              </h3>
-                              {category.description && (
-                                <p className="text-sm text-white/80">
-                                  {category.description}
-                                </p>
-                              )}
+            {categories?.map((category, index) => {
+              const imageUrl = category.firstPhoto?.imageUrl || getCategoryImage(category.name);
+              console.log(`Category ${category.name} image:`, imageUrl);
+
+              return (
+                <motion.div
+                  key={category.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <Link href={`/gallery?category=${encodeURIComponent(category.name)}`}>
+                    <Card className="cursor-pointer overflow-hidden">
+                      <CardContent className="p-0">
+                        <AspectRatio ratio={4/3}>
+                          <div className="relative w-full h-full">
+                            <img
+                              src={imageUrl}
+                              alt={t(`categories.${category.name}`)}
+                              className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
+                              onError={(e) => {
+                                console.error('Failed to load image:', imageUrl);
+                                const target = e.target as HTMLImageElement;
+                                target.onerror = null;
+                                target.src = '/assets/placeholder-category.jpg';
+                              }}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent">
+                              <div className="absolute bottom-0 left-0 right-0 p-4">
+                                <h3 className="text-xl font-semibold text-white">
+                                  {t(`categories.${category.name}`)}
+                                </h3>
+                                {category.description && (
+                                  <p className="text-sm text-white/80">
+                                    {category.description}
+                                  </p>
+                                )}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </AspectRatio>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </motion.div>
-            ))}
+                        </AspectRatio>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
         </motion.div>
       </section>

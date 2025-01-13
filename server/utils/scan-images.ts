@@ -18,29 +18,32 @@ export async function scanAndProcessImages() {
     console.log(`Found ${categoryDirs.length} category directories`);
 
     for (const dir of categoryDirs) {
-      const categoryName = dir.name;
-      const categoryPath = path.join(assetsPath, categoryName);
+      const categoryPath = dir.name;
+      const categoryName = categoryPath.replace(/_/g, ' '); // Convert underscores to spaces for DB
+      const fullPath = path.join(assetsPath, categoryPath);
+
+      console.log(`Processing category: ${categoryName} from path: ${categoryPath}`);
 
       // Ensure category exists in database
       await db.insert(categories)
         .values({
-          name: categoryName.replace(/_/g, ' '), // Convert underscores back to spaces
-          displayOrder: 1, // You may want to adjust this
-          description: `${categoryName.replace(/_/g, ' ')} photography collection`
+          name: categoryName,
+          displayOrder: 1,
+          description: `${categoryName} photography collection`
         })
         .onConflictDoUpdate({
           target: categories.name,
-          set: { description: `${categoryName.replace(/_/g, ' ')} photography collection` }
+          set: { description: `${categoryName} photography collection` }
         });
 
       // Get all images in this category
-      const files = await fs.readdir(categoryPath);
+      const files = await fs.readdir(fullPath);
       const imageFiles = files.filter(file => 
         /\.(jpg|jpeg|png)$/i.test(file) && 
         !file.includes('-thumb') // Exclude thumbnail files
       );
 
-      console.log(`Processing ${imageFiles.length} images in ${categoryName}`);
+      console.log(`Found ${imageFiles.length} images in ${categoryName}`);
 
       // Process each image
       for (const imageFile of imageFiles) {
@@ -51,11 +54,12 @@ export async function scanAndProcessImages() {
             .where(eq(photos.imageUrl, imageFile));
 
           if (existingPhoto.length === 0) {
-            const imagePath = path.join(categoryPath, imageFile);
+            const imagePath = path.join(fullPath, imageFile);
             let thumbnailUrl;
 
             try {
               thumbnailUrl = await generateThumbnail(imagePath);
+              console.log(`Generated thumbnail for ${imageFile}: ${thumbnailUrl}`);
             } catch (error) {
               console.error(`Error generating thumbnail for ${imageFile}:`, error);
               thumbnailUrl = undefined;
@@ -64,13 +68,13 @@ export async function scanAndProcessImages() {
             // Insert new photo
             await db.insert(photos).values({
               title: path.basename(imageFile, path.extname(imageFile)),
-              category: categoryName.replace(/_/g, ' '),
+              category: categoryName,
               imageUrl: imageFile,
               thumbnailUrl,
-              displayOrder: 1 // You may want to adjust this
+              displayOrder: 1
             });
 
-            console.log(`Added new photo: ${imageFile}`);
+            console.log(`Added new photo: ${imageFile} in category ${categoryName}`);
           }
         } catch (error) {
           console.error(`Error processing image ${imageFile}:`, error);

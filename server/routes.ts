@@ -27,6 +27,103 @@ export function registerRoutes(app: Express): Server {
   // Initialize thumbnails for existing photos
   generateMissingThumbnails().catch(console.error);
 
+  // Get photos for a specific category
+  app.get("/api/photos", async (req, res) => {
+    try {
+      const { category } = req.query;
+      const page = Number(req.query.page) || 1;
+      const pageSize = Number(req.query.pageSize) || 20;
+
+      console.log('Fetching photos with params:', { category, page, pageSize });
+
+      // Build query with category filter
+      let query = db.select().from(photos);
+
+      if (category && typeof category === 'string') {
+        console.log('Filtering by category:', category);
+        query = query.where(eq(photos.category, category));
+      }
+
+      // Execute query with pagination
+      const results = await query
+        .limit(pageSize)
+        .offset((page - 1) * pageSize)
+        .orderBy(desc(photos.displayOrder));
+
+      console.log(`Found ${results.length} photos`);
+
+      // Process photos and add full URLs
+      const processedPhotos = results.map(photo => {
+        const categoryPath = photo.category.replace(/\s+/g, '_');
+        const processedPhoto = {
+          ...photo,
+          imageUrl: `/assets/${categoryPath}/${photo.imageUrl}`,
+          thumbnailUrl: photo.thumbnailUrl ? 
+            `/assets/${categoryPath}/${photo.thumbnailUrl}` : 
+            undefined,
+          isLiked: false
+        };
+        return processedPhoto;
+      });
+
+      if (processedPhotos.length > 0) {
+        console.log('Sample photo:', {
+          id: processedPhotos[0].id,
+          category: processedPhotos[0].category,
+          imageUrl: processedPhotos[0].imageUrl,
+          thumbnailUrl: processedPhotos[0].thumbnailUrl
+        });
+      }
+
+      res.json(processedPhotos);
+    } catch (error) {
+      console.error('Error fetching photos:', error);
+      res.status(500).json({ error: "Failed to fetch photos", details: error.message });
+    }
+  });
+
+  // Get all categories with their first photos
+  app.get("/api/categories", async (_req, res) => {
+    try {
+      const results = await db.select().from(categories).orderBy(categories.displayOrder);
+
+      // Get a photo for each category
+      const categoriesWithPhotos = await Promise.all(
+        results.map(async (category) => {
+          const categoryPhotos = await db
+            .select()
+            .from(photos)
+            .where(eq(photos.category, category.name))
+            .orderBy(desc(photos.displayOrder))
+            .limit(1);
+
+          const categoryPath = category.name.replace(/\s+/g, '_');
+          console.log(`Processing category: ${category.name}, path: ${categoryPath}`);
+
+          if (categoryPhotos[0]) {
+            const photoData = {
+              ...category,
+              firstPhoto: {
+                imageUrl: `/assets/${categoryPath}/${categoryPhotos[0].imageUrl}`,
+                thumbnailUrl: categoryPhotos[0].thumbnailUrl ?
+                  `/assets/${categoryPath}/${categoryPhotos[0].thumbnailUrl}` :
+                  undefined
+              }
+            };
+            console.log('Category photo data:', photoData.firstPhoto);
+            return photoData;
+          }
+          return category;
+        })
+      );
+
+      res.json(categoriesWithPhotos);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      res.status(500).json({ error: "Failed to fetch categories", details: error.message });
+    }
+  });
+
   // Get all categories with a random photo from each
   app.get("/api/categories-with-photos", async (_req, res) => {
     try {
@@ -59,85 +156,6 @@ export function registerRoutes(app: Express): Server {
     } catch (error) {
       console.error('Error fetching categories with photos:', error);
       res.status(500).json({ error: "Failed to fetch categories with photos" });
-    }
-  });
-
-  // Get all photos with optional category filter and pagination
-  app.get("/api/photos", async (req, res) => {
-    try {
-      const { category } = req.query;
-      const page = Number(req.query.page) || 1;
-      const pageSize = Number(req.query.pageSize) || 20;
-
-      // Build query with category filter
-      const baseQuery = category && typeof category === 'string'
-        ? db.select().from(photos).where(eq(photos.category, category))
-        : db.select().from(photos);
-
-      // Execute query with pagination
-      const results = await baseQuery
-        .limit(pageSize)
-        .offset((page - 1) * pageSize)
-        .orderBy(desc(photos.displayOrder));
-
-      // Process photos and add full URLs
-      const processedPhotos = results.map(photo => {
-        // Replace spaces with underscores in category path
-        const categoryPath = photo.category.replace(/\s+/g, '_');
-        return {
-          ...photo,
-          imageUrl: `/assets/${categoryPath}/${photo.imageUrl}`,
-          thumbnailUrl: photo.thumbnailUrl ?
-            `/assets/${categoryPath}/${photo.thumbnailUrl}` :
-            undefined,
-          isLiked: false // Default to false until likes system is implemented
-        };
-      });
-
-      console.log('Photos fetched:', processedPhotos[0]); // Log first photo for debugging
-      res.json(processedPhotos);
-    } catch (error) {
-      console.error('Error fetching photos:', error);
-      res.status(500).json({ error: "Failed to fetch photos" });
-    }
-  });
-
-  // Get all categories
-  app.get("/api/categories", async (_req, res) => {
-    try {
-      const results = await db.select().from(categories).orderBy(categories.displayOrder);
-
-      // Get a photo for each category
-      const categoriesWithPhotos = await Promise.all(
-        results.map(async (category) => {
-          const categoryPhotos = await db
-            .select()
-            .from(photos)
-            .where(eq(photos.category, category.name))
-            .limit(1);
-
-          const firstPhoto = categoryPhotos[0];
-          const categoryPath = category.name.replace(/\s+/g, '_');
-
-          if (firstPhoto) {
-            return {
-              ...category,
-              firstPhoto: {
-                imageUrl: `/assets/${categoryPath}/${firstPhoto.imageUrl}`,
-                thumbnailUrl: firstPhoto.thumbnailUrl ?
-                  `/assets/${categoryPath}/${firstPhoto.thumbnailUrl}` :
-                  undefined
-              }
-            };
-          }
-          return category;
-        })
-      );
-
-      res.json(categoriesWithPhotos);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-      res.status(500).json({ error: "Failed to fetch categories" });
     }
   });
 
