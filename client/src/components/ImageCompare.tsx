@@ -9,16 +9,31 @@ interface ImageCompareProps {
 export default function ImageCompare({ beforeImage, afterImage }: ImageCompareProps) {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
-  const [imageOrientation, setImageOrientation] = useState<'landscape' | 'portrait' | null>(null);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
-  const handleImageLoad = () => {
-    if (imageRef.current) {
-      const { naturalWidth, naturalHeight } = imageRef.current;
-      setImageOrientation(naturalWidth >= naturalHeight ? 'landscape' : 'portrait');
-    }
-  };
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (imageRef.current) {
+        const { naturalWidth, naturalHeight } = imageRef.current;
+        const container = containerRef.current;
+        if (container) {
+          const containerWidth = container.clientWidth;
+          const aspectRatio = naturalWidth / naturalHeight;
+          const height = containerWidth / aspectRatio;
+          setDimensions({ width: containerWidth, height });
+        }
+      }
+    };
+
+    const img = new Image();
+    img.onload = updateDimensions;
+    img.src = afterImage;
+
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, [afterImage]);
 
   const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
     e.preventDefault();
@@ -76,18 +91,18 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
   return (
     <div
       ref={containerRef}
-      className="relative overflow-hidden rounded-lg select-none w-full"
+      className="relative w-full overflow-hidden rounded-lg"
+      style={{ height: dimensions.height || 'auto' }}
       onMouseDown={handleMouseDown}
       onTouchStart={handleMouseDown}
     >
       {/* After image (base layer) */}
-      <div className="relative">
+      <div className="absolute inset-0">
         <img
           ref={imageRef}
           src={afterImage}
           alt="After"
-          className="block w-full h-auto"
-          onLoad={handleImageLoad}
+          className="w-full h-full object-contain"
           loading="lazy"
         />
       </div>
@@ -102,7 +117,7 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
         <img
           src={beforeImage}
           alt="Before"
-          className="block w-full h-auto"
+          className="w-full h-full object-contain"
           loading="lazy"
         />
       </div>
@@ -128,7 +143,6 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
           xmlns="http://www.w3.org/2000/svg"
           className="text-gray-600"
         >
-          {/* Bidirectional arrow icon */}
           <path
             d="M2 8h12M4 5l-3 3 3 3M12 5l3 3-3 3"
             stroke="currentColor"

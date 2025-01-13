@@ -5,22 +5,35 @@ import { ThemeProvider } from "@/hooks/use-theme";
 import { LanguageProvider } from "@/hooks/use-language";
 import Navbar from "@/components/Navbar";
 import BackgroundPattern from "@/components/BackgroundPattern";
-import Home from "@/pages/Home";
-import Gallery from "@/pages/Gallery";
-import BeforeAndAfter from "@/pages/BeforeAndAfter";
-import About from "@/pages/About";
-import Info from "@/pages/Info";
-import Pricing from "@/pages/Pricing";
-import NotFound from "@/pages/not-found";
+import { lazy, Suspense } from "react";
+import { Loader2 } from "lucide-react";
 import { Toaster } from "@/components/ui/toaster";
-import React from 'react';
+
+// Lazy load pages for better performance
+const Home = lazy(() => import("@/pages/Home"));
+const Gallery = lazy(() => import("@/pages/Gallery"));
+const BeforeAndAfter = lazy(() => import("@/pages/BeforeAndAfter"));
+const About = lazy(() => import("@/pages/About"));
+const Info = lazy(() => import("@/pages/Info"));
+const Pricing = lazy(() => import("@/pages/Pricing"));
+const NotFound = lazy(() => import("@/pages/not-found"));
+
+function LoadingSpinner() {
+  return (
+    <div className="min-h-screen w-full flex items-center justify-center">
+      <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+    </div>
+  );
+}
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div>
+    <div className="relative min-h-screen">
       <BackgroundPattern />
       <Navbar />
-      {children}
+      <Suspense fallback={<LoadingSpinner />}>
+        {children}
+      </Suspense>
     </div>
   );
 }
@@ -43,7 +56,7 @@ function Router() {
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="dark">
+    <ThemeProvider defaultTheme="light">
       <LanguageProvider>
         <QueryClientProvider client={queryClient}>
           <Router />

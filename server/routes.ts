@@ -15,13 +15,11 @@ export function registerRoutes(app: Express): Server {
   const assetsPath = path.join(process.cwd(), 'attached_assets');
   app.use('/assets', express.static(assetsPath, {
     setHeaders: (res, filePath) => {
-      // Ensure proper content type for images
       if (filePath.toLowerCase().endsWith('.jpg') || filePath.toLowerCase().endsWith('.jpeg')) {
         res.setHeader('Content-Type', 'image/jpeg');
       } else if (filePath.toLowerCase().endsWith('.png')) {
         res.setHeader('Content-Type', 'image/png');
       }
-      // Set cache control headers
       res.setHeader('Cache-Control', 'public, max-age=31536000');
     },
     dotfiles: 'ignore',
@@ -38,45 +36,29 @@ export function registerRoutes(app: Express): Server {
 
       console.log('Fetching photos with params:', { category, page, pageSize });
 
-      // Build query with category filter
-      let query = db.select().from(photos);
+      let photoQuery = db.select().from(photos);
 
       if (category && typeof category === 'string') {
         const decodedCategory = decodeURIComponent(category);
         console.log('Filtering by category:', decodedCategory);
-        query = query.where(eq(photos.category, decodedCategory));
+        photoQuery = photoQuery.where(eq(photos.category, decodedCategory));
       }
 
-      // Execute query with pagination
-      const results = await query
+      const results = await photoQuery
         .limit(pageSize)
         .offset((page - 1) * pageSize)
         .orderBy(desc(photos.displayOrder));
 
       console.log(`Found ${results.length} photos for category ${category}`);
 
-      // Process photos and add full URLs
-      const processedPhotos = results.map(photo => {
-        const categoryPath = photo.category.replace(/\s+/g, '_');
-        const processedPhoto = {
-          ...photo,
-          imageUrl: `/assets/${categoryPath}/${encodeURIComponent(photo.imageUrl)}`,
-          thumbnailUrl: photo.thumbnailUrl ? 
-            `/assets/${categoryPath}/${encodeURIComponent(photo.thumbnailUrl)}` : 
-            undefined,
-          isLiked: false
-        };
-
-        console.log('Processing photo:', {
-          id: processedPhoto.id,
-          category: processedPhoto.category,
-          originalPath: photo.imageUrl,
-          processedPath: processedPhoto.imageUrl,
-          thumbnailPath: processedPhoto.thumbnailUrl
-        });
-
-        return processedPhoto;
-      });
+      const processedPhotos = results.map(photo => ({
+        ...photo,
+        imageUrl: `/assets/${photo.category.replace(/\s+/g, '_')}/${encodeURIComponent(photo.imageUrl)}`,
+        thumbnailUrl: photo.thumbnailUrl ? 
+          `/assets/${photo.category.replace(/\s+/g, '_')}/${encodeURIComponent(photo.thumbnailUrl)}` : 
+          undefined,
+        isLiked: false
+      }));
 
       res.json(processedPhotos);
     } catch (error: any) {
@@ -91,11 +73,9 @@ export function registerRoutes(app: Express): Server {
       const beforeAfterPath = path.join(assetsPath, 'before_and_after');
       const files = await fs.readdir(beforeAfterPath);
 
-      // Group matching before and after images
       const imageSets: { id: number; beforeImage: string; afterImage: string; title: string; }[] = [];
       const imageMap = new Map<string, string>();
 
-      // First, collect all images
       files.forEach(file => {
         if (file.endsWith(' Large.jpeg') || file.endsWith(' Large.jpg')) {
           const base = file.replace(/-[12] Large\.(jpeg|jpg)$/, '');
@@ -103,16 +83,20 @@ export function registerRoutes(app: Express): Server {
         }
       });
 
-      // Then, create pairs
       let id = 1;
-      imageMap.forEach((value, key) => {
-        const beforeFile = files.find(f => f.startsWith(key) && f.includes('-1 Large'));
-        const afterFile = files.find(f => f.startsWith(key) && f.includes('-2 Large'));
+      imageMap.forEach((_value, base) => {
+        const beforeFile = files.find(f => f.startsWith(base) && f.includes('-1 Large'));
+        const afterFile = files.find(f => f.startsWith(base) && f.includes('-2 Large'));
 
         if (beforeFile && afterFile) {
+          const title = base
+            .replace(/^\d+[-_]?/, '')
+            .replace(/_/g, ' ')
+            .trim();
+
           imageSets.push({
             id: id++,
-            title: key.replace(/_/g, ' '),
+            title: title || 'Photo Transformation',
             beforeImage: `/assets/before_and_after/${encodeURIComponent(beforeFile)}`,
             afterImage: `/assets/before_and_after/${encodeURIComponent(afterFile)}`
           });
@@ -131,31 +115,26 @@ export function registerRoutes(app: Express): Server {
     try {
       const results = await db.select().from(categories).orderBy(categories.displayOrder);
 
-      // Get a photo for each category
       const categoriesWithPhotos = await Promise.all(
         results.map(async (category) => {
-          const categoryPhotos = await db
-            .select()
+          const firstPhoto = await db.select()
             .from(photos)
             .where(eq(photos.category, category.name))
             .orderBy(desc(photos.displayOrder))
             .limit(1);
 
           const categoryPath = category.name.replace(/\s+/g, '_');
-          console.log(`Processing category: ${category.name}, path: ${categoryPath}`);
 
-          if (categoryPhotos[0]) {
-            const photoData = {
+          if (firstPhoto.length > 0) {
+            return {
               ...category,
               firstPhoto: {
-                imageUrl: `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].imageUrl)}`,
-                thumbnailUrl: categoryPhotos[0].thumbnailUrl ?
-                  `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].thumbnailUrl)}` :
+                imageUrl: `/assets/${categoryPath}/${encodeURIComponent(firstPhoto[0].imageUrl)}`,
+                thumbnailUrl: firstPhoto[0].thumbnailUrl ?
+                  `/assets/${categoryPath}/${encodeURIComponent(firstPhoto[0].thumbnailUrl)}` :
                   undefined
               }
             };
-            console.log('Category photo data:', photoData.firstPhoto);
-            return photoData;
           }
           return category;
         })
