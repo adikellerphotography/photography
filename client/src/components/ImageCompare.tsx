@@ -76,11 +76,7 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
   return (
     <div
       ref={containerRef}
-      className={`relative overflow-hidden rounded-lg bg-muted select-none ${
-        imageOrientation === 'landscape' 
-          ? 'w-full aspect-[16/9]' 
-          : 'w-auto max-w-full h-[80vh]'
-      }`}
+      className={`relative overflow-hidden rounded-lg bg-muted select-none w-full`}
       onMouseDown={handleMouseDown}
       onTouchStart={handleMouseDown}
     >
@@ -90,11 +86,7 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
           ref={imageRef}
           src={afterImage}
           alt="After"
-          className={`object-contain ${
-            imageOrientation === 'landscape'
-              ? 'w-full h-auto'
-              : 'h-full w-auto mx-auto'
-          }`}
+          className={`object-contain w-full h-auto`}
           onLoad={handleImageLoad}
           loading="lazy"
         />
@@ -110,11 +102,7 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
         <img
           src={beforeImage}
           alt="Before"
-          className={`object-contain ${
-            imageOrientation === 'landscape'
-              ? 'w-full h-auto'
-              : 'h-full w-auto mx-auto'
-          }`}
+          className={`object-contain w-full h-auto`}
           loading="lazy"
         />
       </div>
