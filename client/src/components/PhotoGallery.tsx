@@ -24,21 +24,31 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const pageSize = 20;
-  const [isNextImageLoaded, setIsNextImageLoaded] = useState(false);
-  const [transitionDirection, setTransitionDirection] = useState<'next' | 'prev' | null>(null);
+
+  // Log the category prop for debugging
+  useEffect(() => {
+    console.log('PhotoGallery mounted with category:', category);
+  }, [category]);
 
   const {
     data,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    isLoading
+    isLoading,
+    error
   } = useInfiniteQuery({
     queryKey: ["/api/photos", { category }],
     queryFn: async ({ pageParam = 1 }) => {
-      const response = await fetch(`/api/photos?category=${category}&page=${pageParam}&pageSize=${pageSize}`);
-      if (!response.ok) throw new Error('Network response was not ok');
+      console.log('Fetching photos for category:', category, 'page:', pageParam);
+      const response = await fetch(`/api/photos?category=${encodeURIComponent(category || '')}&page=${pageParam}&pageSize=${pageSize}`);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Error fetching photos:', errorText);
+        throw new Error(`Failed to fetch photos: ${errorText}`);
+      }
       const data: Photo[] = await response.json();
+      console.log('Received photos:', data.length, 'First photo:', data[0]);
       return data;
     },
     getNextPageParam: (lastPage, allPages) => {
@@ -47,7 +57,22 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     initialPageParam: 1
   });
 
+  // Log any errors that occur during fetching
+  useEffect(() => {
+    if (error) {
+      console.error('Error in PhotoGallery:', error);
+    }
+  }, [error]);
+
   const photos = data?.pages.flat() || [];
+
+  // Log the photos array whenever it changes
+  useEffect(() => {
+    console.log('Photos array updated:', photos.length, 'photos');
+    if (photos.length > 0) {
+      console.log('First photo:', photos[0]);
+    }
+  }, [photos]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

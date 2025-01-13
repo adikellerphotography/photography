@@ -50,7 +50,7 @@ export function registerRoutes(app: Express): Server {
         .offset((page - 1) * pageSize)
         .orderBy(desc(photos.displayOrder));
 
-      console.log(`Found ${results.length} photos`);
+      console.log(`Found ${results.length} photos for category ${category}`);
 
       // Process photos and add full URLs
       const processedPhotos = results.map(photo => {
@@ -63,20 +63,19 @@ export function registerRoutes(app: Express): Server {
             undefined,
           isLiked: false
         };
+
+        console.log(`Processed photo for ${categoryPath}:`, {
+          id: processedPhoto.id,
+          category: processedPhoto.category,
+          imageUrl: processedPhoto.imageUrl,
+          thumbnailUrl: processedPhoto.thumbnailUrl
+        });
+
         return processedPhoto;
       });
 
-      if (processedPhotos.length > 0) {
-        console.log('Sample photo:', {
-          id: processedPhotos[0].id,
-          category: processedPhotos[0].category,
-          imageUrl: processedPhotos[0].imageUrl,
-          thumbnailUrl: processedPhotos[0].thumbnailUrl
-        });
-      }
-
       res.json(processedPhotos);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching photos:', error);
       res.status(500).json({ error: "Failed to fetch photos", details: error.message });
     }
