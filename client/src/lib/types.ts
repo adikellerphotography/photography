@@ -5,10 +5,8 @@ export interface Photo {
   category: string;
   imageUrl: string;
   thumbnailUrl?: string;
-  isLiked?: boolean;
-  uploadedAt: Date;
+  uploadedAt: string;
   displayOrder: number;
-  likesCount?: number;
 }
 
 export interface Category {
@@ -16,11 +14,7 @@ export interface Category {
   name: string;
   description?: string;
   displayOrder: number;
-  thumbnailImage?: string;
-  firstPhoto?: {
-    imageUrl: string;
-    thumbnailUrl?: string;
-  };
+  thumbnailUrl?: string;
 }
 
 // This is used in conjunction with the translations defined in lib/translations.ts

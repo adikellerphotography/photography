@@ -68,15 +68,15 @@ export async function scanAndProcessImages() {
       console.log(`Processing category: ${categoryName} from path: ${categoryPath}`);
 
       // Check for 1.jpeg in the category directory
-      const categoryThumbName = '1.jpeg';
-      const categoryThumbPath = path.join(fullPath, categoryThumbName);
-      let hasCategoryThumb = false;
+      const defaultThumb = '1.jpeg';
+      const thumbPath = path.join(fullPath, defaultThumb);
+      let thumbExists = false;
 
       try {
-        await fs.access(categoryThumbPath);
-        hasCategoryThumb = true;
+        await fs.access(thumbPath);
+        thumbExists = true;
       } catch (error) {
-        console.log(`No ${categoryThumbName} found for category ${categoryName}`);
+        console.log(`No ${defaultThumb} found for category ${categoryName}`);
       }
 
       // Ensure category exists in database
@@ -85,13 +85,13 @@ export async function scanAndProcessImages() {
           name: categoryName,
           displayOrder: 1,
           description: `${categoryName} photography collection`,
-          thumbnailImage: hasCategoryThumb ? categoryThumbName : undefined
+          thumbnailUrl: thumbExists ? defaultThumb : undefined
         })
         .onConflictDoUpdate({
           target: categories.name,
           set: { 
             description: `${categoryName} photography collection`,
-            thumbnailImage: hasCategoryThumb ? categoryThumbName : undefined
+            thumbnailUrl: thumbExists ? defaultThumb : undefined
           }
         });
 
