@@ -35,14 +35,14 @@ export default function Home() {
             alt=""
             className="w-full h-full object-cover"
           />
-          {/* Removed dark overlay to show background pattern */}
+          {/* Background pattern should be visible now */}
         </div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="relative h-full container mx-auto px-4 pt-32 md:pt-24 pb-16 flex flex-col justify-center items-center"
         >
-          <div className="max-w-3xl mx-auto text-center space-y-6">
+          <div className="max-w-3xl mx-auto text-center space-y-6 bg-transparent">
             <h1 className="text-4xl md:text-6xl font-bold font-cormorant text-white drop-shadow-[0_4px_3px_rgba(0,0,0,0.4)]">
               {t("home.title")}
             </h1>
@@ -81,8 +81,8 @@ export default function Home() {
                             alt=""
                             className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent">
-                            <div className="absolute bottom-0 left-0 right-0 p-4">
+                          <div className="absolute inset-0"> {/*Removed the unnecessary gradient*/}
+                            <div className="absolute bottom-0 left-0 right-0 p-4 bg-transparent"> {/*Added bg-transparent to remove background color */}
                               <h3 className="text-xl font-semibold text-white">
                                 {category.name}
                               </h3>
