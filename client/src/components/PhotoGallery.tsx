@@ -57,7 +57,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     initialPageParam: 1
   });
 
-  // Log any errors that occur during fetching
   useEffect(() => {
     if (error) {
       console.error('Error in PhotoGallery:', error);
@@ -66,16 +65,33 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   const photos = data?.pages.flat() || [];
 
-  // Log the photos array whenever it changes
   useEffect(() => {
-    console.log('Photos array updated:', photos.length, 'photos');
-    if (photos.length > 0) {
-      console.log('First photo:', photos[0]);
-    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target as HTMLImageElement;
+            if (img.dataset.src) {
+              img.src = img.dataset.src;
+              img.removeAttribute('data-src');
+            }
+          }
+        });
+      },
+      { 
+        rootMargin: '50px',
+        threshold: 0.1
+      }
+    );
+
+    const imageElements = document.querySelectorAll('img[data-src]');
+    imageElements.forEach(img => observer.observe(img));
+
+    return () => observer.disconnect();
   }, [photos]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
+    const loaderObserver = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
           fetchNextPage();
@@ -85,10 +101,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     );
 
     if (loaderRef.current) {
-      observer.observe(loaderRef.current);
+      loaderObserver.observe(loaderRef.current);
     }
 
-    return () => observer.disconnect();
+    return () => loaderObserver.disconnect();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const likeMutation = useMutation({
@@ -218,6 +234,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     }
   }, [selectedPhoto, photos, selectedIndex]);
 
+  let setTransitionDirection = (direction: "next" | "prev" | null) => {};
+  let setIsNextImageLoaded = (loaded: boolean) => {};
+
+
   if (isLoading) {
     return (
       <div className="space-y-8">
@@ -265,12 +285,20 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
             className="relative overflow-hidden rounded-lg cursor-pointer group"
           >
             <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
-              <div className="relative w-full h-full overflow-hidden">
+              <div className="relative w-full h-full overflow-hidden bg-muted">
                 <img
-                  src={photo.thumbnailUrl || photo.imageUrl}
+                  src={photo.thumbnailUrl || '/placeholder.jpg'}
+                  data-src={photo.imageUrl}
                   alt=""
                   className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  onError={(e) => {
+                    console.error('Failed to load image:', photo.imageUrl);
+                    const target = e.target as HTMLImageElement;
+                    target.onerror = null;
+                    target.src = '/placeholder.jpg';
+                  }}
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden md:block">
