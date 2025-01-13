@@ -5,7 +5,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import type { Category } from "@/lib/types";
 import SocialLinks from "@/components/SocialLinks";
-import PhotoGallery from "@/components/PhotoGallery";
 import { useTranslation } from "@/hooks/use-translation";
 import { useEffect } from "react";
 
@@ -16,7 +15,6 @@ export default function Home() {
 
   const { t } = useTranslation();
 
-  // Log categories data for debugging
   useEffect(() => {
     if (categories) {
       console.log('Categories loaded:', categories.map(c => ({
@@ -26,7 +24,6 @@ export default function Home() {
     }
   }, [categories]);
 
-  // Function to get category image based on category name
   const getCategoryImage = (categoryName: string) => {
     const imageMap: Record<string, string> = {
       'Bat Mitsva': '/assets/Bat_Mitsva/M68A0863-Edit Large.jpeg',
@@ -126,11 +123,6 @@ export default function Home() {
             })}
           </div>
         </motion.div>
-      </section>
-
-      <section className="container mx-auto px-4 py-8">
-        <h2 className="text-2xl font-semibold mb-6">{t("home.featuredWork")}</h2>
-        <PhotoGallery />
       </section>
     </div>
   );
