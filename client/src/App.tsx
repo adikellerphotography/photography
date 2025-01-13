@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 import BackgroundPattern from "@/components/BackgroundPattern";
 import Home from "@/pages/Home";
 import Gallery from "@/pages/Gallery";
+import BeforeAndAfter from "@/pages/BeforeAndAfter";
 import About from "@/pages/About";
 import Info from "@/pages/Info";
 import Pricing from "@/pages/Pricing";
@@ -30,6 +31,7 @@ function Router() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/gallery" component={Gallery} />
+        <Route path="/before-and-after" component={BeforeAndAfter} />
         <Route path="/pricing" component={Pricing} />
         <Route path="/info" component={Info} />
         <Route path="/about" component={About} />

@@ -6,6 +6,7 @@ import { photos, categories } from "@db/schema";
 import path from "path";
 import express from "express";
 import { scanAndProcessImages } from "./utils/scan-images";
+import fs from "fs/promises";
 
 export function registerRoutes(app: Express): Server {
   const httpServer = createServer(app);
@@ -81,6 +82,47 @@ export function registerRoutes(app: Express): Server {
     } catch (error: any) {
       console.error('Error fetching photos:', error);
       res.status(500).json({ error: "Failed to fetch photos", details: error.message });
+    }
+  });
+
+  // Get before and after image sets
+  app.get("/api/before-after", async (_req, res) => {
+    try {
+      const beforeAfterPath = path.join(assetsPath, 'before_and_after');
+      const files = await fs.readdir(beforeAfterPath);
+
+      // Group matching before and after images
+      const imageSets: { id: number; beforeImage: string; afterImage: string; title: string; }[] = [];
+      const imageMap = new Map<string, string>();
+
+      // First, collect all images
+      files.forEach(file => {
+        if (file.endsWith(' Large.jpeg') || file.endsWith(' Large.jpg')) {
+          const base = file.replace(/-[12] Large\.(jpeg|jpg)$/, '');
+          imageMap.set(base, (imageMap.get(base) || '') + file);
+        }
+      });
+
+      // Then, create pairs
+      let id = 1;
+      imageMap.forEach((value, key) => {
+        const beforeFile = files.find(f => f.startsWith(key) && f.includes('-1 Large'));
+        const afterFile = files.find(f => f.startsWith(key) && f.includes('-2 Large'));
+
+        if (beforeFile && afterFile) {
+          imageSets.push({
+            id: id++,
+            title: key.replace(/_/g, ' '),
+            beforeImage: `/assets/before_and_after/${encodeURIComponent(beforeFile)}`,
+            afterImage: `/assets/before_and_after/${encodeURIComponent(afterFile)}`
+          });
+        }
+      });
+
+      res.json(imageSets);
+    } catch (error: any) {
+      console.error('Error fetching before/after images:', error);
+      res.status(500).json({ error: "Failed to fetch before/after images", details: error.message });
     }
   });
 

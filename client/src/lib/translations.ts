@@ -3,6 +3,7 @@ export const translations = {
     nav: {
       home: "Home",
       gallery: "Gallery",
+      beforeAfter: "Before & After",
       pricing: "Pricing",
       info: "Session Info",
       about: "About",
@@ -105,11 +106,17 @@ export const translations = {
       meetingTitle: "Meeting Details",
       meetingDescription: "We'll meet at the predetermined location 15 minutes before the scheduled time to discuss your vision and preferences. This allows us to plan the best spots and lighting for your photos.",
     },
+    beforeAfter: {
+      title: "Before & After Gallery",
+      description: "Experience the transformation process. Slide to compare the original captures with their enhanced versions.",
+      noImages: "No before/after images available",
+    },
   },
   he: {
     nav: {
       home: "ראשי",
       gallery: "גלריה",
+      beforeAfter: "לפני ואחרי",
       pricing: "מחירים",
       info: "מידע על הצילומים",
       about: "אודות",
@@ -211,6 +218,11 @@ export const translations = {
       preparationDescription: "כדאי להביא מספר חילופי בגדים כדי להוסיף מגוון לתמונות שלך. עבור צילומי משפחה, בגדים מתואמים (אך לא זהים) עובדים הכי טוב. אל תשכחו פריטים אישיים שתרצו לכלול בתמונות.",
       meetingTitle: "פרטי המפגש",
       meetingDescription: "ניפגש במיקום שנקבע מראש 15 דקות לפני הזמן המתוכנן כדי לדון בחזון ובהעדפות שלך. זה מאפשר לנו לתכנן את המקומות והתאורה הטובים ביותר עבור התמונות שלך.",
+    },
+    beforeAfter: {
+      title: "גלריית לפני ואחרי",
+      description: "חווה את תהליך השינוי. החלק כדי להשוות בין הצילומים המקוריים לגרסאות המשופרות שלהם.",
+      noImages: "אין תמונות לפני/אחרי זמינות",
     },
   }
 };
