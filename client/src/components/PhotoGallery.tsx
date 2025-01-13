@@ -337,16 +337,15 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 )}
               </AnimatePresence>
 
-              {selectedPhoto.isLiked && (
-                <div className="absolute top-4 right-4 z-20">
-                  <Heart className="w-5 h-5 text-white fill-white stroke-[2]" />
-                </div>
-              )}
-
-              <ShareDialog 
-                imageUrl={selectedPhoto.imageUrl} 
-                title={selectedPhoto.title}
-              />
+              <div className="absolute top-4 right-4 z-20 flex items-center gap-3">
+                {selectedPhoto.isLiked && (
+                  <Heart className="w-8 h-8 text-white fill-white stroke-[2]" />
+                )}
+                <ShareDialog 
+                  imageUrl={selectedPhoto.imageUrl} 
+                  title={selectedPhoto.title}
+                />
+              </div>
 
               <div className="relative w-full h-full overflow-hidden">
                 <img
