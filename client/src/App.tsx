@@ -10,7 +10,6 @@ import Gallery from "@/pages/Gallery";
 import About from "@/pages/About";
 import Info from "@/pages/Info";
 import Pricing from "@/pages/Pricing";
-import BeforeAfter from "@/pages/BeforeAfter";
 import NotFound from "@/pages/not-found";
 import { Toaster } from "@/components/ui/toaster";
 import React from 'react';
@@ -31,7 +30,6 @@ function Router() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/gallery" component={Gallery} />
-        <Route path="/before-after" component={BeforeAfter} />
         <Route path="/pricing" component={Pricing} />
         <Route path="/info" component={Info} />
         <Route path="/about" component={About} />

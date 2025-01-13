@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu, Home, Image, User, CreditCard, Info as InfoIcon, Split } from "lucide-react";
+import { Menu, Home, Image, User, CreditCard, Info as InfoIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "./ThemeToggle";
 import LanguageToggle from "./LanguageToggle";
@@ -16,7 +16,6 @@ export default function Navbar() {
   const navigationItems = [
     { href: "/", label: language === "en" ? "Home" : "בית", icon: Home },
     { href: "/gallery", label: language === "en" ? "Gallery" : "גלריה", icon: Image },
-    { href: "/before-after", label: language === "en" ? "Before & After" : "לפני ואחרי", icon: Split },
     { href: "/pricing", label: language === "en" ? "Pricing" : "מחירים", icon: CreditCard },
     { href: "/info", label: language === "en" ? "Session Info" : "מידע על הצילומים", icon: InfoIcon },
     { href: "/about", label: language === "en" ? "About" : "אודות", icon: User },
@@ -27,9 +26,9 @@ export default function Navbar() {
       <NavigationMenu className="w-full">
         <div className="w-full flex items-center h-14">
           <Link href="/">
-            <span className="text-lg font-cormorant px-4 cursor-pointer">
+            <a className="text-lg font-cormorant px-4">
               Adi Keller Photography
-            </span>
+            </a>
           </Link>
 
           {/* Desktop Navigation */}
@@ -37,14 +36,13 @@ export default function Navbar() {
             <NavigationMenuList>
               {navigationItems.map((item) => (
                 <NavigationMenuItem key={item.href}>
-                  <NavigationMenuLink
-                    className={cn(
+                  <Link href={item.href}>
+                    <NavigationMenuLink className={cn(
                       "group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer"
-                    )}
-                    onClick={() => window.location.href = item.href}
-                  >
-                    {item.label}
-                  </NavigationMenuLink>
+                    )}>
+                      {item.label}
+                    </NavigationMenuLink>
+                  </Link>
                 </NavigationMenuItem>
               ))}
             </NavigationMenuList>
@@ -60,7 +58,7 @@ export default function Navbar() {
               <ThemeToggle />
             </div>
 
-            {/* Menu button */}
+            {/* Menu button floating on the right with brighter background */}
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
                 <Button 
@@ -77,17 +75,15 @@ export default function Navbar() {
                   {navigationItems.map((item) => {
                     const Icon = item.icon;
                     return (
-                      <button
-                        key={item.href}
-                        className="flex items-center gap-3 px-2 py-2 text-lg hover:text-primary transition-colors text-left w-full"
-                        onClick={() => {
-                          window.location.href = item.href;
-                          setIsOpen(false);
-                        }}
-                      >
-                        <Icon className="h-5 w-5" />
-                        {item.label}
-                      </button>
+                      <Link key={item.href} href={item.href}>
+                        <a 
+                          className="flex items-center gap-3 px-2 py-2 text-lg hover:text-primary transition-colors"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          <Icon className="h-5 w-5" />
+                          {item.label}
+                        </a>
+                      </Link>
                     );
                   })}
                 </nav>
