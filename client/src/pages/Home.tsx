@@ -37,24 +37,16 @@ export default function Home() {
     <div className="min-h-screen pt-16">
       {/* Hero Section */}
       <section className="relative min-h-screen">
-        <div className="absolute inset-0">
-          <img
-            src="/assets/M68A0863-Edit.jpg"
-            alt=""
-            className="w-full h-full object-cover"
-          />
-          {/* Removed dark overlay to show background pattern */}
-        </div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="relative h-full container mx-auto px-4 pt-32 md:pt-24 pb-16 flex flex-col justify-center items-center"
         >
           <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h1 className="text-4xl md:text-6xl font-bold font-cormorant text-white drop-shadow-[0_4px_3px_rgba(0,0,0,0.4)]">
+            <h1 className="text-4xl md:text-6xl font-bold font-cormorant">
               {t("home.title")}
             </h1>
-            <p className="text-lg text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.4)]">
+            <p className="text-lg">
               {t("home.subtitle")}
             </p>
             <SocialLinks />
