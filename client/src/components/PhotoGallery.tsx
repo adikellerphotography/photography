@@ -248,6 +248,11 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                {photo.isLiked && (
+                  <div className="absolute top-2 right-2 z-10">
+                    <Heart className="w-5 h-5 text-white fill-white stroke-[2]" />
+                  </div>
+                )}
                 <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden md:block">
                   <p className="text-white text-sm font-medium truncate">
                     {photo.title}
