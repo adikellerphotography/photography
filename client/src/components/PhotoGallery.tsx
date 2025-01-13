@@ -6,24 +6,9 @@ import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Loader2, ChevronLeft, ChevronRight, Heart, Download, Settings } from "lucide-react";
+import { Loader2, ChevronLeft, ChevronRight, Heart, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ShareDialog from "./ShareDialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-
-interface WatermarkOptions {
-  enabled: boolean;
-  quality: number;
-}
 
 interface PhotoGalleryProps {
   category?: string;
@@ -39,7 +24,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const pageSize = 20;
-  const [watermarkOptions, setWatermarkOptions] = useState<WatermarkOptions>({
+  const [watermarkOptions] = useState({
     enabled: true,
     quality: 90
   });
@@ -388,30 +373,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               </button>
 
               <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="bg-black/50 hover:bg-black/70">
-                      <Settings className="h-4 w-4 text-white" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuLabel>Download Options</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <div className="p-2">
-                      <div className="flex items-center space-x-2">
-                        <Switch
-                          id="watermark"
-                          checked={watermarkOptions.enabled}
-                          onCheckedChange={(checked) =>
-                            setWatermarkOptions(prev => ({ ...prev, enabled: checked }))
-                          }
-                        />
-                        <Label htmlFor="watermark">Add Watermark</Label>
-                      </div>
-                    </div>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-
+                <ShareDialog
+                  imageUrl={selectedPhoto.imageUrl}
+                  title={selectedPhoto.title}
+                />
                 <Button
                   variant="ghost"
                   size="icon"
@@ -459,10 +424,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 </div>
               )}
 
-              <ShareDialog
-                imageUrl={selectedPhoto.imageUrl}
-                title={selectedPhoto.title}
-              />
 
               <div className="relative w-full h-full overflow-hidden">
                 <img
