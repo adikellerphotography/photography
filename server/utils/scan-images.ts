@@ -18,6 +18,9 @@ function formatTitle(fileName: string, category: string): string {
   // Replace underscores and dashes with spaces
   title = title.replace(/[_-]/g, ' ');
 
+  // Remove any numerical prefixes in the final title
+  title = title.replace(/^\d+\s*/, '');
+
   // Remove any double spaces
   title = title.replace(/\s+/g, ' ').trim();
 
@@ -71,12 +74,15 @@ export async function scanAndProcessImages() {
       await db.insert(categories)
         .values({
           name: categoryName,
-          displayOrder: 1,
+          displayOrder: categoryName.toLowerCase() === 'before and after' ? 999 : 1, // Push Before and After to end
           description: `${categoryName} photography collection`
         })
         .onConflictDoUpdate({
           target: categories.name,
-          set: { description: `${categoryName} photography collection` }
+          set: { 
+            description: `${categoryName} photography collection`,
+            displayOrder: categoryName.toLowerCase() === 'before and after' ? 999 : 1
+          }
         });
 
       // Get all images in this category

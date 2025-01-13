@@ -1,6 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { eq, and, desc, sql } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { db } from "@db";
 import { photos, categories } from "@db/schema";
 import path from "path";
@@ -29,7 +29,7 @@ export function registerRoutes(app: Express): Server {
     index: false
   }));
 
-  // Get photos for a specific category
+  // Get photos for a specific category with randomization
   app.get("/api/photos", async (req, res) => {
     try {
       const { category } = req.query;
@@ -39,26 +39,33 @@ export function registerRoutes(app: Express): Server {
       console.log('Fetching photos with params:', { category, page, pageSize });
 
       // Build query with category filter
-      let query = db.select().from(photos);
+      const query = db.select().from(photos);
 
       if (category && typeof category === 'string') {
         const decodedCategory = decodeURIComponent(category);
         console.log('Filtering by category:', decodedCategory);
-        query = query.where(eq(photos.category, decodedCategory));
+        query.where(eq(photos.category, decodedCategory));
       }
 
-      // Execute query with pagination
-      const results = await query
-        .limit(pageSize)
-        .offset((page - 1) * pageSize)
-        .orderBy(desc(photos.displayOrder));
+      // Execute query and get all results for the category
+      const allPhotos = await query;
+      console.log(`Found ${allPhotos.length} total photos for category ${category}`);
 
-      console.log(`Found ${results.length} photos for category ${category}`);
+      // Randomize the results using Fisher-Yates shuffle
+      const shuffledPhotos = [...allPhotos];
+      for (let i = shuffledPhotos.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledPhotos[i], shuffledPhotos[j]] = [shuffledPhotos[j], shuffledPhotos[i]];
+      }
+
+      // Apply pagination to the shuffled results
+      const paginatedPhotos = shuffledPhotos.slice((page - 1) * pageSize, page * pageSize);
+      console.log(`Returning ${paginatedPhotos.length} photos for page ${page}`);
 
       // Process photos and add full URLs
-      const processedPhotos = results.map(photo => {
+      const processedPhotos = paginatedPhotos.map(photo => {
         const categoryPath = photo.category.replace(/\s+/g, '_');
-        const processedPhoto = {
+        return {
           ...photo,
           imageUrl: `/assets/${categoryPath}/${encodeURIComponent(photo.imageUrl)}`,
           thumbnailUrl: photo.thumbnailUrl ? 
@@ -66,16 +73,6 @@ export function registerRoutes(app: Express): Server {
             undefined,
           isLiked: false
         };
-
-        console.log('Processing photo:', {
-          id: processedPhoto.id,
-          category: processedPhoto.category,
-          originalPath: photo.imageUrl,
-          processedPath: processedPhoto.imageUrl,
-          thumbnailPath: processedPhoto.thumbnailUrl
-        });
-
-        return processedPhoto;
       });
 
       res.json(processedPhotos);
@@ -110,9 +107,12 @@ export function registerRoutes(app: Express): Server {
         const afterFile = files.find(f => f.startsWith(key) && f.includes('-2 Large'));
 
         if (beforeFile && afterFile) {
+          // Remove numbers from the title
+          const title = key.replace(/_/g, ' ').replace(/^\d+\s*/, '');
+
           imageSets.push({
             id: id++,
-            title: key.replace(/_/g, ' '),
+            title,
             beforeImage: `/assets/before_and_after/${encodeURIComponent(beforeFile)}`,
             afterImage: `/assets/before_and_after/${encodeURIComponent(afterFile)}`
           });
@@ -134,6 +134,11 @@ export function registerRoutes(app: Express): Server {
       // Get a photo for each category
       const categoriesWithPhotos = await Promise.all(
         results.map(async (category) => {
+          // Skip "Before and After" category for home page
+          if (category.name.toLowerCase() === 'before and after') {
+            return null;
+          }
+
           const categoryPhotos = await db
             .select()
             .from(photos)
@@ -142,10 +147,9 @@ export function registerRoutes(app: Express): Server {
             .limit(1);
 
           const categoryPath = category.name.replace(/\s+/g, '_');
-          console.log(`Processing category: ${category.name}, path: ${categoryPath}`);
 
           if (categoryPhotos[0]) {
-            const photoData = {
+            return {
               ...category,
               firstPhoto: {
                 imageUrl: `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].imageUrl)}`,
@@ -154,12 +158,10 @@ export function registerRoutes(app: Express): Server {
                   undefined
               }
             };
-            console.log('Category photo data:', photoData.firstPhoto);
-            return photoData;
           }
           return category;
         })
-      );
+      ).then(categories => categories.filter(Boolean)); // Remove null entries (Before and After)
 
       res.json(categoriesWithPhotos);
     } catch (error) {
