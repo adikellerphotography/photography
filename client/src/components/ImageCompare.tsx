@@ -9,7 +9,16 @@ interface ImageCompareProps {
 export default function ImageCompare({ beforeImage, afterImage }: ImageCompareProps) {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
+  const [imageOrientation, setImageOrientation] = useState<'landscape' | 'portrait' | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+
+  const handleImageLoad = () => {
+    if (imageRef.current) {
+      const { naturalWidth, naturalHeight } = imageRef.current;
+      setImageOrientation(naturalWidth >= naturalHeight ? 'landscape' : 'portrait');
+    }
+  };
 
   const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
     e.preventDefault();
@@ -67,16 +76,26 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
   return (
     <div
       ref={containerRef}
-      className="relative w-full aspect-[16/9] overflow-hidden rounded-lg bg-muted select-none"
+      className={`relative overflow-hidden rounded-lg bg-muted select-none ${
+        imageOrientation === 'landscape' 
+          ? 'w-full aspect-[16/9]' 
+          : 'w-auto max-w-full h-[80vh]'
+      }`}
       onMouseDown={handleMouseDown}
       onTouchStart={handleMouseDown}
     >
       {/* After image (base layer) */}
       <div className="absolute inset-0">
         <img
+          ref={imageRef}
           src={afterImage}
           alt="After"
-          className="w-full h-full object-cover"
+          className={`object-contain ${
+            imageOrientation === 'landscape'
+              ? 'w-full h-auto'
+              : 'h-full w-auto mx-auto'
+          }`}
+          onLoad={handleImageLoad}
           loading="lazy"
         />
       </div>
@@ -91,7 +110,11 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
         <img
           src={beforeImage}
           alt="Before"
-          className="w-full h-full object-cover"
+          className={`object-contain ${
+            imageOrientation === 'landscape'
+              ? 'w-full h-auto'
+              : 'h-full w-auto mx-auto'
+          }`}
           loading="lazy"
         />
       </div>
