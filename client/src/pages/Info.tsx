@@ -14,7 +14,7 @@ export default function Info() {
         className="container mx-auto px-4 py-16"
       >
         <div className="max-w-3xl mx-auto">
-          <div className={language === 'he' ? 'rtl' : 'ltr'}>
+          <div className={language === 'he' ? 'rtl text-right' : 'ltr text-left'}>
             <h1 className="text-3xl font-bold mb-8">{t("info.title")}</h1>
 
             <div className="prose prose-gray dark:prose-invert max-w-none space-y-8">

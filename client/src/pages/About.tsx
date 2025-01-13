@@ -29,7 +29,7 @@ export default function About() {
             </AspectRatio>
           </div>
 
-          <div className={language === 'he' ? 'rtl' : 'ltr'}>
+          <div className={language === 'he' ? 'rtl text-right' : 'ltr text-left'}>
             <h1 className="text-3xl font-bold mb-8">{t("about.title")}</h1>
 
             <div className="prose prose-gray dark:prose-invert max-w-none space-y-8">
