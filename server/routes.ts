@@ -67,14 +67,6 @@ export function registerRoutes(app: Express): Server {
           isLiked: false
         };
 
-        console.log('Processing photo:', {
-          id: processedPhoto.id,
-          category: processedPhoto.category,
-          originalPath: photo.imageUrl,
-          processedPath: processedPhoto.imageUrl,
-          thumbnailPath: processedPhoto.thumbnailUrl
-        });
-
         return processedPhoto;
       });
 
@@ -97,7 +89,7 @@ export function registerRoutes(app: Express): Server {
 
       // First, collect all images
       files.forEach(file => {
-        if (file.endsWith(' Large.jpeg') || file.endsWith(' Large.jpg')) {
+        if (file.endsWith('Large.jpeg') || file.endsWith('Large.jpg')) {
           const base = file.replace(/-[12] Large\.(jpeg|jpg)$/, '');
           imageMap.set(base, (imageMap.get(base) || '') + file);
         }
@@ -112,7 +104,7 @@ export function registerRoutes(app: Express): Server {
         if (beforeFile && afterFile) {
           imageSets.push({
             id: id++,
-            title: key.replace(/_/g, ' '),
+            title: key,
             beforeImage: `/assets/before_and_after/${encodeURIComponent(beforeFile)}`,
             afterImage: `/assets/before_and_after/${encodeURIComponent(afterFile)}`
           });
@@ -131,33 +123,30 @@ export function registerRoutes(app: Express): Server {
     try {
       const results = await db.select().from(categories).orderBy(categories.displayOrder);
 
-      // Get a photo for each category
+      // Process categories and ensure they have thumbnails
       const categoriesWithPhotos = await Promise.all(
         results.map(async (category) => {
-          const categoryPhotos = await db
-            .select()
-            .from(photos)
-            .where(eq(photos.category, category.name))
-            .orderBy(desc(photos.displayOrder))
-            .limit(1);
-
           const categoryPath = category.name.replace(/\s+/g, '_');
-          console.log(`Processing category: ${category.name}, path: ${categoryPath}`);
 
-          if (categoryPhotos[0]) {
-            const photoData = {
-              ...category,
-              firstPhoto: {
-                imageUrl: `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].imageUrl)}`,
-                thumbnailUrl: categoryPhotos[0].thumbnailUrl ?
-                  `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].thumbnailUrl)}` :
-                  undefined
-              }
-            };
-            console.log('Category photo data:', photoData.firstPhoto);
-            return photoData;
+          // If no thumbnail is set, try to use 1.jpeg
+          if (!category.thumbnailImage) {
+            try {
+              const defaultThumb = '1.jpeg';
+              const thumbPath = path.join(assetsPath, categoryPath, defaultThumb);
+              await fs.access(thumbPath);
+              category.thumbnailImage = defaultThumb;
+            } catch (error) {
+              console.warn(`No default thumbnail found for category ${category.name}`);
+            }
           }
-          return category;
+
+          return {
+            ...category,
+            firstPhoto: category.thumbnailImage ? {
+              imageUrl: `/assets/${categoryPath}/${encodeURIComponent(category.thumbnailImage)}`,
+              thumbnailUrl: undefined
+            } : undefined
+          };
         })
       );
 

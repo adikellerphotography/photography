@@ -13,24 +13,27 @@ export const photos = pgTable("photos", {
   likesCount: integer("likes_count").default(0),
 });
 
-export const insertPhotoSchema = createInsertSchema(photos);
-export const selectPhotoSchema = createSelectSchema(photos);
-export type InsertPhoto = typeof photos.$inferInsert;
-export type SelectPhoto = typeof photos.$inferSelect;
-
 export const categories = pgTable("categories", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 50 }).notNull().unique(),
   description: text("description"),
   displayOrder: serial("display_order"),
+  thumbnailImage: text("thumbnail_image"),
 });
 
 export const photoLikes = pgTable("photo_likes", {
   id: serial("id").primaryKey(),
-  photoId: integer("photo_id").references(() => photos.id, { onDelete: 'CASCADE' }).notNull(),
+  photoId: integer("photo_id")
+    .references(() => photos.id, { onDelete: "cascade" })
+    .notNull(),
   ipAddress: text("ip_address").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
+
+export const insertPhotoSchema = createInsertSchema(photos);
+export const selectPhotoSchema = createSelectSchema(photos);
+export type InsertPhoto = typeof photos.$inferInsert;
+export type SelectPhoto = typeof photos.$inferSelect;
 
 export const insertCategorySchema = createInsertSchema(categories);
 export const selectCategorySchema = createSelectSchema(categories);

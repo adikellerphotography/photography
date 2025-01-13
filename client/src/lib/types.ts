@@ -16,10 +16,12 @@ export interface Category {
   name: string;
   description?: string;
   displayOrder: number;
+  thumbnailImage?: string;
   firstPhoto?: {
     imageUrl: string;
     thumbnailUrl?: string;
   };
 }
 
-export type TranslationKey = keyof typeof translations['en'];
+// This is used in conjunction with the translations defined in lib/translations.ts
+export type TranslationKey = string;
