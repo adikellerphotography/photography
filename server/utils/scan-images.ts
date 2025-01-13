@@ -15,6 +15,9 @@ function formatTitle(fileName: string, category: string): string {
   // Remove any numerical prefixes like "IMG_1234" or "M68A"
   title = title.replace(/^(IMG_|M68A)\d+(-|$)/, '');
 
+  // Remove before/after numbers from filenames
+  title = title.replace(/(\s*[_-]?\d+\s*)?(before|after)?$/i, '');
+
   // Replace underscores and dashes with spaces
   title = title.replace(/[_-]/g, ' ');
 
@@ -43,6 +46,8 @@ function formatTitle(fileName: string, category: string): string {
       return `Women's Portrait${title ? ': ' + title : ''}`;
     case 'Yoga':
       return `Yoga Photography${title ? ': ' + title : ''}`;
+    case 'Before And After':
+      return `Before & After${title ? ': ' + title : ''}`;
     default:
       return title || category;
   }
@@ -51,33 +56,34 @@ function formatTitle(fileName: string, category: string): string {
 export async function scanAndProcessImages() {
   try {
     const assetsPath = path.join(process.cwd(), 'attached_assets');
+    const categoriesPath = path.join(assetsPath, 'categories');
 
     // Get all directories (categories)
-    const entries = await fs.readdir(assetsPath, { withFileTypes: true });
+    const entries = await fs.readdir(categoriesPath, { withFileTypes: true });
     const categoryDirs = entries.filter(entry => 
       entry.isDirectory() && !entry.name.startsWith('.')
     );
 
-    console.log(`Found ${categoryDirs.length} category directories`);
+    console.log(`Found ${categoryDirs.length} category directories in categories folder`);
 
+    // Clear existing photos and categories
+    await db.delete(photos);
+    await db.delete(categories);
+
+    let displayOrder = 1;
     for (const dir of categoryDirs) {
       const categoryPath = dir.name;
       const categoryName = categoryPath.replace(/_/g, ' '); // Convert underscores to spaces for DB
-      const fullPath = path.join(assetsPath, categoryPath);
+      const fullPath = path.join(categoriesPath, categoryPath);
 
       console.log(`Processing category: ${categoryName} from path: ${categoryPath}`);
 
-      // Ensure category exists in database
-      await db.insert(categories)
-        .values({
-          name: categoryName,
-          displayOrder: 1,
-          description: `${categoryName} photography collection`
-        })
-        .onConflictDoUpdate({
-          target: categories.name,
-          set: { description: `${categoryName} photography collection` }
-        });
+      // Insert category
+      await db.insert(categories).values({
+        name: categoryName,
+        displayOrder: displayOrder++,
+        description: `${categoryName} photography collection`
+      });
 
       // Get all images in this category
       const files = await fs.readdir(fullPath);
@@ -91,37 +97,30 @@ export async function scanAndProcessImages() {
       // Process each image
       for (const imageFile of imageFiles) {
         try {
-          // Check if image already exists in database
-          const existingPhoto = await db.select()
-            .from(photos)
-            .where(eq(photos.imageUrl, imageFile));
+          const imagePath = path.join(fullPath, imageFile);
+          let thumbnailUrl;
 
-          if (existingPhoto.length === 0) {
-            const imagePath = path.join(fullPath, imageFile);
-            let thumbnailUrl;
-
-            try {
-              thumbnailUrl = await generateThumbnail(imagePath);
-              console.log(`Generated thumbnail for ${imageFile}: ${thumbnailUrl}`);
-            } catch (error) {
-              console.error(`Error generating thumbnail for ${imageFile}:`, error);
-              thumbnailUrl = undefined;
-            }
-
-            // Generate a meaningful title for the photo
-            const title = formatTitle(imageFile, categoryName);
-
-            // Insert new photo
-            await db.insert(photos).values({
-              title,
-              category: categoryName,
-              imageUrl: imageFile,
-              thumbnailUrl,
-              displayOrder: 1
-            });
-
-            console.log(`Added new photo: ${imageFile} in category ${categoryName} with title: ${title}`);
+          try {
+            thumbnailUrl = await generateThumbnail(imagePath);
+            console.log(`Generated thumbnail for ${imageFile}: ${thumbnailUrl}`);
+          } catch (error) {
+            console.error(`Error generating thumbnail for ${imageFile}:`, error);
+            thumbnailUrl = undefined;
           }
+
+          // Generate a meaningful title for the photo
+          const title = formatTitle(imageFile, categoryName);
+
+          // Insert new photo with path that includes 'categories' subfolder
+          await db.insert(photos).values({
+            title,
+            category: categoryName,
+            imageUrl: path.join('categories', categoryPath, imageFile),
+            thumbnailUrl: thumbnailUrl ? path.join('categories', categoryPath, thumbnailUrl) : undefined,
+            displayOrder: displayOrder++
+          });
+
+          console.log(`Added new photo: ${imageFile} in category ${categoryName} with title: ${title}`);
         } catch (error) {
           console.error(`Error processing image ${imageFile}:`, error);
         }
