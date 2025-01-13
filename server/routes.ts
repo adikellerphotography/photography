@@ -39,9 +39,8 @@ export function registerRoutes(app: Express): Server {
       const query = db.select().from(photos);
 
       if (category && typeof category === 'string') {
-        const decodedCategory = decodeURIComponent(category);
-        console.log('Filtering by category:', decodedCategory);
-        query.where(eq(photos.category, decodedCategory));
+        console.log('Filtering by category:', category);
+        query.where(eq(photos.category, category));
       }
 
       const results = await query
@@ -53,27 +52,17 @@ export function registerRoutes(app: Express): Server {
 
       // Process photos and add full URLs
       const processedPhotos = results.map(photo => {
-        const categoryPath = photo.category.replace(/\s+/g, '_');
-        const photoUrl = `/assets/categories/${categoryPath}/${encodeURIComponent(photo.imageUrl)}`;
+        const photoUrl = `/assets/categories/${photo.category}/${encodeURIComponent(photo.imageUrl)}`;
         const thumbnailUrl = photo.thumbnailUrl ? 
-          `/assets/categories/${categoryPath}/${encodeURIComponent(photo.thumbnailUrl)}` : 
+          `/assets/categories/${photo.category}/${encodeURIComponent(photo.thumbnailUrl)}` : 
           undefined;
 
-        const processedPhoto = {
+        return {
           ...photo,
           imageUrl: photoUrl,
           thumbnailUrl: thumbnailUrl,
           isLiked: false
         };
-
-        console.log('Processing photo:', {
-          id: processedPhoto.id,
-          category: processedPhoto.category,
-          imageUrl: photoUrl,
-          thumbnailUrl: thumbnailUrl
-        });
-
-        return processedPhoto;
       });
 
       res.json(processedPhotos);
@@ -136,14 +125,12 @@ export function registerRoutes(app: Express): Server {
             .orderBy(desc(photos.displayOrder))
             .limit(1);
 
-          const categoryPath = category.name.replace(/\s+/g, '_');
-
           console.log(`Processing category: ${category.name}`);
 
           if (categoryPhotos[0]) {
-            const photoUrl = `/assets/categories/${categoryPath}/${encodeURIComponent(categoryPhotos[0].imageUrl)}`;
+            const photoUrl = `/assets/categories/${category.name}/${encodeURIComponent(categoryPhotos[0].imageUrl)}`;
             const thumbnailUrl = categoryPhotos[0].thumbnailUrl ?
-              `/assets/categories/${categoryPath}/${encodeURIComponent(categoryPhotos[0].thumbnailUrl)}` :
+              `/assets/categories/${category.name}/${encodeURIComponent(categoryPhotos[0].thumbnailUrl)}` :
               undefined;
 
             const photoData = {
@@ -167,7 +154,7 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
-  // Rescan and process all images
+  // Trigger a rescan of all images
   app.post("/api/photos/scan", async (_req, res) => {
     try {
       console.log('Starting image scan process...');

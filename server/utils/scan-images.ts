@@ -23,24 +23,16 @@ function formatTitle(fileName: string, category: string): string {
 
   // Add category-specific prefixes and formatting
   switch (category) {
-    case 'Bat Mitsva':
+    case 'Bat_Mitsva':
       return `Bat Mitzvah Portrait Session${title ? ': ' + title : ''}`;
     case 'Family':
       return `Family Portrait${title ? ': ' + title : ''}`;
     case 'Kids':
       return `Children's Portrait${title ? ': ' + title : ''}`;
-    case 'Events':
-      return `Event Photography${title ? ': ' + title : ''}`;
-    case 'Portraits':
-      return `Portrait Session${title ? ': ' + title : ''}`;
-    case 'Nature':
-      return `Nature Photography${title ? ': ' + title : ''}`;
-    case 'Wedding':
-      return `Wedding Photography${title ? ': ' + title : ''}`;
-    case 'Modeling':
-      return `Model Portfolio${title ? ': ' + title : ''}`;
     case 'Women':
       return `Women's Portrait${title ? ': ' + title : ''}`;
+    case 'Modeling':
+      return `Model Portfolio${title ? ': ' + title : ''}`;
     case 'Yoga':
       return `Yoga Photography${title ? ': ' + title : ''}`;
     default:
@@ -69,7 +61,7 @@ export async function scanAndProcessImages() {
 
     for (const dir of categoryDirs) {
       const categoryPath = dir.name;
-      const categoryName = categoryPath.replace(/_/g, ' '); // Convert underscores to spaces for DB
+      const categoryName = categoryPath;  // Keep original folder name as category name
       const fullPath = path.join(categoriesPath, categoryPath);
 
       console.log(`Processing category: ${categoryName} from path: ${fullPath}`);
@@ -79,11 +71,11 @@ export async function scanAndProcessImages() {
         .values({
           name: categoryName,
           displayOrder: 1,
-          description: `${categoryName} photography collection`
+          description: `${categoryName.replace(/_/g, ' ')} photography collection`
         })
         .onConflictDoUpdate({
           target: categories.name,
-          set: { description: `${categoryName} photography collection` }
+          set: { description: `${categoryName.replace(/_/g, ' ')} photography collection` }
         });
 
       // Get all images in this category

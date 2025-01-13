@@ -9,20 +9,15 @@ export const photos = pgTable("photos", {
   imageUrl: text("image_url").notNull(),
   thumbnailUrl: text("thumbnail_url"), 
   uploadedAt: timestamp("uploaded_at").defaultNow(),
-  displayOrder: serial("display_order"),
+  displayOrder: integer("display_order").default(0),
   likesCount: integer("likes_count").default(0),
 });
-
-export const insertPhotoSchema = createInsertSchema(photos);
-export const selectPhotoSchema = createSelectSchema(photos);
-export type InsertPhoto = typeof photos.$inferInsert;
-export type SelectPhoto = typeof photos.$inferSelect;
 
 export const categories = pgTable("categories", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 50 }).notNull().unique(),
   description: text("description"),
-  displayOrder: serial("display_order"),
+  displayOrder: integer("display_order").default(0),
 });
 
 export const photoLikes = pgTable("photo_likes", {
@@ -31,6 +26,11 @@ export const photoLikes = pgTable("photo_likes", {
   ipAddress: text("ip_address").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
+
+export const insertPhotoSchema = createInsertSchema(photos);
+export const selectPhotoSchema = createSelectSchema(photos);
+export type InsertPhoto = typeof photos.$inferInsert;
+export type SelectPhoto = typeof photos.$inferSelect;
 
 export const insertCategorySchema = createInsertSchema(categories);
 export const selectCategorySchema = createSelectSchema(categories);
