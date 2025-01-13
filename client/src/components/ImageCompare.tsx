@@ -138,10 +138,11 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
           viewBox="0 0 16 16"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="rotate-90 text-gray-600"
+          className="text-gray-600"
         >
+          {/* Bidirectional arrow icon */}
           <path
-            d="M2.66667 5.33333L8 10.6667L13.3333 5.33333"
+            d="M2 8h12M4 5l-3 3 3 3M12 5l3 3-3 3"
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
