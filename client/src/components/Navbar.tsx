@@ -63,7 +63,7 @@ export default function Navbar() {
                 <Button 
                   variant="ghost" 
                   size="icon" 
-                  className="h-14 w-14 rounded-none border-l bg-accent/30 hover:bg-accent/50 transition-colors"
+                  className="h-14 w-14 rounded-none border-l bg-accent/40 hover:bg-accent/60 transition-colors"
                 >
                   <Menu className="h-5 w-5" />
                   <span className="sr-only">Toggle menu</span>
