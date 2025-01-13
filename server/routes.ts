@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { eq, and, desc, sql } from "drizzle-orm";
 import { db } from "@db";
-import { photos, categories } from "@db/schema";
+import { photos, categories, type SelectPhoto } from "@db/schema";
 import path from "path";
 import express from "express";
 import { scanAndProcessImages } from "./utils/scan-images";
@@ -29,7 +29,7 @@ export function registerRoutes(app: Express): Server {
     index: false
   }));
 
-  // Get photos for a specific category
+  // Get photos for a specific category with proper TypeScript types
   app.get("/api/photos", async (req, res) => {
     try {
       const { category } = req.query;
@@ -38,21 +38,24 @@ export function registerRoutes(app: Express): Server {
 
       console.log('Fetching photos with params:', { category, page, pageSize });
 
-      // Build query with category filter
-      let query = db.select().from(photos);
+      // Build base query with explicit type
+      const query = db
+        .select()
+        .from(photos)
+        .limit(pageSize)
+        .offset((page - 1) * pageSize);
 
       if (category && typeof category === 'string') {
         const decodedCategory = decodeURIComponent(category);
         console.log('Filtering by category:', decodedCategory);
-        query = query.where(eq(photos.category, decodedCategory));
+        query.where(eq(photos.category, decodedCategory));
       }
 
-      // Execute query with pagination
-      const results = await query
-        .limit(pageSize)
-        .offset((page - 1) * pageSize)
-        .orderBy(desc(photos.displayOrder));
+      // Add ordering
+      query.orderBy(desc(photos.displayOrder));
 
+      // Execute query
+      const results = await query;
       console.log(`Found ${results.length} photos for category ${category}`);
 
       // Process photos and add full URLs
@@ -97,22 +100,31 @@ export function registerRoutes(app: Express): Server {
 
       // First, collect all images
       files.forEach(file => {
-        if (file.endsWith(' Large.jpeg') || file.endsWith(' Large.jpg')) {
-          const base = file.replace(/-[12] Large\.(jpeg|jpg)$/, '');
+        if (file.toLowerCase().includes('large.jpeg') || file.toLowerCase().includes('large.jpg')) {
+          const base = file.replace(/-[12] Large\.(jpeg|jpg)$/i, '');
           imageMap.set(base, (imageMap.get(base) || '') + file);
         }
       });
 
       // Then, create pairs
       let id = 1;
-      imageMap.forEach((value, key) => {
-        const beforeFile = files.find(f => f.startsWith(key) && f.includes('-1 Large'));
-        const afterFile = files.find(f => f.startsWith(key) && f.includes('-2 Large'));
+      imageMap.forEach((_, key) => {
+        const beforeFile = files.find(f => 
+          f.toLowerCase().startsWith(key.toLowerCase()) && 
+          f.toLowerCase().includes('-1 large')
+        );
+        const afterFile = files.find(f => 
+          f.toLowerCase().startsWith(key.toLowerCase()) && 
+          f.toLowerCase().includes('-2 large')
+        );
 
         if (beforeFile && afterFile) {
+          // Format title by removing numeric prefix and file extension
+          const title = key.replace(/^\d+[-_]?/, '').replace(/[-_]/g, ' ').trim();
+
           imageSets.push({
             id: id++,
-            title: key.replace(/_/g, ' '),
+            title,
             beforeImage: `/assets/before_and_after/${encodeURIComponent(beforeFile)}`,
             afterImage: `/assets/before_and_after/${encodeURIComponent(afterFile)}`
           });

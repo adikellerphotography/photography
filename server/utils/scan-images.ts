@@ -6,6 +6,11 @@ import { generateThumbnail } from "./image";
 import { eq } from 'drizzle-orm';
 
 function formatTitle(fileName: string, category: string): string {
+  // Skip formatting for main.jpeg as it's a special case
+  if (fileName.toLowerCase() === 'main.jpeg') {
+    return `${category} - Featured Image`;
+  }
+
   // Remove file extension and 'Large' suffix
   let title = fileName.replace(/\.(jpe?g|png)$/i, '').replace(/\s*Large$/i, '');
 
@@ -50,7 +55,12 @@ function formatTitle(fileName: string, category: string): string {
 
 export async function scanAndProcessImages() {
   try {
+    console.log('Starting image scan process...');
     const assetsPath = path.join(process.cwd(), 'attached_assets');
+
+    // Clear existing photos before reindexing
+    console.log('Clearing existing photo records...');
+    await db.delete(photos);
 
     // Get all directories (categories)
     const entries = await fs.readdir(assetsPath, { withFileTypes: true });
@@ -60,6 +70,7 @@ export async function scanAndProcessImages() {
 
     console.log(`Found ${categoryDirs.length} category directories`);
 
+    // Process each category directory
     for (const dir of categoryDirs) {
       const categoryPath = dir.name;
       const categoryName = categoryPath.replace(/_/g, ' '); // Convert underscores to spaces for DB
@@ -83,45 +94,49 @@ export async function scanAndProcessImages() {
       const files = await fs.readdir(fullPath);
       const imageFiles = files.filter(file => 
         /\.(jpg|jpeg|png)$/i.test(file) && 
-        !file.includes('-thumb') // Exclude thumbnail files
+        !file.toLowerCase().includes('-thumb') && // Exclude thumbnail files
+        !file.toLowerCase().includes('placeholder') // Exclude placeholder images
       );
 
       console.log(`Found ${imageFiles.length} images in ${categoryName}`);
 
+      // Sort files to process main.jpeg first
+      imageFiles.sort((a, b) => {
+        const aIsMain = a.toLowerCase() === 'main.jpeg';
+        const bIsMain = b.toLowerCase() === 'main.jpeg';
+        return bIsMain ? 1 : aIsMain ? -1 : 0;
+      });
+
       // Process each image
       for (const imageFile of imageFiles) {
         try {
-          // Check if image already exists in database
-          const existingPhoto = await db.select()
-            .from(photos)
-            .where(eq(photos.imageUrl, imageFile));
+          const imagePath = path.join(fullPath, imageFile);
+          let thumbnailUrl;
 
-          if (existingPhoto.length === 0) {
-            const imagePath = path.join(fullPath, imageFile);
-            let thumbnailUrl;
-
-            try {
-              thumbnailUrl = await generateThumbnail(imagePath);
-              console.log(`Generated thumbnail for ${imageFile}: ${thumbnailUrl}`);
-            } catch (error) {
-              console.error(`Error generating thumbnail for ${imageFile}:`, error);
-              thumbnailUrl = undefined;
-            }
-
-            // Generate a meaningful title for the photo
-            const title = formatTitle(imageFile, categoryName);
-
-            // Insert new photo
-            await db.insert(photos).values({
-              title,
-              category: categoryName,
-              imageUrl: imageFile,
-              thumbnailUrl,
-              displayOrder: 1
-            });
-
-            console.log(`Added new photo: ${imageFile} in category ${categoryName} with title: ${title}`);
+          try {
+            thumbnailUrl = await generateThumbnail(imagePath);
+            console.log(`Generated thumbnail for ${imageFile}: ${thumbnailUrl}`);
+          } catch (error) {
+            console.error(`Error generating thumbnail for ${imageFile}:`, error);
+            thumbnailUrl = undefined;
           }
+
+          // Generate a meaningful title for the photo
+          const title = formatTitle(imageFile, categoryName);
+
+          // Set display order: main.jpeg gets highest priority
+          const displayOrder = imageFile.toLowerCase() === 'main.jpeg' ? 1000 : 1;
+
+          // Insert new photo
+          await db.insert(photos).values({
+            title,
+            category: categoryName,
+            imageUrl: imageFile,
+            thumbnailUrl,
+            displayOrder
+          });
+
+          console.log(`Added photo: ${imageFile} in category ${categoryName} with title: ${title}`);
         } catch (error) {
           console.error(`Error processing image ${imageFile}:`, error);
         }
