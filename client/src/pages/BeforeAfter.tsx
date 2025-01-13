@@ -47,7 +47,7 @@ export default function BeforeAfter() {
         className="container mx-auto px-4 py-16"
       >
         <h1 className="text-3xl font-bold mb-8">
-          {t("beforeAfter.title", "Before & After")}
+          {t("beforeAfter.title")}
         </h1>
 
         <div className="space-y-16">

@@ -27,9 +27,9 @@ export default function Navbar() {
       <NavigationMenu className="w-full">
         <div className="w-full flex items-center h-14">
           <Link href="/">
-            <a className="text-lg font-cormorant px-4">
+            <span className="text-lg font-cormorant px-4 cursor-pointer">
               Adi Keller Photography
-            </a>
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -37,13 +37,14 @@ export default function Navbar() {
             <NavigationMenuList>
               {navigationItems.map((item) => (
                 <NavigationMenuItem key={item.href}>
-                  <Link href={item.href}>
-                    <NavigationMenuLink className={cn(
+                  <NavigationMenuLink
+                    className={cn(
                       "group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer"
-                    )}>
-                      {item.label}
-                    </NavigationMenuLink>
-                  </Link>
+                    )}
+                    onClick={() => window.location.href = item.href}
+                  >
+                    {item.label}
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
               ))}
             </NavigationMenuList>
@@ -59,7 +60,7 @@ export default function Navbar() {
               <ThemeToggle />
             </div>
 
-            {/* Menu button floating on the right with brighter background */}
+            {/* Menu button */}
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
                 <Button 
@@ -76,15 +77,17 @@ export default function Navbar() {
                   {navigationItems.map((item) => {
                     const Icon = item.icon;
                     return (
-                      <Link key={item.href} href={item.href}>
-                        <a 
-                          className="flex items-center gap-3 px-2 py-2 text-lg hover:text-primary transition-colors"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          <Icon className="h-5 w-5" />
-                          {item.label}
-                        </a>
-                      </Link>
+                      <button
+                        key={item.href}
+                        className="flex items-center gap-3 px-2 py-2 text-lg hover:text-primary transition-colors text-left w-full"
+                        onClick={() => {
+                          window.location.href = item.href;
+                          setIsOpen(false);
+                        }}
+                      >
+                        <Icon className="h-5 w-5" />
+                        {item.label}
+                      </button>
                     );
                   })}
                 </nav>
