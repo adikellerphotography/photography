@@ -35,7 +35,7 @@ export default function Home() {
             alt=""
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gray-900/30 backdrop-blur-[1px]" />
+          {/* Removed dark overlay to show background pattern */}
         </div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -43,10 +43,10 @@ export default function Home() {
           className="relative h-full container mx-auto px-4 pt-32 md:pt-24 pb-16 flex flex-col justify-center items-center"
         >
           <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h1 className="text-4xl md:text-6xl font-bold font-cormorant text-white drop-shadow-lg">
+            <h1 className="text-4xl md:text-6xl font-bold font-cormorant text-white drop-shadow-[0_4px_3px_rgba(0,0,0,0.4)]">
               {t("home.title")}
             </h1>
-            <p className="text-lg text-white/90 drop-shadow-md">
+            <p className="text-lg text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.4)]">
               {t("home.subtitle")}
             </p>
             <SocialLinks />
