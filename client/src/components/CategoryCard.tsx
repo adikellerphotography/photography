@@ -2,6 +2,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
 import { useTranslation } from "@/hooks/use-translation";
+import { useLanguage } from "@/hooks/use-language";
 
 interface CategoryCardProps {
   name: string;
@@ -12,7 +13,9 @@ interface CategoryCardProps {
 
 export default function CategoryCard({ name, description, imageUrl, thumbnailUrl }: CategoryCardProps) {
   const { t } = useTranslation();
+  const { language } = useLanguage();
   const displayUrl = thumbnailUrl || imageUrl;
+  const translatedName = t(`categories.${name}`);
 
   return (
     <Link href={`/gallery?category=${encodeURIComponent(name)}`}>
@@ -33,9 +36,9 @@ export default function CategoryCard({ name, description, imageUrl, thumbnailUrl
             </div>
           )}
         </AspectRatio>
-        <CardContent className="p-4">
+        <CardContent className={`p-4 ${language === 'he' ? 'rtl' : 'ltr'}`}>
           <h3 className="text-lg font-semibold group-hover:text-primary transition-colors duration-300">
-            {name}
+            {translatedName}
           </h3>
           {description && (
             <p className="text-sm text-muted-foreground mt-1">{description}</p>

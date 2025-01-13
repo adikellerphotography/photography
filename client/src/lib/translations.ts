@@ -12,6 +12,14 @@ export const translations = {
       galleryTitle: "Photo Galleries",
       featuredWork: "Featured Work",
     },
+    categories: {
+      "Bat Mitsva": "Bat Mitsva",
+      "Family": "Family",
+      "Events": "Events",
+      "Portraits": "Portraits",
+      "Nature": "Nature",
+      "Wedding": "Wedding",
+    },
     contact: {
       phone: "Phone Number",
       callMe: "Contact Me",
@@ -94,6 +102,14 @@ export const translations = {
       subtitle: "צילום פורטרטים אומנותי, הופך רגעים מספרי סיפורים ליצירות צילום מרהיבות",
       galleryTitle: "גלריות תמונות",
       featuredWork: "עבודות נבחרות",
+    },
+    categories: {
+      "Bat Mitsva": "בת מצווה",
+      "Family": "משפחה",
+      "Events": "אירועים",
+      "Portraits": "פורטרטים",
+      "Nature": "טבע",
+      "Wedding": "חתונה",
     },
     contact: {
       phone: "מספר טלפון",
