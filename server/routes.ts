@@ -5,8 +5,6 @@ import { db } from "@db";
 import { photos, categories } from "@db/schema";
 import path from "path";
 import express from "express";
-import { generateThumbnail } from "./utils/image";
-import { generateMissingThumbnails } from "./utils/generate-thumbnails";
 import { scanAndProcessImages } from "./utils/scan-images";
 
 export function registerRoutes(app: Express): Server {
@@ -16,16 +14,19 @@ export function registerRoutes(app: Express): Server {
   const assetsPath = path.join(process.cwd(), 'attached_assets');
   app.use('/assets', express.static(assetsPath, {
     setHeaders: (res, filePath) => {
-      if (filePath.endsWith('.jpg') || filePath.endsWith('.jpeg')) {
+      // Ensure proper content type for images
+      if (filePath.toLowerCase().endsWith('.jpg') || filePath.toLowerCase().endsWith('.jpeg')) {
         res.setHeader('Content-Type', 'image/jpeg');
-      } else if (filePath.endsWith('.png')) {
+      } else if (filePath.toLowerCase().endsWith('.png')) {
         res.setHeader('Content-Type', 'image/png');
       }
-    }
+      // Set cache control headers
+      res.setHeader('Cache-Control', 'public, max-age=31536000');
+    },
+    dotfiles: 'ignore',
+    fallthrough: true,
+    index: false
   }));
-
-  // Initialize thumbnails for existing photos
-  generateMissingThumbnails().catch(console.error);
 
   // Get photos for a specific category
   app.get("/api/photos", async (req, res) => {
@@ -40,8 +41,9 @@ export function registerRoutes(app: Express): Server {
       let query = db.select().from(photos);
 
       if (category && typeof category === 'string') {
-        console.log('Filtering by category:', category);
-        query = query.where(eq(photos.category, category));
+        const decodedCategory = decodeURIComponent(category);
+        console.log('Filtering by category:', decodedCategory);
+        query = query.where(eq(photos.category, decodedCategory));
       }
 
       // Execute query with pagination
@@ -57,18 +59,19 @@ export function registerRoutes(app: Express): Server {
         const categoryPath = photo.category.replace(/\s+/g, '_');
         const processedPhoto = {
           ...photo,
-          imageUrl: `/assets/${categoryPath}/${photo.imageUrl}`,
+          imageUrl: `/assets/${categoryPath}/${encodeURIComponent(photo.imageUrl)}`,
           thumbnailUrl: photo.thumbnailUrl ? 
-            `/assets/${categoryPath}/${photo.thumbnailUrl}` : 
+            `/assets/${categoryPath}/${encodeURIComponent(photo.thumbnailUrl)}` : 
             undefined,
           isLiked: false
         };
 
-        console.log(`Processed photo for ${categoryPath}:`, {
+        console.log('Processing photo:', {
           id: processedPhoto.id,
           category: processedPhoto.category,
-          imageUrl: processedPhoto.imageUrl,
-          thumbnailUrl: processedPhoto.thumbnailUrl
+          originalPath: photo.imageUrl,
+          processedPath: processedPhoto.imageUrl,
+          thumbnailPath: processedPhoto.thumbnailUrl
         });
 
         return processedPhoto;
@@ -103,9 +106,9 @@ export function registerRoutes(app: Express): Server {
             const photoData = {
               ...category,
               firstPhoto: {
-                imageUrl: `/assets/${categoryPath}/${categoryPhotos[0].imageUrl}`,
+                imageUrl: `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].imageUrl)}`,
                 thumbnailUrl: categoryPhotos[0].thumbnailUrl ?
-                  `/assets/${categoryPath}/${categoryPhotos[0].thumbnailUrl}` :
+                  `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].thumbnailUrl)}` :
                   undefined
               }
             };
@@ -119,85 +122,16 @@ export function registerRoutes(app: Express): Server {
       res.json(categoriesWithPhotos);
     } catch (error) {
       console.error('Error fetching categories:', error);
-      res.status(500).json({ error: "Failed to fetch categories", details: error.message });
+      res.status(500).json({ error: "Failed to fetch categories" });
     }
   });
 
-  // Get all categories with a random photo from each
-  app.get("/api/categories-with-photos", async (_req, res) => {
-    try {
-      const categoriesList = await db.select().from(categories).orderBy(categories.displayOrder);
-
-      const categoriesWithPhotos = await Promise.all(
-        categoriesList.map(async (category) => {
-          // Get random photo for this category
-          const randomPhoto = await db
-            .select()
-            .from(photos)
-            .where(eq(photos.category, category.name))
-            .orderBy(sql`RANDOM()`)
-            .limit(1);
-
-          const categoryPath = category.name.replace(/\s+/g, '_');
-          return {
-            ...category,
-            firstPhoto: randomPhoto[0] ? {
-              imageUrl: `/assets/${categoryPath}/${randomPhoto[0].imageUrl}`,
-              thumbnailUrl: randomPhoto[0].thumbnailUrl ?
-                `/assets/${categoryPath}/${randomPhoto[0].thumbnailUrl}` :
-                undefined
-            } : undefined
-          };
-        })
-      );
-
-      res.json(categoriesWithPhotos);
-    } catch (error) {
-      console.error('Error fetching categories with photos:', error);
-      res.status(500).json({ error: "Failed to fetch categories with photos" });
-    }
-  });
-
-  // Setup initial categories if needed
-  app.post("/api/categories/setup", async (_req, res) => {
-    try {
-      const categoryOrder = [
-        { name: "Bat Mitsva", order: 1, description: "Bat Mitsva celebrations and ceremonies" },
-        { name: "Kids", order: 2, description: "Children photography sessions" },
-        { name: "Family", order: 3, description: "Family portraits and gatherings" },
-        { name: "Yoga", order: 4, description: "Yoga photography sessions" },
-        { name: "Women", order: 5, description: "Women portraits and professional shots" },
-        { name: "Modeling", order: 6, description: "Professional modeling photography" }
-      ];
-
-      for (const cat of categoryOrder) {
-        await db.insert(categories)
-          .values({
-            name: cat.name,
-            displayOrder: cat.order,
-            description: cat.description
-          })
-          .onConflictDoUpdate({
-            target: categories.name,
-            set: {
-              displayOrder: cat.order,
-              description: cat.description
-            }
-          });
-      }
-
-      res.json({ message: "Categories setup completed" });
-    } catch (error) {
-      console.error('Error setting up categories:', error);
-      res.status(500).json({ error: "Failed to set up categories" });
-    }
-  });
-
-  // Scan and process all images
+  // Rescan and process all images
   app.post("/api/photos/scan", async (_req, res) => {
     try {
       console.log('Starting image scan process...');
       await scanAndProcessImages();
+      console.log('Image scan completed successfully');
       res.json({ message: "Successfully scanned and processed all images" });
     } catch (error) {
       console.error('Error scanning images:', error);
