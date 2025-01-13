@@ -5,6 +5,49 @@ import { photos, categories } from "@db/schema";
 import { generateThumbnail } from "./image";
 import { eq } from 'drizzle-orm';
 
+function formatTitle(fileName: string, category: string): string {
+  // Remove file extension and 'Large' suffix
+  let title = fileName.replace(/\.(jpe?g|png)$/i, '').replace(/\s*Large$/i, '');
+
+  // Remove any -Edit or -Edit-Edit suffixes
+  title = title.replace(/-Edit(-Edit)?/g, '');
+
+  // Remove any numerical prefixes like "IMG_1234" or "M68A"
+  title = title.replace(/^(IMG_|M68A)\d+(-|$)/, '');
+
+  // Replace underscores and dashes with spaces
+  title = title.replace(/[_-]/g, ' ');
+
+  // Remove any double spaces
+  title = title.replace(/\s+/g, ' ').trim();
+
+  // Add category-specific prefixes and formatting
+  switch (category) {
+    case 'Bat Mitsva':
+      return `Bat Mitzvah Portrait Session${title ? ': ' + title : ''}`;
+    case 'Family':
+      return `Family Portrait${title ? ': ' + title : ''}`;
+    case 'Kids':
+      return `Children's Portrait${title ? ': ' + title : ''}`;
+    case 'Events':
+      return `Event Photography${title ? ': ' + title : ''}`;
+    case 'Portraits':
+      return `Portrait Session${title ? ': ' + title : ''}`;
+    case 'Nature':
+      return `Nature Photography${title ? ': ' + title : ''}`;
+    case 'Wedding':
+      return `Wedding Photography${title ? ': ' + title : ''}`;
+    case 'Modeling':
+      return `Model Portfolio${title ? ': ' + title : ''}`;
+    case 'Women':
+      return `Women's Portrait${title ? ': ' + title : ''}`;
+    case 'Yoga':
+      return `Yoga Photography${title ? ': ' + title : ''}`;
+    default:
+      return title || category;
+  }
+}
+
 export async function scanAndProcessImages() {
   try {
     const assetsPath = path.join(process.cwd(), 'attached_assets');
@@ -65,16 +108,19 @@ export async function scanAndProcessImages() {
               thumbnailUrl = undefined;
             }
 
+            // Generate a meaningful title for the photo
+            const title = formatTitle(imageFile, categoryName);
+
             // Insert new photo
             await db.insert(photos).values({
-              title: path.basename(imageFile, path.extname(imageFile)),
+              title,
               category: categoryName,
               imageUrl: imageFile,
               thumbnailUrl,
               displayOrder: 1
             });
 
-            console.log(`Added new photo: ${imageFile} in category ${categoryName}`);
+            console.log(`Added new photo: ${imageFile} in category ${categoryName} with title: ${title}`);
           }
         } catch (error) {
           console.error(`Error processing image ${imageFile}:`, error);
