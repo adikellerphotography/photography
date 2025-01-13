@@ -42,12 +42,13 @@ export function registerRoutes(app: Express): Server {
             .orderBy(sql`RANDOM()`)
             .limit(1);
 
+          const categoryPath = category.name.replace(/\s+/g, '_');
           return {
             ...category,
             firstPhoto: randomPhoto[0] ? {
-              imageUrl: `/assets/${category.name.replace(/\s+/g, '_')}/${randomPhoto[0].imageUrl}`,
+              imageUrl: `/assets/${categoryPath}/${randomPhoto[0].imageUrl}`,
               thumbnailUrl: randomPhoto[0].thumbnailUrl ?
-                `/assets/${category.name.replace(/\s+/g, '_')}/${randomPhoto[0].thumbnailUrl}` :
+                `/assets/${categoryPath}/${randomPhoto[0].thumbnailUrl}` :
                 undefined
             } : undefined
           };
@@ -81,6 +82,7 @@ export function registerRoutes(app: Express): Server {
 
       // Process photos and add full URLs
       const processedPhotos = results.map(photo => {
+        // Replace spaces with underscores in category path
         const categoryPath = photo.category.replace(/\s+/g, '_');
         return {
           ...photo,
@@ -92,13 +94,13 @@ export function registerRoutes(app: Express): Server {
         };
       });
 
+      console.log('Photos fetched:', processedPhotos[0]); // Log first photo for debugging
       res.json(processedPhotos);
     } catch (error) {
       console.error('Error fetching photos:', error);
       res.status(500).json({ error: "Failed to fetch photos" });
     }
   });
-
 
   // Get all categories
   app.get("/api/categories", async (_req, res) => {
@@ -115,8 +117,9 @@ export function registerRoutes(app: Express): Server {
             .limit(1);
 
           const firstPhoto = categoryPhotos[0];
+          const categoryPath = category.name.replace(/\s+/g, '_');
+
           if (firstPhoto) {
-            const categoryPath = category.name.replace(/\s+/g, '_');
             return {
               ...category,
               firstPhoto: {
@@ -176,6 +179,7 @@ export function registerRoutes(app: Express): Server {
   // Scan and process all images
   app.post("/api/photos/scan", async (_req, res) => {
     try {
+      console.log('Starting image scan process...');
       await scanAndProcessImages();
       res.json({ message: "Successfully scanned and processed all images" });
     } catch (error) {
