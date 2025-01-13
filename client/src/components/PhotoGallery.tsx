@@ -387,7 +387,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 <ChevronRight className="w-6 h-6 text-white" />
               </button>
 
-              <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
+              <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="icon" className="bg-black/50 hover:bg-black/70">
