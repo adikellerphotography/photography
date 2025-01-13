@@ -76,7 +76,7 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
   return (
     <div
       ref={containerRef}
-      className={`relative overflow-hidden rounded-lg bg-muted select-none w-full`}
+      className="relative overflow-hidden rounded-lg bg-muted select-none w-full"
       onMouseDown={handleMouseDown}
       onTouchStart={handleMouseDown}
     >
@@ -86,7 +86,7 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
           ref={imageRef}
           src={afterImage}
           alt="After"
-          className={`object-contain w-full h-auto`}
+          className="object-contain w-full h-auto"
           onLoad={handleImageLoad}
           loading="lazy"
         />
@@ -102,7 +102,7 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
         <img
           src={beforeImage}
           alt="Before"
-          className={`object-contain w-full h-auto`}
+          className="object-contain w-full h-auto"
           loading="lazy"
         />
       </div>
