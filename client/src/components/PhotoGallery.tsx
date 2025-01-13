@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery, useMutation, useInfiniteQuery } from "@tanstack/react-query";
 import type { Photo } from "@/lib/types";
@@ -6,24 +6,9 @@ import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Loader2, ChevronLeft, ChevronRight, Heart, Download, Settings } from "lucide-react";
+import { Loader2, ChevronLeft, ChevronRight, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ShareDialog from "./ShareDialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-
-interface WatermarkOptions {
-  enabled: boolean;
-  quality: number;
-}
 
 interface PhotoGalleryProps {
   category?: string;
@@ -39,11 +24,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const pageSize = 20;
-  const [watermarkOptions, setWatermarkOptions] = useState<WatermarkOptions>({
-    enabled: true,
-    quality: 90
-  });
 
+  // Log the category prop for debugging
   useEffect(() => {
     console.log('PhotoGallery mounted with category:', category);
   }, [category]);
@@ -96,7 +78,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
           }
         });
       },
-      {
+      { 
         rootMargin: '50px',
         threshold: 0.1
       }
@@ -255,29 +237,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   let setTransitionDirection = (direction: "next" | "prev" | null) => {};
   let setIsNextImageLoaded = (loaded: boolean) => {};
 
-  const handleDownload = async (photo: Photo) => {
-    try {
-      const response = await fetch(
-        `/api/photos/${photo.id}/download?watermark=${watermarkOptions.enabled}&quality=${watermarkOptions.quality}`,
-        { method: 'GET' }
-      );
-
-      if (!response.ok) throw new Error('Download failed');
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${photo.title}.jpg`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    } catch (error) {
-      console.error('Error downloading photo:', error);
-    }
-  };
-
 
   if (isLoading) {
     return (
@@ -325,7 +284,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
             }}
             className="relative overflow-hidden rounded-lg cursor-pointer group"
           >
-            <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2 / 3 : 4 / 3}>
+            <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
               <div className="relative w-full h-full overflow-hidden bg-muted">
                 <img
                   src={photo.thumbnailUrl || '/placeholder.jpg'}
@@ -354,7 +313,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       </div>
 
       {(hasNextPage || isFetchingNextPage) && (
-        <div
+        <div 
           ref={loaderRef}
           className="flex justify-center py-8"
         >
@@ -363,9 +322,17 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       )}
 
       <Dialog open={!!selectedPhoto} onOpenChange={(open) => !open && setSelectedPhoto(null)}>
-        <DialogContent className="max-w-[90vw] max-h-[90vh] w-full h-full p-0" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+        <DialogContent 
+          className="max-w-[90vw] max-h-[90vh] w-full h-full p-0"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           {selectedPhoto && (
-            <div className="relative w-full h-full" onDoubleClick={() => handleDoubleClick(selectedPhoto)}>
+            <div 
+              className="relative w-full h-full"
+              onDoubleClick={() => handleDoubleClick(selectedPhoto)}
+            >
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -387,50 +354,15 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 <ChevronRight className="w-6 h-6 text-white" />
               </button>
 
-              <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="bg-black/50 hover:bg-black/70">
-                      <Settings className="h-4 w-4 text-white" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuLabel>Download Options</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <div className="p-2">
-                      <div className="flex items-center space-x-2">
-                        <Switch
-                          id="watermark"
-                          checked={watermarkOptions.enabled}
-                          onCheckedChange={(checked) =>
-                            setWatermarkOptions(prev => ({ ...prev, enabled: checked }))
-                          }
-                        />
-                        <Label htmlFor="watermark">Add Watermark</Label>
-                      </div>
-                    </div>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="bg-black/50 hover:bg-black/70"
-                  onClick={() => handleDownload(selectedPhoto)}
-                >
-                  <Download className="h-4 w-4 text-white" />
-                </Button>
-              </div>
-
               <AnimatePresence>
                 {showHeart && (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.3 }}
-                    animate={{
+                    animate={{ 
                       opacity: [0, 0.8, 0.8, 0],
                       scale: [0.3, 1.2, 1, 0.3]
                     }}
-                    transition={{
+                    transition={{ 
                       duration: 1,
                       times: [0, 0.2, 0.8, 1],
                       ease: "easeInOut"
@@ -438,11 +370,11 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                     className="absolute inset-0 flex items-center justify-center z-50 pointer-events-none"
                   >
                     <motion.div
-                      animate={{
+                      animate={{ 
                         rotate: [0, -10, 10, 0],
                       }}
-                      transition={{
-                        duration: 0.5,
+                      transition={{ 
+                        duration: 0.5, 
                         times: [0, 0.2, 0.8, 1],
                         ease: "easeInOut"
                       }}
@@ -459,8 +391,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 </div>
               )}
 
-              <ShareDialog
-                imageUrl={selectedPhoto.imageUrl}
+              <ShareDialog 
+                imageUrl={selectedPhoto.imageUrl} 
                 title={selectedPhoto.title}
               />
 
@@ -469,7 +401,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   src={selectedPhoto.thumbnailUrl || selectedPhoto.imageUrl}
                   alt=""
                   className="absolute inset-0 w-full h-full object-contain"
-                  style={{
+                  style={{ 
                     opacity: isFullImageLoaded ? 0 : 1,
                     transition: 'opacity 0.3s ease-in-out'
                   }}
@@ -479,7 +411,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   src={selectedPhoto.imageUrl}
                   alt=""
                   className="absolute inset-0 w-full h-full object-contain"
-                  style={{
+                  style={{ 
                     opacity: isFullImageLoaded ? 1 : 0,
                     transition: 'opacity 0.3s ease-in-out'
                   }}
