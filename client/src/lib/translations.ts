@@ -3,8 +3,9 @@ export const translations = {
     nav: {
       home: "Home",
       gallery: "Gallery",
-      about: "About",
       pricing: "Pricing",
+      info: "Session Info",
+      about: "About",
     },
     home: {
       title: "Where Art Meets the Lens",
@@ -92,14 +93,26 @@ export const translations = {
     common: {
       loading: "Loading...",
       noPreview: "No preview available",
-    }
+    },
+    info: {
+      title: "Session Information",
+      sessionTitle: "About the Session",
+      sessionDescription: "Our photography sessions are carefully planned to capture your unique personality and style. Each session typically lasts between 1-2 hours, allowing plenty of time to explore different poses and locations.",
+      equipmentTitle: "Equipment and Setup",
+      equipmentDescription: "We use professional-grade cameras and lighting equipment to ensure the highest quality photos. For outdoor sessions, we carefully select locations with optimal natural lighting and scenic backdrops.",
+      preparationTitle: "What to Bring",
+      preparationDescription: "Consider bringing multiple outfit changes to add variety to your photos. For family sessions, coordinating (but not matching) outfits work best. Don't forget any personal items you'd like to include in the photos.",
+      meetingTitle: "Meeting Details",
+      meetingDescription: "We'll meet at the predetermined location 15 minutes before the scheduled time to discuss your vision and preferences. This allows us to plan the best spots and lighting for your photos.",
+    },
   },
   he: {
     nav: {
       home: "ראשי",
       gallery: "גלריה",
-      about: "אודות",
       pricing: "מחירים",
+      info: "מידע על הצילומים",
+      about: "אודות",
     },
     home: {
       title: "היכן שאומנות פוגשת את העדשה",
@@ -187,6 +200,17 @@ export const translations = {
     common: {
       loading: "טוען...",
       noPreview: "אין תצוגה מקדימה",
-    }
+    },
+    info: {
+      title: "מידע על הצילומים",
+      sessionTitle: "על הצילומים",
+      sessionDescription: "הצילומים שלנו מתוכננים בקפידה כדי לתפוס את האישיות והסגנון הייחודיים שלך. כל מפגש נמשך בין שעה לשעתיים, המאפשר זמן מספיק לחקור פוזות ומיקומים שונים.",
+      equipmentTitle: "ציוד וסטאפ",
+      equipmentDescription: "אנו משתמשים במצלמות וציוד תאורה מקצועיים להבטחת תמונות באיכות הגבוהה ביותר. עבור צילומי חוץ, אנו בוחרים בקפידה מיקומים עם תאורה טבעית אופטימלית ורקע נוף.",
+      preparationTitle: "מה להביא",
+      preparationDescription: "כדאי להביא מספר חילופי בגדים כדי להוסיף מגוון לתמונות שלך. עבור צילומי משפחה, בגדים מתואמים (אך לא זהים) עובדים הכי טוב. אל תשכחו פריטים אישיים שתרצו לכלול בתמונות.",
+      meetingTitle: "פרטי המפגש",
+      meetingDescription: "ניפגש במיקום שנקבע מראש 15 דקות לפני הזמן המתוכנן כדי לדון בחזון ובהעדפות שלך. זה מאפשר לנו לתכנן את המקומות והתאורה הטובים ביותר עבור התמונות שלך.",
+    },
   }
 };
