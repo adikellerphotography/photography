@@ -19,6 +19,10 @@ export const translations = {
       "Portraits": "Portraits",
       "Nature": "Nature",
       "Wedding": "Wedding",
+      "Modeling": "Modeling",
+      "Kids": "Kids",
+      "Women": "Women",
+      "Yoga": "Yoga"
     },
     contact: {
       phone: "Phone Number",
@@ -110,6 +114,10 @@ export const translations = {
       "Portraits": "פורטרטים",
       "Nature": "טבע",
       "Wedding": "חתונה",
+      "Modeling": "דוגמנות",
+      "Kids": "ילדים",
+      "Women": "נשים",
+      "Yoga": "יוגה"
     },
     contact: {
       phone: "מספר טלפון",
