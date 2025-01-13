@@ -15,11 +15,13 @@ export function registerRoutes(app: Express): Server {
   const assetsPath = path.join(process.cwd(), 'attached_assets');
   app.use('/assets', express.static(assetsPath, {
     setHeaders: (res, filePath) => {
+      // Ensure proper content type for images
       if (filePath.toLowerCase().endsWith('.jpg') || filePath.toLowerCase().endsWith('.jpeg')) {
         res.setHeader('Content-Type', 'image/jpeg');
       } else if (filePath.toLowerCase().endsWith('.png')) {
         res.setHeader('Content-Type', 'image/png');
       }
+      // Set cache control headers
       res.setHeader('Cache-Control', 'public, max-age=31536000');
     },
     dotfiles: 'ignore',
@@ -36,10 +38,16 @@ export function registerRoutes(app: Express): Server {
 
       console.log('Fetching photos with params:', { category, page, pageSize });
 
-      const query = category 
-        ? db.select().from(photos).where(eq(photos.category, category as string))
-        : db.select().from(photos);
+      // Build query with category filter
+      let query = db.select().from(photos);
 
+      if (category && typeof category === 'string') {
+        const decodedCategory = decodeURIComponent(category);
+        console.log('Filtering by category:', decodedCategory);
+        query = query.where(eq(photos.category, decodedCategory));
+      }
+
+      // Execute query with pagination
       const results = await query
         .limit(pageSize)
         .offset((page - 1) * pageSize)
@@ -47,16 +55,27 @@ export function registerRoutes(app: Express): Server {
 
       console.log(`Found ${results.length} photos for category ${category}`);
 
+      // Process photos and add full URLs
       const processedPhotos = results.map(photo => {
         const categoryPath = photo.category.replace(/\s+/g, '_');
-        return {
+        const processedPhoto = {
           ...photo,
           imageUrl: `/assets/${categoryPath}/${encodeURIComponent(photo.imageUrl)}`,
-          thumbnailUrl: photo.thumbnailUrl ?
-            `/assets/${categoryPath}/${encodeURIComponent(photo.thumbnailUrl)}` :
+          thumbnailUrl: photo.thumbnailUrl ? 
+            `/assets/${categoryPath}/${encodeURIComponent(photo.thumbnailUrl)}` : 
             undefined,
           isLiked: false
         };
+
+        console.log('Processing photo:', {
+          id: processedPhoto.id,
+          category: processedPhoto.category,
+          originalPath: photo.imageUrl,
+          processedPath: processedPhoto.imageUrl,
+          thumbnailPath: processedPhoto.thumbnailUrl
+        });
+
+        return processedPhoto;
       });
 
       res.json(processedPhotos);
@@ -72,39 +91,34 @@ export function registerRoutes(app: Express): Server {
       const beforeAfterPath = path.join(assetsPath, 'before_and_after');
       const files = await fs.readdir(beforeAfterPath);
 
+      // Group matching before and after images
       const imageSets: { id: number; beforeImage: string; afterImage: string; title: string; }[] = [];
       const imageMap = new Map<string, string>();
 
+      // First, collect all images
       files.forEach(file => {
         if (file.endsWith(' Large.jpeg') || file.endsWith(' Large.jpg')) {
-          const base = file.replace(/^\d+\s*-/, '').replace(/-[12] Large\.(jpeg|jpg)$/, '');
+          const base = file.replace(/-[12] Large\.(jpeg|jpg)$/, '');
           imageMap.set(base, (imageMap.get(base) || '') + file);
         }
       });
 
+      // Then, create pairs
       let id = 1;
       imageMap.forEach((value, key) => {
-        const beforeFile = files.find(f => f.includes(key) && f.includes('-1 Large'));
-        const afterFile = files.find(f => f.includes(key) && f.includes('-2 Large'));
+        const beforeFile = files.find(f => f.startsWith(key) && f.includes('-1 Large'));
+        const afterFile = files.find(f => f.startsWith(key) && f.includes('-2 Large'));
 
         if (beforeFile && afterFile) {
-          const title = key
-            .replace(/_/g, ' ')
-            .replace(/([A-Z])/g, ' $1')
-            .trim()
-            .replace(/\s+/g, ' ')
-            .replace(/^./, str => str.toUpperCase());
-
           imageSets.push({
             id: id++,
-            title: title || 'Photo Comparison',
+            title: key.replace(/_/g, ' '),
             beforeImage: `/assets/before_and_after/${encodeURIComponent(beforeFile)}`,
             afterImage: `/assets/before_and_after/${encodeURIComponent(afterFile)}`
           });
         }
       });
 
-      imageSets.sort((a, b) => a.title.localeCompare(b.title));
       res.json(imageSets);
     } catch (error: any) {
       console.error('Error fetching before/after images:', error);
@@ -117,6 +131,7 @@ export function registerRoutes(app: Express): Server {
     try {
       const results = await db.select().from(categories).orderBy(categories.displayOrder);
 
+      // Get a photo for each category
       const categoriesWithPhotos = await Promise.all(
         results.map(async (category) => {
           const categoryPhotos = await db
@@ -127,9 +142,10 @@ export function registerRoutes(app: Express): Server {
             .limit(1);
 
           const categoryPath = category.name.replace(/\s+/g, '_');
+          console.log(`Processing category: ${category.name}, path: ${categoryPath}`);
 
           if (categoryPhotos[0]) {
-            return {
+            const photoData = {
               ...category,
               firstPhoto: {
                 imageUrl: `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].imageUrl)}`,
@@ -138,15 +154,17 @@ export function registerRoutes(app: Express): Server {
                   undefined
               }
             };
+            console.log('Category photo data:', photoData.firstPhoto);
+            return photoData;
           }
           return category;
         })
       );
 
       res.json(categoriesWithPhotos);
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error fetching categories:', error);
-      res.status(500).json({ error: "Failed to fetch categories", details: error.message });
+      res.status(500).json({ error: "Failed to fetch categories" });
     }
   });
 
@@ -157,9 +175,9 @@ export function registerRoutes(app: Express): Server {
       await scanAndProcessImages();
       console.log('Image scan completed successfully');
       res.json({ message: "Successfully scanned and processed all images" });
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error scanning images:', error);
-      res.status(500).json({ error: "Failed to scan images", details: error.message });
+      res.status(500).json({ error: "Failed to scan images" });
     }
   });
 
