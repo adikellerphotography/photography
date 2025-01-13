@@ -6,6 +6,7 @@ import { photos, categories } from "@db/schema";
 import path from "path";
 import express from "express";
 import { scanAndProcessImages } from "./utils/scan-images";
+import { processImageForDownload } from "./utils/image";
 import fs from "fs/promises";
 
 export function registerRoutes(app: Express): Server {
@@ -15,19 +16,56 @@ export function registerRoutes(app: Express): Server {
   const assetsPath = path.join(process.cwd(), 'attached_assets');
   app.use('/assets', express.static(assetsPath, {
     setHeaders: (res, filePath) => {
-      // Ensure proper content type for images
       if (filePath.toLowerCase().endsWith('.jpg') || filePath.toLowerCase().endsWith('.jpeg')) {
         res.setHeader('Content-Type', 'image/jpeg');
       } else if (filePath.toLowerCase().endsWith('.png')) {
         res.setHeader('Content-Type', 'image/png');
       }
-      // Set cache control headers
       res.setHeader('Cache-Control', 'public, max-age=31536000');
     },
     dotfiles: 'ignore',
     fallthrough: true,
     index: false
   }));
+
+  // Download photo with optional watermark
+  app.get("/api/photos/:photoId/download", async (req, res) => {
+    try {
+      const photoId = parseInt(req.params.photoId);
+      const watermark = req.query.watermark !== 'false'; // Default to true
+      const quality = parseInt(req.query.quality as string) || 90;
+
+      // Get photo from database
+      const photo = await db.select()
+        .from(photos)
+        .where(eq(photos.id, photoId))
+        .limit(1);
+
+      if (!photo || photo.length === 0) {
+        return res.status(404).json({ error: "Photo not found" });
+      }
+
+      const categoryPath = photo[0].category.replace(/\s+/g, '_');
+      const imagePath = path.join(assetsPath, categoryPath, photo[0].imageUrl);
+
+      // Process image with watermark
+      const processedImage = await processImageForDownload(imagePath, {
+        watermark,
+        quality,
+        maxWidth: 2048
+      });
+
+      // Set headers for download
+      res.setHeader('Content-Type', 'image/jpeg');
+      res.setHeader('Content-Disposition', `attachment; filename="${photo[0].title}.jpg"`);
+
+      // Send the processed image
+      res.send(processedImage);
+    } catch (error: any) {
+      console.error('Error downloading photo:', error);
+      res.status(500).json({ error: "Failed to download photo", details: error.message });
+    }
+  });
 
   // Get photos for a specific category
   app.get("/api/photos", async (req, res) => {
@@ -61,8 +99,8 @@ export function registerRoutes(app: Express): Server {
         const processedPhoto = {
           ...photo,
           imageUrl: `/assets/${categoryPath}/${encodeURIComponent(photo.imageUrl)}`,
-          thumbnailUrl: photo.thumbnailUrl ? 
-            `/assets/${categoryPath}/${encodeURIComponent(photo.thumbnailUrl)}` : 
+          thumbnailUrl: photo.thumbnailUrl ?
+            `/assets/${categoryPath}/${encodeURIComponent(photo.thumbnailUrl)}` :
             undefined,
           isLiked: false
         };
