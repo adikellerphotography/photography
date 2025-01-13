@@ -17,16 +17,19 @@ export default function Home() {
 
   useEffect(() => {
     if (categories) {
-      console.log('Categories loaded:', categories.map(c => ({
-        name: c.name,
-        firstPhoto: c.firstPhoto
-      })));
+      console.log(
+        "Categories loaded:",
+        categories.map((c) => ({
+          name: c.name,
+          firstPhoto: c.firstPhoto,
+        })),
+      );
     }
   }, [categories]);
 
   // Filter out the "before and after" category - case insensitive
-  const displayCategories = categories?.filter(category => 
-    !category.name.toLowerCase().includes('before and after')
+  const displayCategories = categories?.filter(
+    (category) => !category.name.toLowerCase().includes("before and after"),
   );
 
   return (
@@ -42,9 +45,7 @@ export default function Home() {
             <h1 className="text-4xl md:text-6xl font-bold font-cormorant">
               {t("home.title")}
             </h1>
-            <p className="text-lg">
-              {t("home.subtitle")}
-            </p>
+            <p className="text-lg">{t("home.subtitle")}</p>
             <SocialLinks />
           </div>
         </motion.div>
@@ -57,7 +58,9 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           className="space-y-6"
         >
-          <h2 className="text-2xl font-semibold mb-6">{t("home.galleryTitle")}</h2>
+          <h2 className="text-2xl font-semibold mb-6">
+            {t("home.galleryTitle")}
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {displayCategories?.map((category, index) => (
               <motion.div
@@ -67,10 +70,12 @@ export default function Home() {
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ scale: 1.02 }}
               >
-                <Link href={`/gallery?category=${encodeURIComponent(category.name)}`}>
+                <Link
+                  href={`/gallery?category=${encodeURIComponent(category.name)}`}
+                >
                   <Card className="cursor-pointer overflow-hidden">
                     <CardContent className="p-0">
-                      <AspectRatio ratio={4/3}>
+                      <AspectRatio ratio={4 / 3}>
                         <div className="relative w-full h-full">
                           {category.firstPhoto && (
                             <img
@@ -79,10 +84,13 @@ export default function Home() {
                               className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
                               loading="lazy"
                               onError={(e) => {
-                                console.error('Failed to load image:', category.firstPhoto?.imageUrl);
+                                console.error(
+                                  "Failed to load image:",
+                                  category.firstPhoto?.imageUrl,
+                                );
                                 const target = e.target as HTMLImageElement;
                                 target.onerror = null;
-                                target.src = '/assets/placeholder-category.jpg';
+                                target.src = "/assets/placeholder-category.jpg";
                               }}
                             />
                           )}

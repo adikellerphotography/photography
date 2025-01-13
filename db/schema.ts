@@ -7,7 +7,6 @@ export const photos = pgTable("photos", {
   description: text("description"),
   category: varchar("category", { length: 50 }).notNull(),
   imageUrl: text("image_url").notNull(),
-  thumbnailUrl: text("thumbnail_url"), 
   uploadedAt: timestamp("uploaded_at").defaultNow(),
   displayOrder: serial("display_order"),
   likesCount: integer("likes_count").default(0),
@@ -25,16 +24,16 @@ export const categories = pgTable("categories", {
   displayOrder: serial("display_order"),
 });
 
-export const photoLikes = pgTable("photo_likes", {
-  id: serial("id").primaryKey(),
-  photoId: integer("photo_id").references(() => photos.id, { onDelete: 'CASCADE' }).notNull(),
-  ipAddress: text("ip_address").notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
-});
-
 export const insertCategorySchema = createInsertSchema(categories);
 export const selectCategorySchema = createSelectSchema(categories);
 export type InsertCategory = typeof categories.$inferInsert;
 export type SelectCategory = typeof categories.$inferSelect;
+
+export const photoLikes = pgTable("photo_likes", {
+  id: serial("id").primaryKey(),
+  photoId: integer("photo_id").references(() => photos.id, { onDelete: 'cascade' }).notNull(),
+  ipAddress: text("ip_address").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
 
 export type PhotoLike = typeof photoLikes.$inferSelect;
