@@ -68,7 +68,7 @@ export default function Home() {
                         <div className="relative w-full h-full">
                           <img
                             src={category.firstPhoto?.imageUrl || `/assets/${category.name}/${category.name.toLowerCase()}-1.jpg`}
-                            alt={t(`categories.${category.name}`)}
+                            alt={category.name}
                             className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
                             style={{
                               objectPosition: "center center",
@@ -94,7 +94,7 @@ export default function Home() {
                           <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent">
                             <div className="absolute bottom-0 left-0 right-0 p-4">
                               <h3 className="text-xl font-semibold text-white">
-                                {t(`categories.${category.name}`)}
+                                {category.name}
                               </h3>
                               {category.description && (
                                 <p className="text-sm text-white/80">
