@@ -27,7 +27,7 @@ export default function Gallery() {
 
   // Update active category when categories load or URL changes
   useEffect(() => {
-    const filteredCategories = categories?.filter(category => category.name.toLowerCase() !== 'kids');
+    const filteredCategories = categories?.filter(category => !['kids', 'before and after'].includes(category.name.toLowerCase()));
     if (filteredCategories && filteredCategories.length > 0) {
       // If we have a category from URL and it exists in our categories, use it
       if (categoryFromUrl && filteredCategories.some(c => c.name === categoryFromUrl)) {
@@ -108,7 +108,7 @@ export default function Gallery() {
     );
   }
 
-  const filteredCategories = categories.filter(category => category.name.toLowerCase() !== 'kids');
+  const filteredCategories = categories.filter(category => !['kids', 'before and after'].includes(category.name.toLowerCase()));
 
   return (
     <div className="min-h-screen pt-16">
