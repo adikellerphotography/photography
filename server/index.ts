@@ -18,7 +18,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Logging middleware with improved error handling
+// Logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
@@ -26,13 +26,8 @@ app.use((req, res, next) => {
 
   const originalResJson = res.json;
   res.json = function (bodyJson, ...args) {
-    try {
-      capturedJsonResponse = bodyJson;
-      return originalResJson.apply(res, [bodyJson, ...args]);
-    } catch (error) {
-      console.error('Error in json response:', error);
-      next(error);
-    }
+    capturedJsonResponse = bodyJson;
+    return originalResJson.apply(res, [bodyJson, ...args]);
   };
 
   res.on("finish", () => {
@@ -40,11 +35,7 @@ app.use((req, res, next) => {
     if (path.startsWith("/api")) {
       let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
       if (capturedJsonResponse) {
-        try {
-          logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
-        } catch (error) {
-          console.error('Error stringifying response:', error);
-        }
+        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
       }
       if (logLine.length > 80) {
         logLine = logLine.slice(0, 79) + "…";
@@ -77,7 +68,7 @@ const initializeServer = async () => {
       });
     });
 
-    // Setup static file serving with improved error handling
+    // Setup static file serving or development server
     if (process.env.NODE_ENV === "production") {
       serveStatic(app);
       log("🚀 Running in production mode");
@@ -86,20 +77,13 @@ const initializeServer = async () => {
       log("🛠️ Running in development mode");
     }
 
+    // Use port 5000 as specified in .replit
     const PORT = parseInt(process.env.PORT || "5000", 10);
 
     server.listen(PORT, "0.0.0.0", () => {
       log(`✨ Server running on port ${PORT}`);
       log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
     });
-
-    // Test database connection
-    try {
-      await db.execute(sql`SELECT 1`);
-      log("✅ Database connection successful");
-    } catch (error) {
-      console.error("❌ Database connection failed:", error);
-    }
 
     return server;
   } catch (error) {
