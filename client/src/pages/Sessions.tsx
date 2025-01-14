@@ -1,11 +1,23 @@
-
+import { useEffect, useState } from 'react';
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
+import FB from 'fb';
 
 interface SessionGroup {
   name: string;
   links: { title: string; url: string }[];
 }
+
+interface FacebookPreview {
+  images: string[];
+  link: string;
+}
+
+const FB_APP_ID = process.env.FACEBOOK_APP_ID || '';
+const FB_APP_SECRET = process.env.FACEBOOK_APP_SECRET || '';
+
+FB.options({ version: 'v18.0' });
+FB.setAccessToken(`${FB_APP_ID}|${FB_APP_SECRET}`);
 
 const sessionGroups: SessionGroup[] = [
   {
@@ -72,6 +84,51 @@ const sessionGroups: SessionGroup[] = [
 
 export default function Sessions() {
   const { t } = useTranslation();
+  const [previews, setPreviews] = useState<Record<string, FacebookPreview[]>>({});
+
+  useEffect(() => {
+    async function fetchPreviews() {
+      const allPreviews: Record<string, FacebookPreview[]> = {};
+
+      for (const group of sessionGroups) {
+        const groupPreviews: FacebookPreview[] = [];
+
+        for (const link of group.links) {
+          try {
+            const postId = link.url.split('fbid=')[1];
+            if (!postId) continue;
+
+            const result = await new Promise((resolve, reject) => {
+              FB.api(
+                `/${postId}`,
+                { fields: 'images,link' },
+                (response: any) => {
+                  if (!response || response.error) {
+                    reject(response?.error || new Error('Failed to fetch'));
+                    return;
+                  }
+                  resolve(response);
+                }
+              );
+            });
+
+            groupPreviews.push({
+              images: result.images?.slice(0, 4).map((img: any) => img.source) || [],
+              link: link.url
+            });
+          } catch (error) {
+            console.error('Error fetching preview:', error);
+          }
+        }
+
+        allPreviews[group.name] = groupPreviews;
+      }
+
+      setPreviews(allPreviews);
+    }
+
+    fetchPreviews();
+  }, []);
 
   return (
     <div className="min-h-screen pt-16">
@@ -87,20 +144,28 @@ export default function Sessions() {
           {sessionGroups.map((group) => (
             <div key={group.name} className="bg-card p-6 rounded-lg shadow-md">
               <h2 className="text-2xl font-semibold mb-4">{t(`sessions.${group.name.toLowerCase()}`)}</h2>
-              <ul className="space-y-2">
-                {group.links.map((link, index) => (
-                  <li key={index}>
-                    <a
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500 hover:text-blue-600 transition-colors"
-                    >
-                      {link.title}
-                    </a>
-                  </li>
+              <div className="space-y-4">
+                {previews[group.name]?.map((preview, index) => (
+                  <a
+                    key={index}
+                    href={preview.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block hover:opacity-90 transition-opacity"
+                  >
+                    <div className="grid grid-cols-2 gap-2">
+                      {preview.images.map((image, imgIndex) => (
+                        <img
+                          key={imgIndex}
+                          src={image}
+                          alt={`${group.name} preview ${index + 1}`}
+                          className="w-full h-32 object-cover rounded"
+                        />
+                      ))}
+                    </div>
+                  </a>
                 ))}
-              </ul>
+              </div>
             </div>
           ))}
         </div>
