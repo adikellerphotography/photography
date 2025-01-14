@@ -54,8 +54,8 @@ export default function Home() {
         ...category,
         firstPhoto: {
           ...category.firstPhoto,
-          imageUrl: "/assets/kids/IMG_0001 Large.jpeg",
-          thumbnailUrl: "/assets/kids/IMG_0001 Large.jpeg"
+          imageUrl: "/assets/kids/IMG_5537-Edit-Edit Large.jpeg",
+          thumbnailUrl: "/assets/kids/IMG_5537-Edit-Edit Large-thumb.jpeg"
         }
       };
     }
