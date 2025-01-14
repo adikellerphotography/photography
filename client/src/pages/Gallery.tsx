@@ -108,7 +108,7 @@ export default function Gallery() {
     );
   }
 
-  const filteredCategories = categories.filter(category => !['kids', 'before and after'].includes(category.name.toLowerCase()));
+  const filteredCategories = categories.filter(category => !['before and after'].includes(category.name.toLowerCase()));
 
   return (
     <div className="min-h-screen pt-16">
