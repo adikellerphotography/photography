@@ -148,7 +148,8 @@ export const translations = {
       "Modeling": "דוגמנות",
       "Feminine": "נשי",
       "Yoga": "יוגה",
-      "Horses": "סוסים"
+      "Horses": "סוסים",
+      "Women": "Women"
     },
     contact: {
       phone: "מספר טלפון",
