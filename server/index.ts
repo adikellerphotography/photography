@@ -47,46 +47,30 @@ app.use((req, res, next) => {
   next();
 });
 
-(async () => {
+const initializeServer = async () => {
   try {
     // Test database connection before anything else
-    console.log("Testing database connection...");
-    console.log("Database URL configured:", !!process.env.DATABASE_URL);
-    console.log("Database host:", process.env.PGHOST);
-    console.log("Database port:", process.env.PGPORT);
+    console.log("🔄 Testing database connection...");
 
-    // Verify database connection with retries
-    let connected = false;
-    let retries = 3;
-    let lastError: Error | null = null;
-
-    while (!connected && retries > 0) {
-      try {
-        const result = await db.execute(sql`SELECT 1`);
-        if (result) {
-          connected = true;
-          log("Database connection successful");
-        }
-      } catch (error) {
-        lastError = error instanceof Error ? error : new Error(String(error));
-        console.error(`Database connection attempt failed (${retries} retries left):`, lastError.message);
-        retries--;
-        if (retries > 0) {
-          await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2 seconds before retry
-        }
-      }
+    if (!process.env.DATABASE_URL) {
+      throw new Error("DATABASE_URL environment variable is not set");
     }
 
-    if (!connected) {
-      throw new Error(`Failed to connect to database after multiple attempts. Last error: ${lastError?.message || 'Unknown error'}`);
+    // Simple database connection test
+    try {
+      await db.execute(sql`SELECT NOW()`);
+      console.log("✅ Database connection successful");
+    } catch (error) {
+      console.error("❌ Database connection failed:", error instanceof Error ? error.message : String(error));
+      throw error;
     }
 
-    // Register API routes before setting up Vite
+    // Register API routes
     const server = registerRoutes(app);
 
     // Global error handler with improved logging
     app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-      console.error('Server error:', {
+      console.error('🔴 Server error:', {
         message: err.message,
         stack: err.stack,
         status: err.status || err.statusCode
@@ -103,21 +87,26 @@ app.use((req, res, next) => {
     // Setup static file serving or development server
     if (process.env.NODE_ENV === "production") {
       serveStatic(app);
-      log("Running in production mode");
+      log("🚀 Running in production mode");
     } else {
       await setupVite(app, server);
-      log("Running in development mode");
+      log("🛠️ Running in development mode");
     }
 
     // Use port 5000 as specified in .replit
     const PORT = parseInt(process.env.PORT || "5000", 10);
 
     server.listen(PORT, "0.0.0.0", () => {
-      log(`Server running on port ${PORT}`);
-      log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+      log(`✨ Server running on port ${PORT}`);
+      log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
     });
+
+    return server;
   } catch (error) {
-    console.error("Failed to start server:", error);
+    console.error("❌ Failed to start server:", error);
     process.exit(1);
   }
-})();
+};
+
+// Start the server
+initializeServer();

@@ -13,14 +13,3 @@ const sql = neon(process.env.DATABASE_URL);
 
 // Create database connection with schema
 export const db = drizzle(sql, { schema });
-
-// Test the connection immediately
-console.log('Testing database connection...');
-sql`SELECT NOW()`
-  .then(() => {
-    console.log('Successfully connected to the database');
-  })
-  .catch(err => {
-    console.error('Failed to connect to the database:', err);
-    process.exit(1);
-  });

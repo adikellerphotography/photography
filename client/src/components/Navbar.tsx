@@ -27,7 +27,9 @@ export default function Navbar() {
       <NavigationMenu className="w-full">
         <div className="w-full flex items-center h-14">
           <Link href="/">
-            <NavigationMenuLink className="text-lg font-cormorant px-4 bg-gradient-to-r from-background via-muted to-background">
+            <NavigationMenuLink className={cn(
+              "group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-lg font-cormorant transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer"
+            )}>
               Adi Keller Photography
             </NavigationMenuLink>
           </Link>
@@ -77,13 +79,13 @@ export default function Navbar() {
                     const Icon = item.icon;
                     return (
                       <Link key={item.href} href={item.href}>
-                        <a 
-                          className="flex items-center gap-3 px-2 py-2 text-lg hover:text-primary transition-colors"
+                        <button 
+                          className="flex items-center gap-3 px-2 py-2 text-lg hover:text-primary transition-colors w-full text-left"
                           onClick={() => setIsOpen(false)}
                         >
                           <Icon className="h-5 w-5" />
                           {item.label}
-                        </a>
+                        </button>
                       </Link>
                     );
                   })}
