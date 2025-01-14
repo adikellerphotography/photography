@@ -74,8 +74,8 @@ export default function Home() {
         ...category,
         firstPhoto: {
           ...category.firstPhoto,
-          imageUrl: "/assets/Modeling/M68A0630-Edit Large.jpeg",
-          thumbnailUrl: "/assets/Modeling/M68A0630-Edit Large-thumb.jpeg"
+          imageUrl: "/assets/Modeling/M68A1663-Edit-2 Large.jpeg",
+          thumbnailUrl: "/assets/Modeling/M68A1663-Edit-2 Large-thumb.jpeg"
         }
       };
     }
