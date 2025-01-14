@@ -27,7 +27,13 @@ export default function Gallery() {
 
   // Update active category when categories load or URL changes
   useEffect(() => {
-    const filteredCategories = categories?.filter(category => !['before and after'].includes(category.name.toLowerCase()));
+    const filteredCategories = categories?.filter(category => {
+    const lowerName = category.name.toLowerCase();
+    // Exclude 'before and after' and deduplicate 'kids'/'Kids'
+    if (lowerName === 'before and after') return false;
+    if (lowerName === 'kids' && !category.firstPhoto) return false;
+    return true;
+  });
     if (filteredCategories && filteredCategories.length > 0) {
       // If we have a category from URL and it exists in our categories, use it
       if (categoryFromUrl && filteredCategories.some(c => c.name === categoryFromUrl)) {
