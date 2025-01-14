@@ -38,6 +38,19 @@ export function registerRoutes(app: Express): Server {
 
       console.log('Fetching photos with params:', { category, page, pageSize });
 
+      // Check if category exists first
+      if (category && typeof category === 'string') {
+        const categoryExists = await db.select({ id: categories.id })
+          .from(categories)
+          .where(eq(categories.name, decodeURIComponent(category)))
+          .limit(1);
+
+        if (categoryExists.length === 0) {
+          console.log('Category not found:', category);
+          return res.status(404).json({ error: "Category not found" });
+        }
+      }
+
       // Build query with category filter
       let query = db.select().from(photos);
 
@@ -129,35 +142,43 @@ export function registerRoutes(app: Express): Server {
   // Get all categories with their first photos
   app.get("/api/categories", async (_req, res) => {
     try {
-      const results = await db.select().from(categories).orderBy(categories.displayOrder);
+      const validCategories = await db
+        .select()
+        .from(categories)
+        .orderBy(categories.displayOrder);
 
       // Get a photo for each category
       const categoriesWithPhotos = await Promise.all(
-        results.map(async (category) => {
-          const categoryPhotos = await db
-            .select()
-            .from(photos)
-            .where(eq(photos.category, category.name))
-            .orderBy(desc(photos.displayOrder))
-            .limit(1);
+        validCategories.map(async (category) => {
+          try {
+            const categoryPhotos = await db
+              .select()
+              .from(photos)
+              .where(eq(photos.category, category.name))
+              .orderBy(desc(photos.displayOrder))
+              .limit(1);
 
-          const categoryPath = category.name.replace(/\s+/g, '_');
-          console.log(`Processing category: ${category.name}, path: ${categoryPath}`);
+            const categoryPath = category.name.replace(/\s+/g, '_');
+            console.log(`Processing category: ${category.name}, path: ${categoryPath}`);
 
-          if (categoryPhotos[0]) {
-            const photoData = {
-              ...category,
-              firstPhoto: {
-                imageUrl: `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].imageUrl)}`,
-                thumbnailUrl: categoryPhotos[0].thumbnailUrl ?
-                  `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].thumbnailUrl)}` :
-                  undefined
-              }
-            };
-            console.log('Category photo data:', photoData.firstPhoto);
-            return photoData;
+            if (categoryPhotos[0]) {
+              const photoData = {
+                ...category,
+                firstPhoto: {
+                  imageUrl: `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].imageUrl)}`,
+                  thumbnailUrl: categoryPhotos[0].thumbnailUrl ?
+                    `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].thumbnailUrl)}` :
+                    undefined
+                }
+              };
+              console.log('Category photo data:', photoData.firstPhoto);
+              return photoData;
+            }
+            return category;
+          } catch (error) {
+            console.error(`Error processing category ${category.name}:`, error);
+            return category;
           }
-          return category;
         })
       );
 
