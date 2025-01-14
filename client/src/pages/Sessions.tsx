@@ -51,8 +51,8 @@ const sessionGroups: SessionGroup[] = [
   {
     name: "Yoga",
     links: [
-      { title: "Yoga Session 1", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
-      { title: "Yoga Session 2", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Yoga Session 1", url:"https://www.facebook.com/share/p/18V42a9Ynv/" },
+      { title: "Yoga Session 2", url: "https://www.facebook.com/share/p/157jBdjzuv/" },
       { title: "Yoga Session 3", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
       { title: "Yoga Session 4", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
       { title: "Yoga Session 5", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
