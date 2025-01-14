@@ -119,7 +119,13 @@ export default function Gallery() {
   }
 
   const filteredCategories = categories.filter(
-    (category) => !["before and after", "categories"].includes(category.name.toLowerCase()),
+    (category) => {
+      // Exclude certain categories and deduplicate 'Kids'
+      if (["before and after", "categories"].includes(category.name.toLowerCase())) return false;
+      // Only keep the lowercase 'kids' version, filter out 'Kids'
+      if (category.name === "Kids") return false;
+      return true;
+    }
   );
 
   return (
