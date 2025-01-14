@@ -42,7 +42,7 @@ export function registerRoutes(app: Express): Server {
       if (category && typeof category === 'string') {
         const categoryExists = await db.select({ id: categories.id })
           .from(categories)
-          .where(eq(categories.name, decodeURIComponent(category)))
+          .where(eq(categories.name, category))
           .limit(1);
 
         if (categoryExists.length === 0) {
@@ -55,7 +55,7 @@ export function registerRoutes(app: Express): Server {
       let query = db.select()
         .from(photos)
         .where(
-          category ? eq(photos.category, decodeURIComponent(category as string)) : undefined
+          category ? eq(photos.category, category as string) : undefined
         );
 
       // Execute query with pagination
@@ -68,17 +68,15 @@ export function registerRoutes(app: Express): Server {
 
       // Process photos and add full URLs
       const processedPhotos = results.map(photo => {
-        const categoryPath = photo.category.replace(/\s+/g, '_');
-        const processedPhoto = {
+        const imageUrl = `/assets/${photo.imageUrl}`;
+        const thumbnailUrl = photo.thumbnailUrl ? `/assets/${photo.thumbnailUrl}` : undefined;
+
+        return {
           ...photo,
-          imageUrl: `/assets/${categoryPath}/${encodeURIComponent(photo.imageUrl)}`,
-          thumbnailUrl: photo.thumbnailUrl ?
-            `/assets/${categoryPath}/${encodeURIComponent(photo.thumbnailUrl)}` :
-            undefined,
+          imageUrl,
+          thumbnailUrl,
           isLiked: false
         };
-
-        return processedPhoto;
       });
 
       res.json(processedPhotos);

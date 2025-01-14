@@ -8,14 +8,12 @@ import { eq } from 'drizzle-orm';
 export async function scanAndProcessImages() {
   try {
     const assetsPath = path.join(process.cwd(), 'attached_assets');
-    const excludedCategories: string[] = []; // Fixed TypeScript error by explicitly typing the array
 
     // Get all directories (categories)
     const entries = await fs.readdir(assetsPath, { withFileTypes: true });
     const categoryDirs = entries.filter(entry => 
       entry.isDirectory() && 
-      !entry.name.startsWith('.') &&
-      !excludedCategories.includes(entry.name.replace(/_/g, ' '))
+      !entry.name.startsWith('.')
     );
 
     console.log(`Found ${categoryDirs.length} category directories`);
@@ -31,12 +29,15 @@ export async function scanAndProcessImages() {
       await db.insert(categories)
         .values({
           name: categoryName,
-          displayOrder: 1,
+          displayOrder: categoryName === 'Kids' ? 1 : 2, // Prioritize Kids category
           description: `${categoryName} photography collection`
         })
         .onConflictDoUpdate({
           target: categories.name,
-          set: { description: `${categoryName} photography collection` }
+          set: { 
+            description: `${categoryName} photography collection`,
+            displayOrder: categoryName === 'Kids' ? 1 : 2 
+          }
         });
 
       // Get all images in this category
@@ -51,30 +52,31 @@ export async function scanAndProcessImages() {
       // Process each image
       for (const imageFile of imageFiles) {
         try {
+          const imagePath = path.join(fullPath, imageFile);
+          let thumbnailUrl: string | undefined;
+
+          try {
+            thumbnailUrl = await generateThumbnail(imagePath);
+            console.log(`Generated thumbnail for ${imageFile}: ${thumbnailUrl}`);
+          } catch (error) {
+            console.error(`Error generating thumbnail for ${imageFile}:`, error);
+            thumbnailUrl = undefined;
+          }
+
           // Check if image already exists in database
           const existingPhoto = await db.select()
             .from(photos)
             .where(eq(photos.imageUrl, path.join(categoryName, imageFile)));
 
           if (existingPhoto.length === 0) {
-            const imagePath = path.join(fullPath, imageFile);
-            let thumbnailUrl: string | undefined;
-
-            try {
-              thumbnailUrl = await generateThumbnail(imagePath);
-              console.log(`Generated thumbnail for ${imageFile}: ${thumbnailUrl}`);
-            } catch (error) {
-              console.error(`Error generating thumbnail for ${imageFile}:`, error);
-              thumbnailUrl = undefined;
-            }
-
             // Insert new photo with correct path
             await db.insert(photos).values({
               title: path.basename(imageFile, path.extname(imageFile)).replace(/-/g, ' '),
               category: categoryName,
               imageUrl: path.join(categoryName, imageFile),
               thumbnailUrl: thumbnailUrl ? path.join(categoryName, thumbnailUrl) : null,
-              displayOrder: 1
+              displayOrder: 1,
+              description: `${categoryName} photography - ${path.basename(imageFile, path.extname(imageFile)).replace(/-/g, ' ')}`
             });
 
             console.log(`Added new photo: ${imageFile} in category ${categoryName}`);
