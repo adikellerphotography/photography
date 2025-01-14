@@ -66,11 +66,11 @@ export function registerRoutes(app: Express): Server {
           category ? eq(photos.category, decodeURIComponent(category as string)) : undefined
         );
 
-      // Execute query with pagination
+      // Execute query with random ordering for gallery photos
       const results = await query
         .limit(pageSize)
         .offset((page - 1) * pageSize)
-        .orderBy(desc(photos.displayOrder));
+        .orderBy(sql`RANDOM()`);
 
       console.log(`Found ${results.length} photos for category ${category}`);
 
