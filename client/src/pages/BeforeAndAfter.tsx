@@ -76,7 +76,6 @@ export default function BeforeAndAfter() {
               viewport={{ once: true }}
               className="space-y-4"
             >
-              <h2 className="text-xl font-semibold">{comparison.title}</h2>
               <ImageCompare
                 beforeImage={comparison.beforeImage}
                 afterImage={comparison.afterImage}
