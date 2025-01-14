@@ -16,9 +16,19 @@ export default function Home() {
   const { t } = useTranslation();
 
   const allowedCategories = ["Bat Mitsva", "Family", "kids", "Women", "Yoga", "Modeling"];
-  
+
   // Override the firstPhoto for specific categories
   const processedCategories = categories?.map(category => {
+    if (category.name === "Women") {
+      return {
+        ...category,
+        firstPhoto: {
+          ...category.firstPhoto,
+          imageUrl: "/assets/Women/M68A4441-Edit Large.jpeg",
+          thumbnailUrl: "/assets/Women/M68A4441-Edit Large-thumb.jpeg"
+        }
+      };
+    }
     if (category.name === "Yoga") {
       return {
         ...category,
