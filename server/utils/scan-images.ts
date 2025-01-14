@@ -8,7 +8,7 @@ import { eq } from 'drizzle-orm';
 export async function scanAndProcessImages() {
   try {
     const assetsPath = path.join(process.cwd(), 'attached_assets');
-    const excludedCategories = ['Kids']; // Add categories to exclude from scanning
+    const excludedCategories = ['Kids', 'Women']; // Add categories to exclude from scanning
 
     // Get all directories (categories)
     const entries = await fs.readdir(assetsPath, { withFileTypes: true });
