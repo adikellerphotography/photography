@@ -115,7 +115,7 @@ export const translations = {
     sessions: {
       title: "Photography Sessions",
       batmitzva: "Bat Mitzva",
-      women: "Women",
+      feminine: "Feminine",
       sea: "Sea",
       nature: "Nature",
       yoga: "Yoga",
@@ -238,7 +238,7 @@ export const translations = {
     sessions: {
       title: "גלריות צילום",
       batmitzva: "בת מצווה",
-      women: "נשים",
+      feminine: "נשי",
       sea: "ים",
       nature: "טבע",
       yoga: "יוגה",
