@@ -1,6 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { eq, desc } from "drizzle-orm";
+import { eq, and, desc, sql } from "drizzle-orm";
 import { db } from "@db";
 import { photos, categories } from "@db/schema";
 import path from "path";
@@ -13,42 +13,21 @@ export function registerRoutes(app: Express): Server {
 
   // Serve static files from attached_assets and its subdirectories
   const assetsPath = path.join(process.cwd(), 'attached_assets');
-
-  // Ensure assets directory exists
-  const ensureDirectory = async (dirPath: string) => {
-    try {
-      await fs.access(dirPath);
-      console.log(`Directory exists: ${dirPath}`);
-    } catch {
-      console.log(`Creating directory: ${dirPath}`);
-      await fs.mkdir(dirPath, { recursive: true });
-    }
-  };
-
-  // Initialize directories
-  ensureDirectory(assetsPath).catch(console.error);
-
   app.use('/assets', express.static(assetsPath, {
     setHeaders: (res, filePath) => {
+      // Ensure proper content type for images
       if (filePath.toLowerCase().endsWith('.jpg') || filePath.toLowerCase().endsWith('.jpeg')) {
         res.setHeader('Content-Type', 'image/jpeg');
       } else if (filePath.toLowerCase().endsWith('.png')) {
         res.setHeader('Content-Type', 'image/png');
       }
-      // Disable cache for development
-      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-      res.setHeader('Pragma', 'no-cache');
-      res.setHeader('Expires', '0');
+      // Set cache control headers
+      res.setHeader('Cache-Control', 'public, max-age=31536000');
     },
+    dotfiles: 'ignore',
     fallthrough: true,
     index: false
   }));
-
-  // Error handler for static files
-  app.use('/assets', (err: any, req: any, res: any, next: any) => {
-    console.error('Static file error:', err);
-    res.status(404).json({ error: 'File not found' });
-  });
 
   // Get photos for a specific category
   app.get("/api/photos", async (req, res) => {
@@ -59,35 +38,45 @@ export function registerRoutes(app: Express): Server {
 
       console.log('Fetching photos with params:', { category, page, pageSize });
 
-      const query = db.select().from(photos);
+      // Build query with category filter
+      let query = db.select().from(photos);
+
       if (category && typeof category === 'string') {
         const decodedCategory = decodeURIComponent(category);
         console.log('Filtering by category:', decodedCategory);
-        query.where(eq(photos.category, decodedCategory));
+        query = query.where(eq(photos.category, decodedCategory));
       }
 
+      // Execute query with pagination
       const results = await query
-        .orderBy(desc(photos.displayOrder))
         .limit(pageSize)
-        .offset((page - 1) * pageSize);
+        .offset((page - 1) * pageSize)
+        .orderBy(desc(photos.displayOrder));
 
       console.log(`Found ${results.length} photos for category ${category}`);
 
+      // Process photos and add full URLs
       const processedPhotos = results.map(photo => {
-        try {
-          const categoryPath = photo.category.replace(/\s+/g, '_');
-          return {
-            ...photo,
-            imageUrl: `/assets/${encodeURIComponent(categoryPath)}/${encodeURIComponent(photo.imageUrl)}`,
-            thumbnailUrl: photo.thumbnailUrl
-              ? `/assets/${encodeURIComponent(categoryPath)}/${encodeURIComponent(photo.thumbnailUrl)}`
-              : undefined
-          };
-        } catch (error) {
-          console.error(`Error processing photo ${photo.id}:`, error);
-          return null;
-        }
-      }).filter(Boolean);
+        const categoryPath = photo.category.replace(/\s+/g, '_');
+        const processedPhoto = {
+          ...photo,
+          imageUrl: `/assets/${categoryPath}/${encodeURIComponent(photo.imageUrl)}`,
+          thumbnailUrl: photo.thumbnailUrl ? 
+            `/assets/${categoryPath}/${encodeURIComponent(photo.thumbnailUrl)}` : 
+            undefined,
+          isLiked: false
+        };
+
+        console.log('Processing photo:', {
+          id: processedPhoto.id,
+          category: processedPhoto.category,
+          originalPath: photo.imageUrl,
+          processedPath: processedPhoto.imageUrl,
+          thumbnailPath: processedPhoto.thumbnailUrl
+        });
+
+        return processedPhoto;
+      });
 
       res.json(processedPhotos);
     } catch (error: any) {
