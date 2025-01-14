@@ -11,61 +11,61 @@ const sessionGroups: SessionGroup[] = [
   {
     name: "Bat Mitzva",
     links: [
-      { title: "Bat Mitzva Session 1", url: "#" },
-      { title: "Bat Mitzva Session 2", url: "#" },
-      { title: "Bat Mitzva Session 3", url: "#" },
-      { title: "Bat Mitzva Session 4", url: "#" },
-      { title: "Bat Mitzva Session 5", url: "#" },
+      { title: "Bat Mitzva Session 1", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Bat Mitzva Session 2", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Bat Mitzva Session 3", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Bat Mitzva Session 4", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Bat Mitzva Session 5", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
     ]
   },
   {
     name: "Women",
     links: [
-      { title: "Women Session 1", url: "#" },
-      { title: "Women Session 2", url: "#" },
-      { title: "Women Session 3", url: "#" },
-      { title: "Women Session 4", url: "#" },
-      { title: "Women Session 5", url: "#" },
+      { title: "Women Session 1", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Women Session 2", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Women Session 3", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Women Session 4", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Women Session 5", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
     ]
   },
   {
     name: "Sea",
     links: [
-      { title: "Sea Session 1", url: "#" },
-      { title: "Sea Session 2", url: "#" },
-      { title: "Sea Session 3", url: "#" },
-      { title: "Sea Session 4", url: "#" },
-      { title: "Sea Session 5", url: "#" },
+      { title: "Sea Session 1", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Sea Session 2", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Sea Session 3", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Sea Session 4", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Sea Session 5", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
     ]
   },
   {
     name: "Nature",
     links: [
-      { title: "Nature Session 1", url: "#" },
-      { title: "Nature Session 2", url: "#" },
-      { title: "Nature Session 3", url: "#" },
-      { title: "Nature Session 4", url: "#" },
-      { title: "Nature Session 5", url: "#" },
+      { title: "Nature Session 1", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Nature Session 2", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Nature Session 3", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Nature Session 4", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Nature Session 5", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
     ]
   },
   {
     name: "Yoga",
     links: [
-      { title: "Yoga Session 1", url: "#" },
-      { title: "Yoga Session 2", url: "#" },
-      { title: "Yoga Session 3", url: "#" },
-      { title: "Yoga Session 4", url: "#" },
-      { title: "Yoga Session 5", url: "#" },
+      { title: "Yoga Session 1", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Yoga Session 2", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Yoga Session 3", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Yoga Session 4", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Yoga Session 5", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
     ]
   },
   {
     name: "Horses",
     links: [
-      { title: "Horse Session 1", url: "#" },
-      { title: "Horse Session 2", url: "#" },
-      { title: "Horse Session 3", url: "#" },
-      { title: "Horse Session 4", url: "#" },
-      { title: "Horse Session 5", url: "#" },
+      { title: "Horse Session 1", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Horse Session 2", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Horse Session 3", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Horse Session 4", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Horse Session 5", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
     ]
   }
 ];
@@ -85,8 +85,8 @@ export default function Sessions() {
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {sessionGroups.map((group) => (
-            <div key={group.name} className="space-y-4">
-              <h2 className="text-2xl font-semibold">{group.name}</h2>
+            <div key={group.name} className="bg-card p-6 rounded-lg shadow-md">
+              <h2 className="text-2xl font-semibold mb-4">{t(`sessions.${group.name.toLowerCase()}`)}</h2>
               <ul className="space-y-2">
                 {group.links.map((link, index) => (
                   <li key={index}>
