@@ -19,6 +19,16 @@ export default function Home() {
 
   // Override the firstPhoto for specific categories
   const processedCategories = categories?.map(category => {
+    if (category.name === "Family") {
+      return {
+        ...category,
+        firstPhoto: {
+          ...category.firstPhoto,
+          imageUrl: "/assets/Family/M68A9203-Edit Large.jpeg",
+          thumbnailUrl: "/assets/Family/M68A9203-Edit Large-thumb.jpeg"
+        }
+      };
+    }
     if (category.name === "Women") {
       return {
         ...category,
