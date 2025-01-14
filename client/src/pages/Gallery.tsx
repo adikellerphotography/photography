@@ -10,41 +10,45 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Gallery() {
-  const { data: categories, isLoading: categoriesLoading } = useQuery<Category[]>({
+  const { data: categories, isLoading: categoriesLoading } = useQuery<
+    Category[]
+  >({
     queryKey: ["/api/categories"],
   });
 
   // Get category from URL search params
   const [location] = useLocation();
   const searchParams = new URLSearchParams(window.location.search);
-  const categoryFromUrl = searchParams.get('category');
+  const categoryFromUrl = searchParams.get("category");
 
   // Set the initial category from URL or first available category
-  const [activeCategory, setActiveCategory] = useState<string>('');
+  const [activeCategory, setActiveCategory] = useState<string>("");
   const [showLeftScroll, setShowLeftScroll] = useState(false);
   const [showRightScroll, setShowRightScroll] = useState(false);
   const tabsListRef = useRef<HTMLDivElement>(null);
 
   // Update active category when categories load or URL changes
   useEffect(() => {
-    const filteredCategories = categories?.filter(category => {
-    const lowerName = category.name.toLowerCase();
-    // Exclude 'before and after' and deduplicate 'kids'/'Kids'
-    if (lowerName === 'before and after') return false;
-    if (lowerName === 'kids' && !category.firstPhoto) return false;
-    return true;
-  });
+    const filteredCategories = categories?.filter((category) => {
+      const lowerName = category.name.toLowerCase();
+      // Exclude 'before and after'
+      if (lowerName === "before and after") return false;
+      return true;
+    });
     if (filteredCategories && filteredCategories.length > 0) {
       // If we have a category from URL and it exists in our categories, use it
-      if (categoryFromUrl && filteredCategories.some(c => c.name === categoryFromUrl)) {
+      if (
+        categoryFromUrl &&
+        filteredCategories.some((c) => c.name === categoryFromUrl)
+      ) {
         setActiveCategory(categoryFromUrl);
-      } 
+      }
       // Otherwise use the first category
       else if (!activeCategory) {
         setActiveCategory(filteredCategories[0].name);
         // Update URL without triggering navigation
         const newUrl = `/gallery?category=${encodeURIComponent(filteredCategories[0].name)}`;
-        window.history.replaceState(null, '', newUrl);
+        window.history.replaceState(null, "", newUrl);
       }
     }
   }, [categoryFromUrl, categories, activeCategory]);
@@ -60,16 +64,16 @@ export default function Gallery() {
 
   useEffect(() => {
     checkScroll();
-    window.addEventListener('resize', checkScroll);
-    return () => window.removeEventListener('resize', checkScroll);
+    window.addEventListener("resize", checkScroll);
+    return () => window.removeEventListener("resize", checkScroll);
   }, [categories]);
 
-  const scroll = (direction: 'left' | 'right') => {
+  const scroll = (direction: "left" | "right") => {
     if (tabsListRef.current) {
       const scrollAmount = 200;
       tabsListRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
       });
     }
   };
@@ -83,17 +87,17 @@ export default function Gallery() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
-      y: 0
-    }
+      y: 0,
+    },
   };
 
   if (categoriesLoading || !categories || categories.length === 0) {
@@ -114,7 +118,9 @@ export default function Gallery() {
     );
   }
 
-  const filteredCategories = categories.filter(category => !['before and after'].includes(category.name.toLowerCase()));
+  const filteredCategories = categories.filter(
+    (category) => !["before and after"].includes(category.name.toLowerCase()),
+  );
 
   return (
     <div className="min-h-screen pt-16">
@@ -124,20 +130,17 @@ export default function Gallery() {
         variants={containerVariants}
         className="container mx-auto px-4 py-16"
       >
-        <motion.h1 
-          variants={itemVariants}
-          className="text-3xl font-bold mb-8"
-        >
+        <motion.h1 variants={itemVariants} className="text-3xl font-bold mb-8">
           Photo Gallery
         </motion.h1>
 
-        <Tabs 
+        <Tabs
           value={activeCategory}
           onValueChange={(value) => {
             setActiveCategory(value);
             // Update URL with proper history state
             const newUrl = `/gallery?category=${encodeURIComponent(value)}`;
-            window.history.pushState({ category: value }, '', newUrl);
+            window.history.pushState({ category: value }, "", newUrl);
           }}
           className="space-y-8"
         >
@@ -147,21 +150,21 @@ export default function Gallery() {
                 variant="outline"
                 size="icon"
                 className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm"
-                onClick={() => scroll('left')}
+                onClick={() => scroll("left")}
               >
                 <ChevronLeft className="h-4 w-4" />
               </Button>
             )}
 
-            <div 
+            <div
               className="overflow-x-auto scrollbar-hide relative"
               onScroll={handleScroll}
               ref={tabsListRef}
             >
               <TabsList className="inline-flex min-w-full justify-start px-8 border-0">
                 {filteredCategories.map((category) => (
-                  <TabsTrigger 
-                    key={category.id} 
+                  <TabsTrigger
+                    key={category.id}
                     value={category.name}
                     className="min-w-[120px]"
                   >
@@ -176,7 +179,7 @@ export default function Gallery() {
                 variant="outline"
                 size="icon"
                 className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm"
-                onClick={() => scroll('right')}
+                onClick={() => scroll("right")}
               >
                 <ChevronRight className="h-4 w-4" />
               </Button>
