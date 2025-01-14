@@ -34,7 +34,8 @@ export default function Home() {
       'Wedding': '/assets/Wedding/wedding-photography.jpg',
       'Modeling': '/assets/Modeling/M68A0065-Edit Large.jpeg',
       'Women': '/assets/Women/IMG_0095-Edit-Edit Large.jpeg',
-      'Yoga': '/assets/Yoga/IMG_1350-Edit-Edit Large.jpeg'
+      'Yoga': '/assets/Yoga/IMG_1350-Edit-Edit Large.jpeg',
+      'Kids': '/assets/Kids/kids-photography.jpg'
     };
 
     const fallbackImage = '/assets/placeholder-category.jpg';
