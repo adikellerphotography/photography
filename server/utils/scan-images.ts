@@ -8,14 +8,14 @@ import { eq } from 'drizzle-orm';
 export async function scanAndProcessImages() {
   try {
     const assetsPath = path.join(process.cwd(), 'attached_assets');
-    const excludedCategories = ['Kids']; // Add categories to exclude from scanning
+    const excludedCategories: string[] = []; // Fixed TypeScript error by explicitly typing the array
 
     // Get all directories (categories)
     const entries = await fs.readdir(assetsPath, { withFileTypes: true });
     const categoryDirs = entries.filter(entry => 
       entry.isDirectory() && 
       !entry.name.startsWith('.') &&
-      !excludedCategories.includes(entry.name.replace(/_/g, ' ')) // Exclude specified categories
+      !excludedCategories.includes(entry.name.replace(/_/g, ' '))
     );
 
     console.log(`Found ${categoryDirs.length} category directories`);
@@ -54,11 +54,11 @@ export async function scanAndProcessImages() {
           // Check if image already exists in database
           const existingPhoto = await db.select()
             .from(photos)
-            .where(eq(photos.imageUrl, imageFile));
+            .where(eq(photos.imageUrl, path.join(categoryName, imageFile)));
 
           if (existingPhoto.length === 0) {
             const imagePath = path.join(fullPath, imageFile);
-            let thumbnailUrl;
+            let thumbnailUrl: string | undefined;
 
             try {
               thumbnailUrl = await generateThumbnail(imagePath);
@@ -68,12 +68,12 @@ export async function scanAndProcessImages() {
               thumbnailUrl = undefined;
             }
 
-            // Insert new photo
+            // Insert new photo with correct path
             await db.insert(photos).values({
-              title: path.basename(imageFile, path.extname(imageFile)),
+              title: path.basename(imageFile, path.extname(imageFile)).replace(/-/g, ' '),
               category: categoryName,
-              imageUrl: imageFile,
-              thumbnailUrl,
+              imageUrl: path.join(categoryName, imageFile),
+              thumbnailUrl: thumbnailUrl ? path.join(categoryName, thumbnailUrl) : null,
               displayOrder: 1
             });
 

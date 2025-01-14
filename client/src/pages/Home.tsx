@@ -24,7 +24,6 @@ export default function Home() {
     }
   }, [categories]);
 
-  // Replace the getCategoryImage function with a simpler version that uses the firstPhoto
   const getCategoryImage = (category: Category) => {
     return category.firstPhoto?.imageUrl || '/assets/placeholder-category.jpg';
   };
@@ -32,7 +31,7 @@ export default function Home() {
   // Filter out categories that don't have translations and specific excluded categories
   const filteredCategories = categories?.filter(category => {
     // Explicitly exclude unwanted categories
-    const excludedCategories = ['before and after', 'categories'];
+    const excludedCategories = ['before and after'];
     if (excludedCategories.includes(category.name.toLowerCase())) {
       return false;
     }
