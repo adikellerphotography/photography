@@ -56,7 +56,10 @@ app.use((req, res, next) => {
     console.log("Database port:", process.env.PGPORT);
 
     try {
-      await db.execute(sql`SELECT 1 as test`);
+      const result = await db.execute(sql`SELECT 1 as test`);
+      if (!result) {
+        throw new Error("Database connection test failed - no result returned");
+      }
       log("Database connection successful");
     } catch (dbError) {
       console.error("Database connection error:", dbError);
@@ -66,12 +69,20 @@ app.use((req, res, next) => {
     // Register API routes before setting up Vite
     const server = registerRoutes(app);
 
-    // Global error handler
+    // Global error handler with improved logging
     app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-      console.error('Server error:', err);
+      console.error('Server error:', {
+        message: err.message,
+        stack: err.stack,
+        status: err.status || err.statusCode
+      });
       const status = err.status || err.statusCode || 500;
       const message = err.message || "Internal Server Error";
-      res.status(status).json({ message });
+      res.status(status).json({ 
+        message,
+        status,
+        timestamp: new Date().toISOString()
+      });
     });
 
     // Setup static file serving or development server
@@ -83,8 +94,8 @@ app.use((req, res, next) => {
       log("Running in development mode");
     }
 
-    // Use Replit's port or fallback to 3000
-    const PORT = parseInt(process.env.PORT || "3000", 10);
+    // Use port 5000 as specified in .replit
+    const PORT = parseInt(process.env.PORT || "5000", 10);
 
     server.listen(PORT, "0.0.0.0", () => {
       log(`Server running on port ${PORT}`);

@@ -40,6 +40,11 @@ export function registerRoutes(app: Express): Server {
 
       // Check if category exists first
       if (category && typeof category === 'string') {
+        // Exclude Kids category at the API level
+        if (category.toLowerCase() === 'kids') {
+          return res.status(404).json({ error: "Category not found" });
+        }
+
         const categoryExists = await db.select({ id: categories.id })
           .from(categories)
           .where(eq(categories.name, decodeURIComponent(category)))
@@ -52,13 +57,12 @@ export function registerRoutes(app: Express): Server {
       }
 
       // Build query with category filter
-      let query = db.select().from(photos);
-
-      if (category && typeof category === 'string') {
-        const decodedCategory = decodeURIComponent(category);
-        console.log('Filtering by category:', decodedCategory);
-        query = query.where(eq(photos.category, decodedCategory));
-      }
+      let query = db.select()
+        .from(photos)
+        .where(and(
+          sql`LOWER(${photos.category}) != 'kids'`,
+          category ? eq(photos.category, decodeURIComponent(category as string)) : undefined
+        ));
 
       // Execute query with pagination
       const results = await query
@@ -74,19 +78,11 @@ export function registerRoutes(app: Express): Server {
         const processedPhoto = {
           ...photo,
           imageUrl: `/assets/${categoryPath}/${encodeURIComponent(photo.imageUrl)}`,
-          thumbnailUrl: photo.thumbnailUrl ? 
-            `/assets/${categoryPath}/${encodeURIComponent(photo.thumbnailUrl)}` : 
+          thumbnailUrl: photo.thumbnailUrl ?
+            `/assets/${categoryPath}/${encodeURIComponent(photo.thumbnailUrl)}` :
             undefined,
           isLiked: false
         };
-
-        console.log('Processing photo:', {
-          id: processedPhoto.id,
-          category: processedPhoto.category,
-          originalPath: photo.imageUrl,
-          processedPath: processedPhoto.imageUrl,
-          thumbnailPath: processedPhoto.thumbnailUrl
-        });
 
         return processedPhoto;
       });
