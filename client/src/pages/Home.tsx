@@ -33,7 +33,7 @@ export default function Home() {
       'Nature': '/assets/Nature/nature-photography.jpg',
       'Wedding': '/assets/Wedding/wedding-photography.jpg',
       'Modeling': '/assets/Modeling/M68A0065-Edit Large.jpeg',
-      'Feminine': '/assets/Women/IMG_0095-Edit-Edit Large.jpeg',
+      'Feminine': '/assets/Feminine/IMG_0095-Edit-Edit Large.jpeg',
       'Yoga': '/assets/Yoga/IMG_1350-Edit-Edit Large.jpeg',
       'Kids': '/assets/kids/kids-1.jpg',
       'Horses': '/assets/Horses/horse-1.jpg'
