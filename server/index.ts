@@ -5,6 +5,8 @@ import { db } from "@db";
 import { sql } from "drizzle-orm";
 
 const app = express();
+
+// Basic middleware setup
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -35,11 +37,9 @@ app.use((req, res, next) => {
       if (capturedJsonResponse) {
         logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
       }
-
       if (logLine.length > 80) {
         logLine = logLine.slice(0, 79) + "…";
       }
-
       log(logLine);
     }
   });
@@ -49,12 +49,17 @@ app.use((req, res, next) => {
 
 (async () => {
   try {
-    // Test database connection
+    // Test database connection before anything else
+    console.log("Testing database connection...");
+    console.log("Database URL configured:", !!process.env.DATABASE_URL);
+    console.log("Database host:", process.env.PGHOST);
+    console.log("Database port:", process.env.PGPORT);
+
     try {
-      await db.execute(sql`SELECT 1`);
+      await db.execute(sql`SELECT 1 as test`);
       log("Database connection successful");
-    } catch (error) {
-      console.error("Database connection failed:", error);
+    } catch (dbError) {
+      console.error("Database connection error:", dbError);
       process.exit(1);
     }
 
@@ -84,7 +89,6 @@ app.use((req, res, next) => {
     server.listen(PORT, "0.0.0.0", () => {
       log(`Server running on port ${PORT}`);
       log(`Environment: ${process.env.NODE_ENV || 'development'}`);
-      log(`Database URL configured: ${!!process.env.DATABASE_URL}`);
     });
   } catch (error) {
     console.error("Failed to start server:", error);

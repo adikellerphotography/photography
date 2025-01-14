@@ -1,5 +1,5 @@
-import { drizzle } from "drizzle-orm/neon-serverless";
-import ws from "ws";
+import { drizzle } from "drizzle-orm/neon-http";
+import { neon } from '@neondatabase/serverless';
 import * as schema from "@db/schema";
 
 if (!process.env.DATABASE_URL) {
@@ -8,8 +8,25 @@ if (!process.env.DATABASE_URL) {
   );
 }
 
-export const db = drizzle({
-  connection: process.env.DATABASE_URL,
-  schema,
-  ws: ws,
+// Create the connection with proper SSL configuration
+const sql = neon(process.env.DATABASE_URL, {
+  fetchConnectionOptions: {
+    cache: 'no-store',
+  }
 });
+
+// Create database connection with schema
+export const db = drizzle(sql, { 
+  schema,
+  logger: true
+});
+
+// Test the connection immediately and exit if it fails
+sql`SELECT NOW()`
+  .then(() => {
+    console.log('Successfully connected to the database');
+  })
+  .catch(err => {
+    console.error('Failed to connect to the database:', err);
+    process.exit(1);
+  });
