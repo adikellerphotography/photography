@@ -107,7 +107,7 @@ export default function Home() {
                 <Aperture className="w-6 h-6" />
               </button>
             </Link>
-            <Link href="/before-after">
+            <Link href="/before-and-after">
               <button className="p-4 rounded-full hover:bg-accent transition-colors">
                 <SplitSquareVertical className="w-6 h-6" />
               </button>
