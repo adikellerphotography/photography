@@ -17,7 +17,7 @@ export default function Home() {
 
   const allowedCategories = ["Bat Mitsva", "Family", "kids", "Women", "Yoga", "Modeling"];
   
-  // Override the firstPhoto for kids category
+  // Override the firstPhoto for specific categories
   const processedCategories = categories?.map(category => {
     if (category.name === "kids") {
       return {
@@ -26,6 +26,16 @@ export default function Home() {
           ...category.firstPhoto,
           imageUrl: "/assets/kids/IMG_0001 Large.jpeg",
           thumbnailUrl: "/assets/kids/IMG_0001 Large.jpeg"
+        }
+      };
+    }
+    if (category.name === "Bat Mitsva") {
+      return {
+        ...category,
+        firstPhoto: {
+          ...category.firstPhoto,
+          imageUrl: "/assets/Bat_Mitsva/IMG_8613-Edit Large.jpeg",
+          thumbnailUrl: "/assets/Bat_Mitsva/IMG_8613-Edit Large.jpeg"
         }
       };
     }
