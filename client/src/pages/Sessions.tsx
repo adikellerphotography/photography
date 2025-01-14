@@ -13,11 +13,11 @@ interface FacebookPreview {
   link: string;
 }
 
-const FB_APP_ID = process.env.FACEBOOK_APP_ID || '';
-const FB_APP_SECRET = process.env.FACEBOOK_APP_SECRET || '';
-
-FB.options({ version: 'v18.0' });
-FB.setAccessToken(`${FB_APP_ID}|${FB_APP_SECRET}`);
+// Remove Facebook SDK integration temporarily
+const fbConfig = {
+  appId: process.env.FACEBOOK_APP_ID,
+  appSecret: process.env.FACEBOOK_APP_SECRET
+};
 
 const sessionGroups: SessionGroup[] = [
   {
@@ -87,47 +87,17 @@ export default function Sessions() {
   const [previews, setPreviews] = useState<Record<string, FacebookPreview[]>>({});
 
   useEffect(() => {
-    async function fetchPreviews() {
-      const allPreviews: Record<string, FacebookPreview[]> = {};
-
-      for (const group of sessionGroups) {
-        const groupPreviews: FacebookPreview[] = [];
-
-        for (const link of group.links) {
-          try {
-            const postId = link.url.split('fbid=')[1];
-            if (!postId) continue;
-
-            const result = await new Promise((resolve, reject) => {
-              FB.api(
-                `/${postId}`,
-                { fields: 'images,link' },
-                (response: any) => {
-                  if (!response || response.error) {
-                    reject(response?.error || new Error('Failed to fetch'));
-                    return;
-                  }
-                  resolve(response);
-                }
-              );
-            });
-
-            groupPreviews.push({
-              images: result.images?.slice(0, 4).map((img: any) => img.source) || [],
-              link: link.url
-            });
-          } catch (error) {
-            console.error('Error fetching preview:', error);
-          }
-        }
-
-        allPreviews[group.name] = groupPreviews;
-      }
-
-      setPreviews(allPreviews);
-    }
-
-    fetchPreviews();
+    // Simplified preview logic without FB SDK
+    const mockPreviews: Record<string, FacebookPreview[]> = {};
+    
+    sessionGroups.forEach(group => {
+      mockPreviews[group.name] = group.links.map(link => ({
+        images: ['/assets/placeholder-category.jpg'],
+        link: link.url
+      }));
+    });
+    
+    setPreviews(mockPreviews);
   }, []);
 
   return (
