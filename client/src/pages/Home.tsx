@@ -45,7 +45,7 @@ export default function Home() {
   // Filter out categories that don't have translations and specific excluded categories
   const filteredCategories = categories?.filter(category => {
     // Explicitly exclude unwanted categories
-    const excludedCategories = ['before and after', 'categories', 'kids'];
+    const excludedCategories = ['before and after', 'categories'];
     if (excludedCategories.includes(category.name.toLowerCase())) {
       return false;
     }
