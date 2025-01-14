@@ -157,7 +157,7 @@ export default function Home() {
           <h2 className="text-2xl font-semibold mb-6">
             {t("home.galleryTitle")}
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-w-4xl mx-auto">
             {filteredCategories?.map((category, index) => (
               <motion.div
                 key={category.id}
@@ -171,7 +171,7 @@ export default function Home() {
                 >
                   <Card className="cursor-pointer overflow-hidden">
                     <CardContent className="p-0">
-                      <AspectRatio ratio={3 / 2} className="bg-muted">
+                      <AspectRatio ratio={4 / 3} className="bg-muted">
                         <div className="relative w-full h-full">
                           <img
                             src={category.firstPhoto?.imageUrl || `/assets/${category.name}/${category.name.toLowerCase()}-1.jpg`}
