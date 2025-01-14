@@ -19,6 +19,7 @@ export default function Navbar() {
     { href: "/before-and-after", label: language === "en" ? "Before & After" : "לפני ואחרי", icon: SplitSquareVertical },
     { href: "/pricing", label: language === "en" ? "Pricing" : "מחירים", icon: CreditCard },
     { href: "/info", label: language === "en" ? "Session Info" : "מידע על הצילומים", icon: InfoIcon },
+    { href: "/sessions", label: language === "en" ? "Sessions" : "גלריות", icon: Image },
     { href: "/about", label: language === "en" ? "About" : "אודות", icon: User },
   ];
 
