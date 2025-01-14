@@ -13,7 +13,12 @@ export function registerRoutes(app: Express): Server {
 
   // Helper function to get the correct category path
   const getCategoryPath = (categoryName: string) => {
-    return categoryName === 'Kids' ? 'kids' : categoryName.replace(/\s+/g, '_');
+    // For Kids category, return lowercase 'kids' path
+    if (categoryName.toLowerCase() === 'kids') {
+      return 'kids';
+    }
+    // For all other categories, replace spaces with underscores
+    return categoryName.replace(/\s+/g, '_');
   };
 
   // Serve static files from attached_assets and its subdirectories
@@ -74,18 +79,25 @@ export function registerRoutes(app: Express): Server {
         const categoryPath = getCategoryPath(photo.category);
         console.log(`Processing photo in category ${photo.category}, using path: ${categoryPath}`);
 
+        // For Kids category, ensure we use the correct path structure
+        const baseFileName = photo.imageUrl.split('/').pop();
+        const thumbFileName = photo.thumbnailUrl?.split('/').pop();
+
+        if (!baseFileName) {
+          console.error('Invalid image URL format:', photo.imageUrl);
+          return null;
+        }
+
         const processedPhoto = {
           ...photo,
-          imageUrl: `/assets/${categoryPath}/${encodeURIComponent(photo.imageUrl)}`,
-          thumbnailUrl: photo.thumbnailUrl ?
-            `/assets/${categoryPath}/${encodeURIComponent(photo.thumbnailUrl)}` :
-            undefined,
+          imageUrl: `/assets/${categoryPath}/${baseFileName}`,
+          thumbnailUrl: thumbFileName ? `/assets/${categoryPath}/${thumbFileName}` : undefined,
           isLiked: false
         };
 
-        console.log('Processed photo URL:', processedPhoto.imageUrl);
+        console.log('Processed photo:', processedPhoto);
         return processedPhoto;
-      });
+      }).filter(photo => photo !== null);
 
       res.json(processedPhotos);
     } catch (error: any) {
@@ -117,16 +129,22 @@ export function registerRoutes(app: Express): Server {
             console.log(`Processing category: ${category.name}, using path: ${categoryPath}`);
 
             if (categoryPhotos[0]) {
+              const baseFileName = categoryPhotos[0].imageUrl.split('/').pop();
+              const thumbFileName = categoryPhotos[0].thumbnailUrl?.split('/').pop();
+
+              if (!baseFileName) {
+                console.error('Invalid image URL format:', categoryPhotos[0].imageUrl);
+                return category;
+              }
+
               const photoData = {
                 ...category,
                 firstPhoto: {
-                  imageUrl: `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].imageUrl)}`,
-                  thumbnailUrl: categoryPhotos[0].thumbnailUrl ?
-                    `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].thumbnailUrl)}` :
-                    undefined
+                  imageUrl: `/assets/${categoryPath}/${baseFileName}`,
+                  thumbnailUrl: thumbFileName ? `/assets/${categoryPath}/${thumbFileName}` : undefined
                 }
               };
-              console.log('Category photo data:', photoData.firstPhoto);
+              console.log('Category photo data:', photoData);
               return photoData;
             }
             return category;

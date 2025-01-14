@@ -35,7 +35,7 @@ export default function Home() {
       'Modeling': '/assets/Modeling/M68A0065-Edit Large.jpeg',
       'Women': '/assets/Women/IMG_0095-Edit-Edit Large.jpeg',
       'Yoga': '/assets/Yoga/IMG_1350-Edit-Edit Large.jpeg',
-      'Kids': '/assets/kids/kids-1.jpg' // Updated path
+      'Kids': '/assets/kids/kids-1.jpg'
     };
 
     const fallbackImage = '/assets/placeholder-category.jpg';
@@ -43,9 +43,7 @@ export default function Home() {
     return imageMap[categoryName] || fallbackImage;
   };
 
-  // Filter out categories that don't have translations and specific excluded categories
   const filteredCategories = categories?.filter(category => {
-    // Explicitly exclude unwanted categories
     const excludedCategories = ['before and after', 'categories'];
     if (excludedCategories.includes(category.name.toLowerCase())) {
       return false;
