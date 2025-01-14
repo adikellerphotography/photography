@@ -19,7 +19,7 @@ export default function Home() {
 
   const filteredCategories = categories?.filter(category => 
     allowedCategories.includes(category.name)
-  );
+  ) || [];
 
   return (
     <div className="min-h-screen pt-16">
