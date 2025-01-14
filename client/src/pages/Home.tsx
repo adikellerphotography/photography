@@ -24,23 +24,9 @@ export default function Home() {
     }
   }, [categories]);
 
-  const getCategoryImage = (categoryName: string) => {
-    const imageMap: Record<string, string> = {
-      'Bat Mitsva': '/assets/Bat_Mitsva/M68A0863-Edit Large.jpeg',
-      'Family': '/assets/Family/IMG_3472-Edit Large.jpeg',
-      'Events': '/assets/Events/events-coverage.jpg',
-      'Portraits': '/assets/Portraits/portrait-session.jpg',
-      'Nature': '/assets/Nature/nature-photography.jpg',
-      'Wedding': '/assets/Wedding/wedding-photography.jpg',
-      'Modeling': '/assets/Modeling/M68A0065-Edit Large.jpeg',
-      'Women': '/assets/Women/IMG_0095-Edit-Edit Large.jpeg',
-      'Yoga': '/assets/Yoga/IMG_1350-Edit-Edit Large.jpeg',
-      'Kids': '/assets/Kids/kids-photography.jpg'
-    };
-
-    const fallbackImage = '/assets/placeholder-category.jpg';
-    console.log('Getting image for category:', categoryName, imageMap[categoryName] || fallbackImage);
-    return imageMap[categoryName] || fallbackImage;
+  // Replace the getCategoryImage function with a simpler version that uses the firstPhoto
+  const getCategoryImage = (category: Category) => {
+    return category.firstPhoto?.imageUrl || '/assets/placeholder-category.jpg';
   };
 
   // Filter out categories that don't have translations and specific excluded categories
@@ -50,13 +36,7 @@ export default function Home() {
     if (excludedCategories.includes(category.name.toLowerCase())) {
       return false;
     }
-
-    try {
-      return !!t(`categories.${category.name}`);
-    } catch {
-      console.log(`No translation found for category: ${category.name}`);
-      return false;
-    }
+    return true;
   });
 
   return (
@@ -90,7 +70,7 @@ export default function Home() {
           <h2 className="text-2xl font-semibold mb-6">{t("home.galleryTitle")}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredCategories?.map((category, index) => {
-              const imageUrl = category.firstPhoto?.imageUrl || getCategoryImage(category.name);
+              const imageUrl = category.firstPhoto?.imageUrl || getCategoryImage(category);
               console.log(`Category ${category.name} image:`, imageUrl);
 
               return (
@@ -108,7 +88,7 @@ export default function Home() {
                           <div className="relative w-full h-full">
                             <img
                               src={imageUrl}
-                              alt={t(`categories.${category.name}`)}
+                              alt={category.name}
                               className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
                               onError={(e) => {
                                 console.error('Failed to load image:', imageUrl);
@@ -120,7 +100,7 @@ export default function Home() {
                             <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent">
                               <div className="absolute bottom-0 left-0 right-0 p-4">
                                 <h3 className="text-xl font-semibold text-white">
-                                  {t(`categories.${category.name}`)}
+                                  {category.name}
                                 </h3>
                                 {category.description && (
                                   <p className="text-sm text-white/80">
