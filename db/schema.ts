@@ -22,8 +22,13 @@ export const categories = pgTable("categories", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 50 }).notNull().unique(),
   description: text("description"),
-  displayOrder: integer("display_order").default(-1).notNull(),
+  displayOrder: integer("display_order").notNull().default(0),
 });
+
+// Set initial display order for Bat Mitsva category
+db.query(
+  sql`UPDATE categories SET display_order = -1 WHERE name = 'Bat Mitsva'`
+);
 
 export const photoLikes = pgTable("photo_likes", {
   id: serial("id").primaryKey(),
