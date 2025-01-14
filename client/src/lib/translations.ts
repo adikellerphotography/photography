@@ -24,7 +24,8 @@ export const translations = {
       "Wedding": "Wedding",
       "Modeling": "Modeling",
       "Women": "Women",
-      "Yoga": "Yoga"
+      "Yoga": "Yoga",
+      "Horses": "Horses"
     },
     contact: {
       phone: "Phone Number",
@@ -146,7 +147,8 @@ export const translations = {
       "Wedding": "חתונה",
       "Modeling": "דוגמנות",
       "Women": "נשים",
-      "Yoga": "יוגה"
+      "Yoga": "יוגה",
+      "Horses": "סוסים"
     },
     contact: {
       phone: "מספר טלפון",
