@@ -36,7 +36,7 @@ export default function Home() {
       'Women': '/assets/Women/IMG_0095-Edit-Edit Large.jpeg',
       'Yoga': '/assets/Yoga/IMG_1350-Edit-Edit Large.jpeg',
       'Kids': '/assets/kids/kids-1.jpg',
-      'Horses': '/assets/placeholder-category.jpg'
+      'Horses': '/assets/Horses/horse-1.jpg'
     };
 
     const fallbackImage = '/assets/placeholder-category.jpg';
