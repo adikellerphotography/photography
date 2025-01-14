@@ -68,7 +68,7 @@ export default function Home() {
           className="relative container mx-auto px-4 pt-16 pb-8 flex flex-col justify-center items-center"
         >
           <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h1 className="text-4xl md:text-6xl font-bold font-cormorant bg-gradient-to-r from-background via-muted to-background">
+            <h1 className="text-4xl md:text-6xl font-bold font-cormorant">
               {t("home.title")}
             </h1>
             <p className="text-lg">

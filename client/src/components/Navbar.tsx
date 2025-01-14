@@ -28,7 +28,7 @@ export default function Navbar() {
         <div className="w-full flex items-center h-14">
           <Link href="/">
             <NavigationMenuLink className={cn(
-              "h-14 px-4 py-2 text-lg font-cormorant transition-colors hover:bg-accent/60 hover:text-accent-foreground focus:bg-accent/60 focus:text-accent-foreground focus:outline-none cursor-pointer flex items-center"
+              "h-14 px-4 py-2 text-lg font-cormorant transition-colors bg-accent/60 hover:bg-accent/80 hover:text-accent-foreground focus:bg-accent/60 focus:text-accent-foreground focus:outline-none cursor-pointer flex items-center"
             )}>
               Adi Keller Photography
             </NavigationMenuLink>
@@ -64,9 +64,9 @@ export default function Navbar() {
             {/* Menu button floating on the right with brighter background */}
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
+                <Button
+                  variant="ghost"
+                  size="icon"
                   className="h-14 w-14 rounded-none border-l bg-accent/60 hover:bg-accent/80 transition-colors"
                 >
                   <Menu className="h-5 w-5" />
@@ -79,7 +79,7 @@ export default function Navbar() {
                     const Icon = item.icon;
                     return (
                       <Link key={item.href} href={item.href}>
-                        <button 
+                        <button
                           className="flex items-center gap-3 px-2 py-2 text-lg hover:text-primary transition-colors w-full text-left"
                           onClick={() => setIsOpen(false)}
                         >
