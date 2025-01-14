@@ -34,8 +34,8 @@ export default function Home() {
         ...category,
         firstPhoto: {
           ...category.firstPhoto,
-          imageUrl: "/assets/Women/M68A4441-Edit Large.jpeg",
-          thumbnailUrl: "/assets/Women/M68A4441-Edit Large-thumb.jpeg"
+          imageUrl: "/assets/Women/IMG_5605-Edit Large.jpeg",
+          thumbnailUrl: "/assets/Women/IMG_5605-Edit Large-thumb.jpeg"
         }
       };
     }
