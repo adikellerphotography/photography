@@ -19,13 +19,13 @@ const sessionGroups: SessionGroup[] = [
     ]
   },
   {
-    name: "Women",
+    name: "Feminine",
     links: [
-      { title: "Women Session 1", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
-      { title: "Women Session 2", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
-      { title: "Women Session 3", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
-      { title: "Women Session 4", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
-      { title: "Women Session 5", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Feminine Session 1", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Feminine Session 2", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Feminine Session 3", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Feminine Session 4", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
+      { title: "Feminine Session 5", url: "https://www.facebook.com/photo/?fbid=122112673657543" },
     ]
   },
   {
