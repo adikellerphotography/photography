@@ -69,6 +69,16 @@ export default function Home() {
         }
       };
     }
+    if (category.name === "Modeling") {
+      return {
+        ...category,
+        firstPhoto: {
+          ...category.firstPhoto,
+          imageUrl: "/assets/Modeling/M68A0630-Edit Large.jpeg",
+          thumbnailUrl: "/assets/Modeling/M68A0630-Edit Large-thumb.jpeg"
+        }
+      };
+    }
     return category;
   });
 
