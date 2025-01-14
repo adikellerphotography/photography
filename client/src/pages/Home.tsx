@@ -64,8 +64,8 @@ export default function Home() {
         ...category,
         firstPhoto: {
           ...category.firstPhoto,
-          imageUrl: "/assets/Bat_Mitsva/IMG_8613-Edit Large.jpeg",
-          thumbnailUrl: "/assets/Bat_Mitsva/IMG_8613-Edit Large.jpeg"
+          imageUrl: "/assets/Bat_Mitsva/IMG_8705-Edit_5 Large.jpeg",
+          thumbnailUrl: "/assets/Bat_Mitsva/IMG_8705-Edit_5 Large.jpeg"
         }
       };
     }
