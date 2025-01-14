@@ -22,7 +22,6 @@ export const translations = {
       "Nature": "Nature",
       "Wedding": "Wedding",
       "Modeling": "Modeling",
-      "Kids": "Kids",
       "Women": "Women",
       "Yoga": "Yoga"
     },
@@ -135,7 +134,6 @@ export const translations = {
       "Nature": "טבע",
       "Wedding": "חתונה",
       "Modeling": "דוגמנות",
-      "Kids": "ילדים",
       "Women": "נשים",
       "Yoga": "יוגה"
     },

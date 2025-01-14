@@ -11,10 +11,21 @@ interface ComparisonSet {
   title: string;
 }
 
+const mockData: ComparisonSet[] = [
+  {
+    id: 1,
+    beforeImage: "/assets/before_and_after/0-1 Large.jpeg",
+    afterImage: "/assets/before_and_after/0-2 Large.jpeg",
+    title: "Portrait Enhancement"
+  }
+];
+
 export default function BeforeAndAfter() {
   const { t } = useTranslation();
-  const { data: comparisons, isLoading } = useQuery<ComparisonSet[]>({
+  const { data: comparisons = mockData, isLoading, error } = useQuery<ComparisonSet[]>({
     queryKey: ["/api/before-after"],
+    initialData: mockData,
+    retry: false
   });
 
   if (isLoading) {
@@ -31,14 +42,13 @@ export default function BeforeAndAfter() {
     );
   }
 
-  if (!comparisons?.length) {
+  if (error) {
+    console.error("Error loading before/after images:", error);
     return (
       <div className="min-h-screen pt-16">
         <div className="container mx-auto px-4 py-16">
           <h1 className="text-3xl font-bold mb-8">{t("beforeAfter.title")}</h1>
-          <p className="text-lg text-muted-foreground">
-            {t("beforeAfter.noImages")}
-          </p>
+          <p className="text-lg text-muted-foreground">{t("beforeAfter.noImages")}</p>
         </div>
       </div>
     );

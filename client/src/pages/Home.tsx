@@ -28,7 +28,6 @@ export default function Home() {
     const imageMap: Record<string, string> = {
       'Bat Mitsva': '/assets/Bat_Mitsva/M68A0863-Edit Large.jpeg',
       'Family': '/assets/Family/IMG_3472-Edit Large.jpeg',
-      'Kids': '/assets/Kids/IMG_1083-Edit Large.jpeg',
       'Events': '/assets/Events/events-coverage.jpg',
       'Portraits': '/assets/Portraits/portrait-session.jpg',
       'Nature': '/assets/Nature/nature-photography.jpg',
