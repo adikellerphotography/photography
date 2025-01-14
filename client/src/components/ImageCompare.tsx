@@ -9,14 +9,14 @@ interface ImageCompareProps {
 export default function ImageCompare({ beforeImage, afterImage }: ImageCompareProps) {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
-  const [imageOrientation, setImageOrientation] = useState<'landscape' | 'portrait' | null>(null);
+  const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
   const handleImageLoad = () => {
     if (imageRef.current) {
       const { naturalWidth, naturalHeight } = imageRef.current;
-      setImageOrientation(naturalWidth >= naturalHeight ? 'landscape' : 'portrait');
+      setImageSize({ width: naturalWidth, height: naturalHeight });
     }
   };
 
@@ -76,21 +76,22 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
   return (
     <div
       ref={containerRef}
-      className={`relative overflow-hidden rounded-lg bg-muted select-none w-full`}
+      className="relative overflow-hidden bg-muted select-none w-full max-w-full"
+      style={{
+        aspectRatio: imageSize.width && imageSize.height ? `${imageSize.width}/${imageSize.height}` : undefined
+      }}
       onMouseDown={handleMouseDown}
       onTouchStart={handleMouseDown}
     >
       {/* After image (base layer) */}
-      <div className="absolute inset-0">
-        <img
-          ref={imageRef}
-          src={afterImage}
-          alt="After"
-          className={`object-contain w-full h-auto`}
-          onLoad={handleImageLoad}
-          loading="lazy"
-        />
-      </div>
+      <img
+        ref={imageRef}
+        src={afterImage}
+        alt="After"
+        className="absolute inset-0 w-full h-full object-contain"
+        onLoad={handleImageLoad}
+        loading="lazy"
+      />
 
       {/* Before image (overlay) with clip effect */}
       <div
@@ -102,7 +103,7 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
         <img
           src={beforeImage}
           alt="Before"
-          className={`object-contain w-full h-auto`}
+          className="absolute inset-0 w-full h-full object-contain"
           loading="lazy"
         />
       </div>
@@ -113,7 +114,7 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
         style={{ left: `${sliderPosition}%` }}
       />
 
-      {/* Slider handle */}
+      {/* Slider handle with bidirectional arrow */}
       <motion.div
         className="absolute top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow-lg cursor-grab active:cursor-grabbing flex items-center justify-center"
         style={{ left: `${sliderPosition}%`, x: "-50%" }}
