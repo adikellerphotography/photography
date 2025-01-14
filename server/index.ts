@@ -55,15 +55,28 @@ app.use((req, res, next) => {
     console.log("Database host:", process.env.PGHOST);
     console.log("Database port:", process.env.PGPORT);
 
-    try {
-      const result = await db.execute(sql`SELECT 1 as test`);
-      if (!result) {
-        throw new Error("Database connection test failed - no result returned");
+    // Verify database connection with retries
+    let connected = false;
+    let retries = 3;
+
+    while (!connected && retries > 0) {
+      try {
+        const result = await db.execute(sql`SELECT 1 as test`);
+        if (result) {
+          connected = true;
+          log("Database connection successful");
+        }
+      } catch (dbError) {
+        console.error(`Database connection attempt failed (${retries} retries left):`, dbError);
+        retries--;
+        if (retries > 0) {
+          await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2 seconds before retry
+        }
       }
-      log("Database connection successful");
-    } catch (dbError) {
-      console.error("Database connection error:", dbError);
-      process.exit(1);
+    }
+
+    if (!connected) {
+      throw new Error("Failed to connect to database after multiple attempts");
     }
 
     // Register API routes before setting up Vite
