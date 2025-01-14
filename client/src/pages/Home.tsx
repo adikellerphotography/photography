@@ -103,17 +103,27 @@ export default function Home() {
                   <Link href={`/gallery?category=${encodeURIComponent(category.name)}`}>
                     <Card className="cursor-pointer overflow-hidden">
                       <CardContent className="p-0">
-                        <AspectRatio ratio={4/3}>
-                          <div className="relative w-full h-full">
+                        <AspectRatio ratio={4/3} className="bg-muted">
+                          <div className="relative w-full h-full overflow-hidden">
                             <img
                               src={imageUrl}
                               alt={t(`categories.${category.name}`)}
-                              className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
+                              className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                              style={{
+                                objectPosition: 'center center'
+                              }}
                               onError={(e) => {
                                 console.error('Failed to load image:', imageUrl);
                                 const target = e.target as HTMLImageElement;
                                 target.onerror = null;
                                 target.src = '/assets/placeholder-category.jpg';
+                              }}
+                              onLoad={(e) => {
+                                const img = e.target as HTMLImageElement;
+                                const isVertical = img.naturalHeight > img.naturalWidth;
+                                if (isVertical) {
+                                  img.style.objectPosition = 'center 15%';
+                                }
                               }}
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent">
