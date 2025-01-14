@@ -35,7 +35,7 @@ export default function Home() {
       'Modeling': '/assets/Modeling/M68A0065-Edit Large.jpeg',
       'Women': '/assets/Women/IMG_0095-Edit-Edit Large.jpeg',
       'Yoga': '/assets/Yoga/IMG_1350-Edit-Edit Large.jpeg',
-      'Kids': '/assets/Kids/kids-photography.jpg'
+      'Kids': '/assets/kids/kids-1.jpg' // Updated path
     };
 
     const fallbackImage = '/assets/placeholder-category.jpg';

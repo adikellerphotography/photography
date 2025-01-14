@@ -57,7 +57,8 @@ const initializeServer = async () => {
       console.error('🔴 Server error:', {
         message: err.message,
         stack: err.stack,
-        status: err.status || err.statusCode
+        status: err.status || err.statusCode,
+        details: err.details || err.errors || 'No additional details'
       });
       const status = err.status || err.statusCode || 500;
       const message = err.message || "Internal Server Error";

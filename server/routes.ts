@@ -11,17 +11,20 @@ import fs from "fs/promises";
 export function registerRoutes(app: Express): Server {
   const httpServer = createServer(app);
 
+  // Helper function to get the correct category path
+  const getCategoryPath = (categoryName: string) => {
+    return categoryName === 'Kids' ? 'kids' : categoryName.replace(/\s+/g, '_');
+  };
+
   // Serve static files from attached_assets and its subdirectories
   const assetsPath = path.join(process.cwd(), 'attached_assets');
   app.use('/assets', express.static(assetsPath, {
     setHeaders: (res, filePath) => {
-      // Ensure proper content type for images
       if (filePath.toLowerCase().endsWith('.jpg') || filePath.toLowerCase().endsWith('.jpeg')) {
         res.setHeader('Content-Type', 'image/jpeg');
       } else if (filePath.toLowerCase().endsWith('.png')) {
         res.setHeader('Content-Type', 'image/png');
       }
-      // Set cache control headers
       res.setHeader('Cache-Control', 'public, max-age=31536000');
     },
     dotfiles: 'ignore',
@@ -68,7 +71,9 @@ export function registerRoutes(app: Express): Server {
 
       // Process photos and add full URLs
       const processedPhotos = results.map(photo => {
-        const categoryPath = photo.category.replace(/\s+/g, '_');
+        const categoryPath = getCategoryPath(photo.category);
+        console.log(`Processing photo in category ${photo.category}, using path: ${categoryPath}`);
+
         const processedPhoto = {
           ...photo,
           imageUrl: `/assets/${categoryPath}/${encodeURIComponent(photo.imageUrl)}`,
@@ -78,6 +83,7 @@ export function registerRoutes(app: Express): Server {
           isLiked: false
         };
 
+        console.log('Processed photo URL:', processedPhoto.imageUrl);
         return processedPhoto;
       });
 
@@ -85,6 +91,56 @@ export function registerRoutes(app: Express): Server {
     } catch (error: any) {
       console.error('Error fetching photos:', error);
       res.status(500).json({ error: "Failed to fetch photos", details: error.message });
+    }
+  });
+
+  // Get all categories with their first photos
+  app.get("/api/categories", async (_req, res) => {
+    try {
+      const validCategories = await db
+        .select()
+        .from(categories)
+        .orderBy(categories.displayOrder);
+
+      // Get a photo for each category
+      const categoriesWithPhotos = await Promise.all(
+        validCategories.map(async (category) => {
+          try {
+            const categoryPhotos = await db
+              .select()
+              .from(photos)
+              .where(eq(photos.category, category.name))
+              .orderBy(desc(photos.displayOrder))
+              .limit(1);
+
+            const categoryPath = getCategoryPath(category.name);
+            console.log(`Processing category: ${category.name}, using path: ${categoryPath}`);
+
+            if (categoryPhotos[0]) {
+              const photoData = {
+                ...category,
+                firstPhoto: {
+                  imageUrl: `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].imageUrl)}`,
+                  thumbnailUrl: categoryPhotos[0].thumbnailUrl ?
+                    `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].thumbnailUrl)}` :
+                    undefined
+                }
+              };
+              console.log('Category photo data:', photoData.firstPhoto);
+              return photoData;
+            }
+            return category;
+          } catch (error) {
+            console.error(`Error processing category ${category.name}:`, error);
+            return category;
+          }
+        })
+      );
+
+      res.json(categoriesWithPhotos);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      res.status(500).json({ error: "Failed to fetch categories" });
     }
   });
 
@@ -126,56 +182,6 @@ export function registerRoutes(app: Express): Server {
     } catch (error: any) {
       console.error('Error fetching before/after images:', error);
       res.status(500).json({ error: "Failed to fetch before/after images", details: error.message });
-    }
-  });
-
-  // Get all categories with their first photos
-  app.get("/api/categories", async (_req, res) => {
-    try {
-      const validCategories = await db
-        .select()
-        .from(categories)
-        .orderBy(categories.displayOrder);
-
-      // Get a photo for each category
-      const categoriesWithPhotos = await Promise.all(
-        validCategories.map(async (category) => {
-          try {
-            const categoryPhotos = await db
-              .select()
-              .from(photos)
-              .where(eq(photos.category, category.name))
-              .orderBy(desc(photos.displayOrder))
-              .limit(1);
-
-            const categoryPath = category.name.replace(/\s+/g, '_');
-            console.log(`Processing category: ${category.name}, path: ${categoryPath}`);
-
-            if (categoryPhotos[0]) {
-              const photoData = {
-                ...category,
-                firstPhoto: {
-                  imageUrl: `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].imageUrl)}`,
-                  thumbnailUrl: categoryPhotos[0].thumbnailUrl ?
-                    `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].thumbnailUrl)}` :
-                    undefined
-                }
-              };
-              console.log('Category photo data:', photoData.firstPhoto);
-              return photoData;
-            }
-            return category;
-          } catch (error) {
-            console.error(`Error processing category ${category.name}:`, error);
-            return category;
-          }
-        })
-      );
-
-      res.json(categoriesWithPhotos);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-      res.status(500).json({ error: "Failed to fetch categories" });
     }
   });
 
