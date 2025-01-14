@@ -17,35 +17,42 @@ export default function Home() {
 
   useEffect(() => {
     if (categories) {
-      console.log('Categories loaded:', categories.map(c => ({
-        name: c.name,
-        firstPhoto: c.firstPhoto
-      })));
+      console.log(
+        "Categories loaded:",
+        categories.map((c) => ({
+          name: c.name,
+          firstPhoto: c.firstPhoto,
+        })),
+      );
     }
   }, [categories]);
 
   const getCategoryImage = (categoryName: string) => {
     const imageMap: Record<string, string> = {
-      'Bat Mitsva': '/assets/Bat_Mitsva/M68A0863-Edit Large.jpeg',
-      'Family': '/assets/Family/IMG_3472-Edit Large.jpeg',
-      'Events': '/assets/Events/events-coverage.jpg',
-      'Portraits': '/assets/Portraits/portrait-session.jpg',
-      'Nature': '/assets/Nature/nature-photography.jpg',
-      'Wedding': '/assets/Wedding/wedding-photography.jpg',
-      'Modeling': '/assets/Modeling/M68A0065-Edit Large.jpeg',
-      'Feminine': '/assets/Feminine/IMG_0095-Edit-Edit Large.jpeg',
-      'Yoga': '/assets/Yoga/IMG_1350-Edit-Edit Large.jpeg',
-      'Kids': '/assets/kids/kids-1.jpg',
-      'Horses': '/assets/Horses/horse-1.jpg'
+      Bat_Mitsva: "/assets/Bat_Mitsva/IMG_8613-Edit Large.jpeg",
+      Family: "/assets/Family/IMG_3472-Edit Large.jpeg",
+      Events: "/assets/Events/events-coverage.jpg",
+      Portraits: "/assets/Portraits/portrait-session.jpg",
+      Nature: "/assets/Nature/nature-photography.jpg",
+      Wedding: "/assets/Wedding/wedding-photography.jpg",
+      Modeling: "/assets/Modeling/M68A0065-Edit Large.jpeg",
+      Feminine: "/assets/Feminine/IMG_0095-Edit-Edit Large.jpeg",
+      Yoga: "/assets/Yoga/IMG_1350-Edit-Edit Large.jpeg",
+      Kids: "/assets/kids/kids-1.jpg",
+      Horses: "/assets/Horses/horse-1.jpg",
     };
 
-    const fallbackImage = '/assets/placeholder-category.jpg';
-    console.log('Getting image for category:', categoryName, imageMap[categoryName] || fallbackImage);
+    const fallbackImage = "/assets/placeholder-category.jpg";
+    console.log(
+      "Getting image for category:",
+      categoryName,
+      imageMap[categoryName] || fallbackImage,
+    );
     return imageMap[categoryName] || fallbackImage;
   };
 
-  const filteredCategories = categories?.filter(category => {
-    const excludedCategories = ['before and after', 'categories', 'kids'];
+  const filteredCategories = categories?.filter((category) => {
+    const excludedCategories = ["before and after"];
     if (excludedCategories.includes(category.name.toLowerCase())) {
       return false;
     }
@@ -71,9 +78,7 @@ export default function Home() {
             <h1 className="text-4xl md:text-6xl font-bold font-cormorant">
               {t("home.title")}
             </h1>
-            <p className="text-lg">
-              {t("home.subtitle")}
-            </p>
+            <p className="text-lg">{t("home.subtitle")}</p>
             <SocialLinks />
           </div>
         </motion.div>
@@ -86,10 +91,14 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           className="space-y-6"
         >
-          <h2 className="text-2xl font-semibold mb-6">{t("home.galleryTitle")}</h2>
+          <h2 className="text-2xl font-semibold mb-6">
+            {t("home.galleryTitle")}
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredCategories?.map((category, index) => {
-              const imageUrl = category.firstPhoto?.imageUrl || getCategoryImage(category.name);
+              const imageUrl =
+                category.firstPhoto?.imageUrl ||
+                getCategoryImage(category.name);
               console.log(`Category ${category.name} image:`, imageUrl);
 
               return (
@@ -100,29 +109,34 @@ export default function Home() {
                   transition={{ delay: index * 0.1 }}
                   whileHover={{ scale: 1.02 }}
                 >
-                  <Link href={`/gallery?category=${encodeURIComponent(category.name)}`}>
+                  <Link
+                    href={`/gallery?category=${encodeURIComponent(category.name)}`}
+                  >
                     <Card className="cursor-pointer overflow-hidden">
                       <CardContent className="p-0">
-                        <AspectRatio ratio={4/3} className="bg-muted">
+                        <AspectRatio ratio={4 / 3} className="bg-muted">
                           <div className="relative w-full h-full">
                             <img
                               src={imageUrl}
                               alt={t(`categories.${category.name}`)}
                               className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
                               style={{
-                                objectPosition: 'center center'
+                                objectPosition: "center center",
                               }}
                               onLoad={(e) => {
                                 const img = e.target as HTMLImageElement;
                                 if (img.naturalHeight > img.naturalWidth) {
-                                  img.style.objectPosition = 'center 20%';
+                                  img.style.objectPosition = "center 20%";
                                 }
                               }}
                               onError={(e) => {
-                                console.error('Failed to load image:', imageUrl);
+                                console.error(
+                                  "Failed to load image:",
+                                  imageUrl,
+                                );
                                 const target = e.target as HTMLImageElement;
                                 target.onerror = null;
-                                target.src = '/assets/placeholder-category.jpg';
+                                target.src = "/assets/placeholder-category.jpg";
                               }}
                               loading="lazy"
                               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
