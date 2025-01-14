@@ -24,29 +24,34 @@ export default function Home() {
     }
   }, [categories]);
 
-const getCategoryImage = (categoryName: string) => {
-  const imageMap: Record<string, string> = {
-    'Bat Mitsva': '/assets/Bat_Mitsva/M68A0863-Edit Large.jpeg',
-    'Family': '/assets/Family/IMG_3472-Edit Large.jpeg',
-    'Events': '/assets/Events/events-coverage.jpg',
-    'Portraits': '/assets/Portraits/portrait-session.jpg',
-    'Nature': '/assets/Nature/nature-photography.jpg',
-    'Wedding': '/assets/Wedding/wedding-photography.jpg',
-    'Modeling': '/assets/Modeling/M68A0065-Edit Large.jpeg',
-    'Women': '/assets/Women/IMG_0095-Edit-Edit Large.jpeg',
-    'Yoga': '/assets/Yoga/IMG_1350-Edit-Edit Large.jpeg'
+  const getCategoryImage = (categoryName: string) => {
+    const imageMap: Record<string, string> = {
+      'Bat Mitsva': '/assets/Bat_Mitsva/M68A0863-Edit Large.jpeg',
+      'Family': '/assets/Family/IMG_3472-Edit Large.jpeg',
+      'Events': '/assets/Events/events-coverage.jpg',
+      'Portraits': '/assets/Portraits/portrait-session.jpg',
+      'Nature': '/assets/Nature/nature-photography.jpg',
+      'Wedding': '/assets/Wedding/wedding-photography.jpg',
+      'Modeling': '/assets/Modeling/M68A0065-Edit Large.jpeg',
+      'Women': '/assets/Women/IMG_0095-Edit-Edit Large.jpeg',
+      'Yoga': '/assets/Yoga/IMG_1350-Edit-Edit Large.jpeg'
+    };
+
+    const fallbackImage = '/assets/placeholder-category.jpg';
+    console.log('Getting image for category:', categoryName, imageMap[categoryName] || fallbackImage);
+    return imageMap[categoryName] || fallbackImage;
   };
 
-  const fallbackImage = '/assets/placeholder-category.jpg';
-  console.log('Getting image for category:', categoryName, imageMap[categoryName] || fallbackImage);
-  return imageMap[categoryName] || fallbackImage;
-};
-
-  // Filter out categories that don't have translations and 'before and after'
+  // Filter out categories that don't have translations and specific excluded categories
   const filteredCategories = categories?.filter(category => {
+    // Explicitly exclude unwanted categories
+    const excludedCategories = ['before and after', 'categories'];
+    if (excludedCategories.includes(category.name.toLowerCase())) {
+      return false;
+    }
+
     try {
-      // Exclude 'before and after' category and categories without translations
-      return category.name !== 'before and after' && !!t(`categories.${category.name}`);
+      return !!t(`categories.${category.name}`);
     } catch {
       console.log(`No translation found for category: ${category.name}`);
       return false;
