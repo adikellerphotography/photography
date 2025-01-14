@@ -9,7 +9,7 @@ export const photos = pgTable("photos", {
   imageUrl: text("image_url").notNull(),
   thumbnailUrl: text("thumbnail_url"), 
   uploadedAt: timestamp("uploaded_at").defaultNow(),
-  displayOrder: serial("display_order"),
+  displayOrder: integer("display_order").default(0),
   likesCount: integer("likes_count").default(0),
 });
 
@@ -22,12 +22,12 @@ export const categories = pgTable("categories", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 50 }).notNull().unique(),
   description: text("description"),
-  displayOrder: serial("display_order"),
+  displayOrder: integer("display_order").default(0),
 });
 
 export const photoLikes = pgTable("photo_likes", {
   id: serial("id").primaryKey(),
-  photoId: integer("photo_id").references(() => photos.id, { onDelete: 'CASCADE' }).notNull(),
+  photoId: integer("photo_id").references(() => photos.id, { onDelete: "cascade" }).notNull(),
   ipAddress: text("ip_address").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
