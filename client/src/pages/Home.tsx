@@ -15,7 +15,7 @@ export default function Home() {
 
   const { t } = useTranslation();
 
-  const allowedCategories = ["Bat Mitsva", "Family", "Kids", "Women", "Yoga"];
+  const allowedCategories = ["Bat Mitsva", "Family", "Women", "Yoga"];
 
   const filteredCategories = categories?.filter(category => 
     allowedCategories.includes(category.name)
