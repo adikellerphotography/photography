@@ -10,7 +10,7 @@ export const translations = {
       sessions: "Sessions" // Added
     },
     home: {
-      title: "When Art Meets the Lens",
+      title: "Where Art Meets the Len",
       subtitle: "Artistic portrait photography, transforming storytelling moments into stunning works of photographic art.",
       galleryTitle: "Photo Galleries",
     },
@@ -38,7 +38,7 @@ export const translations = {
     },
     about: {
       title: "About Me",
-      welcome: "My name is Adi Keller and welcome to my photography world. I'm passionate about capturing life's precious moments and turning them into lasting memories. Since 2018, I've dedicated myself to professional photography, creating timeless images that speak to the heart.",
+      welcome: "Welcome to my photography world. I'm passionate about capturing life's precious moments and turning them into lasting memories. Since 2018, I've dedicated myself to professional photography, creating timeless images that speak to the heart.",
       approachTitle: "My Approach",
       approach: "Every photo session is unique, and I strive to create a comfortable and enjoyable experience. I meticulously prepare for each session, bringing tailored posing ideas designed to reveal your authentic personality. My sessions are conducted exclusively outdoors, utilizing natural light to create soft, flattering photographs that capture genuine moments and tell your personal story.",
       styleTitle: "Style",
@@ -161,7 +161,7 @@ export const translations = {
     },
     about: {
       title: "אודותיי",
-      welcome: "שמי עדי קלר וברוכים הבאים לעולם הצילום שלי. אני נרגש להנציח רגעים יקרים ולהפוך אותם לזכרונות נצח. משנת 2018 הקדשתי את עצמי לצילום מקצועי, יוצר תמונות על-זמניות המדברות אל הלב.",
+      welcome: "ברוכים הבאים לעולם הצילום שלי. אני נרגש להנציח רגעים יקרים ולהפוך אותם לזכרונות נצח. משנת 2018 הקדשתי את עצמי לצילום מקצועי, יוצר תמונות על-זמניות המדברות אל הלב.",
       approachTitle: "הגישה שלי",
       approach: "כל מפגש צילום הוא ייחודי, ואני שואף ליצור חוויה נעימה ומהנה. אני מתכונן בקפידה לכל מפגש, מביא רעיונות לפוזות המותאמות אישית ומיועדות לחשוף את האישיות האותנטית שלך. המפגשים שלי מתקיימים אך ורק בחוץ, תוך שימוש באור טבעי ליצירת תמונות רכות ומחמיאות הלוכדות רגעים אמיתיים ומספרות את הסיפור האישי שלך.",
       styleTitle: "סגנון",
