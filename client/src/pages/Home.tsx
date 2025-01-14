@@ -156,7 +156,7 @@ export default function Home() {
                             loading="lazy"
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent">
+                          <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent">
                             <div className="absolute bottom-0 left-0 right-0 p-4">
                               <h3 className="text-xl font-semibold text-white">
                                 {category.name}
