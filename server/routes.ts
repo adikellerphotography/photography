@@ -13,12 +13,12 @@ export function registerRoutes(app: Express): Server {
 
   // Helper function to get the correct category path
   const getCategoryPath = (categoryName: string) => {
-    // For Kids category, return lowercase 'kids' path
+    // For Kids category, ensure we use lowercase 'kids' path
     if (categoryName.toLowerCase() === 'kids') {
       return 'kids';
     }
-    // For all other categories, replace spaces with underscores
-    return categoryName.replace(/\s+/g, '_');
+    // For all other categories, replace spaces with underscores and capitalize first letter
+    return categoryName.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('_');
   };
 
   // Serve static files from attached_assets and its subdirectories
