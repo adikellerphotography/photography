@@ -22,7 +22,12 @@ export const categories = pgTable("categories", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 50 }).notNull().unique(),
   description: text("description"),
-  displayOrder: integer("display_order").default(0).notNull(),
+  displayOrder: integer("display_order").default(sql`
+    CASE 
+      WHEN name = 'Bat Mitsva' THEN -1 
+      ELSE 0 
+    END
+  `).notNull(),
 });
 
 export const photoLikes = pgTable("photo_likes", {
