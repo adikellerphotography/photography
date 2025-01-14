@@ -49,22 +49,6 @@ app.use((req, res, next) => {
 
 const initializeServer = async () => {
   try {
-    // Test database connection before anything else
-    console.log("🔄 Testing database connection...");
-
-    if (!process.env.DATABASE_URL) {
-      throw new Error("DATABASE_URL environment variable is not set");
-    }
-
-    // Simple database connection test
-    try {
-      await db.execute(sql`SELECT NOW()`);
-      console.log("✅ Database connection successful");
-    } catch (error) {
-      console.error("❌ Database connection failed:", error instanceof Error ? error.message : String(error));
-      throw error;
-    }
-
     // Register API routes
     const server = registerRoutes(app);
 
