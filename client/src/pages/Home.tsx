@@ -97,6 +97,11 @@ export default function Home() {
           className="relative container mx-auto px-4 pt-16 pb-8 flex flex-col justify-center items-center"
         >
           <div className="flex justify-center gap-12 mb-8">
+            <Link href="/before-and-after">
+              <button className="p-4 rounded-full hover:bg-accent transition-colors">
+                <SplitSquareVertical className="w-6 h-6" />
+              </button>
+            </Link>
             <Link href="/gallery">
               <button className="p-4 rounded-full hover:bg-accent transition-colors">
                 <Camera className="w-6 h-6" />
@@ -105,11 +110,6 @@ export default function Home() {
             <Link href="/sessions">
               <button className="p-4 rounded-full hover:bg-accent transition-colors">
                 <Aperture className="w-6 h-6" />
-              </button>
-            </Link>
-            <Link href="/before-and-after">
-              <button className="p-4 rounded-full hover:bg-accent transition-colors">
-                <SplitSquareVertical className="w-6 h-6" />
               </button>
             </Link>
           </div>
