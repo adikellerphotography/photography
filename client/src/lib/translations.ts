@@ -10,10 +10,9 @@ export const translations = {
       sessions: "Sessions" // Added
     },
     home: {
-      title: "Where Art Meets the Lens",
+      title: "Where Art Meets the Len",
       subtitle: "Artistic portrait photography, transforming storytelling moments into stunning works of photographic art.",
       galleryTitle: "Photo Galleries",
-      featuredWork: "Featured Work",
     },
     categories: {
       "Bat Mitsva": "Bat Mitsva",
@@ -136,7 +135,6 @@ export const translations = {
       title: "היכן שאומנות פוגשת את העדשה",
       subtitle: "צילום פורטרטים אומנותי, הופך רגעים מספרי סיפורים ליצירות צילום מרהיבות",
       galleryTitle: "גלריות תמונות",
-      featuredWork: "עבודות נבחרות",
     },
     categories: {
       "Bat Mitsva": "בת מצווה",
@@ -149,7 +147,7 @@ export const translations = {
       "Feminine": "נשי",
       "Yoga": "יוגה",
       "Horses": "סוסים",
-      "Women": "Women"
+      "Women": "נשיות"
     },
     contact: {
       phone: "מספר טלפון",
