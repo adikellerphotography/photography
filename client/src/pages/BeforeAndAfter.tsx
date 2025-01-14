@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
@@ -11,14 +12,12 @@ interface ComparisonSet {
   title: string;
 }
 
-const mockData: ComparisonSet[] = [
-  {
-    id: 1,
-    beforeImage: "/assets/before_and_after/0-1 Large.jpeg",
-    afterImage: "/assets/before_and_after/0-2 Large.jpeg",
-    title: "Portrait Enhancement"
-  }
-];
+const mockData: ComparisonSet[] = Array.from({ length: 28 }, (_, i) => ({
+  id: i + 1,
+  beforeImage: `/assets/before_and_after/${i}-1 Large.jpeg`,
+  afterImage: `/assets/before_and_after/${i}-2 Large.jpeg`,
+  title: `Before & After ${i + 1}`
+}));
 
 export default function BeforeAndAfter() {
   const { t } = useTranslation();
