@@ -7,6 +7,7 @@ export const translations = {
       pricing: "Pricing",
       info: "Session Info",
       about: "About",
+      sessions: "Sessions" // Added
     },
     home: {
       title: "Where Art Meets the Lens",
@@ -110,6 +111,15 @@ export const translations = {
       description: "Experience the transformation process. Slide to compare the original captures with their enhanced versions.",
       noImages: "No before/after images available",
     },
+    sessions: {
+      title: "Photography Sessions",
+      batmitzva: "Bat Mitzva",
+      women: "Women",
+      sea: "Sea",
+      nature: "Nature",
+      yoga: "Yoga",
+      horses: "Horses"
+    }
   },
   he: {
     nav: {
@@ -119,6 +129,7 @@ export const translations = {
       pricing: "מחירים",
       info: "מידע על הצילומים",
       about: "אודות",
+      sessions: "גלריות" // Added
     },
     home: {
       title: "היכן שאומנות פוגשת את העדשה",
@@ -222,5 +233,14 @@ export const translations = {
       description: "חווה את תהליך השינוי. החלק כדי להשוות בין הצילומים המקוריים לגרסאות המשופרות שלהם.",
       noImages: "אין תמונות לפני/אחרי זמינות",
     },
+    sessions: {
+      title: "גלריות צילום",
+      batmitzva: "בת מצווה",
+      women: "נשים",
+      sea: "ים",
+      nature: "טבע",
+      yoga: "יוגה",
+      horses: "סוסים"
+    }
   }
 };
