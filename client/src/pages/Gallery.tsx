@@ -119,7 +119,7 @@ export default function Gallery() {
   }
 
   const filteredCategories = categories.filter(
-    (category) => !["before and after"].includes(category.name.toLowerCase()),
+    (category) => !["before and after", "categories"].includes(category.name.toLowerCase()),
   );
 
   return (
