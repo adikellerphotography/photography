@@ -21,9 +21,11 @@ export default function About() {
             <AspectRatio ratio={1}>
               <div className="relative w-full h-full overflow-hidden rounded-full border-4 border-background shadow-xl">
                 <img
-                  src="/assets/IMG_1133.jpg"
+                  src="/assets/IMG_1133_optimized.jpg"
                   alt=""
                   className="object-cover w-full h-full"
+                  loading="eager"
+                  fetchPriority="high"
                 />
               </div>
             </AspectRatio>
