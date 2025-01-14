@@ -58,16 +58,18 @@ app.use((req, res, next) => {
     // Verify database connection with retries
     let connected = false;
     let retries = 3;
+    let lastError: Error | null = null;
 
     while (!connected && retries > 0) {
       try {
-        const result = await db.execute(sql`SELECT 1 as test`);
+        const result = await db.execute(sql`SELECT 1`);
         if (result) {
           connected = true;
           log("Database connection successful");
         }
-      } catch (dbError) {
-        console.error(`Database connection attempt failed (${retries} retries left):`, dbError);
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error(String(error));
+        console.error(`Database connection attempt failed (${retries} retries left):`, lastError.message);
         retries--;
         if (retries > 0) {
           await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2 seconds before retry
@@ -76,7 +78,7 @@ app.use((req, res, next) => {
     }
 
     if (!connected) {
-      throw new Error("Failed to connect to database after multiple attempts");
+      throw new Error(`Failed to connect to database after multiple attempts. Last error: ${lastError?.message || 'Unknown error'}`);
     }
 
     // Register API routes before setting up Vite
@@ -91,7 +93,7 @@ app.use((req, res, next) => {
       });
       const status = err.status || err.statusCode || 500;
       const message = err.message || "Internal Server Error";
-      res.status(status).json({ 
+      res.status(status).json({
         message,
         status,
         timestamp: new Date().toISOString()
