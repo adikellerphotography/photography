@@ -8,14 +8,10 @@ import { eq } from 'drizzle-orm';
 export async function scanAndProcessImages() {
   try {
     const assetsPath = path.join(process.cwd(), 'attached_assets');
-    const excludedCategories = ['Kids']; // Add categories to exclude from scanning
-
-    // Get all directories (categories)
     const entries = await fs.readdir(assetsPath, { withFileTypes: true });
     const categoryDirs = entries.filter(entry => 
       entry.isDirectory() && 
-      !entry.name.startsWith('.') &&
-      !excludedCategories.includes(entry.name.replace(/_/g, ' ')) // Exclude specified categories
+      !entry.name.startsWith('.')
     );
 
     console.log(`Found ${categoryDirs.length} category directories`);
