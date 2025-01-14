@@ -34,7 +34,10 @@ export function registerRoutes(app: Express): Server {
       } else if (filePath.toLowerCase().endsWith('.png')) {
         res.setHeader('Content-Type', 'image/png');
       }
-      res.setHeader('Cache-Control', 'public, max-age=31536000');
+      // Disable cache for development
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
     },
     fallthrough: true,
     index: false
@@ -69,25 +72,9 @@ export function registerRoutes(app: Express): Server {
 
       console.log(`Found ${results.length} photos for category ${category}`);
 
-      const processedPhotos = await Promise.all(results.map(async (photo) => {
+      const processedPhotos = results.map(photo => {
         try {
           const categoryPath = photo.category.replace(/\s+/g, '_');
-          const categoryDir = path.join(assetsPath, categoryPath);
-
-          // Ensure category directory exists
-          await ensureDirectory(categoryDir);
-
-          const imagePath = path.join(categoryDir, photo.imageUrl);
-          const thumbnailPath = photo.thumbnailUrl 
-            ? path.join(categoryDir, photo.thumbnailUrl)
-            : null;
-
-          // Verify file existence
-          await fs.access(imagePath);
-          if (thumbnailPath) {
-            await fs.access(thumbnailPath);
-          }
-
           return {
             ...photo,
             imageUrl: `/assets/${encodeURIComponent(categoryPath)}/${encodeURIComponent(photo.imageUrl)}`,
@@ -96,19 +83,12 @@ export function registerRoutes(app: Express): Server {
               : undefined
           };
         } catch (error) {
-          console.error(`File access error for photo ${photo.id}:`, error);
-          return null; // Skip this photo if files are missing
+          console.error(`Error processing photo ${photo.id}:`, error);
+          return null;
         }
-      }));
+      }).filter(Boolean);
 
-      // Filter out null entries (photos with missing files)
-      const validPhotos = processedPhotos.filter(photo => photo !== null);
-
-      if (validPhotos.length === 0) {
-        console.log(`No valid photos found for category ${category}`);
-      }
-
-      res.json(validPhotos);
+      res.json(processedPhotos);
     } catch (error: any) {
       console.error('Error fetching photos:', error);
       res.status(500).json({ error: "Failed to fetch photos", details: error.message });
