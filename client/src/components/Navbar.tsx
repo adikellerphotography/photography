@@ -28,7 +28,7 @@ export default function Navbar() {
         <div className="w-full flex items-center h-14">
           <Link href="/">
             <NavigationMenuLink className={cn(
-              "group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-lg font-cormorant transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer"
+              "h-14 px-4 py-2 text-lg font-cormorant transition-colors hover:bg-accent/60 hover:text-accent-foreground focus:bg-accent/60 focus:text-accent-foreground focus:outline-none cursor-pointer flex items-center"
             )}>
               Adi Keller Photography
             </NavigationMenuLink>
