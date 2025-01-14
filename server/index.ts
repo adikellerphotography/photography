@@ -45,40 +45,44 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 });
 
 // Ensure required directories exist
-const ensureDirectories = async () => {
+async function ensureDirectories() {
   const assetsPath = path.join(process.cwd(), 'attached_assets');
   const categoriesPath = path.join(assetsPath, 'categories');
   const beforeAfterPath = path.join(assetsPath, 'before_and_after');
+  const kidsPath = path.join(assetsPath, 'categories', 'Kids');
 
   try {
-    await fs.access(assetsPath);
-    await fs.access(categoriesPath).catch(() => fs.mkdir(categoriesPath, { recursive: true }));
-    await fs.access(beforeAfterPath).catch(() => fs.mkdir(beforeAfterPath, { recursive: true }));
-    console.log('Required directories verified/created');
-  } catch (err) {
-    console.log('Creating required directories...');
+    console.log('Verifying directory structure...');
     await fs.mkdir(assetsPath, { recursive: true });
     await fs.mkdir(categoriesPath, { recursive: true });
     await fs.mkdir(beforeAfterPath, { recursive: true });
+    await fs.mkdir(kidsPath, { recursive: true });
+    console.log('Directory structure verified successfully');
+  } catch (error) {
+    console.error('Error creating directories:', error);
+    throw error;
   }
-};
+}
 
 // Start server
-(async () => {
+async function startServer() {
   try {
+    console.log('Starting server initialization...');
+
     // Initialize database first
     await initializeDb();
+    console.log('Database initialized successfully');
 
-    // Ensure directories exist before starting the server
+    // Ensure directories exist
     await ensureDirectories();
+    console.log('Directories created successfully');
 
+    // Register routes and create server
     const server = registerRoutes(app);
 
     if (process.env.NODE_ENV !== "production") {
-      // In development mode, use Vite's dev server
       await setupVite(app, server);
     } else {
-      // In production mode, serve static files
       serveStatic(app);
     }
 
@@ -90,4 +94,6 @@ const ensureDirectories = async () => {
     console.error('Failed to start server:', error);
     process.exit(1);
   }
-})();
+}
+
+startServer();

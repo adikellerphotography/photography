@@ -18,6 +18,7 @@ export function registerRoutes(app: Express): Server {
   const ensureDirectory = async (dirPath: string) => {
     try {
       await fs.access(dirPath);
+      console.log(`Directory exists: ${dirPath}`);
     } catch {
       console.log(`Creating directory: ${dirPath}`);
       await fs.mkdir(dirPath, { recursive: true });

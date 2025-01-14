@@ -8,50 +8,47 @@ if (!process.env.DATABASE_URL) {
 
 // Configure postgres with keep-alive settings and proper error handling
 const client = postgres(process.env.DATABASE_URL, {
-  max: 1, // Reduce max connections to prevent connection pool issues
+  max: 1,
   idle_timeout: 20,
-  max_lifetime: 60 * 30, // 30 minutes
+  max_lifetime: 60 * 30,
   connect_timeout: 10,
 });
 
 // Create drizzle database instance with error handling
 export const db = drizzle(client, { schema });
 
-// Test database connection and initialize schema
-const initializeDatabase = async () => {
+// Initialize database and schema
+export async function initialize() {
   try {
-    // Test the connection
+    // Test database connection
+    console.log("Testing database connection...");
     await client`SELECT 1`;
     console.log("Database connection successful");
 
-    // Push the schema changes
-    const { execSync } = await import('child_process');
+    // Push schema changes
     try {
+      console.log("Updating database schema...");
+      const { execSync } = await import('child_process');
       execSync('npm run db:push', { stdio: 'inherit' });
       console.log("Database schema updated successfully");
 
-      // Verify tables exist
-      const tableCount = await client`
-        SELECT COUNT(*) 
-        FROM information_schema.tables 
-        WHERE table_schema = 'public'
+      // Log existing tables
+      const tables = await client`
+        SELECT tablename 
+        FROM pg_tables 
+        WHERE schemaname = 'public'
       `;
-      console.log(`Found ${tableCount[0].count} tables in database`);
+      console.log("Database tables:", tables.map(t => t.tablename).join(', '));
 
+      return true;
     } catch (err) {
       console.error("Failed to update database schema:", err);
-      // Continue execution even if schema push fails
+      throw err;
     }
   } catch (err) {
-    console.error("Database connection error:", err);
-    throw err; // Let the application handle the error
+    console.error("Database initialization failed:", err);
+    throw err;
   }
-};
-
-// Initialize the database
-export const initialize = () => initializeDatabase().catch(err => {
-  console.error("Failed to initialize database:", err);
-  process.exit(1);
-});
+}
 
 export default db;
