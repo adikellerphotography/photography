@@ -44,7 +44,7 @@ export default function Home() {
   };
 
   const filteredCategories = categories?.filter(category => {
-    const excludedCategories = ['before and after', 'categories', 'kids'];
+    const excludedCategories = ['before and after', 'categories'];
     if (excludedCategories.includes(category.name.toLowerCase())) {
       return false;
     }
