@@ -8,20 +8,14 @@ if (!process.env.DATABASE_URL) {
   );
 }
 
-// Create the connection with proper SSL configuration
-const sql = neon(process.env.DATABASE_URL, {
-  fetchConnectionOptions: {
-    cache: 'no-store',
-  }
-});
+// Initialize the SQL client with proper SSL configuration
+const sql = neon(process.env.DATABASE_URL);
 
 // Create database connection with schema
-export const db = drizzle(sql, { 
-  schema,
-  logger: true
-});
+export const db = drizzle(sql, { schema });
 
-// Test the connection immediately and exit if it fails
+// Test the connection immediately
+console.log('Testing database connection...');
 sql`SELECT NOW()`
   .then(() => {
     console.log('Successfully connected to the database');
