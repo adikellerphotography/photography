@@ -7,7 +7,7 @@ import type { Category } from "@/lib/types";
 import SocialLinks from "@/components/SocialLinks";
 import { useTranslation } from "@/hooks/use-translation";
 import { useEffect } from "react";
-import { GalleryVerticalEnd, CircleIcon, BeforeAfter } from "lucide-react";
+import { GalleryVerticalEnd, CircleIcon, Split } from "lucide-react";
 
 export default function Home() {
   const { data: categories } = useQuery<Category[]>({
@@ -109,7 +109,7 @@ export default function Home() {
             </Link>
             <Link href="/before-after">
               <button className="p-4 rounded-full hover:bg-accent transition-colors">
-                <BeforeAfter className="w-6 h-6" />
+                <Split className="w-6 h-6" />
               </button>
             </Link>
           </div>
