@@ -27,16 +27,17 @@ export default function Gallery() {
 
   // Update active category when categories load or URL changes
   useEffect(() => {
-    if (categories && categories.length > 0) {
+    const filteredCategories = categories?.filter(category => category.name.toLowerCase() !== 'kids');
+    if (filteredCategories && filteredCategories.length > 0) {
       // If we have a category from URL and it exists in our categories, use it
-      if (categoryFromUrl && categories.some(c => c.name === categoryFromUrl)) {
+      if (categoryFromUrl && filteredCategories.some(c => c.name === categoryFromUrl)) {
         setActiveCategory(categoryFromUrl);
       } 
       // Otherwise use the first category
       else if (!activeCategory) {
-        setActiveCategory(categories[0].name);
+        setActiveCategory(filteredCategories[0].name);
         // Update URL without triggering navigation
-        const newUrl = `/gallery?category=${encodeURIComponent(categories[0].name)}`;
+        const newUrl = `/gallery?category=${encodeURIComponent(filteredCategories[0].name)}`;
         window.history.replaceState(null, '', newUrl);
       }
     }
@@ -107,6 +108,8 @@ export default function Gallery() {
     );
   }
 
+  const filteredCategories = categories.filter(category => category.name.toLowerCase() !== 'kids');
+
   return (
     <div className="min-h-screen pt-16">
       <motion.div
@@ -150,7 +153,7 @@ export default function Gallery() {
               ref={tabsListRef}
             >
               <TabsList className="inline-flex min-w-full justify-start px-8 border-0">
-                {categories.map((category) => (
+                {filteredCategories.map((category) => (
                   <TabsTrigger 
                     key={category.id} 
                     value={category.name}
@@ -175,7 +178,7 @@ export default function Gallery() {
           </div>
 
           <motion.div variants={itemVariants}>
-            {categories.map((category) => (
+            {filteredCategories.map((category) => (
               <TabsContent key={category.id} value={category.name}>
                 <Card>
                   <CardContent className="pt-6">
