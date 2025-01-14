@@ -16,8 +16,23 @@ export default function Home() {
   const { t } = useTranslation();
 
   const allowedCategories = ["Bat Mitsva", "Family", "kids", "Women", "Yoga", "Modeling"];
+  
+  // Override the firstPhoto for kids category
+  const processedCategories = categories?.map(category => {
+    if (category.name === "kids") {
+      return {
+        ...category,
+        firstPhoto: {
+          ...category.firstPhoto,
+          imageUrl: "/assets/kids/IMG_0001 Large.jpeg",
+          thumbnailUrl: "/assets/kids/IMG_0001 Large.jpeg"
+        }
+      };
+    }
+    return category;
+  });
 
-  const filteredCategories = categories?.filter(category => 
+  const filteredCategories = processedCategories?.filter(category => 
     allowedCategories.includes(category.name)
   ) || [];
 
