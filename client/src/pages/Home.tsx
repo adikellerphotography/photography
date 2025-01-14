@@ -42,10 +42,11 @@ const getCategoryImage = (categoryName: string) => {
   return imageMap[categoryName] || fallbackImage;
 };
 
-  // Filter out categories that don't have translations
+  // Filter out categories that don't have translations and 'before and after'
   const filteredCategories = categories?.filter(category => {
     try {
-      return !!t(`categories.${category.name}`);
+      // Exclude 'before and after' category and categories without translations
+      return category.name !== 'before and after' && !!t(`categories.${category.name}`);
     } catch {
       console.log(`No translation found for category: ${category.name}`);
       return false;
