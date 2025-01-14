@@ -7,6 +7,7 @@ import type { Category } from "@/lib/types";
 import SocialLinks from "@/components/SocialLinks";
 import { useTranslation } from "@/hooks/use-translation";
 import { useEffect } from "react";
+import { GalleryVerticalEnd, CircleIcon, BeforeAfter } from "lucide-react";
 
 export default function Home() {
   const { data: categories } = useQuery<Category[]>({
@@ -95,6 +96,23 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           className="relative container mx-auto px-4 pt-16 pb-8 flex flex-col justify-center items-center"
         >
+          <div className="flex justify-center gap-12 mb-8">
+            <Link href="/gallery">
+              <button className="p-4 rounded-full hover:bg-accent transition-colors">
+                <GalleryVerticalEnd className="w-6 h-6" />
+              </button>
+            </Link>
+            <Link href="/sessions">
+              <button className="p-4 rounded-full hover:bg-accent transition-colors">
+                <CircleIcon className="w-6 h-6" />
+              </button>
+            </Link>
+            <Link href="/before-after">
+              <button className="p-4 rounded-full hover:bg-accent transition-colors">
+                <BeforeAfter className="w-6 h-6" />
+              </button>
+            </Link>
+          </div>
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <h1 className="text-4xl md:text-6xl font-bold font-cormorant">
               {t("home.title")}
