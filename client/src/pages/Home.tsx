@@ -7,7 +7,7 @@ import type { Category } from "@/lib/types";
 import SocialLinks from "@/components/SocialLinks";
 import { useTranslation } from "@/hooks/use-translation";
 import { useEffect } from "react";
-import { GalleryVerticalEnd, CircleIcon, Split } from "lucide-react";
+import { Camera, Aperture, SplitSquareVertical } from "lucide-react";
 
 export default function Home() {
   const { data: categories } = useQuery<Category[]>({
@@ -99,17 +99,17 @@ export default function Home() {
           <div className="flex justify-center gap-12 mb-8">
             <Link href="/gallery">
               <button className="p-4 rounded-full hover:bg-accent transition-colors">
-                <GalleryVerticalEnd className="w-6 h-6" />
+                <Camera className="w-6 h-6" />
               </button>
             </Link>
             <Link href="/sessions">
               <button className="p-4 rounded-full hover:bg-accent transition-colors">
-                <CircleIcon className="w-6 h-6" />
+                <Aperture className="w-6 h-6" />
               </button>
             </Link>
             <Link href="/before-after">
               <button className="p-4 rounded-full hover:bg-accent transition-colors">
-                <Split className="w-6 h-6" />
+                <SplitSquareVertical className="w-6 h-6" />
               </button>
             </Link>
           </div>
