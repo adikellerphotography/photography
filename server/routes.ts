@@ -11,18 +11,21 @@ import fs from "fs/promises";
 export function registerRoutes(app: Express): Server {
   const httpServer = createServer(app);
 
-  // Serve static files from attached_assets
+  // Serve static files from attached_assets and its subdirectories
   const assetsPath = path.join(process.cwd(), 'attached_assets');
   app.use('/assets', express.static(assetsPath, {
     setHeaders: (res, filePath) => {
+      // Ensure proper content type for images
       if (filePath.toLowerCase().endsWith('.jpg') || filePath.toLowerCase().endsWith('.jpeg')) {
         res.setHeader('Content-Type', 'image/jpeg');
       } else if (filePath.toLowerCase().endsWith('.png')) {
         res.setHeader('Content-Type', 'image/png');
       }
+      // Set cache control headers
       res.setHeader('Cache-Control', 'public, max-age=31536000');
     },
     dotfiles: 'ignore',
+    fallthrough: true,
     index: false
   }));
 
@@ -53,14 +56,27 @@ export function registerRoutes(app: Express): Server {
       console.log(`Found ${results.length} photos for category ${category}`);
 
       // Process photos and add full URLs
-      const processedPhotos = results.map(photo => ({
-        ...photo,
-        imageUrl: `/assets/${encodeURIComponent(photo.imageUrl)}`,
-        thumbnailUrl: photo.thumbnailUrl ? 
-          `/assets/${encodeURIComponent(photo.thumbnailUrl)}` : 
-          undefined,
-        isLiked: false
-      }));
+      const processedPhotos = results.map(photo => {
+        const categoryPath = photo.category.replace(/\s+/g, '_');
+        const processedPhoto = {
+          ...photo,
+          imageUrl: `/assets/${categoryPath}/${encodeURIComponent(photo.imageUrl)}`,
+          thumbnailUrl: photo.thumbnailUrl ? 
+            `/assets/${categoryPath}/${encodeURIComponent(photo.thumbnailUrl)}` : 
+            undefined,
+          isLiked: false
+        };
+
+        console.log('Processing photo:', {
+          id: processedPhoto.id,
+          category: processedPhoto.category,
+          originalPath: photo.imageUrl,
+          processedPath: processedPhoto.imageUrl,
+          thumbnailPath: processedPhoto.thumbnailUrl
+        });
+
+        return processedPhoto;
+      });
 
       res.json(processedPhotos);
     } catch (error: any) {
@@ -72,7 +88,7 @@ export function registerRoutes(app: Express): Server {
   // Get before and after image sets
   app.get("/api/before-after", async (_req, res) => {
     try {
-      const beforeAfterPath = path.join(assetsPath, 'categories', 'Before_And_After');
+      const beforeAfterPath = path.join(assetsPath, 'before_and_after');
       const files = await fs.readdir(beforeAfterPath);
 
       // Group matching before and after images
@@ -81,30 +97,24 @@ export function registerRoutes(app: Express): Server {
 
       // First, collect all images
       files.forEach(file => {
-        if (file.endsWith('.jpg') || file.endsWith('.jpeg')) {
-          const base = file.replace(/[_-]?(before|after)[_-]?/i, '').replace(/\.(jpe?g)$/i, '');
+        if (file.endsWith(' Large.jpeg') || file.endsWith(' Large.jpg')) {
+          const base = file.replace(/-[12] Large\.(jpeg|jpg)$/, '');
           imageMap.set(base, (imageMap.get(base) || '') + file);
         }
       });
 
       // Then, create pairs
       let id = 1;
-      imageMap.forEach((_, key) => {
-        const beforeFile = files.find(f => 
-          f.toLowerCase().includes('before') && 
-          f.startsWith(key)
-        );
-        const afterFile = files.find(f => 
-          f.toLowerCase().includes('after') && 
-          f.startsWith(key)
-        );
+      imageMap.forEach((value, key) => {
+        const beforeFile = files.find(f => f.startsWith(key) && f.includes('-1 Large'));
+        const afterFile = files.find(f => f.startsWith(key) && f.includes('-2 Large'));
 
         if (beforeFile && afterFile) {
           imageSets.push({
             id: id++,
-            title: key.replace(/_/g, ' ').trim(),
-            beforeImage: `/assets/categories/Before_And_After/${encodeURIComponent(beforeFile)}`,
-            afterImage: `/assets/categories/Before_And_After/${encodeURIComponent(afterFile)}`
+            title: key.replace(/_/g, ' '),
+            beforeImage: `/assets/before_and_after/${encodeURIComponent(beforeFile)}`,
+            afterImage: `/assets/before_and_after/${encodeURIComponent(afterFile)}`
           });
         }
       });
@@ -131,16 +141,21 @@ export function registerRoutes(app: Express): Server {
             .orderBy(desc(photos.displayOrder))
             .limit(1);
 
+          const categoryPath = category.name.replace(/\s+/g, '_');
+          console.log(`Processing category: ${category.name}, path: ${categoryPath}`);
+
           if (categoryPhotos[0]) {
-            return {
+            const photoData = {
               ...category,
               firstPhoto: {
-                imageUrl: `/assets/${encodeURIComponent(categoryPhotos[0].imageUrl)}`,
+                imageUrl: `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].imageUrl)}`,
                 thumbnailUrl: categoryPhotos[0].thumbnailUrl ?
-                  `/assets/${encodeURIComponent(categoryPhotos[0].thumbnailUrl)}` :
+                  `/assets/${categoryPath}/${encodeURIComponent(categoryPhotos[0].thumbnailUrl)}` :
                   undefined
               }
             };
+            console.log('Category photo data:', photoData.firstPhoto);
+            return photoData;
           }
           return category;
         })

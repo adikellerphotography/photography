@@ -26,16 +26,16 @@ export default function Home() {
 
   const getCategoryImage = (categoryName: string) => {
     const imageMap: Record<string, string> = {
-      'Bat Mitsva': '/assets/categories/Bat_Mitsva/M68A0863-Edit Large.jpeg',
-      'Family': '/assets/categories/Family/IMG_3472-Edit Large.jpeg',
-      'Kids': '/assets/categories/Kids/IMG_1083-Edit Large.jpeg',
-      'Events': '/assets/categories/Events/events-coverage.jpg',
-      'Portraits': '/assets/categories/Portraits/portrait-session.jpg',
-      'Nature': '/assets/categories/Nature/nature-photography.jpg',
-      'Wedding': '/assets/categories/Wedding/wedding-photography.jpg',
-      'Modeling': '/assets/categories/Modeling/M68A0065-Edit Large.jpeg',
-      'Women': '/assets/categories/Women/IMG_0095-Edit-Edit Large.jpeg',
-      'Yoga': '/assets/categories/Yoga/IMG_1350-Edit-Edit Large.jpeg'
+      'Bat Mitsva': '/assets/Bat_Mitsva/M68A0863-Edit Large.jpeg',
+      'Family': '/assets/Family/IMG_3472-Edit Large.jpeg',
+      'Kids': '/assets/Kids/IMG_1083-Edit Large.jpeg',
+      'Events': '/assets/Events/events-coverage.jpg',
+      'Portraits': '/assets/Portraits/portrait-session.jpg',
+      'Nature': '/assets/Nature/nature-photography.jpg',
+      'Wedding': '/assets/Wedding/wedding-photography.jpg',
+      'Modeling': '/assets/Modeling/M68A0065-Edit Large.jpeg',
+      'Women': '/assets/Women/IMG_0095-Edit-Edit Large.jpeg',
+      'Yoga': '/assets/Yoga/IMG_1350-Edit-Edit Large.jpeg'
     };
 
     const fallbackImage = '/assets/placeholder-category.jpg';
