@@ -270,25 +270,22 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   return (
     <div className="space-y-8" ref={galleryRef}>
-      <div className="columns-1 md:columns-2 gap-4">
-        {[...photos].sort(() => Math.random() - 0.5).map((photo, index) => {
-          const isVertical = photo.imageUrl.toLowerCase().includes("vertical") || 
-                           new RegExp('edit.*large', 'i').test(photo.imageUrl);
-          
-          return (
-            <motion.div
-              key={photo.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              onClick={() => {
-                setSelectedPhoto(photo);
-                setSelectedIndex(index);
-                setScrollPosition(window.scrollY);
-              }}
-              className="relative overflow-hidden rounded-lg cursor-pointer group mb-4 break-inside-avoid"
-            >
-              <div className={`relative overflow-hidden bg-muted ${isVertical ? 'aspect-[2/3]' : 'aspect-[4/3]'}`}>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {photos.map((photo, index) => (
+          <motion.div
+            key={photo.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            onClick={() => {
+              setSelectedPhoto(photo);
+              setSelectedIndex(index);
+              setScrollPosition(window.scrollY);
+            }}
+            className="relative overflow-hidden rounded-lg cursor-pointer group"
+          >
+            <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
+              <div className="relative w-full h-full overflow-hidden bg-muted">
                 <img
                   src={photo.thumbnailUrl || '/placeholder.jpg'}
                   data-src={photo.imageUrl}
@@ -310,7 +307,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </AspectRatio>
+          </motion.div>
         ))}
       </div>
 
