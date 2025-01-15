@@ -1,3 +1,4 @@
+
 export const translations = {
   en: {
     nav: {
@@ -7,7 +8,7 @@ export const translations = {
       pricing: "Pricing",
       info: "Session Info",
       about: "About",
-      sessions: "Sessions" // Added
+      sessions: "Sessions"
     },
     home: {
       title: "When Art Meets the Lens",
@@ -24,7 +25,8 @@ export const translations = {
       "Modeling": "Modeling",
       "Feminine": "Feminine",
       "Yoga": "Yoga",
-      "Horses": "Horses"
+      "Horses": "Horses",
+      "Women": "Women"
     },
     contact: {
       phone: "Phone Number",
@@ -150,7 +152,7 @@ export const translations = {
       pricing: "מחירים",
       info: "מידע על הצילומים",
       about: "אודות",
-      sessions: "גלריות" // Added
+      sessions: "גלריות"
     },
     home: {
       title: "היכן שאומנות פוגשת את העדשה",
@@ -248,41 +250,6 @@ export const translations = {
           "תוספת שעת צילום: 600₪",
           "צילומי סוסים: 350₪ לחצי שעה (עשוי להשתנות בהתאם לחווה)",
           "עדיפות לצילומים בשישי אחה״צ"
-        ]
-      },
-        name: "מפגש בסיסי",
-        price: "₪1,099",
-        description: "מושלם לצילומי יחיד או זוג",
-        features: [
-          "מפגש שעה",
-          "לוקיישן אחד",
-          "20 תמונות ערוכות",
-          "גלריה מקוונת"
-        ]
-      },
-      family: {
-        name: "חבילת משפחה",
-        price: "₪1,899",
-        description: "אידיאלי לצילומי משפחה ואירועים",
-        features: [
-          "מפגש שעתיים",
-          "שני לוקיישנים",
-          "40 תמונות ערוכות",
-          "גלריה מקוונת",
-          "אישור הדפסה"
-        ]
-      },
-      event: {
-        name: "כיסוי אירועים",
-        price: "החל מ-₪3,699",
-        description: "שירות צילום אירועים מלא",
-        features: [
-          "כיסוי יום מלא",
-          "מספר לוקיישנים",
-          "מעל 100 תמונות ערוכות",
-          "גלריה מקוונת",
-          "אישור הדפסה",
-          "אפשרות למשלוח מהיר"
         ]
       }
     },
