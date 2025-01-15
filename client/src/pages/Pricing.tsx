@@ -9,10 +9,10 @@ export default function Pricing() {
 
   const packages = [
     {
-      name: t("pricing.basic.name"),
-      price: t("pricing.basic.price"),
-      description: t("pricing.basic.description"),
-      features: t("pricing.basic.features")
+      name: t("pricing.batMitzvah.name"),
+      price: t("pricing.batMitzvah.price"),
+      description: t("pricing.batMitzvah.description"),
+      features: t("pricing.batMitzvah.features")
     },
     {
       name: t("pricing.family.name"),
@@ -21,10 +21,22 @@ export default function Pricing() {
       features: t("pricing.family.features")
     },
     {
-      name: t("pricing.event.name"),
-      price: t("pricing.event.price"),
-      description: t("pricing.event.description"),
-      features: t("pricing.event.features")
+      name: t("pricing.kids.name"),
+      price: t("pricing.kids.price"),
+      description: t("pricing.kids.description"),
+      features: t("pricing.kids.features")
+    },
+    {
+      name: t("pricing.purim.name"),
+      price: t("pricing.purim.price"),
+      description: t("pricing.purim.description"),
+      features: t("pricing.purim.features")
+    },
+    {
+      name: t("pricing.additional.name"),
+      price: t("pricing.additional.price"),
+      description: t("pricing.additional.description"),
+      features: t("pricing.additional.features")
     }
   ];
 

@@ -49,40 +49,61 @@ export const translations = {
     },
     pricing: {
       title: "Photography Packages",
-      basic: {
-        name: "Basic Session",
-        price: "$299",
-        description: "Perfect for individual or couple photos",
+      batMitzvah: {
+        name: "Bat/Bar Mitzvah",
+        price: "2000₪",
+        description: "Special event photography",
         features: [
-          "1 hour session",
-          "1 location",
-          "20 edited digital photos",
-          "Online gallery"
+          "3 hours session (before sunset)",
+          "2 locations",
+          "40 edited photos",
+          "All raw material included"
         ]
       },
       family: {
-        name: "Family Package",
-        price: "$499",
-        description: "Ideal for family portraits and events",
+        name: "Family/Feminine/Yoga",
+        price: "From 1450₪",
+        description: "Up to 10 people: 1450₪, Up to 15 people: 1550₪, Up to 20 people: 1650₪",
         features: [
-          "2 hour session",
-          "2 locations",
-          "40 edited digital photos",
-          "Online gallery",
-          "Print release"
+          "1.5 hours session (before sunset)",
+          "1 location",
+          "25 edited photos",
+          "All raw material included"
         ]
       },
-      event: {
-        name: "Event Coverage",
-        price: "From $999",
-        description: "Complete event photography service",
+      kids: {
+        name: "Kids Photography",
+        price: "1450₪",
+        description: "Perfect for children portraits",
         features: [
-          "Full day coverage",
-          "Multiple locations",
-          "100+ edited photos",
-          "Online gallery",
-          "Print release",
-          "Rush delivery available"
+          "1.5 hours session (before sunset)",
+          "1 location",
+          "25 edited photos",
+          "All raw material included"
+        ]
+      },
+      purim: {
+        name: "Purim Photography",
+        price: "450₪",
+        description: "Capture the Purim celebration",
+        features: [
+          "1.5 hours session (before sunset)",
+          "1 location",
+          "25 edited photos",
+          "All raw material included"
+        ]
+      },
+      additional: {
+        name: "Additional Information",
+        price: "",
+        description: "Important pricing details",
+        features: [
+          "Album not included in price",
+          "Travel fees: 150₪ (over 30min) or 250₪ (over 1hr)",
+          "Extra 30min shooting: 300₪ (includes more edited photos)",
+          "Extra hour shooting: 600₪",
+          "Horse photoshoots: 350₪/30min (may vary by farm)",
+          "Preference for Friday afternoon sessions"
         ]
       }
     },
