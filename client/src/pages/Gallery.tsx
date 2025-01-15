@@ -119,14 +119,17 @@ export default function Gallery() {
   }
 
   const filteredCategories = categories.filter(
-    (category) => {
-      // Exclude certain categories and deduplicate 'Kids'
-      if (["before and after", "categories"].includes(category.name.toLowerCase())) return false;
-      // Only keep the lowercase 'kids' version, filter out 'Kids'
-      if (category.name === "Kids") return false;
-      return true;
-    }
+    (category) =>
+      !["before and after", "categories"].includes(category.name.toLowerCase()) &&
+      !(category.name === "Kids")
   );
+
+  const sortedCategories = [...filteredCategories];
+  //Sort the categories to put Kids after Yoga.
+  sortedCategories.sort((a,b) => {
+    const order = ["Bat Mitsva", "Family", "Women", "Yoga", "Kids", "Modeling"];
+    return order.indexOf(a.name) - order.indexOf(b.name);
+  });
 
   return (
     <div className="min-h-screen pt-16">
@@ -168,7 +171,7 @@ export default function Gallery() {
               ref={tabsListRef}
             >
               <TabsList className="inline-flex min-w-full justify-start px-8 border-0">
-                {filteredCategories.map((category) => (
+                {sortedCategories.map((category) => (
                   <TabsTrigger
                     key={category.id}
                     value={category.name}
@@ -193,7 +196,7 @@ export default function Gallery() {
           </div>
 
           <motion.div variants={itemVariants}>
-            {filteredCategories.map((category) => (
+            {sortedCategories.map((category) => (
               <TabsContent key={category.id} value={category.name}>
                 <Card>
                   <CardContent className="pt-6">
