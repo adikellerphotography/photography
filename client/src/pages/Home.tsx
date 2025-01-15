@@ -99,39 +99,39 @@ export default function Home() {
           <div className="flex justify-center gap-12 mb-8">
             <div className="relative">
               <motion.div
-                initial={{ backgroundColor: '#FF9500' }}
-                animate={{ backgroundColor: ['#FF9500', '#AA6300', '#FF9500'] }}
+                initial={{ backgroundColor: '#E67E00' }}
+                animate={{ backgroundColor: ['#E67E00', '#994D00', '#E67E00'] }}
                 transition={{ duration: 1.6, times: [0, 0.5, 1] }}
                 className="absolute inset-0 rounded-full -z-10"
               />
               <Link href="/before-and-after">
-                <button className="p-4 rounded-full hover:bg-accent transition-colors text-gray-300">
+                <button className="p-4 rounded-full hover:bg-accent transition-colors text-white">
                   <SplitSquareVertical className="w-6 h-6" />
                 </button>
               </Link>
             </div>
             <div className="relative">
               <motion.div
-                initial={{ backgroundColor: '#FF9500' }}
-                animate={{ backgroundColor: ['#FF9500', '#AA6300', '#FF9500'] }}
+                initial={{ backgroundColor: '#E67E00' }}
+                animate={{ backgroundColor: ['#E67E00', '#994D00', '#E67E00'] }}
                 transition={{ duration: 1.6, times: [0, 0.5, 1] }}
                 className="absolute inset-0 rounded-full -z-10"
               />
               <Link href="/gallery">
-                <button className="p-4 rounded-full hover:bg-accent transition-colors text-gray-300">
+                <button className="p-4 rounded-full hover:bg-accent transition-colors text-white">
                   <Camera className="w-6 h-6" />
                 </button>
               </Link>
             </div>
             <div className="relative">
               <motion.div
-                initial={{ backgroundColor: '#FF9500' }}
-                animate={{ backgroundColor: ['#FF9500', '#AA6300', '#FF9500'] }}
+                initial={{ backgroundColor: '#E67E00' }}
+                animate={{ backgroundColor: ['#E67E00', '#994D00', '#E67E00'] }}
                 transition={{ duration: 1.6, times: [0, 0.5, 1] }}
                 className="absolute inset-0 rounded-full -z-10"
               />
               <Link href="/sessions">
-                <button className="p-4 rounded-full hover:bg-accent transition-colors text-gray-300">
+                <button className="p-4 rounded-full hover:bg-accent transition-colors text-white">
                   <Aperture className="w-6 h-6" />
                 </button>
               </Link>
