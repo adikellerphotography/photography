@@ -32,7 +32,7 @@ export default function About() {
           </div>
 
           <div className={language === 'he' ? 'rtl text-right' : 'ltr text-left'}>
-            <h1 className="text-3xl font-bold mb-8">{t("about.title")}</h1>
+            <h1 className="text-3xl font-bold mb-8 text-[#FF9500]">{t("about.title")}</h1>
 
             <div className="prose prose-gray dark:prose-invert max-w-none space-y-8">
               <div>

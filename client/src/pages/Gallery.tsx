@@ -136,7 +136,7 @@ export default function Gallery() {
         variants={containerVariants}
         className="container mx-auto px-4 py-16"
       >
-        <motion.h1 variants={itemVariants} className="text-3xl font-bold mb-8">
+        <motion.h1 variants={itemVariants} className="text-3xl font-bold mb-8 text-[#FF9500]">
           Photo Gallery
         </motion.h1>
 

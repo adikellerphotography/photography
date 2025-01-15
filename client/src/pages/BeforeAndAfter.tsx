@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
@@ -60,7 +59,7 @@ export default function BeforeAndAfter() {
         animate={{ opacity: 1, y: 0 }}
         className="container mx-auto px-4 py-16"
       >
-        <h1 className="text-3xl font-bold mb-8">
+        <h1 className="text-3xl font-bold mb-8 text-[#FF9500]">
           {t("beforeAfter.title")}
         </h1>
         <p className="text-lg text-muted-foreground mb-12">
