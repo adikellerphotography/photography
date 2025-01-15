@@ -30,16 +30,6 @@ export default function Home() {
         }
       };
     }
-    if (category.name === "kids") {
-      return {
-        ...category,
-        firstPhoto: {
-          ...category.firstPhoto,
-          imageUrl: "/assets/kids/IMG_5537-Edit-Edit Large.jpeg",
-          thumbnailUrl: "/assets/kids/IMG_5537-Edit-Edit Large-thumb.jpeg"
-        }
-      };
-    }
     if (category.name === "Women") {
       return {
         ...category,
@@ -57,6 +47,16 @@ export default function Home() {
           ...category.firstPhoto,
           imageUrl: "/assets/Yoga/IMG_6161-Edit Large.jpeg",
           thumbnailUrl: "/assets/Yoga/IMG_6161-Edit Large-thumb.jpeg"
+        }
+      };
+    }
+    if (category.name === "Kids") {
+      return {
+        ...category,
+        firstPhoto: {
+          ...category.firstPhoto,
+          imageUrl: "/assets/kids/IMG_5537-Edit-Edit Large.jpeg",
+          thumbnailUrl: "/assets/kids/IMG_5537-Edit-Edit Large-thumb.jpeg"
         }
       };
     }
