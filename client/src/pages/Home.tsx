@@ -98,7 +98,12 @@ export default function Home() {
         >
           <div className="flex justify-center gap-12 mb-8">
             <div className="relative">
-              <div className="absolute inset-0" style={{ backgroundColor: '#FF8C00', borderRadius: '9999px', zIndex: '-10' }} />
+              <motion.div
+                initial={{ backgroundColor: '#FF8C00' }}
+                animate={{ backgroundColor: ['#FF8C00', '#000000', '#FF8C00'] }}
+                transition={{ duration: 1, times: [0, 0.5, 1], delay: 0 }}
+                className="absolute inset-0 rounded-full -z-10"
+              />
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: [0, 1, 0] }}
@@ -112,7 +117,12 @@ export default function Home() {
               </Link>
             </div>
             <div className="relative">
-              <div className="absolute inset-0" style={{ backgroundColor: '#FF8C00', borderRadius: '9999px', zIndex: '-10' }} />
+              <motion.div
+                initial={{ backgroundColor: '#FF8C00' }}
+                animate={{ backgroundColor: ['#FF8C00', '#000000', '#FF8C00'] }}
+                transition={{ duration: 1, times: [0, 0.5, 1], delay: 1 }}
+                className="absolute inset-0 rounded-full -z-10"
+              />
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: [0, 1, 0] }}
@@ -126,7 +136,12 @@ export default function Home() {
               </Link>
             </div>
             <div className="relative">
-              <div className="absolute inset-0" style={{ backgroundColor: '#FF8C00', borderRadius: '9999px', zIndex: '-10' }} />
+              <motion.div
+                initial={{ backgroundColor: '#FF8C00' }}
+                animate={{ backgroundColor: ['#FF8C00', '#000000', '#FF8C00'] }}
+                transition={{ duration: 1, times: [0, 0.5, 1], delay: 2 }}
+                className="absolute inset-0 rounded-full -z-10"
+              />
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: [0, 1, 0] }}
