@@ -101,14 +101,8 @@ export default function Home() {
               <motion.div
                 initial={{ backgroundColor: '#FF8C00' }}
                 animate={{ backgroundColor: ['#FF8C00', '#000000', '#FF8C00'] }}
-                transition={{ duration: 1, times: [0, 0.5, 1], delay: 0 }}
+                transition={{ duration: 0.5, times: [0, 0.5, 1], onComplete: () => {} }}
                 className="absolute inset-0 rounded-full -z-10"
-              />
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: [0, 1, 0] }}
-                transition={{ duration: 1, times: [0, 0.5, 1], delay: 0 }}
-                className="absolute inset-0 bg-gray-200 dark:bg-gray-700 rounded-full -z-10"
               />
               <Link href="/before-and-after">
                 <button className="p-4 rounded-full hover:bg-accent transition-colors">
@@ -120,14 +114,12 @@ export default function Home() {
               <motion.div
                 initial={{ backgroundColor: '#FF8C00' }}
                 animate={{ backgroundColor: ['#FF8C00', '#000000', '#FF8C00'] }}
-                transition={{ duration: 1, times: [0, 0.5, 1], delay: 1 }}
+                transition={{ 
+                  duration: 0.5, 
+                  times: [0, 0.5, 1], 
+                  delay: 0.25,
+                }}
                 className="absolute inset-0 rounded-full -z-10"
-              />
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: [0, 1, 0] }}
-                transition={{ duration: 1, times: [0, 0.5, 1], delay: 1 }}
-                className="absolute inset-0 bg-gray-200 dark:bg-gray-700 rounded-full -z-10"
               />
               <Link href="/gallery">
                 <button className="p-4 rounded-full hover:bg-accent transition-colors">
@@ -139,14 +131,12 @@ export default function Home() {
               <motion.div
                 initial={{ backgroundColor: '#FF8C00' }}
                 animate={{ backgroundColor: ['#FF8C00', '#000000', '#FF8C00'] }}
-                transition={{ duration: 1, times: [0, 0.5, 1], delay: 2 }}
+                transition={{ 
+                  duration: 0.5, 
+                  times: [0, 0.5, 1], 
+                  delay: 0.5,
+                }}
                 className="absolute inset-0 rounded-full -z-10"
-              />
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: [0, 1, 0] }}
-                transition={{ duration: 1, times: [0, 0.5, 1], delay: 2 }}
-                className="absolute inset-0 bg-gray-200 dark:bg-gray-700 rounded-full -z-10"
               />
               <Link href="/sessions">
                 <button className="p-4 rounded-full hover:bg-accent transition-colors">
