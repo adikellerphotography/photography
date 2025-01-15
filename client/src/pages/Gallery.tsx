@@ -118,7 +118,7 @@ export default function Gallery() {
     );
   }
 
-  const allowedCategories = ["Bat Mitsva", "Family", "Women", "Kids", "Yoga", "Modeling"];
+  const allowedCategories = ["Bat Mitsva", "Family", "Women", "Yoga", "Kids", "Modeling"];
   
   const filteredCategories = categories?.filter(
     (category) => allowedCategories.includes(category.name)
