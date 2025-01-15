@@ -105,7 +105,7 @@ export default function Home() {
                 className="absolute inset-0 rounded-full -z-10"
               />
               <Link href="/before-and-after">
-                <button className="p-4 rounded-full hover:bg-accent transition-colors">
+                <button className="p-4 rounded-full hover:bg-accent transition-colors text-black">
                   <SplitSquareVertical className="w-6 h-6" />
                 </button>
               </Link>
@@ -118,7 +118,7 @@ export default function Home() {
                 className="absolute inset-0 rounded-full -z-10"
               />
               <Link href="/gallery">
-                <button className="p-4 rounded-full hover:bg-accent transition-colors">
+                <button className="p-4 rounded-full hover:bg-accent transition-colors text-black">
                   <Camera className="w-6 h-6" />
                 </button>
               </Link>
@@ -131,7 +131,7 @@ export default function Home() {
                 className="absolute inset-0 rounded-full -z-10"
               />
               <Link href="/sessions">
-                <button className="p-4 rounded-full hover:bg-accent transition-colors">
+                <button className="p-4 rounded-full hover:bg-accent transition-colors text-black">
                   <Aperture className="w-6 h-6" />
                 </button>
               </Link>
