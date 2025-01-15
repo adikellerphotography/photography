@@ -163,19 +163,14 @@ export default function Sessions() {
         <div className="space-y-8">
           {sessionGroups.map((group) => (
             <div key={group.name} className="bg-card p-6 rounded-lg shadow-md">
-              <h2 className="text-2xl font-semibold mb-4">{group.name.toUpperCase()}</h2>
+              <h2 className="text-2xl font-semibold mb-4">{t(`sessions.${group.name.toLowerCase()}`)}</h2>
               <div className="flex flex-wrap gap-4">
                 {group.links.map((link) => (
                   <a
                     key={link.url}
-                    href={`fb://facewebmodal/f?href=${encodeURIComponent(link.url)}`}
-                    onClick={(e) => {
-                      // If desktop, use regular URL
-                      if (window.innerWidth >= 768) {
-                        e.preventDefault();
-                        window.open(link.url, '_blank');
-                      }
-                    }}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="relative"
                     onMouseEnter={() => setHoveredLink(link.url)}
                     onMouseLeave={() => setHoveredLink(null)}
