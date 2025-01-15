@@ -30,7 +30,7 @@ export default function Home() {
         }
       };
     }
-    if (category.name === "kids") {
+    if (category.name === "Kids") {
       return {
         ...category,
         firstPhoto: {
