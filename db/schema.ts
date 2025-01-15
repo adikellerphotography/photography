@@ -1,4 +1,5 @@
-import { pgTable, text, serial, timestamp, varchar, integer, sql } from "drizzle-orm/pg-core";
+
+import { pgTable, text, serial, timestamp, varchar, integer } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 export const photos = pgTable("photos", {
@@ -22,17 +23,7 @@ export const categories = pgTable("categories", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 50 }).notNull().unique(),
   description: text("description"),
-  displayOrder: integer("display_order").default(sql`
-    CASE 
-      WHEN name = 'Bat Mitsva' THEN 1
-      WHEN name = 'Family' THEN 2
-      WHEN name = 'Women' THEN 3
-      WHEN name = 'kids' THEN 4
-      WHEN name = 'Yoga' THEN 5
-      WHEN name = 'Modeling' THEN 6
-      ELSE 10
-    END
-  `).notNull(),
+  displayOrder: integer("display_order").notNull(),
 });
 
 export const photoLikes = pgTable("photo_likes", {
