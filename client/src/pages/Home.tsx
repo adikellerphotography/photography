@@ -50,9 +50,10 @@ export default function Home() {
         }
       };
     }
-    if (category.name === "Kids") {
+    if (category.name === "kids") {
       return {
         ...category,
+        name: "Kids",
         firstPhoto: {
           ...category.firstPhoto,
           imageUrl: "/assets/kids/IMG_5537-Edit-Edit Large.jpeg",
