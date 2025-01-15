@@ -183,7 +183,7 @@ export default function Home() {
                             onLoad={(e) => {
                               const img = e.target as HTMLImageElement;
                               if (img.naturalHeight > img.naturalWidth) {
-                                img.style.objectPosition = "center 20%";
+                                img.style.objectPosition = "center 80%";
                               }
                             }}
                             onError={(e) => {
