@@ -13,8 +13,8 @@ export function registerRoutes(app: Express): Server {
 
   // Helper function to get the correct category path
   const getCategoryPath = (categoryName: string) => {
-    // For Kids category, ensure we use lowercase 'kids' path
-    if (categoryName === 'Kids' || categoryName === 'kids') {
+    // For Kids category, ensure we use lowercase path
+    if (categoryName.toLowerCase() === 'kids') {
       return 'kids';
     }
     // For all other categories, replace spaces with underscores and capitalize first letter
