@@ -118,17 +118,14 @@ export default function Gallery() {
     );
   }
 
-  const filteredCategories = categories.filter(
-    (category) =>
-      !["before and after", "categories"].includes(category.name.toLowerCase()) &&
-      !(category.name === "Kids")
-  );
+  const allowedCategories = ["Bat Mitsva", "Family", "Women", "Kids", "Yoga", "Modeling"];
+  
+  const filteredCategories = categories?.filter(
+    (category) => allowedCategories.includes(category.name)
+  ) || [];
 
-  const sortedCategories = [...filteredCategories];
-  //Sort the categories to put Kids after Yoga.
-  sortedCategories.sort((a,b) => {
-    const order = ["Bat Mitsva", "Family", "Women", "Yoga", "Kids", "Modeling"];
-    return order.indexOf(a.name) - order.indexOf(b.name);
+  const sortedCategories = [...filteredCategories].sort((a, b) => {
+    return allowedCategories.indexOf(a.name) - allowedCategories.indexOf(b.name);
   });
 
   return (
