@@ -100,8 +100,8 @@ export default function Home() {
             <div className="relative">
               <motion.div
                 initial={{ backgroundColor: '#FF8C00' }}
-                animate={{ backgroundColor: ['#FF8C00', '#333333', '#FF8C00'] }}
-                transition={{ duration: 2, times: [0, 0.5, 1] }}
+                animate={{ backgroundColor: ['#FF8C00', '#BF6900', '#FF8C00'] }}
+                transition={{ duration: 1.6, times: [0, 0.5, 1] }}
                 className="absolute inset-0 rounded-full -z-10"
               />
               <Link href="/before-and-after">
