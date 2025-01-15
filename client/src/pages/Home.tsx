@@ -101,7 +101,7 @@ export default function Home() {
               <motion.div
                 initial={{ backgroundColor: '#FF8C00' }}
                 animate={{ backgroundColor: ['#FF8C00', '#333333', '#FF8C00'] }}
-                transition={{ duration: 1, times: [0, 0.5, 1] }}
+                transition={{ duration: 2, times: [0, 0.5, 1] }}
                 className="absolute inset-0 rounded-full -z-10"
               />
               <Link href="/before-and-after">
@@ -115,7 +115,7 @@ export default function Home() {
                 initial={{ backgroundColor: '#FF8C00' }}
                 animate={{ backgroundColor: ['#FF8C00', '#333333', '#FF8C00'] }}
                 transition={{ 
-                  duration: 1, 
+                  duration: 2, 
                   times: [0, 0.5, 1]
                 }}
                 className="absolute inset-0 rounded-full -z-10"
@@ -131,7 +131,7 @@ export default function Home() {
                 initial={{ backgroundColor: '#FF8C00' }}
                 animate={{ backgroundColor: ['#FF8C00', '#333333', '#FF8C00'] }}
                 transition={{ 
-                  duration: 1, 
+                  duration: 2, 
                   times: [0, 0.5, 1]
                 }}
                 className="absolute inset-0 rounded-full -z-10"
