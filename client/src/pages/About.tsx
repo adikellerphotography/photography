@@ -19,13 +19,14 @@ export default function About() {
           {/* Portrait Image Section */}
           <div className="mb-12 w-full max-w-[300px] mx-auto">
             <AspectRatio ratio={1}>
-              <div className="relative w-full h-full overflow-hidden rounded-full border-4 border-background shadow-xl">
+              <div className="relative w-full h-full overflow-hidden rounded-full border border-[#FF9500] shadow-xl">
                 <img
                   src="/assets/IMG_1133.jpg"
                   alt=""
                   className="object-cover w-full h-full"
                   loading="eager"
                   fetchPriority="high"
+                  decoding="sync"
                 />
               </div>
             </AspectRatio>
