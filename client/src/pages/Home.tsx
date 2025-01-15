@@ -98,6 +98,7 @@ export default function Home() {
         >
           <div className="flex justify-center gap-12 mb-8">
             <div className="relative">
+              <div className="absolute inset-0 bg-orange-500/20 rounded-full -z-10" />
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: [0, 1, 0] }}
@@ -111,6 +112,7 @@ export default function Home() {
               </Link>
             </div>
             <div className="relative">
+              <div className="absolute inset-0 bg-orange-500/20 rounded-full -z-10" />
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: [0, 1, 0] }}
@@ -124,6 +126,7 @@ export default function Home() {
               </Link>
             </div>
             <div className="relative">
+              <div className="absolute inset-0 bg-orange-500/20 rounded-full -z-10" />
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: [0, 1, 0] }}
