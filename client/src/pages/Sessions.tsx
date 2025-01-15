@@ -1,4 +1,3 @@
-typescript
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
 import { useState } from "react";
