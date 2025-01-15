@@ -311,8 +311,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 </div>
               </div>
             </motion.div>
-          );
-        })}
+        ))}
       </div>
 
       {(hasNextPage || isFetchingNextPage) && (
