@@ -121,7 +121,7 @@ export default function Gallery() {
   const allowedCategories = ["Bat Mitsva", "Family", "Women", "Yoga", "Kids", "Modeling"];
   
   const filteredCategories = categories?.filter(
-    (category) => allowedCategories.includes(category.name)
+    (category) => allowedCategories.includes(category.name) || (category.name === "kids" && allowedCategories.includes("Kids"))
   ) || [];
 
   const sortedCategories = [...filteredCategories].sort((a, b) => {
