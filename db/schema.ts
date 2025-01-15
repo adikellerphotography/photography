@@ -22,7 +22,7 @@ export const categories = pgTable("categories", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 50 }).notNull().unique(),
   description: text("description"),
-  displayOrder: integer("display_order").default(0).notNull(),
+  displayOrder: integer("display_order").default(1).notNull(),
 });
 
 export const photoLikes = pgTable("photo_likes", {
