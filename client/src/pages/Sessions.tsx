@@ -1,7 +1,8 @@
-
+typescript
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
 import { useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface SessionLink {
   url: string;
@@ -40,7 +41,7 @@ const sessionGroups: SessionGroup[] = [
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0ADeC9JEBXd6Xrgqk43sC6WxS6AnJmNizZgLgrtNymyhMrbK98eMxao6UpvYYXawfl", number: 2 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0MUVxYr2uKdwKXyqMLqxWaFtQGBztiAdZLKKMSFnmni8ZWzScbL9S4o54aKmTFJfXl", number: 3 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0283Pp9nrYuGhS1WMKGhrVnbM7cwz854rvJi5Vfgf54a3ZBVBxoQkYKfjPUj96qk2pl", number: 4 },
-      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0VPHrH231ZjhffkjT31Qx3u3H2db5oRNqgwfF3UtYFLeyiZbffacFTzruYeKP4wC9l", number: 5 }
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0VPHrH231ZjhffkjT31Qx3u3H2db5oRNqgwfF3UtYFLeyiZbffacFTzruYeKP4wC9l", number: 5 },
     ]
   },
   {
@@ -51,7 +52,7 @@ const sessionGroups: SessionGroup[] = [
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0696LzKULgKHmEhjJL2NCyH57vi1b1TXasRHJ8iqbh2nvRu41SdpBFNmWFwMe8rayl", number: 3 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02pyqh6CJVWjSW7ahnXhHhSi2VU1h7wk3HZKrkD6GnXhuxxpCnXTWzxNXK8oE9MCRUl", number: 4 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0wXtiihgMfoKf4PwYDsR5N14ut9P85Q7FBnUDjyHcrGeZHatW9EsXeXzx1wu4vJ7Ql", number: 5 },
-      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0fSujz5LcmcmkihsBURYp51o1kqYiCRnkLREdCC86fMnfMVsbTbLTsUTfqqXUacL7l", number: 6 }
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0fSujz5LcmcmkihsBURYp51o1kqYiCRnkLREdCC86fMnfMVsbTbLTsUTfqqXUacL7l", number: 6 },
     ]
   },
   {
@@ -62,7 +63,7 @@ const sessionGroups: SessionGroup[] = [
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid027UxY2N4PLSv9rzMZhjoACbHoZ2ZfiPtRSQZDDNkHNvZ4uALrwhX23hq2TJpE4VYfl", number: 3 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02fwxbmzqc8CjW3BBrg5va22MyQ1J8JT73eA4nZo6q4TNA5yWxxiXzAKsaKyGAcggQl", number: 4 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid023t3G9ttdCqMkg9z515ofwKnSXFxjzzTQaHJtRAzhn1VvR7VmzEWSj5fCSwBJiXXSl", number: 5 },
-      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid031tpdprkELq9rDTgSHso6CTPYmS2pTtXRyRUNsorBtCzK11aSdqRsrykcc8TLPpnkl", number: 6 }
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid031tpdprkELq9rDTgSHso6CTPYmS2pTtXRyRUNsorBtCzK11aSdqRsrykcc8TLPpnkl", number: 6 },
     ]
   },
   {
@@ -72,7 +73,7 @@ const sessionGroups: SessionGroup[] = [
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0piDxpSGtBvrFWGZbPmo71ye9uq25AhyaT2Mwn2MR4riavuRS9UMUswcoYbNPei83l", number: 2 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0ekinYjEey9fzvANpDLsuWZcoa71UCaqpqTNLYQAZQP45kvYYPeGLJ2xReU8Pu4iil", number: 3 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid037orHnCjEWhAm9pPUSrAdGYsh6HS16gvNKKoMUa2wdXR8mjGWTHMPYRdAU1ZzisZAl", number: 4 },
-      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0jMrCtTKPmBshGx28yAj28CU5DPT9giv1HfKvNnK8hyWJdaxUrDrq9XRhmbxxjnjAl", number: 5 }
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0jMrCtTKPmBshGx28yAj28CU5DPT9giv1HfKvNnK8hyWJdaxUrDrq9XRhmbxxjnjAl", number: 5 },
     ]
   },
   {
@@ -80,7 +81,7 @@ const sessionGroups: SessionGroup[] = [
     links: [
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0stTjcLWgM9Qbkks3rYeWVhcPgWogPGPmSXtGCiXHWoP998EnuSapX2MFTuHDGgRal", number: 1 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid022g32LkTzHEYwrhq13Qv9GY82byWc6UCxyXdJX1RUC2vBvsLHjAmKxkZ63cJs4fPFl", number: 2 },
-      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0ytBnTdb6GznsuVir2CagsMMCoQN237uLzt4EtqzEpYWUafpwvi4YtaAU2TU8uT4Wl", number: 3 }
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0ytBnTdb6GznsuVir2CagsMMCoQN237uLzt4EtqzEpYWUafpwvi4YtaAU2TU8uT4Wl", number: 3 },
     ]
   },
   {
@@ -88,19 +89,19 @@ const sessionGroups: SessionGroup[] = [
     links: [
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02tm8jm9owgKyvnif7niCSJY9Wmz2JaBV5BK55mwd3TDF9d83en8soatoUgXMAzL5sl", number: 1 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0ZiGmqTzjvDM5qUkm6jzojReM6YU1ipHB9mjTGCJeFvj9eqgzcTwTNBzgPku19Nql", number: 2 },
-      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0LH9kU9n1oiqrknNxaRYuzzXx6KaxcVVotgVTdvoAeovxoe3jdNgHMtfu62wY4GjFl", number: 3 }
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0LH9kU9n1oiqrknNxaRYuzzXx6KaxcVVotgVTdvoAeovxoe3jdNgHMtfu62wY4GjFl", number: 3 },
     ]
   },
   {
     name: "Purim",
     links: [
-      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0hZE4AJHJPA4sXxhZ26NhdLCm2VQS91RT5b5yFzTQvZfeoaZ9CVoSWQxBJbb33Wadl", number: 1 }
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0hZE4AJHJPA4sXxhZ26NhdLCm2VQS91RT5b5yFzTQvZfeoaZ9CVoSWQxBJbb33Wadl", number: 1 },
     ]
   },
   {
     name: "Pregnancy",
     links: [
-      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02nmjh4TzrXw83g5V4iwrfG7FZCShHrC3UCK7Egb9JbjBB5tC3Pc9rezRptHkgJYf2l", number: 1 }
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02nmjh4TzrXw83g5V4iwrfG7FZCShHrC3UCK7Egb9JbjBB5tC3Pc9rezRptHkgJYf2l", number: 1 },
     ]
   },
   {
@@ -112,7 +113,7 @@ const sessionGroups: SessionGroup[] = [
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02Yty5B1MdP1cLDi8FmYc3DjaN6AdUos3mXb6HqUHgNPM3vJ8JQiK6kUgPLoMgySmzl", number: 4 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02jvW4sq5quwNVNiPWu9ZgdqPMtFEXBx6auUiPDYRh8QLnD5RdQ2Ng9cTE6ajK3pETl", number: 5 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0q7A7mm8TJghcmzx5nALMBvqTL5tE9BYwY5W3jLCbw52YNCCTLBYjY7GVRtYHmj66l", number: 6 },
-      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0LvW3PTtwJsG5Wn3HuUYjiSTHCHbbFpDLBCWJgocm3fdAEZe6cGwLANEuREujYwb8l", number: 7 }
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0LvW3PTtwJsG5Wn3HuUYjiSTHCHbbFpDLBCWJgocm3fdAEZe6cGwLANEuREujYwb8l", number: 7 },
     ]
   },
   {
@@ -128,7 +129,7 @@ const sessionGroups: SessionGroup[] = [
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0Me11RF4CFaUKbSQ5W9K5RyAx8gAmBYyFUrZPhKHZ2Erdg2NDcVwP8bVR69PFXotHl", number: 8 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02nHZUJBH11yejgdNQB2VyxCuzjnqYhFfnCjwbQM3YiC68dYBqkSkcFsKS7gKFNPZSl", number: 9 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0YzeWYmW565icpJ3672rfMQSTss6qyVkqg62cDQ1gyyNbVn8fokwKmy4rDCdm5918l", number: 10 },
-      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02A7k618aBxw81FCHRZRc2wvsL7VU2LyJuZ61iMpi1F8NKz1ePRCxqmDV4tVZ3QXtBl", number: 11 }
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02A7k618aBxw81FCHRZRc2wvsL7VU2LyJuZ61iMpi1F8NKz1ePRCxqmDV4tVZ3QXtBl", number: 11 },
     ]
   },
   {
@@ -141,14 +142,26 @@ const sessionGroups: SessionGroup[] = [
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0WQbN1Y8qMBDcGwVVErv87ydMq2qBuDMY1QWAcrtzSfZdcVRrx81cr6LrMM4HmQ2zl", number: 5 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0378Rg2GuhDCxdJ2TtaNhmtgsRiH3hZ8obejJsFKs8hVGFGDfMqw4WhCA5yhqQ7TKjl", number: 6 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0aT4qTRuriTmHNfLYceWubeLYYbHwFQkR7P7Q8hrJCrViXeWJCjLNGauFcLdKSGqNl", number: 7 },
-      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02QP1XK73tXW2MHiQvncaUgHmPvA9y1P29S87P2eKXwgjPABowUAFtE9atbDTXi8xul", number: 8 }
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02QP1XK73tXW2MHiQvncaUgHmPvA9y1P29S87P2eKXwgjPABowUAFtE9atbDTXi8xul", number: 8 },
     ]
-  }
+  },
 ];
+
+const capitalizeWords = (str: string) => {
+  return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+};
 
 export default function Sessions() {
   const { t } = useTranslation();
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
+  const isMobile = useIsMobile();
+
+  const getFacebookUrl = (url: string) => {
+    if (isMobile) {
+      return `fb://facewebmodal/f?href=${encodeURIComponent(url)}`;
+    }
+    return url;
+  };
 
   return (
     <div className="min-h-screen pt-16">
@@ -163,12 +176,12 @@ export default function Sessions() {
         <div className="space-y-8">
           {sessionGroups.map((group) => (
             <div key={group.name} className="bg-card p-6 rounded-lg shadow-md">
-              <h2 className="text-2xl font-semibold mb-4">{t(`sessions.${group.name.toLowerCase()}`)}</h2>
+              <h2 className="text-2xl font-semibold mb-4">{capitalizeWords(group.name)}</h2>
               <div className="flex flex-wrap gap-4">
                 {group.links.map((link) => (
                   <a
                     key={link.url}
-                    href={link.url}
+                    href={getFacebookUrl(link.url)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="relative"
