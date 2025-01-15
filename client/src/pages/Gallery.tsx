@@ -118,18 +118,15 @@ export default function Gallery() {
     );
   }
 
-  const allowedCategories = ["Bat Mitsva", "Family", "Women", "Kids", "Yoga", "Modeling"];
-  
-  const filteredCategories = categories
-    ?.filter((category) => {
+  const filteredCategories = categories.filter(
+    (category) => {
+      // Exclude certain categories and deduplicate 'Kids'
       if (["before and after", "categories"].includes(category.name.toLowerCase())) return false;
+      // Only keep the lowercase 'kids' version, filter out 'Kids'
+      if (category.name === "Kids") return false;
       return true;
-    })
-    .sort((a, b) => {
-      const indexA = allowedCategories.indexOf(a.name);
-      const indexB = allowedCategories.indexOf(b.name);
-      return indexA - indexB;
-    });
+    }
+  );
 
   return (
     <div className="min-h-screen pt-16">
