@@ -99,8 +99,8 @@ export default function Home() {
           <div className="flex justify-center gap-12 mb-8">
             <div className="relative">
               <motion.div
-                initial={{ backgroundColor: '#FF8C00' }}
-                animate={{ backgroundColor: ['#FF8C00', '#BF6900', '#FF8C00'] }}
+                initial={{ backgroundColor: '#E67E00' }}
+                animate={{ backgroundColor: ['#E67E00', '#BF6900', '#E67E00'] }}
                 transition={{ duration: 1.6, times: [0, 0.5, 1] }}
                 className="absolute inset-0 rounded-full -z-10"
               />
@@ -112,12 +112,9 @@ export default function Home() {
             </div>
             <div className="relative">
               <motion.div
-                initial={{ backgroundColor: '#FF8C00' }}
-                animate={{ backgroundColor: ['#FF8C00', '#333333', '#FF8C00'] }}
-                transition={{ 
-                  duration: 2, 
-                  times: [0, 0.5, 1]
-                }}
+                initial={{ backgroundColor: '#E67E00' }}
+                animate={{ backgroundColor: ['#E67E00', '#BF6900', '#E67E00'] }}
+                transition={{ duration: 1.6, times: [0, 0.5, 1] }}
                 className="absolute inset-0 rounded-full -z-10"
               />
               <Link href="/gallery">
@@ -128,12 +125,9 @@ export default function Home() {
             </div>
             <div className="relative">
               <motion.div
-                initial={{ backgroundColor: '#FF8C00' }}
-                animate={{ backgroundColor: ['#FF8C00', '#333333', '#FF8C00'] }}
-                transition={{ 
-                  duration: 2, 
-                  times: [0, 0.5, 1]
-                }}
+                initial={{ backgroundColor: '#E67E00' }}
+                animate={{ backgroundColor: ['#E67E00', '#BF6900', '#E67E00'] }}
+                transition={{ duration: 1.6, times: [0, 0.5, 1] }}
                 className="absolute inset-0 rounded-full -z-10"
               />
               <Link href="/sessions">
