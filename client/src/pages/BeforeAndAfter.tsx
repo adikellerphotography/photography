@@ -67,7 +67,7 @@ export default function BeforeAndAfter() {
           {t("beforeAfter.description")}
         </p>
 
-        <div className="space-y-16">
+        <div className="space-y-16 max-w-4xl mx-auto">
           {comparisons.map((comparison) => (
             <motion.div
               key={comparison.id}
