@@ -54,7 +54,7 @@ export const translations = {
       batMitzvah: {
         name: "Bat/Bar Mitzvah",
         price: "2000₪",
-        description: "Special event photography",
+        description: "Experiential photography session",
         features: [
           "3 hours session (before sunset)",
           "2 locations",

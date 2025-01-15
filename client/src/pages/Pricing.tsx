@@ -52,7 +52,7 @@ export default function Pricing() {
             {t("pricing.title")}
           </h1>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto ${language === 'he' ? 'text-right' : ''}`}>
             {packages.map((pkg, index) => (
               <motion.div
                 key={pkg.name}

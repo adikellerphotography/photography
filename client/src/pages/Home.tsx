@@ -100,7 +100,7 @@ export default function Home() {
             <div className="relative">
               <motion.div
                 initial={{ backgroundColor: '#E67E00' }}
-                animate={{ backgroundColor: ['#E67E00', '#994D00', '#E67E00'] }}
+                animate={{ backgroundColor: ['#E67E00', '#733F00', '#E67E00'] }}
                 transition={{ duration: 1.6, times: [0, 0.5, 1] }}
                 className="absolute inset-0 rounded-full -z-10"
               />
@@ -113,7 +113,7 @@ export default function Home() {
             <div className="relative">
               <motion.div
                 initial={{ backgroundColor: '#E67E00' }}
-                animate={{ backgroundColor: ['#E67E00', '#994D00', '#E67E00'] }}
+                animate={{ backgroundColor: ['#E67E00', '#733F00', '#E67E00'] }}
                 transition={{ duration: 1.6, times: [0, 0.5, 1] }}
                 className="absolute inset-0 rounded-full -z-10"
               />
@@ -126,7 +126,7 @@ export default function Home() {
             <div className="relative">
               <motion.div
                 initial={{ backgroundColor: '#E67E00' }}
-                animate={{ backgroundColor: ['#E67E00', '#994D00', '#E67E00'] }}
+                animate={{ backgroundColor: ['#E67E00', '#733F00', '#E67E00'] }}
                 transition={{ duration: 1.6, times: [0, 0.5, 1] }}
                 className="absolute inset-0 rounded-full -z-10"
               />
