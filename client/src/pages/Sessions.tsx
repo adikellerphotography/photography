@@ -17,8 +17,8 @@ const sessionGroups: SessionGroup[] = [
   {
     name: "Bat Mitsva",
     links: [
-      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid032zVU11kqanfNEap8Q3iuJrbqo7zHzYY5dzFEb8yPJGR28csyd9H35Prn2vHR2h8Vl", number: 1 },
-      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02pAYzLSW5XZsW9gkBMLWg7sSnDuVi1ESd958e1YD5h1u3Y9S1WviAfZXHzznd4zAwl", number: 2 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0VPHrH231ZjhffkjT31Qx3u3H2db5oRNqgwfF3UtYFLeyiZbffacFTzruYeKP4wC9l", number: 1 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0283Pp9nrYuGhS1WMKGhrVnbM7cwz854rvJi5Vfgf54a3ZBVBxoQkYKfjPUj96qk2pl", number: 2 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid029Q8m9v24FnTLehCAzg7cgc4NAUoDTxdvvtuKFpSV18B5N9RJmadUVdrCcri8N2iFl", number: 3 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0Wv5Zw2GtAbd9n9cJJhSKYfnK9RKxkQwF4Nqm23uy4xC4ciwcDXoRkVVrKkrBvfWBl", number: 4 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0AdZNygWpqm9eNFCZsUjZDvfmJb1v7Pt8dEwd1Qk6rXoD2pAdNyuqrjwHK5zyxxT1l", number: 5 },
@@ -172,7 +172,7 @@ export default function Sessions() {
         <h1 className="text-3xl font-bold mb-8 text-[#FF9500]">
           {t("sessions.title")}
         </h1>
-        <div className="space-y-8">
+        <div className="space-y-4">
           {sessionGroups.map((group) => (
             <div key={group.name} className="bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
               <h2 className="text-2xl font-semibold mb-4">{capitalizeWords(group.name)}</h2>
