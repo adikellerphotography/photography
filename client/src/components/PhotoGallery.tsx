@@ -426,7 +426,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
               {/* Heart icon overlay for grid view */}
               <div className="absolute top-2 right-2 z-10">
-                {photo.isLiked && (
+                {selectedPhoto.isLiked && (
                   <Heart className="w-5 h-5 text-white fill-white stroke-white drop-shadow-lg" />
                 )}
               </div>
