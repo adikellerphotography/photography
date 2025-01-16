@@ -207,7 +207,7 @@ export const translations = {
         ]
       },
       family: {
-        name: "משפחה/נשי/יוגה",
+        name: "משפחה/נשיות/יוגה",
         price: "החל מ-1450₪",
         description: "עד 10 אנשים: 1450₪, עד 15 אנשים: 1550₪, עד 20 אנשים: 1650₪",
         features: [

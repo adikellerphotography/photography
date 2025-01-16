@@ -18,7 +18,6 @@ export async function createWatermark(width: number, height: number) {
         x="50" 
         y="${height - 50}" 
         class="title"
-        transform="rotate(-15, 50, ${height - 50})"
       >
         Adi Keller Photography
       </text>
