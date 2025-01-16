@@ -8,6 +8,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useLocation } from "wouter";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Heart } from "lucide-react"; // Import Heart icon
+
 
 export default function Gallery() {
   const { data: categories, isLoading: categoriesLoading } = useQuery<
@@ -119,7 +121,7 @@ export default function Gallery() {
   }
 
   const allowedCategories = ["Bat Mitsva", "Family", "Women", "Yoga", "Kids", "Modeling", "Horses"];
-  
+
   const filteredCategories = categories?.filter(
     (category) => allowedCategories.includes(category.name) || (category.name === "kids" && allowedCategories.includes("Kids"))
   ) || [];
@@ -136,9 +138,19 @@ export default function Gallery() {
         variants={containerVariants}
         className="container mx-auto px-4 py-16"
       >
-        <motion.h1 variants={itemVariants} className="text-3xl font-bold mb-8 text-[#FF9500]">
-          Photo Gallery
-        </motion.h1>
+        <div className="flex justify-between items-center mb-8">
+          <motion.h1 variants={itemVariants} className="text-3xl font-bold text-[#FF9500]">
+            Photo Gallery
+          </motion.h1>
+          <Button
+            variant="outline"
+            onClick={() => setActiveCategory("Favorites")}
+            className="flex items-center gap-2"
+          >
+            <Heart className={activeCategory === "Favorites" ? "fill-current" : ""} />
+            Favorites
+          </Button>
+        </div>
 
         <Tabs
           value={activeCategory}

@@ -220,6 +220,12 @@ export function registerRoutes(app: Express): Server {
   app.post("/api/photos/:id/like", async (req, res) => {
     try {
       const photoId = parseInt(req.params.id);
+      const fingerprint = req.headers['x-browser-fingerprint'] as string;
+      
+      if (!fingerprint) {
+        return res.status(400).json({ error: "Browser fingerprint required" });
+      }
+
       const photo = await db.query.photos.findFirst({
         where: eq(photos.id, photoId)
       });
@@ -228,15 +234,21 @@ export function registerRoutes(app: Express): Server {
         return res.status(404).json({ error: "Photo not found" });
       }
 
-      const existingLike = await db.query.likes.findFirst({
-        where: eq(likes.photoId, photoId)
+      const existingLike = await db.query.photoLikes.findFirst({
+        where: and(
+          eq(photoLikes.photoId, photoId),
+          eq(photoLikes.ipAddress, fingerprint)
+        )
       });
 
       if (existingLike) {
-        await db.delete(likes).where(eq(likes.id, existingLike.id));
+        await db.delete(photoLikes).where(eq(photoLikes.id, existingLike.id));
         res.json({ liked: false });
       } else {
-        await db.insert(likes).values({ photoId });
+        await db.insert(photoLikes).values({ 
+          photoId,
+          ipAddress: fingerprint 
+        });
         res.json({ liked: true });
       }
     } catch (error) {

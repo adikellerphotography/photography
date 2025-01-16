@@ -295,35 +295,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   return (
     <div className="space-y-8" ref={galleryRef}>
-      <div className="flex items-center gap-2 mb-4">
-        <Heart className="w-6 h-6 text-accent" />
-        <h2 className="text-xl font-semibold">Favorites</h2>
-      </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
-        {photos.filter(photo => photo.isLiked).map((photo, index) => (
-          <motion.div
-            key={`favorite-${photo.id}`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            onClick={() => {
-              setSelectedPhoto(photo);
-              setSelectedIndex(index);
-              setScrollPosition(window.scrollY);
-            }}
-            className="relative overflow-hidden rounded-lg cursor-pointer group"
-          >
-            <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
-              <img
-                src={photo.thumbnailUrl || photo.imageUrl}
-                alt={photo.title}
-                className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-              />
-            </AspectRatio>
-          </motion.div>
-        ))}
-      </div>
-      
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {photos.map((photo, index) => (
           <motion.div
