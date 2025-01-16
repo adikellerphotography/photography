@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Loader2, ChevronLeft, ChevronRight, Heart, Download } from "lucide-react";
+import { Loader2, ChevronLeft, ChevronRight, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ShareDialog from "./ShareDialog";
 
@@ -391,23 +391,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 </div>
               )}
 
-              <div className="absolute top-4 right-4 z-20 flex gap-2">
-                <ShareDialog 
-                  imageUrl={selectedPhoto.imageUrl} 
-                  title={selectedPhoto.title}
-                />
-                <a
-                  href={selectedPhoto.imageUrl}
-                  download={selectedPhoto.title || "photo"}
-                  className="p-2 rounded-full bg-black/50 hover:bg-black/70 transition-colors cursor-pointer"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <Download className="w-5 h-5 text-white" />
-                </a>
-                {selectedPhoto.isLiked && (
-                  <Heart className="w-5 h-5 text-white fill-white stroke-[2]" />
-                )}
-              </div>
+              <ShareDialog 
+                imageUrl={selectedPhoto.imageUrl} 
+                title={selectedPhoto.title}
+              />
 
               <div className="relative w-full h-full overflow-hidden">
                 <img
