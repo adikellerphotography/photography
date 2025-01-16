@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useLanguage } from "@/hooks/use-language";
 import { useTranslation } from "@/hooks/use-translation";
-import { Compass, Cog, PackageCheck, CalendarCheck } from "lucide-react";
+import { Compass, Camera, PackageCheck, CalendarCheck } from "lucide-react";
 
 export default function Info() {
   const { language } = useLanguage();
@@ -31,7 +31,7 @@ export default function Info() {
 
               <div>
                 <h2 className={`text-2xl font-semibold mb-4 flex items-center gap-2 ${language === 'he' ? 'justify-end w-full' : ''}`}>
-                  <Cog className="w-6 h-6 text-[#FF9500]" />
+                  <Camera className="w-6 h-6 text-[#FF9500]" />
                   {t("info.equipmentTitle")}
                 </h2>
                 <p className="text-lg leading-relaxed">
