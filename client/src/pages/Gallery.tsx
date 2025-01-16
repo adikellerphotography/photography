@@ -142,14 +142,6 @@ export default function Gallery() {
           <motion.h1 variants={itemVariants} className="text-3xl font-bold text-[#FF9500]">
             Photo Gallery
           </motion.h1>
-          <Button
-            variant="outline"
-            onClick={() => setActiveCategory("Favorites")}
-            className="flex items-center gap-2"
-          >
-            <Heart className={activeCategory === "Favorites" ? "fill-current" : ""} />
-            Favorites
-          </Button>
         </div>
 
         <Tabs

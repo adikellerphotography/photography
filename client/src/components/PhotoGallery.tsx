@@ -1,4 +1,3 @@
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -39,15 +38,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     console.log('PhotoGallery mounted with category:', category);
   }, [category]);
 
-  const [likes, setLikes] = useState<Set<number>>(new Set());
-
-  // Load likes from localStorage on mount
-  useEffect(() => {
-    const savedLikes = localStorage.getItem('photoLikes');
-    if (savedLikes) {
-      setLikes(new Set(JSON.parse(savedLikes)));
-    }
-  }, []);
 
   const {
     data,
@@ -129,44 +119,13 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     return () => loaderObserver.disconnect();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  const likeMutation = useMutation({
-    mutationFn: async (photoId: number) => {
-      const response = await fetch(`/api/photos/${photoId}/like`, {
-        method: 'POST',
-        credentials: 'include',
-      });
-      if (!response.ok) {
-        throw new Error('Failed to like photo');
-      }
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/photos"] });
-    },
-  });
 
   const handleLike = async (photo: Photo) => {
-    try {
-      await likeMutation.mutateAsync(photo.id);
-      const newLikes = new Set(likes);
-      if (newLikes.has(photo.id)) {
-        newLikes.delete(photo.id);
-      } else {
-        newLikes.add(photo.id);
-      }
-      setLikes(newLikes);
-      localStorage.setItem('photoLikes', JSON.stringify(Array.from(newLikes)));
-      setShowHeart(true);
-      setTimeout(() => setShowHeart(false), 1000);
-    } catch (error) {
-      console.error('Error liking photo:', error);
-    }
+    //Removed like functionality
   };
 
-  // Filter photos for favorites view
-  const displayPhotos = category === "Favorites" 
-    ? photos?.filter(photo => likes.has(photo.id)) 
-    : photos;
+  // Removed favorites filter
+  const displayPhotos = photos;
 
   useEffect(() => {
     if (selectedPhoto) {
@@ -264,9 +223,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   };
 
   const handleDoubleClick = async (photo: Photo) => {
-    setShowHeart(true);
-    likeMutation.mutate(photo.id);
-    setTimeout(() => setShowHeart(false), 1000);
+    //Removed double click like functionality
   };
 
   useEffect(() => {
@@ -334,11 +291,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
           >
             <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
               <div className="relative w-full h-full overflow-hidden bg-muted">
-                {likes.has(photo.id) && (
-                  <div className="absolute top-2 right-2 z-10">
-                    <Heart className="w-5 h-5 text-white fill-white" />
-                  </div>
-                )}
+
                 <img
                   src={photo.thumbnailUrl || '/placeholder.jpg'}
                   data-src={photo.imageUrl}
@@ -438,11 +391,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 )}
               </AnimatePresence>
 
-              {selectedPhoto.isLiked && (
-                <div className="absolute top-4 right-4 z-20">
-                  <Heart className="w-5 h-5 text-white fill-white stroke-[2]" />
-                </div>
-              )}
 
               <Button
                 variant="outline"
