@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useLanguage } from "@/hooks/use-language";
 import { useTranslation } from "@/hooks/use-translation";
-import { Camera, Aperture, PackageCheck, CalendarCheck } from "lucide-react";
+import { Clock, Cog, PackageCheck, CalendarCheck } from "lucide-react";
 
 export default function Info() {
   const { language } = useLanguage();
@@ -12,16 +12,16 @@ export default function Info() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="container mx-auto px-4 py-16"
+        className={`container mx-auto px-4 py-16 ${language === 'he' ? 'rtl' : 'ltr'}`}
       >
         <div className="max-w-3xl mx-auto">
-          <div className={language === 'he' ? 'rtl text-right' : 'ltr text-left'}>
+          <div className={language === 'he' ? 'text-right' : 'text-left'}>
             <h1 className="text-3xl font-bold mb-8 text-[#FF9500]">{t("info.title")}</h1>
 
             <div className="prose prose-gray dark:prose-invert max-w-none space-y-8">
               <div>
                 <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-                  <Camera className="w-6 h-6 text-[#FF9500]" />
+                  <Clock className="w-6 h-6 text-[#FF9500]" />
                   {t("info.sessionTitle")}
                 </h2>
                 <p className="text-lg leading-relaxed">
@@ -31,7 +31,7 @@ export default function Info() {
 
               <div>
                 <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-                  <Aperture className="w-6 h-6 text-[#FF9500]" />
+                  <Cog className="w-6 h-6 text-[#FF9500]" />
                   {t("info.equipmentTitle")}
                 </h2>
                 <p className="text-lg leading-relaxed">
