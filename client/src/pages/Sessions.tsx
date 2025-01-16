@@ -175,14 +175,20 @@ export default function Sessions() {
         <h1 className="text-3xl font-bold mb-4 text-[#FF9500]">
           {t("sessions.title")}
         </h1>
-        <div className={`flex items-center gap-2 mb-8 text-muted-foreground ${language === 'he' ? 'justify-end' : ''}`}>
-          <SiFacebook className="text-[#1877F2]" />
-          <span>{t("sessions.description")}</span>
+        <div className={`flex items-center gap-2 mb-8 ${language === 'he' ? 'justify-end' : ''}`}>
+          <SiFacebook className="text-[#1877F2] w-6 h-6 animate-pulse" />
+          <span className="text-[#1877F2] font-semibold">{t("sessions.description")}</span>
         </div>
         <div className="space-y-8">
           {sessionGroups.map((group) => (
             <div key={group.name} className={`bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-white/30 ${language === 'he' ? 'rtl' : 'ltr'}`}>
-              <h2 className="text-2xl font-semibold mb-4">{language === 'he' ? t(`sessions.${group.name}`) : capitalizeWords(group.name)}</h2>
+              <div className="flex items-center gap-3 mb-4">
+                <h2 className="text-2xl font-semibold">{language === 'he' ? t(`sessions.${group.name}`) : capitalizeWords(group.name)}</h2>
+                <div className="flex items-center gap-2 bg-[#1877F2]/10 px-3 py-1 rounded-full">
+                  <SiFacebook className="text-[#1877F2] w-4 h-4" />
+                  <span className="text-sm text-[#1877F2] font-medium">{group.links.length} {t("sessions.photos")}</span>
+                </div>
+              </div>
               <div className="flex flex-wrap gap-4">
                 {group.links.map((link) => (
                   <a
