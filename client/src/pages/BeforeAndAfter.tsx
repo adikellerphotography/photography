@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "@/hooks/use-translation";
+import { useLanguage } from "@/hooks/use-language";
 import ImageCompare from "../components/ImageCompare";
 
 interface ComparisonSet {
@@ -20,6 +21,7 @@ const mockData: ComparisonSet[] = Array.from({ length: 28 }, (_, i) => ({
 
 export default function BeforeAndAfter() {
   const { t } = useTranslation();
+  const { language } = useLanguage();
   const { data: comparisons = mockData, isLoading, error } = useQuery<ComparisonSet[]>({
     queryKey: ["/api/before-after"],
     initialData: mockData,
