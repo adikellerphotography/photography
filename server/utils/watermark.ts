@@ -6,14 +6,19 @@ export async function createWatermark(width: number, height: number) {
   const svg = `
     <svg width="${width}" height="${height}">
       <style>
-        .title { fill: rgba(255,255,255,0.5); font-size: 24px; font-family: Arial; }
+        .title { 
+          fill: rgba(255,255,255,0.7); 
+          font-size: 28px; 
+          font-family: 'Georgia', serif; 
+          font-weight: bold;
+          letter-spacing: 1px;
+        }
       </style>
       <text 
-        x="50%" 
-        y="50%" 
-        text-anchor="middle" 
+        x="50" 
+        y="${height - 50}" 
         class="title"
-        transform="rotate(-45, ${width/2}, ${height/2})"
+        transform="rotate(-15, 50, ${height - 50})"
       >
         Adi Keller Photography
       </text>
@@ -35,7 +40,7 @@ export async function addWatermark(imagePath: string): Promise<Buffer> {
     .composite([
       {
         input: watermark,
-        gravity: 'center',
+        gravity: 'southwest',
       },
     ])
     .jpeg({
