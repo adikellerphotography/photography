@@ -8,6 +8,7 @@ import path from "path";
 import express from "express";
 import { scanAndProcessImages } from "./utils/scan-images";
 import fs from "fs/promises";
+import { addWatermark } from "./utils/watermark";
 
 // Helper function to get the correct category path
 const getCategoryPath = (categoryName: string) => {
@@ -180,24 +181,6 @@ const scanPhotos = async (_req: express.Request, res: express.Response) => {
   }
 };
 
-// Add watermark to downloaded images
-app.get('/api/photos/:category/:filename', async (req, res) => {
-  try {
-    const { category, filename } = req.params;
-    const imagePath = path.join(process.cwd(), 'attached_assets', category, filename);
-    
-    if (!fs.existsSync(imagePath)) {
-      return res.status(404).send('Image not found');
-    }
-
-    const watermarkedImage = await addWatermark(imagePath);
-    res.type('image/jpeg').send(watermarkedImage);
-  } catch (error) {
-    console.error('Error serving watermarked image:', error);
-    res.status(500).send('Error processing image');
-  }
-});
-
 const togglePhotoLike = async (req: express.Request, res: express.Response) => {
   try {
     const photoId = parseInt(req.params.id);
@@ -250,6 +233,25 @@ export function registerRoutes(app: Express): Server {
   app.get("/api/before-after", getBeforeAfterSets);
   app.post("/api/photos/scan", scanPhotos);
   app.post("/api/photos/:id/like", togglePhotoLike);
+  
+  // Watermarked photo route
+  app.get('/api/photos/:category/:filename', async (req, res) => {
+    try {
+      const { category, filename } = req.params;
+      const imagePath = path.join(process.cwd(), 'attached_assets', category, filename);
+      
+      const exists = await fs.access(imagePath).then(() => true).catch(() => false);
+      if (!exists) {
+        return res.status(404).send('Image not found');
+      }
+
+      const watermarkedImage = await addWatermark(imagePath);
+      res.type('image/jpeg').send(watermarkedImage);
+    } catch (error) {
+      console.error('Error serving watermarked image:', error);
+      res.status(500).send('Error processing image');
+    }
+  });
 
   return httpServer;
 }
