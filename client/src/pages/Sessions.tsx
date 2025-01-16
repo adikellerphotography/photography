@@ -174,7 +174,7 @@ export default function Sessions() {
         </h1>
         <div className="space-y-8">
           {sessionGroups.map((group) => (
-            <div key={group.name} className="bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+            <div key={group.name} className="bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-white/30">
               <h2 className="text-2xl font-semibold mb-4">{capitalizeWords(group.name)}</h2>
               <div className="flex flex-wrap gap-4">
                 {group.links.map((link) => (
