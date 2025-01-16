@@ -131,7 +131,7 @@ export default function Gallery() {
   });
 
   return (
-    <div className="min-h-screen pt-16">
+    <div className="min-h-screen pt-8">
       <motion.div
         initial="hidden"
         animate="visible"

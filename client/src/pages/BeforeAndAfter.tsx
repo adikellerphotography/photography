@@ -28,7 +28,7 @@ export default function BeforeAndAfter() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen pt-16">
+      <div className="min-h-screen pt-8">
         <div className="container mx-auto px-4 py-16">
           <div className="animate-pulse space-y-8">
             {[1, 2, 3].map((i) => (
@@ -43,7 +43,7 @@ export default function BeforeAndAfter() {
   if (error) {
     console.error("Error loading before/after images:", error);
     return (
-      <div className="min-h-screen pt-16">
+      <div className="min-h-screen pt-8">
         <div className="container mx-auto px-4 py-16">
           <h1 className="text-3xl font-bold mb-8">{t("beforeAfter.title")}</h1>
           <p className="text-lg text-muted-foreground">{t("beforeAfter.noImages")}</p>
@@ -53,7 +53,7 @@ export default function BeforeAndAfter() {
   }
 
   return (
-    <div className="min-h-screen pt-16">
+    <div className="min-h-screen pt-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
