@@ -16,14 +16,14 @@
   :lang(he) {
     font-family: 'Frank Ruhl Libre', serif;
     white-space: nowrap;
-    font-size: clamp(1rem, 2.5vw, 1.8rem);
+    font-size: clamp(0.9rem, 2vw, 1.5rem);
     line-height: 1.2;
     letter-spacing: -0.03em;
   }
 
   @media (max-width: 640px) {
     :lang(he) {
-      font-size: clamp(0.8rem, 2.8vw, 1.1rem);
+      font-size: clamp(0.7rem, 2.2vw, 0.9rem);
       letter-spacing: -0.02em;
     }
   }
