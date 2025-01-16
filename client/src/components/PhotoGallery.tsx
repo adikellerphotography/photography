@@ -1,4 +1,3 @@
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -50,7 +49,12 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     queryKey: ["/api/photos", { category }],
     queryFn: async ({ pageParam = 1 }) => {
       console.log('Fetching photos for category:', category, 'page:', pageParam);
-      const response = await fetch(`/api/photos?category=${encodeURIComponent(category || '')}&page=${pageParam}&pageSize=${pageSize}`);
+      const fingerprint = await getBrowserFingerprint();
+      const response = await fetch(`/api/photos?category=${encodeURIComponent(category || '')}&page=${pageParam}&pageSize=${pageSize}`, {
+        headers: {
+          'X-Browser-Fingerprint': fingerprint
+        }
+      });
       if (!response.ok) {
         const errorText = await response.text();
         console.error('Error fetching photos:', errorText);
@@ -73,9 +77,13 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   }, [error]);
 
   const allPhotos = data?.pages.flat() || [];
-  const photos = allPhotos.filter(photo => 
-    photo.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const photos = allPhotos.filter(photo => {
+    const titleMatches = photo.title.toLowerCase().includes(searchQuery.toLowerCase());
+    if (category === "Favorites") {
+      return titleMatches && photo.isLiked;
+    }
+    return titleMatches;
+  });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -479,3 +487,11 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     </div>
   );
 }
+
+// Placeholder for browser fingerprint function -  needs actual implementation
+async function getBrowserFingerprint() {
+  // Replace with your actual browser fingerprint generation logic
+  return "dummyFingerprint";
+}
+
+const queryClient = null; // needs actual queryClient setup

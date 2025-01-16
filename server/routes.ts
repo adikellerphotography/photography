@@ -43,6 +43,7 @@ export function registerRoutes(app: Express): Server {
       const { category } = req.query;
       const page = Number(req.query.page) || 1;
       const pageSize = Number(req.query.pageSize) || 20;
+      const fingerprint = req.headers['x-browser-fingerprint'] as string;
 
       console.log('Fetching photos with params:', { category, page, pageSize });
 
@@ -88,11 +89,18 @@ export function registerRoutes(app: Express): Server {
           return null;
         }
 
+        const like = fingerprint ? await db.query.photoLikes.findFirst({
+          where: and(
+            eq(photoLikes.photoId, photo.id),
+            eq(photoLikes.ipAddress, fingerprint)
+          )
+        }) : null;
+
         const processedPhoto = {
           ...photo,
           imageUrl: `/assets/${categoryPath}/${baseFileName}`,
           thumbnailUrl: thumbFileName ? `/assets/${categoryPath}/${thumbFileName}` : undefined,
-          isLiked: false
+          isLiked: !!like
         };
 
         console.log('Processed photo:', processedPhoto);
