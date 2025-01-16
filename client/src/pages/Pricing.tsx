@@ -69,7 +69,7 @@ export default function Pricing() {
                   <CardContent>
                     <ul className="space-y-2">
                       {pkg.features.map((feature: string) => (
-                        <li key={feature} className="flex items-center">
+                        <li key={feature} className={`flex items-center ${language === 'he' ? 'flex-row-reverse text-right' : ''}`}>
                           <span className={`${language === 'he' ? 'ml-2' : 'mr-2'}`}>•</span>
                           {feature}
                         </li>
