@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useLanguage } from "@/hooks/use-language";
 import { useTranslation } from "@/hooks/use-translation";
-import { Camera, Aperture } from "lucide-react";
+import { Camera, Aperture, PackageCheck, CalendarCheck } from "lucide-react";
 
 export default function Info() {
   const { language } = useLanguage();
@@ -40,14 +40,20 @@ export default function Info() {
               </div>
 
               <div>
-                <h2 className="text-2xl font-semibold mb-4">{t("info.preparationTitle")}</h2>
+                <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
+                  <PackageCheck className="w-6 h-6 text-[#FF9500]" />
+                  {t("info.preparationTitle")}
+                </h2>
                 <p className="text-lg leading-relaxed">
                   {t("info.preparationDescription")}
                 </p>
               </div>
 
               <div>
-                <h2 className="text-2xl font-semibold mb-4">{t("info.meetingTitle")}</h2>
+                <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
+                  <CalendarCheck className="w-6 h-6 text-[#FF9500]" />
+                  {t("info.meetingTitle")}
+                </h2>
                 <p className="text-lg leading-relaxed">
                   {t("info.meetingDescription")}
                 </p>
