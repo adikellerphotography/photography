@@ -23,14 +23,16 @@ export default function Gallery() {
   const tabsListRef = useRef<HTMLDivElement>(null);
 
   // Define the allowed categories in the correct order
-  const allowedCategories = ["Bat Mitsva", "Family", "Horses", "Kids", "Modeling", "Women", "Yoga"];
+  const allowedCategories = ["Bat Mitsva", "Family", "Horses", "Modeling", "Women", "Yoga", "Kids"];
 
   // Filter and sort categories
   const processedCategories = categories?.filter(category => 
-    allowedCategories.includes(category.name)
-  ).sort((a, b) => 
-    allowedCategories.indexOf(a.name) - allowedCategories.indexOf(b.name)
-  ) || [];
+    allowedCategories.some(allowed => allowed.toLowerCase() === category.name.toLowerCase())
+  ).sort((a, b) => {
+    const aIndex = allowedCategories.findIndex(c => c.toLowerCase() === a.name.toLowerCase());
+    const bIndex = allowedCategories.findIndex(c => c.toLowerCase() === b.name.toLowerCase());
+    return aIndex - bIndex;
+  }) || [];
 
   // Update active category when categories load or URL changes
   useEffect(() => {
