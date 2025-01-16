@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useLanguage } from "@/hooks/use-language";
 import { SiFacebook } from "react-icons/si";
 
 interface SessionLink {
@@ -153,6 +154,7 @@ const capitalizeWords = (str: string) => {
 
 export default function Sessions() {
   const { t } = useTranslation();
+  const { language } = useLanguage();
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const isMobile = useIsMobile();
 
