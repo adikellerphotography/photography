@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface SessionLink {
@@ -155,45 +155,11 @@ export default function Sessions() {
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const isMobile = useIsMobile();
 
-  const [hasFacebookApp, setHasFacebookApp] = useState<boolean>(true);
-
-  useEffect(() => {
-    // Check if Facebook app is installed
-    const checkFacebookApp = () => {
-      if (isMobile) {
-        // Try to open Facebook app URL in a hidden iframe
-        const iframe = document.createElement('iframe');
-        iframe.style.display = 'none';
-        document.body.appendChild(iframe);
-        
-        try {
-          const win = iframe.contentWindow;
-          if (win) {
-            win.location.href = 'fb://profile';
-            setHasFacebookApp(true);
-          } else {
-            setHasFacebookApp(false);
-          }
-        } catch (e) {
-          setHasFacebookApp(false);
-        } finally {
-          setTimeout(() => {
-            document.body.removeChild(iframe);
-          }, 100);
-        }
-      }
-    };
-    
-    checkFacebookApp();
-  }, [isMobile]);
-
   const getFacebookUrl = (url: string) => {
-    // Only return fb:// URL if on mobile AND Facebook app is installed
-    if (isMobile && hasFacebookApp) {
+    if (isMobile) {
       return `fb://facewebmodal/f?href=${encodeURIComponent(url)}`;
     }
-    // For desktop or mobile without Facebook app, force https://
-    return url.replace('http://', 'https://');
+    return url;
   };
 
   return (
@@ -208,7 +174,7 @@ export default function Sessions() {
         </h1>
         <div className="space-y-8">
           {sessionGroups.map((group) => (
-            <div key={group.name} className="bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-white/10">
+            <div key={group.name} className="bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
               <h2 className="text-2xl font-semibold mb-4">{capitalizeWords(group.name)}</h2>
               <div className="flex flex-wrap gap-4">
                 {group.links.map((link) => (
