@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { eq, and, desc, sql } from "drizzle-orm";
 import { db } from "@db";
-import { photos, categories, photoLikes } from "@db/schema";
+import { photos, categories } from "@db/schema";
 import path from "path";
 import express from "express";
 import { scanAndProcessImages } from "./utils/scan-images";
@@ -43,7 +43,6 @@ export function registerRoutes(app: Express): Server {
       const { category } = req.query;
       const page = Number(req.query.page) || 1;
       const pageSize = Number(req.query.pageSize) || 20;
-      const fingerprint = req.headers['x-browser-fingerprint'] as string;
 
       console.log('Fetching photos with params:', { category, page, pageSize });
 
@@ -76,7 +75,7 @@ export function registerRoutes(app: Express): Server {
       console.log(`Found ${results.length} photos for category ${category}`);
 
       // Process photos and add full URLs
-      const processedPhotos = await Promise.all(results.map(async (photo) => {
+      const processedPhotos = results.map(photo => {
         const categoryPath = getCategoryPath(photo.category);
         console.log(`Processing photo in category ${photo.category}, using path: ${categoryPath}`);
 
@@ -89,25 +88,18 @@ export function registerRoutes(app: Express): Server {
           return null;
         }
 
-        const like = fingerprint ? await db.query.photoLikes.findFirst({
-          where: and(
-            eq(photoLikes.photoId, photo.id),
-            eq(photoLikes.ipAddress, fingerprint)
-          )
-        }) : null;
-
         const processedPhoto = {
           ...photo,
           imageUrl: `/assets/${categoryPath}/${baseFileName}`,
           thumbnailUrl: thumbFileName ? `/assets/${categoryPath}/${thumbFileName}` : undefined,
-          isLiked: !!like
+          isLiked: false
         };
 
         console.log('Processed photo:', processedPhoto);
         return processedPhoto;
-      }));
+      }).filter(photo => photo !== null);
 
-      res.json(processedPhotos.filter(photo => photo !== null));
+      res.json(processedPhotos);
     } catch (error: any) {
       console.error('Error fetching photos:', error);
       res.status(500).json({ error: "Failed to fetch photos", details: error.message });

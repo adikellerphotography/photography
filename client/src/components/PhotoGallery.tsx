@@ -1,3 +1,4 @@
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,8 +33,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const pageSize = 20;
-  const [likedPhotos, setLikedPhotos] = useState<number[]>([]);
-
 
   // Log the category prop for debugging
   useEffect(() => {
@@ -51,12 +50,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     queryKey: ["/api/photos", { category }],
     queryFn: async ({ pageParam = 1 }) => {
       console.log('Fetching photos for category:', category, 'page:', pageParam);
-      const fingerprint = await getBrowserFingerprint();
-      const response = await fetch(`/api/photos?category=${encodeURIComponent(category || '')}&page=${pageParam}&pageSize=${pageSize}`, {
-        headers: {
-          'X-Browser-Fingerprint': fingerprint
-        }
-      });
+      const response = await fetch(`/api/photos?category=${encodeURIComponent(category || '')}&page=${pageParam}&pageSize=${pageSize}`);
       if (!response.ok) {
         const errorText = await response.text();
         console.error('Error fetching photos:', errorText);
@@ -79,13 +73,9 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   }, [error]);
 
   const allPhotos = data?.pages.flat() || [];
-  const photos = allPhotos.filter(photo => {
-    const titleMatches = photo.title.toLowerCase().includes(searchQuery.toLowerCase());
-    if (category === "Favorites") {
-      return photo.isLiked;
-    }
-    return titleMatches;
-  });
+  const photos = allPhotos.filter(photo => 
+    photo.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -131,26 +121,17 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   const likeMutation = useMutation({
     mutationFn: async (photoId: number) => {
-      const fingerprint = await getBrowserFingerprint();
       const response = await fetch(`/api/photos/${photoId}/like`, {
         method: 'POST',
         credentials: 'include',
-        headers: {
-          'X-Browser-Fingerprint': fingerprint
-        }
       });
       if (!response.ok) {
         throw new Error('Failed to like photo');
       }
       return response.json();
     },
-    onSuccess: (data) => {
-      // Update likedPhotos state
-      if (data.isLiked) {
-        setLikedPhotos([...likedPhotos, data.id]);
-      } else {
-        setLikedPhotos(likedPhotos.filter((id) => id !== data.id));
-      }
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/photos"] });
     },
   });
 
@@ -260,8 +241,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   };
 
   const handleDoubleClick = async (photo: Photo) => {
-    await likeMutation.mutateAsync(photo.id);
     setShowHeart(true);
+    likeMutation.mutate(photo.id);
     setTimeout(() => setShowHeart(false), 1000);
   };
 
@@ -429,12 +410,11 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 )}
               </AnimatePresence>
 
-              {likedPhotos.includes(selectedPhoto.id) && ( // Check if photo is in likedPhotos array
+              {selectedPhoto.isLiked && (
                 <div className="absolute top-4 right-4 z-20">
-                  <Heart className="w-6 h-6 text-white fill-white stroke-white drop-shadow-lg" />
+                  <Heart className="w-5 h-5 text-white fill-white stroke-[2]" />
                 </div>
               )}
-
 
               <Button
                 variant="outline"
@@ -499,11 +479,3 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     </div>
   );
 }
-
-// Placeholder for browser fingerprint function -  needs actual implementation
-async function getBrowserFingerprint() {
-  // Replace with your actual browser fingerprint generation logic
-  return "dummyFingerprint";
-}
-
-const queryClient = null; // needs actual queryClient setup

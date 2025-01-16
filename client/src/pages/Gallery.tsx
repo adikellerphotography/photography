@@ -147,7 +147,7 @@ export default function Gallery() {
             onClick={() => setActiveCategory("Favorites")}
             className="flex items-center gap-2"
           >
-            <Heart className={`${activeCategory === "Favorites" ? "fill-white stroke-white" : ""}`} />
+            <Heart className={activeCategory === "Favorites" ? "fill-current" : ""} />
             Favorites
           </Button>
         </div>
