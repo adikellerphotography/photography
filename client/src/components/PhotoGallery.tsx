@@ -130,7 +130,20 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       }
       return response.json();
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/photos"] });
+    },
   });
+
+  const handleLike = async (photo: Photo) => {
+    try {
+      await likeMutation.mutateAsync(photo.id);
+      setShowHeart(true);
+      setTimeout(() => setShowHeart(false), 1000);
+    } catch (error) {
+      console.error('Error liking photo:', error);
+    }
+  };
 
   useEffect(() => {
     if (selectedPhoto) {
@@ -310,20 +323,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
           </motion.div>
         ))}
       </div>
-      <div className="relative">
-      <input
-        type="text"
-        placeholder="Search photos..."
-        value={searchQuery || ''}
-        onChange={(e) => {
-          const value = e.target.value;
-          if (value !== undefined) {
-            setSearchQuery(value);
-          }
-        }}
-        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
-      />
-    </div>
+      
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {photos.map((photo, index) => (
           <motion.div
@@ -445,27 +445,25 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 </div>
               )}
 
-              <div className="absolute top-4 right-16 z-20">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="text-white">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                        <polyline points="7 10 12 15 17 10" />
-                        <line x1="12" y1="15" x2="12" y2="3" />
-                      </svg>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => window.open(selectedPhoto.imageUrl, '_blank')}>
-                      Original Size
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => window.open(selectedPhoto.thumbnailUrl, '_blank')}>
-                      Small Size
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
+              <Button
+                variant="outline"
+                size="icon"
+                className="absolute top-4 left-16 z-20 bg-background/80 backdrop-blur-sm"
+                onClick={() => {
+                  const link = document.createElement('a');
+                  link.href = selectedPhoto.imageUrl;
+                  link.download = 'photo.jpg';
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+              </Button>
               <ShareDialog 
                 imageUrl={selectedPhoto.imageUrl} 
                 title={selectedPhoto.title}
