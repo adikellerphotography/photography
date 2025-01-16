@@ -79,8 +79,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const allPhotos = data?.pages.flat() || [];
   const photos = allPhotos.filter(photo => {
     const titleMatches = photo.title.toLowerCase().includes(searchQuery.toLowerCase());
-    if (category === "Favorites") {
-      return titleMatches && photo.isLiked;
+    if (activeCategory === "Favorites") {
+      return photo.isLiked;
     }
     return titleMatches;
   });
@@ -420,9 +420,16 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
               {selectedPhoto.isLiked && (
                 <div className="absolute top-4 right-4 z-20">
-                  <Heart className="w-5 h-5 text-white fill-white stroke-[2]" />
+                  <Heart className="w-6 h-6 text-white fill-white stroke-white drop-shadow-lg" />
                 </div>
               )}
+
+              {/* Heart icon overlay for grid view */}
+              <div className="absolute top-2 right-2 z-10">
+                {photo.isLiked && (
+                  <Heart className="w-5 h-5 text-white fill-white stroke-white drop-shadow-lg" />
+                )}
+              </div>
 
               <Button
                 variant="outline"
