@@ -225,7 +225,28 @@ const togglePhotoLike = async (req: express.Request, res: express.Response) => {
 export function registerRoutes(app: Express): Server {
   const httpServer = createServer(app);
 
-  configureStaticFiles(app);
+  // Configure static file serving with watermark
+  const assetsPath = path.join(process.cwd(), 'attached_assets');
+  app.use('/assets', async (req, res, next) => {
+    try {
+      const filePath = path.join(assetsPath, decodeURIComponent(req.path));
+      const exists = await fs.access(filePath).then(() => true).catch(() => false);
+      
+      if (!exists) {
+        return next();
+      }
+
+      if (filePath.toLowerCase().endsWith('.jpg') || filePath.toLowerCase().endsWith('.jpeg')) {
+        const watermarkedImage = await addWatermark(filePath);
+        res.type('image/jpeg');
+        res.setHeader('Cache-Control', 'public, max-age=31536000');
+        return res.send(watermarkedImage);
+      }
+      next();
+    } catch (error) {
+      next(error);
+    }
+  }, express.static(assetsPath));
 
   // API Routes
   app.get("/api/photos", getPhotos);
