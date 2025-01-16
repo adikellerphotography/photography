@@ -23,7 +23,7 @@ export default function Gallery() {
   const tabsListRef = useRef<HTMLDivElement>(null);
 
   // Define the allowed categories in the correct order
-  const allowedCategories = ["Bat Mitsva", "Family", "Horses", "Modeling", "Women", "Yoga", "Kids"];
+  const allowedCategories = ["Bat Mitsva", "Family", "Horses", "Modeling", "Women", "Yoga"];
 
   // Filter and sort categories
   const processedCategories = categories?.filter(category => 
