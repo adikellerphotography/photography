@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Baby, Users, Bike, Child, Heart, Crown, Sparkles, UserCircle2, Yoga, Camera, PartyPopper, Briefcase } from "lucide-react";
+import { Baby, Users, Bike, User, Heart, Crown, Sparkles, UserCircle2, Yoga, Camera, PartyPopper, Briefcase } from "lucide-react";
 
 interface SessionLink {
   url: string;
@@ -148,8 +148,8 @@ const sessionGroups: SessionGroup[] = [
 ];
 
 const groupIcons: { [key: string]: React.ComponentType } = {
-  "Bat Mitsva": Child,
-  "Bar Mitsva": Child,
+  "Bat Mitsva": User,
+  "Bar Mitsva": User,
   "Horses": Bike,
   "Kids": Baby,
   "Family": Users,
