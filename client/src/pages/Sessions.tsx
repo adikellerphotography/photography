@@ -156,10 +156,9 @@ export default function Sessions() {
   const isMobile = useIsMobile();
 
   const getFacebookUrl = (url: string) => {
-    if (isMobile) {
-      return `fb://facewebmodal/f?href=${encodeURIComponent(url)}`;
-    }
-    return url;
+    return isMobile && hasFacebookApp 
+      ? `fb://facewebmodal/f?href=${encodeURIComponent(url)}`
+      : url;
   };
 
   return (
