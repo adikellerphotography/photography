@@ -180,6 +180,24 @@ const scanPhotos = async (_req: express.Request, res: express.Response) => {
   }
 };
 
+// Add watermark to downloaded images
+app.get('/api/photos/:category/:filename', async (req, res) => {
+  try {
+    const { category, filename } = req.params;
+    const imagePath = path.join(process.cwd(), 'attached_assets', category, filename);
+    
+    if (!fs.existsSync(imagePath)) {
+      return res.status(404).send('Image not found');
+    }
+
+    const watermarkedImage = await addWatermark(imagePath);
+    res.type('image/jpeg').send(watermarkedImage);
+  } catch (error) {
+    console.error('Error serving watermarked image:', error);
+    res.status(500).send('Error processing image');
+  }
+});
+
 const togglePhotoLike = async (req: express.Request, res: express.Response) => {
   try {
     const photoId = parseInt(req.params.id);
