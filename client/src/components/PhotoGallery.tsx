@@ -282,12 +282,45 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   return (
     <div className="space-y-8" ref={galleryRef}>
-    <div className="relative">
+      <div className="flex items-center gap-2 mb-4">
+        <Heart className="w-6 h-6 text-accent" />
+        <h2 className="text-xl font-semibold">Favorites</h2>
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+        {photos.filter(photo => photo.isLiked).map((photo, index) => (
+          <motion.div
+            key={`favorite-${photo.id}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            onClick={() => {
+              setSelectedPhoto(photo);
+              setSelectedIndex(index);
+              setScrollPosition(window.scrollY);
+            }}
+            className="relative overflow-hidden rounded-lg cursor-pointer group"
+          >
+            <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
+              <img
+                src={photo.thumbnailUrl || photo.imageUrl}
+                alt={photo.title}
+                className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+              />
+            </AspectRatio>
+          </motion.div>
+        ))}
+      </div>
+      <div className="relative">
       <input
         type="text"
         placeholder="Search photos..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
+        value={searchQuery || ''}
+        onChange={(e) => {
+          const value = e.target.value;
+          if (value !== undefined) {
+            setSearchQuery(value);
+          }
+        }}
         className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
       />
     </div>
@@ -415,8 +448,12 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               <div className="absolute top-4 right-16 z-20">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="text-white">
-                      Download
+                    <Button variant="ghost" size="icon" className="text-white">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                      </svg>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
