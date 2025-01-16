@@ -1,3 +1,11 @@
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery, useMutation, useInfiniteQuery } from "@tanstack/react-query";
@@ -23,6 +31,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const loaderRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const pageSize = 20;
 
   // Log the category prop for debugging
@@ -63,7 +72,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     }
   }, [error]);
 
-  const photos = data?.pages.flat() || [];
+  const allPhotos = data?.pages.flat() || [];
+  const photos = allPhotos.filter(photo => 
+    photo.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -270,6 +282,15 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   return (
     <div className="space-y-8" ref={galleryRef}>
+    <div className="relative">
+      <input
+        type="text"
+        placeholder="Search photos..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent"
+      />
+    </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {photos.map((photo, index) => (
           <motion.div
@@ -391,6 +412,23 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 </div>
               )}
 
+              <div className="absolute top-4 right-16 z-20">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="text-white">
+                      Download
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem onClick={() => window.open(selectedPhoto.imageUrl, '_blank')}>
+                      Original Size
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => window.open(selectedPhoto.thumbnailUrl, '_blank')}>
+                      Small Size
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
               <ShareDialog 
                 imageUrl={selectedPhoto.imageUrl} 
                 title={selectedPhoto.title}

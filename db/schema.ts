@@ -2,6 +2,12 @@
 import { pgTable, text, serial, timestamp, varchar, integer } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
+export const likes = pgTable("likes", {
+  id: serial("id").primaryKey(),
+  photoId: integer("photo_id").references(() => photos.id),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const photos = pgTable("photos", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),

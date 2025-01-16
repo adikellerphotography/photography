@@ -216,5 +216,34 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
+  // Like/Unlike photo
+  app.post("/api/photos/:id/like", async (req, res) => {
+    try {
+      const photoId = parseInt(req.params.id);
+      const photo = await db.query.photos.findFirst({
+        where: eq(photos.id, photoId)
+      });
+      
+      if (!photo) {
+        return res.status(404).json({ error: "Photo not found" });
+      }
+
+      const existingLike = await db.query.likes.findFirst({
+        where: eq(likes.photoId, photoId)
+      });
+
+      if (existingLike) {
+        await db.delete(likes).where(eq(likes.id, existingLike.id));
+        res.json({ liked: false });
+      } else {
+        await db.insert(likes).values({ photoId });
+        res.json({ liked: true });
+      }
+    } catch (error) {
+      console.error('Error toggling like:', error);
+      res.status(500).json({ error: "Failed to toggle like" });
+    }
+  });
+
   return httpServer;
 }
