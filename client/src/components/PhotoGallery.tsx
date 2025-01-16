@@ -79,7 +79,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const allPhotos = data?.pages.flat() || [];
   const photos = allPhotos.filter(photo => {
     const titleMatches = photo.title.toLowerCase().includes(searchQuery.toLowerCase());
-    if (activeCategory === "Favorites") {
+    if (category === "Favorites") {
       return photo.isLiked;
     }
     return titleMatches;
