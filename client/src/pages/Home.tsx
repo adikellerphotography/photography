@@ -16,7 +16,7 @@ export default function Home() {
 
   const { t } = useTranslation();
 
-  const allowedCategories = ["Kids", "Family", "Women", "Modeling", "Bat Mitsva", "Yoga", "Horses"];
+  const allowedCategories = ["Bat Mitsva", "Family", "Women", "Kids", "Yoga", "Modeling", "Horses"];
 
   // Override the firstPhoto for specific categories
   const processedCategories = categories?.map(category => {
