@@ -1,4 +1,3 @@
-
 export const translations = {
   en: {
     nav: {
@@ -136,7 +135,7 @@ export const translations = {
     },
     sessions: {
       title: "Photography Sessions",
-      batmitzva: "Bat Mitzva",
+      batmitzva: "Bat Mitsva",
       feminine: "Feminine",
       sea: "Sea",
       nature: "Nature",
@@ -280,12 +279,19 @@ export const translations = {
     },
     sessions: {
       title: "גלריות צילום",
-      batmitzva: "בת מצווה",
-      feminine: "נשי",
-      sea: "ים",
-      nature: "טבע",
-      yoga: "יוגה",
-      horses: "סוסים"
+      numbers: "כל מספר מייצג פוסט בפייסבוק עם תמונות נבחרות מהמפגש",
+      "Bat Mitsva": "בת מצווה",
+      "Bar Mitsva": "בר מצווה",
+      "Horses": "סוסים",
+      "Kids": "ילדים",
+      "Family": "משפחה",
+      "Big Family": "משפחה מורחבת",
+      "Sweet 16": "מתוקה 16",
+      "Purim": "פורים",
+      "Pregnancy": "הריון",
+      "Feminine": "נשי",
+      "Yoga": "יוגה",
+      "Modeling": "דוגמנות"
     }
   }
 };
