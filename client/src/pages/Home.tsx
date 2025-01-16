@@ -167,8 +167,8 @@ export default function Home() {
                   y: 0, 
                   scale: 1,
                   transition: { 
-                    duration: 0.6,
-                    delay: index * 0.15,
+                    duration: index === 0 ? 0.3 : 0.6,
+                    delay: index === 0 ? 0 : index * 0.15,
                     ease: "easeOut"
                   }
                 }}
