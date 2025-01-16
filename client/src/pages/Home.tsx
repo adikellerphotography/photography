@@ -89,11 +89,95 @@ export default function Home() {
 
   return (
     <div className="min-h-screen pt-16">
+      {/* Gallery Categories Section */}
+      <section className="container mx-auto px-4 py-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-6"
+        >
+          <h2 className="text-2xl font-semibold mb-6">
+            {t("home.galleryTitle")}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredCategories?.map((category, index) => (
+              <motion.div
+                key={category.id}
+                initial={{ opacity: 0, y: 50, scale: 0.95 }}
+                whileInView={{ 
+                  opacity: 1, 
+                  y: 0, 
+                  scale: 1,
+                  transition: { 
+                    duration: index === 0 ? 0.3 : 0.6,
+                    delay: index === 0 ? 0 : index * 0.15,
+                    ease: "easeOut"
+                  }
+                }}
+                viewport={{ once: true, margin: "-50px" }}
+                whileHover={{ scale: 1.02 }}
+              >
+                <Link
+                  href={`/gallery?category=${encodeURIComponent(category.name)}`}
+                >
+                  <Card className="cursor-pointer overflow-hidden">
+                    <CardContent className="p-0">
+                      <AspectRatio ratio={4 / 3} className="bg-muted">
+                        <div className="relative w-full h-full">
+                          <img
+                            src={category.firstPhoto?.imageUrl || `/assets/${category.name}/${category.name.toLowerCase()}-1.jpg`}
+                            alt={category.name}
+                            className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
+                            style={{
+                              objectPosition: "center center",
+                            }}
+                            onLoad={(e) => {
+                              const img = e.target as HTMLImageElement;
+                              if (img.naturalHeight > img.naturalWidth) {
+                                img.style.objectPosition = "center 50%";
+                              }
+                            }}
+                            onError={(e) => {
+                              console.error(
+                                "Failed to load image:",
+                                category.firstPhoto?.imageUrl
+                              );
+                              const target = e.target as HTMLImageElement;
+                              target.onerror = null;
+                              target.src = "/assets/placeholder-category.jpg";
+                            }}
+                            loading="lazy"
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent">
+                            <div className="absolute bottom-0 left-0 right-0 p-4">
+                              <h3 className="text-xl font-semibold text-white">
+                                {category.name}
+                              </h3>
+                              {category.description && (
+                                <p className="text-sm text-white/80">
+                                  {category.description}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </AspectRatio>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </section>
+
       {/* Hero Section */}
       <section className="relative">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
           className="relative container mx-auto px-4 pt-8 pb-8 flex flex-col justify-center items-center"
         >
           <div className="flex justify-center gap-12 mb-8">
