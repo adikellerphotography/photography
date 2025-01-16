@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useLanguage } from "@/hooks/use-language";
 import { useTranslation } from "@/hooks/use-translation";
+import { Camera, Aperture } from "lucide-react";
 
 export default function Info() {
   const { language } = useLanguage();
@@ -19,14 +20,20 @@ export default function Info() {
 
             <div className="prose prose-gray dark:prose-invert max-w-none space-y-8">
               <div>
-                <h2 className="text-2xl font-semibold mb-4">{t("info.sessionTitle")}</h2>
+                <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
+                  <Camera className="w-6 h-6 text-[#FF9500]" />
+                  {t("info.sessionTitle")}
+                </h2>
                 <p className="text-lg leading-relaxed">
                   {t("info.sessionDescription")}
                 </p>
               </div>
 
               <div>
-                <h2 className="text-2xl font-semibold mb-4">{t("info.equipmentTitle")}</h2>
+                <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
+                  <Aperture className="w-6 h-6 text-[#FF9500]" />
+                  {t("info.equipmentTitle")}
+                </h2>
                 <p className="text-lg leading-relaxed">
                   {t("info.equipmentDescription")}
                 </p>
