@@ -280,7 +280,7 @@ export const translations = {
     },
     sessions: {
       title: "גלריות צילום",
-      numbers: "כל מספר מייצג פוסט בפייסבוק עם תמונות נבחרות מהמפגש",
+      description: "כל מספר מייצג פוסט בפייסבוק עם תמונות נבחרות מהמפגש",
       "Bat Mitsva": "בת מצווה",
       "Bar Mitsva": "בר מצווה",
       "Horses": "סוסים",
