@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Baby, Users, Bike, User, Heart, Crown, Sparkles, UserCircle2, Yoga, Camera, PartyPopper, Briefcase } from "lucide-react";
 
 interface SessionLink {
   url: string;
@@ -147,21 +146,6 @@ const sessionGroups: SessionGroup[] = [
   },
 ];
 
-const groupIcons: { [key: string]: React.ComponentType } = {
-  "Bat Mitsva": User,
-  "Bar Mitsva": User,
-  "Horses": Bike,
-  "Kids": Baby,
-  "Family": Users,
-  "Big Family": Users,
-  "Sweet 16": Sparkles,
-  "Purim": PartyPopper,
-  "Pregnancy": Heart,
-  "Feminine": UserCircle2,
-  "Yoga": Yoga,
-  "Modeling": Camera,
-};
-
 const capitalizeWords = (str: string) => {
   return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 };
@@ -190,11 +174,8 @@ export default function Sessions() {
         </h1>
         <div className="space-y-8">
           {sessionGroups.map((group) => (
-            <div key={group.name} className="bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-white/10">
-              <div className="flex items-center gap-3 mb-4">
-                {groupIcons[group.name] && React.createElement(groupIcons[group.name], { className: "w-6 h-6 text-[#FF9500]" })}
-                <h2 className="text-2xl font-semibold">{capitalizeWords(group.name)}</h2>
-              </div>
+            <div key={group.name} className="bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+              <h2 className="text-2xl font-semibold mb-4">{capitalizeWords(group.name)}</h2>
               <div className="flex flex-wrap gap-4">
                 {group.links.map((link) => (
                   <a
