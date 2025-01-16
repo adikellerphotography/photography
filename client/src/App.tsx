@@ -2,7 +2,7 @@ import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "@/hooks/use-theme";
-import { LanguageProvider } from "@/hooks/use-language";
+import { LanguageProvider, useLanguage } from "@/hooks/use-language";
 import Navbar from "@/components/Navbar";
 import BackgroundPattern from "@/components/BackgroundPattern";
 import Home from "@/pages/Home";
@@ -44,12 +44,15 @@ function Router() {
 }
 
 function App() {
+  const { language } = useLanguage();
   return (
     <ThemeProvider defaultTheme="dark">
       <LanguageProvider>
         <QueryClientProvider client={queryClient}>
-          <Router />
-          <Toaster />
+          <div className={`min-h-screen bg-background ${language === 'he' ? 'rtl' : ''}`}>
+            <Router />
+            <Toaster />
+          </div>
         </QueryClientProvider>
       </LanguageProvider>
     </ThemeProvider>
