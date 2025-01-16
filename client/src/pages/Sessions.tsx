@@ -177,7 +177,7 @@ export default function Sessions() {
         </h1>
         <div className={`flex items-center gap-2 mb-8 ${language === 'he' ? 'justify-end' : ''}`}>
           <SiFacebook className="text-[#1877F2] w-6 h-6 animate-pulse" />
-          <span className="text-white font-semibold">{t("sessions.description")}</span>
+          <span className="text-foreground font-semibold">{t("sessions.description")}</span>
         </div>
         <div className="space-y-8">
           {sessionGroups.map((group) => (
