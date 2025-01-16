@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Cake, Baby, Horse, Child, Users, UsersRound, Sparkles, Mask, Baby as Pregnancy, Heart, Yoga as YogaIcon, UserRound } from "lucide-react";
 
 interface SessionLink {
   url: string;
@@ -175,7 +176,21 @@ export default function Sessions() {
         <div className="space-y-8">
           {sessionGroups.map((group) => (
             <div key={group.name} className="bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-white/30">
-              <h2 className="text-2xl font-semibold mb-4">{capitalizeWords(group.name)}</h2>
+              <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
+                {group.name === "Bat Mitsva" && <Cake className="w-6 h-6 text-[#FF9500]" />}
+                {group.name === "Bar Mitsva" && <Baby className="w-6 h-6 text-[#FF9500]" />}
+                {group.name === "Horses" && <Horse className="w-6 h-6 text-[#FF9500]" />}
+                {group.name === "Kids" && <Child className="w-6 h-6 text-[#FF9500]" />}
+                {group.name === "Family" && <Users className="w-6 h-6 text-[#FF9500]" />}
+                {group.name === "Big Family" && <UsersRound className="w-6 h-6 text-[#FF9500]" />}
+                {group.name === "Sweet 16" && <Sparkles className="w-6 h-6 text-[#FF9500]" />}
+                {group.name === "Purim" && <Mask className="w-6 h-6 text-[#FF9500]" />}
+                {group.name === "Pregnancy" && <Pregnancy className="w-6 h-6 text-[#FF9500]" />}
+                {group.name === "Feminine" && <Heart className="w-6 h-6 text-[#FF9500]" />}
+                {group.name === "Yoga" && <YogaIcon className="w-6 h-6 text-[#FF9500]" />}
+                {group.name === "Modeling" && <UserRound className="w-6 h-6 text-[#FF9500]" />}
+                {capitalizeWords(group.name)}
+              </h2>
               <div className="flex flex-wrap gap-4">
                 {group.links.map((link) => (
                   <a
