@@ -159,19 +159,22 @@ export default function Sessions() {
 
   useEffect(() => {
     // Check if Facebook app is installed
-    const checkFacebookApp = async () => {
+    const checkFacebookApp = () => {
       if (isMobile) {
+        // Try to open Facebook app URL in a hidden iframe
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+        
         try {
-          const timeout = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error('timeout')), 300)
-          );
-          const response = await Promise.race([
-            fetch('fb://profile'),
-            timeout
-          ]);
+          iframe.contentWindow?.location.href = 'fb://profile';
           setHasFacebookApp(true);
         } catch (e) {
           setHasFacebookApp(false);
+        } finally {
+          setTimeout(() => {
+            document.body.removeChild(iframe);
+          }, 100);
         }
       }
     };
