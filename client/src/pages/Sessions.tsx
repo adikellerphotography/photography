@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface SessionLink {
@@ -155,8 +155,32 @@ export default function Sessions() {
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const isMobile = useIsMobile();
 
+  const [hasFacebookApp, setHasFacebookApp] = useState<boolean>(true);
+
+  useEffect(() => {
+    // Check if Facebook app is installed
+    const checkFacebookApp = async () => {
+      if (isMobile) {
+        try {
+          const timeout = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('timeout')), 300)
+          );
+          const response = await Promise.race([
+            fetch('fb://profile'),
+            timeout
+          ]);
+          setHasFacebookApp(true);
+        } catch (e) {
+          setHasFacebookApp(false);
+        }
+      }
+    };
+    
+    checkFacebookApp();
+  }, [isMobile]);
+
   const getFacebookUrl = (url: string) => {
-    if (isMobile) {
+    if (isMobile && hasFacebookApp) {
       return `fb://facewebmodal/f?href=${encodeURIComponent(url)}`;
     }
     return url;
@@ -174,7 +198,7 @@ export default function Sessions() {
         </h1>
         <div className="space-y-8">
           {sessionGroups.map((group) => (
-            <div key={group.name} className="bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+            <div key={group.name} className="bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-white/10">
               <h2 className="text-2xl font-semibold mb-4">{capitalizeWords(group.name)}</h2>
               <div className="flex flex-wrap gap-4">
                 {group.links.map((link) => (
