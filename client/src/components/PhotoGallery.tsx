@@ -131,9 +131,13 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   const likeMutation = useMutation({
     mutationFn: async (photoId: number) => {
+      const fingerprint = await getBrowserFingerprint();
       const response = await fetch(`/api/photos/${photoId}/like`, {
         method: 'POST',
         credentials: 'include',
+        headers: {
+          'X-Browser-Fingerprint': fingerprint
+        }
       });
       if (!response.ok) {
         throw new Error('Failed to like photo');
