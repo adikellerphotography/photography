@@ -135,6 +135,7 @@ export const translations = {
     },
     sessions: {
       title: "Photography Sessions",
+      description: "Each number represents a Facebook post with selected photos from the session",
       batmitzva: "Bat Mitsva",
       feminine: "Feminine",
       sea: "Sea",
