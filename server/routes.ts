@@ -76,7 +76,7 @@ export function registerRoutes(app: Express): Server {
       console.log(`Found ${results.length} photos for category ${category}`);
 
       // Process photos and add full URLs
-      const processedPhotos = results.map(photo => {
+      const processedPhotos = await Promise.all(results.map(async (photo) => {
         const categoryPath = getCategoryPath(photo.category);
         console.log(`Processing photo in category ${photo.category}, using path: ${categoryPath}`);
 
@@ -105,9 +105,9 @@ export function registerRoutes(app: Express): Server {
 
         console.log('Processed photo:', processedPhoto);
         return processedPhoto;
-      }).filter(photo => photo !== null);
+      }));
 
-      res.json(processedPhotos);
+      res.json(processedPhotos.filter(photo => photo !== null));
     } catch (error: any) {
       console.error('Error fetching photos:', error);
       res.status(500).json({ error: "Failed to fetch photos", details: error.message });
