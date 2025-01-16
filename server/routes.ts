@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { eq, and, desc, sql } from "drizzle-orm";
 import { db } from "@db";
-import { photos, categories } from "@db/schema";
+import { photos, categories, photoLikes } from "@db/schema";
 import path from "path";
 import express from "express";
 import { scanAndProcessImages } from "./utils/scan-images";
