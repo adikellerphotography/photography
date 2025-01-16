@@ -9,6 +9,7 @@ import { useLanguage } from "@/hooks/use-language";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery, useMutation, useInfiniteQuery } from "@tanstack/react-query";
+import { useTranslation } from "@/hooks/use-translation";
 import type { Photo } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -24,6 +25,7 @@ interface PhotoGalleryProps {
 
 export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const { language } = useLanguage();
+  const { t } = useTranslation();
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [isFullImageLoaded, setIsFullImageLoaded] = useState(false);
