@@ -188,10 +188,12 @@ export default function Sessions() {
   }, [isMobile]);
 
   const getFacebookUrl = (url: string) => {
+    // Only return fb:// URL if on mobile AND Facebook app is installed
     if (isMobile && hasFacebookApp) {
       return `fb://facewebmodal/f?href=${encodeURIComponent(url)}`;
     }
-    return url;
+    // For desktop or mobile without Facebook app, force https://
+    return url.replace('http://', 'https://');
   };
 
   return (
