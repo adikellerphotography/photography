@@ -21,3 +21,26 @@ export async function createWatermark(width: number, height: number) {
 
   return Buffer.from(svg);
 }
+
+export async function addWatermark(imagePath: string): Promise<Buffer> {
+  const image = sharp(imagePath);
+  const metadata = await image.metadata();
+  
+  const watermark = await createWatermark(
+    metadata.width || 1200,
+    metadata.height || 1600
+  );
+
+  return image
+    .composite([
+      {
+        input: watermark,
+        gravity: 'center',
+      },
+    ])
+    .jpeg({
+      quality: 90,
+      progressive: true,
+    })
+    .toBuffer();
+}
