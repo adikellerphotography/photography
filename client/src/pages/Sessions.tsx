@@ -177,7 +177,7 @@ export default function Sessions() {
         </h1>
         <div className={`flex items-center gap-2 mb-8 ${language === 'he' ? 'justify-end' : ''}`}>
           <SiFacebook className="text-[#1877F2] w-6 h-6 animate-pulse" />
-          <span className="text-[#1877F2] font-semibold">{t("sessions.description")}</span>
+          <span className="text-white font-semibold">{t("sessions.description")}</span>
         </div>
         <div className="space-y-8">
           {sessionGroups.map((group) => (
@@ -186,7 +186,7 @@ export default function Sessions() {
                 <h2 className="text-2xl font-semibold">{language === 'he' ? t(`sessions.${group.name}`) : capitalizeWords(group.name)}</h2>
                 <div className="flex items-center gap-2 bg-[#1877F2]/10 px-3 py-1 rounded-full">
                   <SiFacebook className="text-[#1877F2] w-4 h-4" />
-                  <span className="text-sm text-[#1877F2] font-medium">{group.links.length} {t("sessions.photos")}</span>
+                  <span className="text-sm text-[#1877F2] font-medium">{group.links.length} Sessions</span>
                 </div>
               </div>
               <div className="flex flex-wrap gap-4">
