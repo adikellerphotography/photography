@@ -178,7 +178,7 @@ export default function Home() {
                 <Link
                   href={`/gallery?category=${encodeURIComponent(category.name)}`}
                 >
-                  <Card className="cursor-pointer overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                  <Card className="cursor-pointer overflow-hidden">
                     <CardContent className="p-0">
                       <AspectRatio ratio={4 / 3} className="bg-muted">
                         <div className="relative w-full h-full">
