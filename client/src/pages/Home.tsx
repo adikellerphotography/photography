@@ -80,6 +80,16 @@ export default function Home() {
         }
       };
     }
+    if (category.name === "Horses") {
+      return {
+        ...category,
+        firstPhoto: {
+          ...category.firstPhoto,
+          imageUrl: "/assets/Horses/IMG_0001 Large.jpg",
+          thumbnailUrl: "/assets/Horses/IMG_0001 Large-thumb.jpg"
+        }
+      };
+    }
     return category;
   });
 
