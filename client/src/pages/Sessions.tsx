@@ -167,8 +167,13 @@ export default function Sessions() {
         document.body.appendChild(iframe);
         
         try {
-          iframe.contentWindow?.location.href = 'fb://profile';
-          setHasFacebookApp(true);
+          const win = iframe.contentWindow;
+          if (win) {
+            win.location.href = 'fb://profile';
+            setHasFacebookApp(true);
+          } else {
+            setHasFacebookApp(false);
+          }
         } catch (e) {
           setHasFacebookApp(false);
         } finally {
