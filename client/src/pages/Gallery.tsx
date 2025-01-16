@@ -8,54 +8,44 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useLocation } from "wouter";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Heart } from "lucide-react"; // Import Heart icon
-
 
 export default function Gallery() {
-  const { data: categories, isLoading: categoriesLoading } = useQuery<
-    Category[]
-  >({
+  const { data: categories, isLoading: categoriesLoading } = useQuery<Category[]>({
     queryKey: ["/api/categories"],
   });
 
-  // Get category from URL search params
   const [location] = useLocation();
   const searchParams = new URLSearchParams(window.location.search);
   const categoryFromUrl = searchParams.get("category");
-
-  // Set the initial category from URL or first available category
   const [activeCategory, setActiveCategory] = useState<string>("");
   const [showLeftScroll, setShowLeftScroll] = useState(false);
   const [showRightScroll, setShowRightScroll] = useState(false);
   const tabsListRef = useRef<HTMLDivElement>(null);
 
+  // Define the allowed categories in the correct order
+  const allowedCategories = ["Kids", "Family", "Women", "Modeling", "Bat Mitsva", "Yoga", "Horses"];
+
+  // Filter and sort categories
+  const processedCategories = categories?.filter(category => 
+    allowedCategories.includes(category.name)
+  ).sort((a, b) => 
+    allowedCategories.indexOf(a.name) - allowedCategories.indexOf(b.name)
+  ) || [];
+
   // Update active category when categories load or URL changes
   useEffect(() => {
-    const filteredCategories = categories?.filter((category) => {
-      const lowerName = category.name.toLowerCase();
-      // Exclude 'before and after'
-      if (lowerName === "before and after") return false;
-      return true;
-    });
-    if (filteredCategories && filteredCategories.length > 0) {
-      // If we have a category from URL and it exists in our categories, use it
-      if (
-        categoryFromUrl &&
-        filteredCategories.some((c) => c.name === categoryFromUrl)
-      ) {
+    if (processedCategories.length > 0) {
+      if (categoryFromUrl && processedCategories.some(c => c.name === categoryFromUrl)) {
         setActiveCategory(categoryFromUrl);
-      }
-      // Otherwise use the first category
-      else if (!activeCategory) {
-        setActiveCategory(filteredCategories[0].name);
-        // Update URL without triggering navigation
-        const newUrl = `/gallery?category=${encodeURIComponent(filteredCategories[0].name)}`;
+      } else if (!activeCategory) {
+        setActiveCategory(processedCategories[0].name);
+        const newUrl = `/gallery?category=${encodeURIComponent(processedCategories[0].name)}`;
         window.history.replaceState(null, "", newUrl);
       }
     }
-  }, [categoryFromUrl, categories, activeCategory]);
+  }, [categoryFromUrl, processedCategories, activeCategory]);
 
-  // Check scroll shadows visibility
+  // Handle scroll visibility
   const checkScroll = () => {
     if (tabsListRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = tabsListRef.current;
@@ -80,10 +70,7 @@ export default function Gallery() {
     }
   };
 
-  const handleScroll = () => {
-    checkScroll();
-  };
-
+  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -102,7 +89,7 @@ export default function Gallery() {
     },
   };
 
-  if (categoriesLoading || !categories || categories.length === 0) {
+  if (categoriesLoading || !processedCategories.length) {
     return (
       <div className="min-h-screen pt-16">
         <div className="container mx-auto px-4 py-16">
@@ -110,7 +97,7 @@ export default function Gallery() {
             <div className="h-8 w-48 bg-muted rounded mb-8" />
             <div className="h-12 w-full bg-muted rounded mb-8" />
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
+              {Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className="h-64 bg-muted rounded" />
               ))}
             </div>
@@ -119,16 +106,6 @@ export default function Gallery() {
       </div>
     );
   }
-
-  const allowedCategories = ["Bat Mitsva", "Family", "Women", "Yoga", "Kids", "Modeling", "Horses"];
-
-  const filteredCategories = categories?.filter(
-    (category) => allowedCategories.includes(category.name) || (category.name === "kids" && allowedCategories.includes("Kids"))
-  ) || [];
-
-  const sortedCategories = [...filteredCategories].sort((a, b) => {
-    return allowedCategories.indexOf(a.name) - allowedCategories.indexOf(b.name);
-  });
 
   return (
     <div className="min-h-screen pt-8">
@@ -148,7 +125,6 @@ export default function Gallery() {
           value={activeCategory}
           onValueChange={(value) => {
             setActiveCategory(value);
-            // Update URL with proper history state
             const newUrl = `/gallery?category=${encodeURIComponent(value)}`;
             window.history.pushState({ category: value }, "", newUrl);
           }}
@@ -168,11 +144,11 @@ export default function Gallery() {
 
             <div
               className="overflow-x-auto scrollbar-hide relative"
-              onScroll={handleScroll}
+              onScroll={checkScroll}
               ref={tabsListRef}
             >
               <TabsList className="inline-flex min-w-full justify-start px-8 border-0">
-                {sortedCategories.map((category) => (
+                {processedCategories.map((category) => (
                   <TabsTrigger
                     key={category.id}
                     value={category.name}
@@ -197,7 +173,7 @@ export default function Gallery() {
           </div>
 
           <motion.div variants={itemVariants}>
-            {sortedCategories.map((category) => (
+            {processedCategories.map((category) => (
               <TabsContent key={category.id} value={category.name}>
                 <Card>
                   <CardContent className="pt-6">
