@@ -4,34 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.rtl {
-  direction: rtl;
-}
-
-.rtl .text-center {
-  text-align: center !important;
-}
-
-.rtl h1, 
-.rtl h2, 
-.rtl h3,
-.rtl .font-cormorant {
-  text-align: center;
-}
-
-.rtl p,
-.rtl div:not(.text-center):not(.flex):not(.grid) {
-  text-align: right;
-}
-
-/* Keep specific elements centered */
-.rtl .container .text-center,
-.rtl .mx-auto,
-.rtl .flex,
-.rtl .grid {
-  text-align: center;
-}
-
 @layer base {
   * {
     @apply border-border;
