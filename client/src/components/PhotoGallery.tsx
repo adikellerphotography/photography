@@ -32,6 +32,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const pageSize = 20;
+  const [likedPhotos, setLikedPhotos] = useState<number[]>([]);
+
 
   // Log the category prop for debugging
   useEffect(() => {
@@ -138,8 +140,13 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       }
       return response.json();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/photos"] });
+    onSuccess: (data) => {
+      // Update likedPhotos state
+      if (data.isLiked) {
+        setLikedPhotos([...likedPhotos, data.id]);
+      } else {
+        setLikedPhotos(likedPhotos.filter((id) => id !== data.id));
+      }
     },
   });
 
@@ -249,8 +256,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   };
 
   const handleDoubleClick = async (photo: Photo) => {
+    await likeMutation.mutateAsync(photo.id);
     setShowHeart(true);
-    likeMutation.mutate(photo.id);
     setTimeout(() => setShowHeart(false), 1000);
   };
 
@@ -418,18 +425,12 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 )}
               </AnimatePresence>
 
-              {selectedPhoto.isLiked && (
+              {likedPhotos.includes(selectedPhoto.id) && ( // Check if photo is in likedPhotos array
                 <div className="absolute top-4 right-4 z-20">
                   <Heart className="w-6 h-6 text-white fill-white stroke-white drop-shadow-lg" />
                 </div>
               )}
 
-              {/* Heart icon overlay for grid view */}
-              <div className="absolute top-2 right-2 z-10">
-                {selectedPhoto.isLiked && (
-                  <Heart className="w-5 h-5 text-white fill-white stroke-white drop-shadow-lg" />
-                )}
-              </div>
 
               <Button
                 variant="outline"
