@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { SiFacebook } from "react-icons/si";
 
 interface SessionLink {
   url: string;
@@ -169,9 +170,13 @@ export default function Sessions() {
         animate={{ opacity: 1, y: 0 }}
         className="container mx-auto px-4 py-16"
       >
-        <h1 className="text-3xl font-bold mb-8 text-[#FF9500]">
+        <h1 className="text-3xl font-bold mb-4 text-[#FF9500]">
           {t("sessions.title")}
         </h1>
+        <div className="flex items-center gap-2 mb-8 text-muted-foreground">
+          <SiFacebook className="text-[#1877F2]" />
+          <span>Each number represents a Facebook post with selected photos from the session</span>
+        </div>
         <div className="space-y-8">
           {sessionGroups.map((group) => (
             <div key={group.name} className="bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-white/30">
