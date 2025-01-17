@@ -219,8 +219,8 @@ export default function Sessions() {
                       } : {}}
                       transition={{ duration: 0 }}
                       onTouchStart={(e) => {
+                        e.preventDefault(); // Prevent default touch behavior
                         const rect = e.currentTarget.getBoundingClientRect();
-                        const touch = e.touches[0];
                         const viewportWidth = window.innerWidth;
                         const viewportHeight = window.innerHeight;
                         
@@ -234,10 +234,11 @@ export default function Sessions() {
                         
                         e.currentTarget.style.setProperty('--transform-origin', `${originX} ${originY}`);
                       }}
+                      onContextMenu={(e) => e.preventDefault()} // Prevent context menu
                       onTouchEnd={(e) => {
+                        e.preventDefault();
                         const element = e.currentTarget;
                         element.style.transform = 'none';
-                        e.preventDefault();
                       }}
                       onMouseEnter={(e) => {
                         const rect = e.currentTarget.getBoundingClientRect();
