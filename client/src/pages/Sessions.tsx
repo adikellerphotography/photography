@@ -201,17 +201,16 @@ export default function Sessions() {
                     onMouseLeave={() => setHoveredLink(null)}
                   >
                     <motion.div
-                      className="w-12 h-12 rounded-full flex items-center justify-center text-lg font-semibold transition-all duration-200"
-                      style={{
-                        backgroundColor: hoveredLink === link.url ? '#FF9500' : 'rgba(255, 149, 0, 0.1)',
-                        border: '1px solid #FF9500',
-                        color: hoveredLink === link.url ? 'white' : '#FF9500',
-                        boxShadow: hoveredLink === link.url ? '0 0 15px rgba(255, 149, 0, 0.3)' : 'none'
-                      }}
-                      whileHover={{ scale: 1.1 }}
+                      className="relative w-12 h-12 overflow-hidden rounded-lg"
+                      whileHover={isMobile ? {} : { scale: 3, zIndex: 50 }}
+                      whileTap={isMobile ? { scale: 3, zIndex: 50 } : {}}
                       transition={{ duration: 0.2 }}
                     >
-                      {link.number}
+                      <img 
+                        src={`/attached_assets/facebook_posts_image/${group.name.toLowerCase()}/${link.number}.jpg`}
+                        alt={`${group.name} session ${link.number}`}
+                        className="w-full h-full object-cover"
+                      />
                     </motion.div>
                   </a>
                 ))}
