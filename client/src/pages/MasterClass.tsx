@@ -85,11 +85,11 @@ export default function MasterClass() {
         className={`container mx-auto px-4 py-16 ${language === 'he' ? 'rtl text-right' : 'ltr text-left'}`}
       >
         <h1 className="text-3xl font-bold mb-8 text-[#FF9500]">
-          {t("masterClass.title") || "Photography & Image Editing Classes"}
+          {t("Photography") || "Photography & Image Editing Classes"}
         </h1>
 
         <div className="bg-card p-6 rounded-lg shadow-md mb-8 border border-white/30">
-          <h2 className="text-xl font-semibold mb-4">{t("masterClass.generalInfo") || "General Information"}</h2>
+          <h2 className="text-xl font-semibold mb-4">{t("General") || "General Information"}</h2>
           <ul className="space-y-2 text-muted-foreground">
             <li>• All classes are one-on-one</li>
             <li>• Instructions include examples and demonstrations on photos</li>
@@ -110,18 +110,18 @@ export default function MasterClass() {
               <div className="flex items-center gap-3 mb-4">
                 <classItem.icon className="w-8 h-8 text-[#FF9500]" />
                 <div>
-                  <h3 className="text-xl font-semibold">{t(`masterClass.class${classItem.id}.title`) || classItem.title}</h3>
+                  <h3 className="text-xl font-semibold">{t(`Class${classItem.id}`) || classItem.title}</h3>
                   <p className="text-sm text-muted-foreground">{classItem.duration}</p>
                 </div>
               </div>
 
               <div className="mb-4">
-                <div className="text-[#FF9500] font-semibold mb-1">{t("masterClass.price") || "Price"}</div>
+                <div className="text-[#FF9500] font-semibold mb-1">{t("Price") || "Price"}</div>
                 <p className="text-muted-foreground">{classItem.price}</p>
               </div>
 
               <div>
-                <div className="text-[#FF9500] font-semibold mb-2">{t("masterClass.topics") || "Topics covered"}</div>
+                <div className="text-[#FF9500] font-semibold mb-2">{t("Topics") || "Topics covered"}</div>
                 <ul className="space-y-1">
                   {classItem.topics.map((topic, index) => (
                     <li key={index} className="text-sm text-muted-foreground">• {topic}</li>
@@ -131,7 +131,7 @@ export default function MasterClass() {
 
               {classItem.bonus && (
                 <div className="mt-4">
-                  <div className="text-[#FF9500] font-semibold mb-1">{t("masterClass.bonus") || "Bonus"}</div>
+                  <div className="text-[#FF9500] font-semibold mb-1">{t("Bonus") || "Bonus"}</div>
                   <p className="text-sm text-muted-foreground">{classItem.bonus}</p>
                 </div>
               )}
