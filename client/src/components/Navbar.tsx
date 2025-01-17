@@ -22,6 +22,7 @@ export default function Navbar() {
     { href: "/sessions", label: language === "en" ? "Sessions" : "גלריות", icon: Image },
     { href: "/about", label: language === "en" ? "About" : "אודות", icon: InfoIcon },
     { href: "/contact", label: language === "en" ? "Contact Me" : "צור קשר", icon: Mail },
+    { href: "/master-class", label: language === "en" ? "Master Class" : "שיעורי אמן", icon: User } // Added Master Class navigation item
   ];
 
   return (

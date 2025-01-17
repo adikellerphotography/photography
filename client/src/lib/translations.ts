@@ -106,6 +106,25 @@ export const translations = {
           "All raw material included"
         ]
       },
+      masterClass: {
+        title: "Photography & Image Editing Classes",
+        generalInfo: "General Information",
+        price: "Price",
+        topics: "Topics covered",
+        bonus: "Bonus",
+        class1: {
+          title: "Practical Field Workshop"
+        },
+        class2: {
+          title: "Lightroom"
+        },
+        class3: {
+          title: "Basic Photoshop"
+        },
+        class4: {
+          title: "Advanced Photoshop"
+        }
+      },
       purim: {
         name: "Purim Photography",
         price: "450₪",
