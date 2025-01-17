@@ -218,24 +218,23 @@ export default function Sessions() {
                         const rect = e.currentTarget.getBoundingClientRect();
                         const viewportWidth = window.innerWidth;
                         const viewportHeight = window.innerHeight;
-
+                        
                         let originX = "center";
                         let originY = "center";
-
+                        
                         if (rect.left < viewportWidth * 0.3) originX = "left";
                         if (rect.right > viewportWidth * 0.7) originX = "right";
                         if (rect.top < viewportHeight * 0.3) originY = "top";
                         if (rect.bottom > viewportHeight * 0.7) originY = "bottom";
-
+                        
                         e.currentTarget.style.setProperty('--transform-origin', `${originX} ${originY}`);
                       }}
                     >
-                      {group.name === "Bat Mitsva" ? (
+                      {group.name === "Bat Mitsva" && link.number <= 5 ? (
                         <img 
-                          src={`/attached_assets/facebook_posts_image/bat_mitsva/${link.number}.jpg`}
+                          src={`/assets/facebook_posts_image/bat_mitsva/${link.number}.jpg`}
                           alt={`${group.name} session ${link.number}`}
                           className="w-full h-full object-cover"
-                          loading="lazy"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
                             target.style.backgroundColor = 'rgba(255, 149, 0, 0.1)';
