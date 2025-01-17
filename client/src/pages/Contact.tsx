@@ -76,20 +76,20 @@ export default function Contact() {
               <CardContent className="pt-6">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <Input
-                    placeholder={t("contact.namePlaceholder")}
+                    placeholder="Your Name"
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
                     required
                   />
                   <Input
-                    placeholder={t("contact.phonePlaceholder")}
+                    placeholder="Your Phone Number"
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
                     required
                   />
                   <Textarea
-                    placeholder={t("contact.messagePlaceholder")}
+                    placeholder="Your Message"
                     value={formData.message}
                     onChange={(e) => setFormData({...formData, message: e.target.value})}
                     required
