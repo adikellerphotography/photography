@@ -198,9 +198,32 @@ export default function Sessions() {
                   >
                     <motion.div
                       className="relative w-full md:w-28 h-24 md:h-28 overflow-hidden rounded-lg"
-                      whileHover={isMobile ? {} : { scale: 3, zIndex: 50 }}
-                      whileTap={isMobile ? { scale: 2.5, zIndex: 50 } : {}}
+                      whileHover={isMobile ? {} : { 
+                        scale: 3, 
+                        zIndex: 50,
+                        transformOrigin: "var(--transform-origin, center)"
+                      }}
+                      whileTap={isMobile ? { 
+                        scale: 2.5, 
+                        zIndex: 50,
+                        transformOrigin: "var(--transform-origin, center)"
+                      } : {}}
                       transition={{ duration: 0.2 }}
+                      onMouseEnter={(e) => {
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        const viewportWidth = window.innerWidth;
+                        const viewportHeight = window.innerHeight;
+                        
+                        let originX = "center";
+                        let originY = "center";
+                        
+                        if (rect.left < viewportWidth * 0.3) originX = "left";
+                        if (rect.right > viewportWidth * 0.7) originX = "right";
+                        if (rect.top < viewportHeight * 0.3) originY = "top";
+                        if (rect.bottom > viewportHeight * 0.7) originY = "bottom";
+                        
+                        e.currentTarget.style.setProperty('--transform-origin', `${originX} ${originY}`);
+                      }}
                     >
                       {group.name === "Bat Mitsva" && link.number <= 5 ? (
                         <img 
