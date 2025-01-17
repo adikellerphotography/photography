@@ -208,7 +208,7 @@ export default function Sessions() {
                     >
                       {group.name === "Bat Mitsva" && link.number <= 5 ? (
                         <img 
-                          src={`/attached_assets/facebook_posts_image/bat_mitsva/${link.number}.jpg`}
+                          src={`/assets/facebook_posts_image/bat_mitsva/${link.number}.jpg`}
                           alt={`${group.name} session ${link.number}`}
                           className="w-full h-full object-cover"
                           onError={(e) => {
