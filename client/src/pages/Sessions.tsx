@@ -206,11 +206,26 @@ export default function Sessions() {
                       whileTap={isMobile ? { scale: 3, zIndex: 50 } : {}}
                       transition={{ duration: 0.2 }}
                     >
-                      <img 
-                        src={`/attached_assets/facebook_posts_image/${group.name === "Bat Mitsva" ? "bat_mitsva" : group.name.toLowerCase()}/${link.number}.jpg`}
-                        alt={`${group.name} session ${link.number}`}
-                        className="w-full h-full object-cover"
-                      />
+                      {group.name === "Bat Mitsva" && link.number <= 5 ? (
+                        <img 
+                          src={`/attached_assets/facebook_posts_image/bat_mitsva/${link.number}.jpg`}
+                          alt={`${group.name} session ${link.number}`}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.backgroundColor = 'rgba(255, 149, 0, 0.1)';
+                            target.style.border = '1px solid #FF9500';
+                          }}
+                        />
+                      ) : (
+                        <div 
+                          className="w-full h-full rounded-lg"
+                          style={{
+                            backgroundColor: 'rgba(255, 149, 0, 0.1)',
+                            border: '1px solid #FF9500'
+                          }}
+                        />
+                      )}
                     </motion.div>
                   </a>
                 ))}
