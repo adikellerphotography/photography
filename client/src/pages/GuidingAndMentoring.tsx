@@ -15,14 +15,14 @@ export default function GuidingAndMentoring() {
       titleHe: "סדנת צילום מעשית",
       price: language === 'he' ? "שעה - 250₪ | שעתיים - 450₪" : "1 hour - 250₪ | 2 hours - 450₪",
       topics: [
-        language === 'he' ? "בחירת לוקיישן" : "Location selection",
-        language === 'he' ? "צילום באור, צל ותאורה אחורית" : "Shooting in light, shade, and backlight",
-        language === 'he' ? "עבודה עם עומק שדה רדוד/צר" : "Working with shallow/narrow depth of field",
-        language === 'he' ? "שימוש בעדשות שונות" : "Using different lenses",
-        language === 'he' ? "יצירת רגש ועניין בתמונות" : "Creating emotion and interest in photos",
-        language === 'he' ? "עבודה עם רקע מוצק" : "Solid background work",
-        language === 'he' ? "צילום תנועה" : "Motion photography",
-        language === 'he' ? "שימוש ברפלקטורים" : "Using reflectors"
+        language === 'he' ? "• בחירת לוקיישן" : "• Location selection",
+        language === 'he' ? "• צילום באור, צל ותאורה אחורית" : "• Shooting in light, shade, and backlight",
+        language === 'he' ? "• עבודה עם עומק שדה רדוד/צר" : "• Working with shallow/narrow depth of field",
+        language === 'he' ? "• שימוש בעדשות שונות" : "• Using different lenses",
+        language === 'he' ? "• יצירת רגש ועניין בתמונות" : "• Creating emotion and interest in photos",
+        language === 'he' ? "• עבודה עם רקע מוצק" : "• Solid background work",
+        language === 'he' ? "• צילום תנועה" : "• Motion photography",
+        language === 'he' ? "• שימוש ברפלקטורים" : "• Using reflectors"
       ],
       bonus: language === 'he' ? "סט עשיר של שכבות-על הכולל עננים, עלי סתיו, אפקטי מים, פרפרים ועוד" : "Rich set of Overlays including clouds, autumn leaves, water effects, butterflies, and more"
     },
@@ -34,12 +34,12 @@ export default function GuidingAndMentoring() {
       duration: "2 hours",
       price: language === 'he' ? "שעה - 250₪ | שעתיים - 450₪" : "1 hour - 250₪ | 2 hours - 450₪",
       topics: [
-        language === 'he' ? "ייבוא תמונות RAW" : "Importing RAW images",
-        language === 'he' ? "למידת כלים חיוניים בלייטרום" : "Learning essential tools in Lightroom",
-        language === 'he' ? "תהליך עריכת תמונה מלא" : "Complete photo editing process",
-        language === 'he' ? "זיהוי נושא/שמיים (תכונה חדשה)" : "Subject/Sky detection (new feature)",
-        language === 'he' ? "העתקת הגדרות עריכה בין תמונות" : "Copying edit settings between photos",
-        language === 'he' ? "זרימת עבודה מובנית" : "Structured photo workflow"
+        language === 'he' ? "• ייבוא תמונות RAW" : "• Importing RAW images",
+        language === 'he' ? "• למידת כלים חיוניים בלייטרום" : "• Learning essential tools in Lightroom",
+        language === 'he' ? "• תהליך עריכת תמונה מלא" : "• Complete photo editing process",
+        language === 'he' ? "• זיהוי נושא/שמיים (תכונה חדשה)" : "• Subject/Sky detection (new feature)",
+        language === 'he' ? "• העתקת הגדרות עריכה בין תמונות" : "• Copying edit settings between photos",
+        language === 'he' ? "• זרימת עבודה מובנית" : "• Structured photo workflow"
       ]
     },
     {
@@ -50,12 +50,12 @@ export default function GuidingAndMentoring() {
       duration: "2 hours",
       price: language === 'he' ? "שעה - 250₪ | שעתיים - 450₪" : "1 hour - 250₪ | 2 hours - 450₪",
       topics: [
-        language === 'he' ? "העברת תמונות מלייטרום לפוטושופ" : "Transferring photos from Lightroom to Photoshop",
-        language === 'he' ? "למידת כלים עיקריים בפוטושופ" : "Learning key tools in Photoshop",
-        language === 'he' ? "עבודה עם שכבות" : "Working with layers",
-        language === 'he' ? "קיצורי מקלדת חיוניים" : "Essential keyboard shortcuts",
-        language === 'he' ? "הוספת אלמנטים (שכבת-על ומברשת)" : "Adding elements (Overlay and Brush)",
-        language === 'he' ? "זרימת עבודה מובנית" : "Structured photo workflow"
+        language === 'he' ? "• העברת תמונות מלייטרום לפוטושופ" : "• Transferring photos from Lightroom to Photoshop",
+        language === 'he' ? "• למידת כלים עיקריים בפוטושופ" : "• Learning key tools in Photoshop",
+        language === 'he' ? "• עבודה עם שכבות" : "• Working with layers",
+        language === 'he' ? "• קיצורי מקלדת חיוניים" : "• Essential keyboard shortcuts",
+        language === 'he' ? "• הוספת אלמנטים (שכבת-על ומברשת)" : "• Adding elements (Overlay and Brush)",
+        language === 'he' ? "• זרימת עבודה מובנית" : "• Structured photo workflow"
       ]
     },
     {
@@ -66,15 +66,15 @@ export default function GuidingAndMentoring() {
       duration: "2 hours",
       price: language === 'he' ? "שעה - 250₪ | שעתיים - 450₪" : "1 hour - 250₪ | 2 hours - 450₪",
       topics: [
-        language === 'he' ? "הוספה ועריכת עננים" : "Adding and editing clouds",
-        language === 'he' ? "תיקוני גוף ופנים באמצעות Liquify" : "Body and face correction using Liquify",
-        language === 'he' ? "טכניקות להסרת פרטי רקע" : "Background detail removal techniques",
-        language === 'he' ? "ריטוש פנים מקצועי" : "Professional face retouching",
-        language === 'he' ? "טכניקת אפקט מראה" : "Mirror effect technique",
-        language === 'he' ? "טכניקות תאורה מתקדמות" : "Advanced lighting techniques",
-        language === 'he' ? "טכניקת Dodge and Burn" : "Dodge and Burn technique",
-        language === 'he' ? "עבודה עם גוונים חמים" : "Working with warm tones",
-        language === 'he' ? "יצירת אפקטים של מים והשתקפויות" : "Creating water effects and reflections"
+        language === 'he' ? "• הוספה ועריכת עננים" : "• Adding and editing clouds",
+        language === 'he' ? "• תיקוני גוף ופנים באמצעות Liquify" : "• Body and face correction using Liquify",
+        language === 'he' ? "• טכניקות להסרת פרטי רקע" : "• Background detail removal techniques",
+        language === 'he' ? "• ריטוש פנים מקצועי" : "• Professional face retouching",
+        language === 'he' ? "• טכניקת אפקט מראה" : "• Mirror effect technique",
+        language === 'he' ? "• טכניקות תאורה מתקדמות" : "• Advanced lighting techniques",
+        language === 'he' ? "• טכניקת Dodge and Burn" : "• Dodge and Burn technique",
+        language === 'he' ? "• עבודה עם גוונים חמים" : "• Working with warm tones",
+        language === 'he' ? "• יצירת אפקטים של מים והשתקפויות" : "• Creating water effects and reflections"
       ]
     }
   ];
