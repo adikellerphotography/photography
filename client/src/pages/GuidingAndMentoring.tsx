@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
@@ -15,7 +14,7 @@ export default function GuidingAndMentoring() {
       title: "Practical Field Workshop",
       titleHe: "סדנת צילום מעשית",
       duration: "1-2 hours",
-      price: "1 hour - 250₪ | 2 hours - 450₪",
+      price: language === 'he' ? "שעה - 250₪ | שעתיים - 450₪" : "1 hour - 250₪ | 2 hours - 450₪",
       topics: [
         language === 'he' ? "בחירת לוקיישן" : "Location selection",
         language === 'he' ? "צילום באור, צל ותאורה אחורית" : "Shooting in light, shade, and backlight",
@@ -34,7 +33,7 @@ export default function GuidingAndMentoring() {
       title: "Lightroom",
       titleHe: "לייטרום",
       duration: "2 hours",
-      price: "1 hour - 250₪ | 2 hours - 450₪",
+      price: language === 'he' ? "שעה - 250₪ | שעתיים - 450₪" : "1 hour - 250₪ | 2 hours - 450₪",
       topics: [
         language === 'he' ? "ייבוא תמונות RAW" : "Importing RAW images",
         language === 'he' ? "למידת כלים חיוניים בלייטרום" : "Learning essential tools in Lightroom",
@@ -50,7 +49,7 @@ export default function GuidingAndMentoring() {
       title: "Basic Photoshop",
       titleHe: "פוטושופ בסיסי",
       duration: "2 hours",
-      price: "1 hour - 250₪ | 2 hours - 450₪",
+      price: language === 'he' ? "שעה - 250₪ | שעתיים - 450₪" : "1 hour - 250₪ | 2 hours - 450₪",
       topics: [
         language === 'he' ? "העברת תמונות מלייטרום לפוטושופ" : "Transferring photos from Lightroom to Photoshop",
         language === 'he' ? "למידת כלים עיקריים בפוטושופ" : "Learning key tools in Photoshop",
@@ -66,7 +65,7 @@ export default function GuidingAndMentoring() {
       title: "Advanced Photoshop",
       titleHe: "פוטושופ מתקדם",
       duration: "2 hours",
-      price: "1 hour - 250₪ | 2 hours - 450₪",
+      price: language === 'he' ? "שעה - 250₪ | שעתיים - 450₪" : "1 hour - 250₪ | 2 hours - 450₪",
       topics: [
         language === 'he' ? "הוספה ועריכת עננים" : "Adding and editing clouds",
         language === 'he' ? "תיקוני גוף ופנים באמצעות Liquify" : "Body and face correction using Liquify",
