@@ -47,7 +47,7 @@ export default function Contact() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Contact Information */}
-            <Card className="bg-muted/50">
+            <Card>
               <CardContent className="pt-6 space-y-4">
                 <div className="flex items-center gap-3">
                   <span className="text-xl font-semibold">Adi Keller</span>
@@ -72,32 +72,32 @@ export default function Contact() {
             </Card>
 
             {/* Contact Form */}
-            <Card className="bg-muted/50">
+            <Card>
               <CardContent className="pt-6">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <Input
-                    placeholder="Your Name"
+                    placeholder={t("contact.namePlaceholder")}
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
                     required
                   />
                   <Input
-                    placeholder="Your Phone Number"
+                    placeholder={t("contact.phonePlaceholder")}
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
                     required
                   />
                   <Textarea
-                    placeholder="Your Message"
+                    placeholder={t("contact.messagePlaceholder")}
                     value={formData.message}
                     onChange={(e) => setFormData({...formData, message: e.target.value})}
                     required
                     className="min-h-[120px]"
                   />
-                  <Button type="submit" className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800">
+                  <Button type="submit" className="w-full">
                     <Send className="w-4 h-4 mr-2" />
-                    Send
+                    {t("contact.send")}
                   </Button>
                 </form>
               </CardContent>
