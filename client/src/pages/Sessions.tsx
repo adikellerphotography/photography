@@ -201,9 +201,9 @@ export default function Sessions() {
                     onMouseLeave={() => setHoveredLink(null)}
                   >
                     <motion.div
-                      className="relative w-12 h-12 overflow-hidden rounded-lg"
-                      whileHover={isMobile ? {} : { scale: 3, zIndex: 50 }}
-                      whileTap={isMobile ? { scale: 3, zIndex: 50 } : {}}
+                      className="relative w-28 h-28 overflow-hidden rounded-lg"
+                      whileHover={isMobile ? {} : { scale: 2.5, zIndex: 50 }}
+                      whileTap={isMobile ? { scale: 2.5, zIndex: 50 } : {}}
                       transition={{ duration: 0.2 }}
                     >
                       {group.name === "Bat Mitsva" && link.number <= 5 ? (
