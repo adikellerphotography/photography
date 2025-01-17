@@ -182,12 +182,8 @@ export default function Sessions() {
         <div className="space-y-8">
           {sessionGroups.map((group) => (
             <div key={group.name} className={`bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-white/30 ${language === 'he' ? 'rtl' : 'ltr'}`}>
-              <div className="flex items-center gap-3 mb-4">
+              <div className="mb-4">
                 <h2 className="text-2xl font-semibold">{language === 'he' ? t(`sessions.${group.name}`) : capitalizeWords(group.name)}</h2>
-                <div className="flex items-center gap-2 bg-[#1877F2]/10 px-3 py-1 rounded-full">
-                  <SiFacebook className="text-[#1877F2] w-4 h-4" />
-                  <span className="text-sm text-[#1877F2] font-medium">{group.links.length} Sessions</span>
-                </div>
               </div>
               <div className="grid grid-cols-3 md:flex md:flex-wrap gap-4">
                 {group.links.map((link) => (
