@@ -72,7 +72,7 @@ export default function Contact() {
             </Card>
 
             {/* Contact Form */}
-            <Card>
+            <Card className="bg-muted">
               <CardContent className="pt-6">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <Input
