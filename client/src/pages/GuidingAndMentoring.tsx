@@ -13,7 +13,6 @@ export default function GuidingAndMentoring() {
       icon: LuCamera,
       title: "Practical Field Workshop",
       titleHe: "סדנת צילום מעשית",
-      duration: "1-2 hours",
       price: language === 'he' ? "שעה - 250₪ | שעתיים - 450₪" : "1 hour - 250₪ | 2 hours - 450₪",
       topics: [
         language === 'he' ? "בחירת לוקיישן" : "Location selection",
@@ -88,11 +87,17 @@ export default function GuidingAndMentoring() {
         className={`container mx-auto px-4 py-16 ${language === 'he' ? 'rtl text-right !font-heebo' : 'ltr text-left'}`}
       >
         <h1 className="text-3xl font-bold mb-8 text-[#FF9500]">
-          {language === 'he' ? 'שיעורי צילום ועריכת תמונה' : 'Photography & Image Editing Classes'}
+          {language === 'he' ? 'הדרכה וליווי' : 'Guiding and Mentoring'}
         </h1>
 
         <div className="bg-card p-6 rounded-lg shadow-md mb-8 border border-white/30">
           <h2 className="text-xl font-semibold mb-4">{language === 'he' ? 'מידע כללי' : 'General Info'}</h2>
+          <p className="text-muted-foreground mb-4">
+            {language === 'he' 
+              ? 'קורס צילום מקיף זה מציע הדרכה אישית אחד על אחד המכסה טכניקות מצלמה מעשיות ועד לעריכת תמונות מתקדמת בלייטרום ופוטושופ. כל שיעור מובנה כדי לבנות את המיומנויות שלך בהדרגה, עם תמיכה מתמשכת זמינה לאחר סיום השיעורים.'
+              : 'This comprehensive photography course offers personalized one-on-one instruction covering hands-on camera techniques through to advanced photo editing in Lightroom and Photoshop. Each session is structured to build your skills progressively, with continued support available after classes conclude.'
+            }
+          </p>
           <ul className={`space-y-2 text-muted-foreground ${language === 'he' ? 'text-right' : ''}`} dir={language === 'he' ? 'rtl' : 'ltr'}>
             <li className={language === 'he' ? 'flex flex-row-reverse justify-end' : ''}>
               {language === 'he' ? '• כל השיעורים הינם אחד על אחד' : '• All classes are one-on-one'}
@@ -122,7 +127,6 @@ export default function GuidingAndMentoring() {
                 <classItem.icon className="w-8 h-8 text-[#FF9500]" />
                 <div>
                   <h3 className="text-xl font-semibold">{language === 'he' ? classItem.titleHe : classItem.title}</h3>
-                  <p className="text-sm text-muted-foreground">{classItem.duration}</p>
                 </div>
               </div>
 
