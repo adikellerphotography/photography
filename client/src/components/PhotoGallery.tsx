@@ -226,6 +226,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     setTouchStart(null);
   };
 
+  const handleDoubleClick = async (photo: Photo) => {
+    //Removed double click like functionality
+  };
+
   useEffect(() => {
     if (selectedPhoto && photos) {
       const nextIndex = (selectedIndex + 1) % photos.length;

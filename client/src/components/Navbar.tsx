@@ -3,6 +3,7 @@ import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuL
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu, Home, Image, User, CreditCard, Info as InfoIcon, SplitSquareVertical, Mail, FileText } from "lucide-react";
+import { SiFacebook } from "react-icons/si";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "./ThemeToggle";
 import LanguageToggle from "./LanguageToggle";
