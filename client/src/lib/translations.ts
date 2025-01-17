@@ -177,7 +177,7 @@ export const translations = {
     },
     sessions: {
       title: "Photography Sessions",
-      description: "Each number represents a Facebook post with selected photos from the session",
+      description: "Facebook post with selected photos from the session",
       batmitzva: "Bat Mitsva",
       feminine: "Feminine",
       sea: "Sea",
@@ -341,7 +341,7 @@ export const translations = {
     },
     sessions: {
       title: "גלריות צילום",
-      description: "כל מספר מייצג פוסט בפייסבוק עם תמונות נבחרות מהמפגש",
+      description: "פוסט בפייסבוק עם תמונות נבחרות מהמפגש",
       "Bat Mitsva": "בת מצווה",
       "Bar Mitsva": "בר מצווה",
       "Horses": "סוסים",
