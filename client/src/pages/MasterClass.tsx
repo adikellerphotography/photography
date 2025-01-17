@@ -72,7 +72,7 @@ const classes = [
   }
 ];
 
-export default function MasterClass() {
+export default function GuidingAndMentoring() {
   const { t } = useTranslation();
   const { language } = useLanguage();
 
