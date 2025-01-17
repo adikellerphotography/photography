@@ -208,6 +208,10 @@ export default function Sessions() {
                         zIndex: 50,
                         transformOrigin: "var(--transform-origin, center)"
                       }}
+                      animate={isMobile ? { 
+                        scale: 1,
+                        zIndex: 1
+                      } : {}}
                       whileTap={isMobile ? { 
                         scale: 2.5, 
                         zIndex: 50,
@@ -216,7 +220,6 @@ export default function Sessions() {
                       transition={{ duration: 0.1 }}
                       onTouchStart={(e) => {
                         const rect = e.currentTarget.getBoundingClientRect();
-                        const touch = e.touches[0];
                         const viewportWidth = window.innerWidth;
                         const viewportHeight = window.innerHeight;
                         
@@ -231,8 +234,6 @@ export default function Sessions() {
                         e.currentTarget.style.setProperty('--transform-origin', `${originX} ${originY}`);
                       }}
                       onTouchEnd={(e) => {
-                        const element = e.currentTarget;
-                        element.style.transform = 'none';
                         e.preventDefault();
                       }}
                       onMouseEnter={(e) => {
