@@ -1,4 +1,26 @@
 export const translations = {
+  contact: {
+    title: {
+      en: "Contact Me",
+      he: "צור קשר"
+    },
+    namePlaceholder: {
+      en: "Your Name",
+      he: "השם שלך"
+    },
+    phonePlaceholder: {
+      en: "Phone Number",
+      he: "מספר טלפון"
+    },
+    messagePlaceholder: {
+      en: "Your Message",
+      he: "ההודעה שלך"
+    },
+    send: {
+      en: "Send Message",
+      he: "שלח הודעה"
+    },
+  },
   en: {
     nav: {
       home: "Home",
