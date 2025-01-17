@@ -177,7 +177,7 @@ export default function Sessions() {
         </h1>
         <div className={`flex items-center gap-2 mb-8 ${language === 'he' ? 'justify-end' : ''}`}>
           <SiFacebook className="text-[#1877F2] w-6 h-6 animate-pulse" />
-          <span className="text-foreground font-semibold">{t("sessions.description")}</span>
+          <span className="text-foreground font-semibold">Facebook post with selected photos from the session</span>
         </div>
         <div className="space-y-8">
           {sessionGroups.map((group) => (
@@ -227,7 +227,7 @@ export default function Sessions() {
                     >
                       {group.name === "Bat Mitsva" && link.number <= 5 ? (
                         <img 
-                          src={`/assets/facebook_posts_image/bat_mitsva/${link.number}.jpg`}
+                          src={`/attached_assets/facebook_posts_image/bat_mitsva/${link.number}.jpg`}
                           alt={`${group.name} session ${link.number}`}
                           className="w-full h-full object-cover"
                           onError={(e) => {
