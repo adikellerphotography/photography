@@ -13,16 +13,17 @@ export default function GuidingAndMentoring() {
       icon: LuCamera,
       title: "Practical Field Workshop",
       titleHe: "סדנת צילום מעשית",
+      duration: "1-2 hours",
       price: language === 'he' ? "שעה - 250₪ | שעתיים - 450₪" : "1 hour - 250₪ | 2 hours - 450₪",
       topics: [
-        language === 'he' ? "• בחירת לוקיישן" : "• Location selection",
-        language === 'he' ? "• צילום באור, צל ותאורה אחורית" : "• Shooting in light, shade, and backlight",
-        language === 'he' ? "• עבודה עם עומק שדה רדוד/צר" : "• Working with shallow/narrow depth of field",
-        language === 'he' ? "• שימוש בעדשות שונות" : "• Using different lenses",
-        language === 'he' ? "• יצירת רגש ועניין בתמונות" : "• Creating emotion and interest in photos",
-        language === 'he' ? "• עבודה עם רקע מוצק" : "• Solid background work",
-        language === 'he' ? "• צילום תנועה" : "• Motion photography",
-        language === 'he' ? "• שימוש ברפלקטורים" : "• Using reflectors"
+        language === 'he' ? "בחירת לוקיישן" : "Location selection",
+        language === 'he' ? "צילום באור, צל ותאורה אחורית" : "Shooting in light, shade, and backlight",
+        language === 'he' ? "עבודה עם עומק שדה רדוד/צר" : "Working with shallow/narrow depth of field",
+        language === 'he' ? "שימוש בעדשות שונות" : "Using different lenses",
+        language === 'he' ? "יצירת רגש ועניין בתמונות" : "Creating emotion and interest in photos",
+        language === 'he' ? "עבודה עם רקע מוצק" : "Solid background work",
+        language === 'he' ? "צילום תנועה" : "Motion photography",
+        language === 'he' ? "שימוש ברפלקטורים" : "Using reflectors"
       ],
       bonus: language === 'he' ? "סט עשיר של שכבות-על הכולל עננים, עלי סתיו, אפקטי מים, פרפרים ועוד" : "Rich set of Overlays including clouds, autumn leaves, water effects, butterflies, and more"
     },
@@ -34,12 +35,12 @@ export default function GuidingAndMentoring() {
       duration: "2 hours",
       price: language === 'he' ? "שעה - 250₪ | שעתיים - 450₪" : "1 hour - 250₪ | 2 hours - 450₪",
       topics: [
-        language === 'he' ? "• ייבוא תמונות RAW" : "• Importing RAW images",
-        language === 'he' ? "• למידת כלים חיוניים בלייטרום" : "• Learning essential tools in Lightroom",
-        language === 'he' ? "• תהליך עריכת תמונה מלא" : "• Complete photo editing process",
-        language === 'he' ? "• זיהוי נושא/שמיים (תכונה חדשה)" : "• Subject/Sky detection (new feature)",
-        language === 'he' ? "• העתקת הגדרות עריכה בין תמונות" : "• Copying edit settings between photos",
-        language === 'he' ? "• זרימת עבודה מובנית" : "• Structured photo workflow"
+        language === 'he' ? "ייבוא תמונות RAW" : "Importing RAW images",
+        language === 'he' ? "למידת כלים חיוניים בלייטרום" : "Learning essential tools in Lightroom",
+        language === 'he' ? "תהליך עריכת תמונה מלא" : "Complete photo editing process",
+        language === 'he' ? "זיהוי נושא/שמיים (תכונה חדשה)" : "Subject/Sky detection (new feature)",
+        language === 'he' ? "העתקת הגדרות עריכה בין תמונות" : "Copying edit settings between photos",
+        language === 'he' ? "זרימת עבודה מובנית" : "Structured photo workflow"
       ]
     },
     {
@@ -50,12 +51,12 @@ export default function GuidingAndMentoring() {
       duration: "2 hours",
       price: language === 'he' ? "שעה - 250₪ | שעתיים - 450₪" : "1 hour - 250₪ | 2 hours - 450₪",
       topics: [
-        language === 'he' ? "• העברת תמונות מלייטרום לפוטושופ" : "• Transferring photos from Lightroom to Photoshop",
-        language === 'he' ? "• למידת כלים עיקריים בפוטושופ" : "• Learning key tools in Photoshop",
-        language === 'he' ? "• עבודה עם שכבות" : "• Working with layers",
-        language === 'he' ? "• קיצורי מקלדת חיוניים" : "• Essential keyboard shortcuts",
-        language === 'he' ? "• הוספת אלמנטים (שכבת-על ומברשת)" : "• Adding elements (Overlay and Brush)",
-        language === 'he' ? "• זרימת עבודה מובנית" : "• Structured photo workflow"
+        language === 'he' ? "העברת תמונות מלייטרום לפוטושופ" : "Transferring photos from Lightroom to Photoshop",
+        language === 'he' ? "למידת כלים עיקריים בפוטושופ" : "Learning key tools in Photoshop",
+        language === 'he' ? "עבודה עם שכבות" : "Working with layers",
+        language === 'he' ? "קיצורי מקלדת חיוניים" : "Essential keyboard shortcuts",
+        language === 'he' ? "הוספת אלמנטים (שכבת-על ומברשת)" : "Adding elements (Overlay and Brush)",
+        language === 'he' ? "זרימת עבודה מובנית" : "Structured photo workflow"
       ]
     },
     {
@@ -66,15 +67,15 @@ export default function GuidingAndMentoring() {
       duration: "2 hours",
       price: language === 'he' ? "שעה - 250₪ | שעתיים - 450₪" : "1 hour - 250₪ | 2 hours - 450₪",
       topics: [
-        language === 'he' ? "• הוספה ועריכת עננים" : "• Adding and editing clouds",
-        language === 'he' ? "• תיקוני גוף ופנים באמצעות Liquify" : "• Body and face correction using Liquify",
-        language === 'he' ? "• טכניקות להסרת פרטי רקע" : "• Background detail removal techniques",
-        language === 'he' ? "• ריטוש פנים מקצועי" : "• Professional face retouching",
-        language === 'he' ? "• טכניקת אפקט מראה" : "• Mirror effect technique",
-        language === 'he' ? "• טכניקות תאורה מתקדמות" : "• Advanced lighting techniques",
-        language === 'he' ? "• טכניקת Dodge and Burn" : "• Dodge and Burn technique",
-        language === 'he' ? "• עבודה עם גוונים חמים" : "• Working with warm tones",
-        language === 'he' ? "• יצירת אפקטים של מים והשתקפויות" : "• Creating water effects and reflections"
+        language === 'he' ? "הוספה ועריכת עננים" : "Adding and editing clouds",
+        language === 'he' ? "תיקוני גוף ופנים באמצעות Liquify" : "Body and face correction using Liquify",
+        language === 'he' ? "טכניקות להסרת פרטי רקע" : "Background detail removal techniques",
+        language === 'he' ? "ריטוש פנים מקצועי" : "Professional face retouching",
+        language === 'he' ? "טכניקת אפקט מראה" : "Mirror effect technique",
+        language === 'he' ? "טכניקות תאורה מתקדמות" : "Advanced lighting techniques",
+        language === 'he' ? "טכניקת Dodge and Burn" : "Dodge and Burn technique",
+        language === 'he' ? "עבודה עם גוונים חמים" : "Working with warm tones",
+        language === 'he' ? "יצירת אפקטים של מים והשתקפויות" : "Creating water effects and reflections"
       ]
     }
   ];
@@ -87,17 +88,11 @@ export default function GuidingAndMentoring() {
         className={`container mx-auto px-4 py-16 ${language === 'he' ? 'rtl text-right !font-heebo' : 'ltr text-left'}`}
       >
         <h1 className="text-3xl font-bold mb-8 text-[#FF9500]">
-          {language === 'he' ? 'הדרכה וליווי' : 'Guiding and Mentoring'}
+          {language === 'he' ? 'שיעורי צילום ועריכת תמונה' : 'Photography & Image Editing Classes'}
         </h1>
 
         <div className="bg-card p-6 rounded-lg shadow-md mb-8 border border-white/30">
           <h2 className="text-xl font-semibold mb-4">{language === 'he' ? 'מידע כללי' : 'General Info'}</h2>
-          <p className="text-muted-foreground mb-4">
-            {language === 'he' 
-              ? 'קורס צילום מקיף זה מציע הדרכה אישית אחד על אחד המכסה טכניקות מצלמה מעשיות ועד לעריכת תמונות מתקדמת בלייטרום ופוטושופ. כל שיעור מובנה כדי לבנות את המיומנויות שלך בהדרגה, עם תמיכה מתמשכת זמינה לאחר סיום השיעורים.'
-              : 'This comprehensive photography course offers personalized one-on-one instruction covering hands-on camera techniques through to advanced photo editing in Lightroom and Photoshop. Each session is structured to build your skills progressively, with continued support available after classes conclude.'
-            }
-          </p>
           <ul className={`space-y-2 text-muted-foreground ${language === 'he' ? 'text-right' : ''}`} dir={language === 'he' ? 'rtl' : 'ltr'}>
             <li className={language === 'he' ? 'flex flex-row-reverse justify-end' : ''}>
               {language === 'he' ? '• כל השיעורים הינם אחד על אחד' : '• All classes are one-on-one'}
@@ -127,6 +122,7 @@ export default function GuidingAndMentoring() {
                 <classItem.icon className="w-8 h-8 text-[#FF9500]" />
                 <div>
                   <h3 className="text-xl font-semibold">{language === 'he' ? classItem.titleHe : classItem.title}</h3>
+                  <p className="text-sm text-muted-foreground">{classItem.duration}</p>
                 </div>
               </div>
 
