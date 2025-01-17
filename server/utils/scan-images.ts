@@ -5,9 +5,9 @@ import { photos, categories } from "@db/schema";
 import { generateThumbnail } from "./image";
 import { eq } from 'drizzle-orm';
 
-export async function scanAndProcessImages() {
+export async function scanAndProcessImages(targetPath?: string) {
   try {
-    const assetsPath = path.join(process.cwd(), 'attached_assets');
+    const assetsPath = targetPath || path.join(process.cwd(), 'attached_assets');
     const excludedCategories = []; // Remove exclusions to allow all categories
 
     // Get all directories (categories)

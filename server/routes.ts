@@ -171,9 +171,10 @@ const getBeforeAfterSets = async (_req: express.Request, res: express.Response) 
   }
 };
 
-const scanPhotos = async (_req: express.Request, res: express.Response) => {
+const scanPhotos = async (req: express.Request, res: express.Response) => {
   try {
-    await scanAndProcessImages();
+    const targetPath = req.query.path ? path.join(process.cwd(), 'attached_assets', req.query.path as string) : undefined;
+    await scanAndProcessImages(targetPath);
     res.json({ message: "Successfully scanned and processed all images" });
   } catch (error) {
     console.error('Error scanning images:', error);
