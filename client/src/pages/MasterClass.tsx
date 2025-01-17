@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
@@ -28,7 +27,7 @@ const classes = [
     icon: LuLightbulb,
     title: "Lightroom",
     duration: "2 hours",
-    price: "450 NIS",
+    price: "1 hour - 250 NIS | 2 hours - 450 NIS",
     topics: [
       "Importing RAW images",
       "Learning essential tools in Lightroom",
@@ -43,7 +42,7 @@ const classes = [
     icon: LuImage,
     title: "Basic Photoshop",
     duration: "2 hours",
-    price: "450 NIS",
+    price: "1 hour - 250 NIS | 2 hours - 450 NIS",
     topics: [
       "Transferring photos from Lightroom to Photoshop",
       "Learning key tools in Photoshop",
@@ -58,7 +57,7 @@ const classes = [
     icon: LuWand,
     title: "Advanced Photoshop",
     duration: "2 hours",
-    price: "450 NIS",
+    price: "1 hour - 250 NIS | 2 hours - 450 NIS",
     topics: [
       "Adding and editing clouds",
       "Body and face correction using Liquify",

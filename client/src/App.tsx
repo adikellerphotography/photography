@@ -39,9 +39,9 @@ function Router() {
         <Route path="/sessions" component={Sessions} />
         <Route path="/pricing" component={Pricing} />
         <Route path="/info" component={Info} />
+        <Route path="/master-class" component={MasterClass} />
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
-        <Route path="/master-class" component={MasterClass} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
