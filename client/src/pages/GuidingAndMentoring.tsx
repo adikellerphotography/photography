@@ -94,17 +94,17 @@ export default function GuidingAndMentoring() {
 
         <div className="bg-card p-6 rounded-lg shadow-md mb-8 border border-white/30">
           <h2 className="text-xl font-semibold mb-4">{language === 'he' ? 'מידע כללי' : 'General Info'}</h2>
-          <ul className="space-y-2 text-muted-foreground" dir={language === 'he' ? 'rtl' : 'ltr'}>
-            <li className={language === 'he' ? 'flex flex-row-reverse' : ''}>
+          <ul className={`space-y-2 text-muted-foreground ${language === 'he' ? 'text-right' : ''}`} dir={language === 'he' ? 'rtl' : 'ltr'}>
+            <li className={language === 'he' ? 'flex flex-row-reverse justify-start' : ''}>
               {language === 'he' ? 'כל השיעורים הינם אחד על אחד •' : '• All classes are one-on-one'}
             </li>
-            <li className={language === 'he' ? 'flex flex-row-reverse' : ''}>
+            <li className={language === 'he' ? 'flex flex-row-reverse justify-start' : ''}>
               {language === 'he' ? 'ההסברים מלווים בדוגמאות והדמיה על תמונות •' : '• Instructions include examples and demonstrations on photos'}
             </li>
-            <li className={language === 'he' ? 'flex flex-row-reverse' : ''}>
+            <li className={language === 'he' ? 'flex flex-row-reverse justify-start' : ''}>
               {language === 'he' ? 'זמין לשאלות גם לאחר השיעורים •' : '• Available for questions even after classes'}
             </li>
-            <li className={language === 'he' ? 'flex flex-row-reverse' : ''}>
+            <li className={language === 'he' ? 'flex flex-row-reverse justify-start' : ''}>
               {language === 'he' ? 'מומלץ להגיע עם מחשב נייד ומחברת •' : '• Recommended to bring a laptop and notebook'}
             </li>
           </ul>
