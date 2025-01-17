@@ -39,7 +39,7 @@ function Router() {
         <Route path="/sessions" component={Sessions} />
         <Route path="/pricing" component={Pricing} />
         <Route path="/info" component={Info} />
-        <Route path="/master-class" component={MasterClass} />
+        <Route path="/guiding-and-mentoring" component={GuidingAndMentoring} />
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
         <Route component={NotFound} />

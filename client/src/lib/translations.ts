@@ -106,8 +106,8 @@ export const translations = {
           "All raw material included"
         ]
       },
-      masterClass: {
-        title: "Photography & Image Editing Classes",
+      guidingAndMentoring: {
+        title: "Guiding and Mentoring",
         generalInfo: "General Information",
         price: "Price",
         topics: "Topics covered",
@@ -270,8 +270,8 @@ export const translations = {
           "כולל את כל חומר הגלם"
         ]
       },
-      masterClass: {
-        title: "שיעורי צילום ועיבוד תמונה",
+      guidingAndMentoring: {
+        title: "ליווי והדרכה",
         generalInfo: "מידע כללי",
         price: "מחיר",
         topics: "נושאי הלימוד",
