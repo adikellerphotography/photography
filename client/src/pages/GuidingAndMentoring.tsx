@@ -11,16 +11,16 @@ const classes = [
     title: "Practical Field Workshop",
     titleHe: "סדנת צילום מעשית",
     duration: "1-2 hours",
-    price: "1 hour - 250 NIS | 2 hours - 450 NIS",
+    price: "1 hour - 250₪ | 2 hours - 450₪",
     topics: [
-      "Location selection",
-      "Shooting in light, shade, and backlight",
-      "Working with shallow/narrow depth of field",
-      "Using different lenses",
-      "Creating emotion and interest in photos",
-      "Solid background work",
-      "Motion photography",
-      "Using reflectors"
+      language === 'he' ? "בחירת לוקיישן" : "Location selection",
+      language === 'he' ? "צילום באור, צל ותאורה אחורית" : "Shooting in light, shade, and backlight",
+      language === 'he' ? "עבודה עם עומק שדה רדוד/צר" : "Working with shallow/narrow depth of field",
+      language === 'he' ? "שימוש בעדשות שונות" : "Using different lenses",
+      language === 'he' ? "יצירת רגש ועניין בתמונות" : "Creating emotion and interest in photos",
+      language === 'he' ? "עבודה עם רקע מוצק" : "Solid background work",
+      language === 'he' ? "צילום תנועה" : "Motion photography",
+      language === 'he' ? "שימוש ברפלקטורים" : "Using reflectors"
     ],
     bonus: "Rich set of Overlays including clouds, autumn leaves, water effects, butterflies, and more"
   },
@@ -30,14 +30,14 @@ const classes = [
     title: "Lightroom",
     titleHe: "לייטרום",
     duration: "2 hours",
-    price: "1 hour - 250 NIS | 2 hours - 450 NIS",
+    price: "1 hour - 250₪ | 2 hours - 450₪",
     topics: [
-      "Importing RAW images",
-      "Learning essential tools in Lightroom",
-      "Complete photo editing process",
-      "Subject/Sky detection (new feature)",
-      "Copying edit settings between photos",
-      "Structured photo workflow"
+      language === 'he' ? "ייבוא תמונות RAW" : "Importing RAW images",
+      language === 'he' ? "למידת כלים חיוניים בלייטרום" : "Learning essential tools in Lightroom",
+      language === 'he' ? "תהליך עריכת תמונה מלא" : "Complete photo editing process",
+      language === 'he' ? "זיהוי נושא/שמיים (תכונה חדשה)" : "Subject/Sky detection (new feature)",
+      language === 'he' ? "העתקת הגדרות עריכה בין תמונות" : "Copying edit settings between photos",
+      language === 'he' ? "זרימת עבודה מובנית" : "Structured photo workflow"
     ]
   },
   {
@@ -46,14 +46,14 @@ const classes = [
     title: "Basic Photoshop",
     titleHe: "פוטושופ בסיסי",
     duration: "2 hours",
-    price: "1 hour - 250 NIS | 2 hours - 450 NIS",
+    price: "1 hour - 250₪ | 2 hours - 450₪",
     topics: [
-      "Transferring photos from Lightroom to Photoshop",
-      "Learning key tools in Photoshop",
-      "Working with layers",
-      "Essential keyboard shortcuts",
-      "Adding elements (Overlay and Brush)",
-      "Structured photo workflow"
+      language === 'he' ? "העברת תמונות מלייטרום לפוטושופ" : "Transferring photos from Lightroom to Photoshop",
+      language === 'he' ? "למידת כלים עיקריים בפוטושופ" : "Learning key tools in Photoshop",
+      language === 'he' ? "עבודה עם שכבות" : "Working with layers",
+      language === 'he' ? "קיצורי מקלדת חיוניים" : "Essential keyboard shortcuts",
+      language === 'he' ? "הוספת אלמנטים (שכבת-על ומברשת)" : "Adding elements (Overlay and Brush)",
+      language === 'he' ? "זרימת עבודה מובנית" : "Structured photo workflow"
     ]
   },
   {
@@ -62,17 +62,17 @@ const classes = [
     title: "Advanced Photoshop",
     titleHe: "פוטושופ מתקדם",
     duration: "2 hours",
-    price: "1 hour - 250 NIS | 2 hours - 450 NIS",
+    price: "1 hour - 250₪ | 2 hours - 450₪",
     topics: [
-      "Adding and editing clouds",
-      "Body and face correction using Liquify",
-      "Background detail removal techniques",
-      "Professional face retouching",
-      "Mirror effect technique",
-      "Advanced lighting techniques",
-      "Dodge and Burn technique",
-      "Working with warm tones",
-      "Creating water effects and reflections"
+      language === 'he' ? "הוספה ועריכת עננים" : "Adding and editing clouds",
+      language === 'he' ? "תיקוני גוף ופנים באמצעות Liquify" : "Body and face correction using Liquify",
+      language === 'he' ? "טכניקות להסרת פרטי רקע" : "Background detail removal techniques",
+      language === 'he' ? "ריטוש פנים מקצועי" : "Professional face retouching",
+      language === 'he' ? "טכניקת אפקט מראה" : "Mirror effect technique",
+      language === 'he' ? "טכניקות תאורה מתקדמות" : "Advanced lighting techniques",
+      language === 'he' ? "טכניקת Dodge and Burn" : "Dodge and Burn technique",
+      language === 'he' ? "עבודה עם גוונים חמים" : "Working with warm tones",
+      language === 'he' ? "יצירת אפקטים של מים והשתקפויות" : "Creating water effects and reflections"
     ]
   }
 ];
@@ -93,7 +93,7 @@ export default function GuidingAndMentoring() {
         </h1>
 
         <div className="bg-card p-6 rounded-lg shadow-md mb-8 border border-white/30">
-          <h2 className="text-xl font-semibold mb-4">{t("generalInfo") || "General Information"}</h2>
+          <h2 className="text-xl font-semibold mb-4">{t("generalInfo") || "General Info"}</h2>
           <ul className="space-y-2 text-muted-foreground" dir={language === 'he' ? 'rtl' : 'ltr'}>
             <li>• {language === 'he' ? 'כל השיעורים הינם אחד על אחד' : 'All classes are one-on-one'}</li>
             <li>• {language === 'he' ? 'ההסברים מלווים בדוגמאות והדמיה על תמונות' : 'Instructions include examples and demonstrations on photos'}</li>
