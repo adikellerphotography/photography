@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu, Home, Image, User, CreditCard, Info as InfoIcon, SplitSquareVertical, Mail } from "lucide-react";
+import { Menu, Home, Image, User, CreditCard, Info as InfoIcon, SplitSquareVertical, Mail, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "./ThemeToggle";
 import LanguageToggle from "./LanguageToggle";
@@ -18,7 +18,7 @@ export default function Navbar() {
     { href: "/gallery", label: language === "en" ? "Gallery" : "גלריה", icon: Image },
     { href: "/before-and-after", label: language === "en" ? "Before & After" : "לפני ואחרי", icon: SplitSquareVertical },
     { href: "/pricing", label: language === "en" ? "Pricing" : "מחירים", icon: CreditCard },
-    { href: "/info", label: language === "en" ? "Session Info" : "מידע על הצילומים", icon: InfoIcon },
+    { href: "/info", label: language === "en" ? "Session Info" : "מידע על הצילומים", icon: FileText },
     { href: "/sessions", label: language === "en" ? "Sessions" : "גלריות", icon: Image },
     { href: "/about", label: language === "en" ? "About" : "אודות", icon: InfoIcon },
     { href: "/contact", label: language === "en" ? "Contact Me" : "צור קשר", icon: Mail },
