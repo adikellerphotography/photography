@@ -86,6 +86,7 @@ const initializeServer = async () => {
     server.listen(PORT, "0.0.0.0", () => {
       log(`✨ Server running on port ${PORT}`);
       log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+      log(`🔗 Server URL: http://0.0.0.0:${PORT}`);
     });
 
     return server;
