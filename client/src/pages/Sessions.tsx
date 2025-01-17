@@ -189,7 +189,7 @@ export default function Sessions() {
                   <span className="text-sm text-[#1877F2] font-medium">{group.links.length} Sessions</span>
                 </div>
               </div>
-              <div className="flex flex-wrap gap-4">
+              <div className="grid grid-cols-3 md:flex md:flex-wrap gap-4">
                 {group.links.map((link) => (
                   <a
                     key={link.url}
@@ -201,8 +201,8 @@ export default function Sessions() {
                     onMouseLeave={() => setHoveredLink(null)}
                   >
                     <motion.div
-                      className="relative w-28 h-28 overflow-hidden rounded-lg"
-                      whileHover={isMobile ? {} : { scale: 2.5, zIndex: 50 }}
+                      className="relative w-full md:w-28 h-24 md:h-28 overflow-hidden rounded-lg"
+                      whileHover={isMobile ? {} : { scale: 3, zIndex: 50 }}
                       whileTap={isMobile ? { scale: 2.5, zIndex: 50 } : {}}
                       transition={{ duration: 0.2 }}
                     >
