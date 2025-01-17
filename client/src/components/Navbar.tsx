@@ -21,7 +21,7 @@ export default function Navbar() {
     { href: "/info", label: language === "en" ? "Session Info" : "מידע על הצילומים", icon: InfoIcon },
     { href: "/sessions", label: language === "en" ? "Sessions" : "גלריות", icon: Image },
     { href: "/about", label: language === "en" ? "About" : "אודות", icon: User },
-    { href: "/contact", label: language === "en" ? "Contact" : "צור קשר", icon: User }, // Added Contact link
+    { href: "/contact", label: language === "en" ? "Contact Me" : "צור קשר", icon: User },
   ];
 
   return (

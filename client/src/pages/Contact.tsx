@@ -43,7 +43,7 @@ export default function Contact() {
         className="container mx-auto px-4 py-16"
       >
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl font-bold mb-8 text-[#FF9500]">{t("contact.title")}</h1>
+          <h1 className="text-3xl font-bold mb-8 text-[#FF9500]">Contact Me</h1>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Contact Information */}
