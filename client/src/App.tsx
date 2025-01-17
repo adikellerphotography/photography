@@ -16,7 +16,7 @@ import { Toaster } from "@/components/ui/toaster";
 import React from 'react';
 import Sessions from "./pages/Sessions";
 import Contact from "@/pages/Contact";
-import MasterClass from "./pages/MasterClass";
+import GuidingAndMentoring from "./pages/GuidingAndMentoring";
 
 
 function Layout({ children }: { children: React.ReactNode }) {
