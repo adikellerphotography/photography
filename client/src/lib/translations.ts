@@ -29,7 +29,8 @@ export const translations = {
       pricing: "Pricing",
       info: "Session Info",
       about: "About",
-      sessions: "Sessions"
+      sessions: "Sessions",
+      contact: "Contact"
     },
     home: {
       title: "When Art Meets the Lens",

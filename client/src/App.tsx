@@ -15,6 +15,8 @@ import NotFound from "@/pages/not-found";
 import { Toaster } from "@/components/ui/toaster";
 import React from 'react';
 import Sessions from "./pages/Sessions"; // Added import for Sessions page
+import Contact from "@/pages/Contact"; //Import the Contact component
+
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -37,6 +39,7 @@ function Router() {
         <Route path="/pricing" component={Pricing} />
         <Route path="/info" component={Info} />
         <Route path="/about" component={About} />
+        <Route path="/contact" component={Contact} /> {/* Added Contact route */}
         <Route component={NotFound} />
       </Switch>
     </Layout>
