@@ -14,8 +14,9 @@ import Pricing from "@/pages/Pricing";
 import NotFound from "@/pages/not-found";
 import { Toaster } from "@/components/ui/toaster";
 import React from 'react';
-import Sessions from "./pages/Sessions"; // Added import for Sessions page
-import Contact from "@/pages/Contact"; //Import the Contact component
+import Sessions from "./pages/Sessions";
+import Contact from "@/pages/Contact";
+import MasterClass from "./pages/MasterClass";
 
 
 function Layout({ children }: { children: React.ReactNode }) {
@@ -35,11 +36,12 @@ function Router() {
         <Route path="/" component={Home} />
         <Route path="/gallery" component={Gallery} />
         <Route path="/before-and-after" component={BeforeAndAfter} />
-        <Route path="/sessions" component={Sessions} /> {/* Added Sessions route */}
+        <Route path="/sessions" component={Sessions} />
         <Route path="/pricing" component={Pricing} />
         <Route path="/info" component={Info} />
         <Route path="/about" component={About} />
-        <Route path="/contact" component={Contact} /> {/* Added Contact route */}
+        <Route path="/contact" component={Contact} />
+        <Route path="/master-class" component={MasterClass} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
