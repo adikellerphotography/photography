@@ -20,6 +20,7 @@ export default function Navbar() {
     { href: "/pricing", label: language === "en" ? "Pricing" : "מחירים", icon: CreditCard },
     { href: "/info", label: language === "en" ? "Session Info" : "מידע על הצילומים", icon: FileText },
     { href: "/sessions", label: language === "en" ? "Sessions" : "גלריות", icon: Image },
+    { href: "/facebook-galleries", label: language === "en" ? "Facebook Galleries" : "גלריות פייסבוק", icon: Image },
     { href: "/about", label: language === "en" ? "About" : "אודות", icon: InfoIcon },
     { href: "/contact", label: language === "en" ? "Contact Me" : "צור קשר", icon: Mail },
   ];

@@ -16,6 +16,7 @@ import { Toaster } from "@/components/ui/toaster";
 import React from 'react';
 import Sessions from "./pages/Sessions"; // Added import for Sessions page
 import Contact from "@/pages/Contact"; //Import the Contact component
+import FacebookGalleries from "@/pages/FacebookGalleries"; // Import Facebook Galleries component
 
 
 function Layout({ children }: { children: React.ReactNode }) {
@@ -39,7 +40,8 @@ function Router() {
         <Route path="/pricing" component={Pricing} />
         <Route path="/info" component={Info} />
         <Route path="/about" component={About} />
-        <Route path="/contact" component={Contact} /> {/* Added Contact route */}
+        <Route path="/contact" component={Contact} />
+        <Route path="/facebook-galleries" component={FacebookGalleries} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
