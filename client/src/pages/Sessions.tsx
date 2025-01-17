@@ -207,7 +207,7 @@ export default function Sessions() {
                       transition={{ duration: 0.2 }}
                     >
                       <img 
-                        src={`/attached_assets/facebook_posts_image/${group.name.toLowerCase()}/${link.number}.jpg`}
+                        src={`/attached_assets/facebook_posts_image/${group.name === "Bat Mitsva" ? "bat_mitsva" : group.name.toLowerCase()}/${link.number}.jpg`}
                         alt={`${group.name} session ${link.number}`}
                         className="w-full h-full object-cover"
                       />
