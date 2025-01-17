@@ -30,4 +30,4 @@ export const queryClient = new QueryClient({
 
 export const API_URL = process.env.NODE_ENV === 'production' 
   ? '/api' 
-  : 'http://0.0.0.0:5000/api';
+  : 'http://localhost:5000/api';
