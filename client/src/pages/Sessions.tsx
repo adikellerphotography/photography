@@ -245,8 +245,7 @@ export default function Sessions() {
                         <div 
                           className="w-full h-full rounded-lg"
                           style={{
-                            backgroundColor: 'rgba(255, 149, 0, 0.1)',
-                            border: '1px solid #FF9500'
+                            backgroundColor: 'rgba(0, 0, 0, 0.03)'
                           }}
                         />
                       )}
