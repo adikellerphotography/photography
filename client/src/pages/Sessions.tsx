@@ -213,7 +213,28 @@ export default function Sessions() {
                         zIndex: 50,
                         transformOrigin: "var(--transform-origin, center)"
                       } : {}}
-                      transition={{ duration: 0.2 }}
+                      transition={{ duration: 0.1 }}
+                      onTouchStart={(e) => {
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        const touch = e.touches[0];
+                        const viewportWidth = window.innerWidth;
+                        const viewportHeight = window.innerHeight;
+                        
+                        let originX = "center";
+                        let originY = "center";
+                        
+                        if (rect.left < viewportWidth * 0.3) originX = "left";
+                        if (rect.right > viewportWidth * 0.7) originX = "right";
+                        if (rect.top < viewportHeight * 0.3) originY = "top";
+                        if (rect.bottom > viewportHeight * 0.7) originY = "bottom";
+                        
+                        e.currentTarget.style.setProperty('--transform-origin', `${originX} ${originY}`);
+                      }}
+                      onTouchEnd={(e) => {
+                        const element = e.currentTarget;
+                        element.style.transform = 'none';
+                        e.preventDefault();
+                      }}
                       onMouseEnter={(e) => {
                         const rect = e.currentTarget.getBoundingClientRect();
                         const viewportWidth = window.innerWidth;
