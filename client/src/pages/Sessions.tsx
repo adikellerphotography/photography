@@ -208,12 +208,16 @@ export default function Sessions() {
                         zIndex: 50,
                         transformOrigin: "var(--transform-origin, center)"
                       }}
-                      whileTap={isMobile ? { 
-                        scale: 2.5, 
+                      animate={isMobile ? {
+                        scale: 1,
+                        zIndex: 1
+                      } : {}}
+                      whileTap={isMobile ? {
+                        scale: 2.5,
                         zIndex: 50,
                         transformOrigin: "var(--transform-origin, center)"
                       } : {}}
-                      transition={{ duration: 0.1 }}
+                      transition={{ duration: 0 }}
                       onTouchStart={(e) => {
                         const rect = e.currentTarget.getBoundingClientRect();
                         const touch = e.touches[0];
