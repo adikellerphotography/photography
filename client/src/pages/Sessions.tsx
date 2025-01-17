@@ -230,7 +230,7 @@ export default function Sessions() {
                         e.currentTarget.style.setProperty('--transform-origin', `${originX} ${originY}`);
                       }}
                     >
-                      {["Bat Mitsva", "Bar Mitsva", "Horses"].includes(group.name) ? (
+                      {["Bat Mitsva", "Bar Mitsva", "Horses", "Kids", "Family", "Big Family", "Sweet 16", "Purim", "Pregnancy", "Feminine", "Yoga", "Modeling"].includes(group.name) ? (
                         <img 
                           src={`/assets/facebook_posts_image/${group.name.toLowerCase().replace(' ', '_')}/${link.number}.jpg`}
                           alt={`${group.name} session ${link.number}`}
