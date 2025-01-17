@@ -9,10 +9,9 @@ const setupMiddleware = (app: express.Express) => {
 
   // CORS headers for development
   app.use((_req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     next();
   });
 
@@ -87,7 +86,6 @@ const initializeServer = async () => {
     server.listen(PORT, "0.0.0.0", () => {
       log(`✨ Server running on port ${PORT}`);
       log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-      log(`🔗 Server URL: http://0.0.0.0:${PORT}`);
     });
 
     return server;

@@ -1,36 +1,62 @@
+import { Switch, Route } from "wouter";
+import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Toaster } from "@/components/ui/toaster";
-import { queryClient } from "@/lib/queryClient";
+import { ThemeProvider } from "@/hooks/use-theme";
+import { LanguageProvider } from "@/hooks/use-language";
 import Navbar from "@/components/Navbar";
-import About from "@/pages/About";
-import Contact from "@/pages/Contact";
-import Gallery from "@/pages/Gallery";
-import Pricing from "@/pages/Pricing";
-import BeforeAndAfter from "@/pages/BeforeAndAfter";
-import Info from "@/pages/Info";
+import BackgroundPattern from "@/components/BackgroundPattern";
 import Home from "@/pages/Home";
+import Gallery from "@/pages/Gallery";
+import BeforeAndAfter from "@/pages/BeforeAndAfter";
+import About from "@/pages/About";
+import Info from "@/pages/Info";
+import Pricing from "@/pages/Pricing";
 import NotFound from "@/pages/not-found";
+import { Toaster } from "@/components/ui/toaster";
+import React from 'react';
+import Sessions from "./pages/Sessions"; // Added import for Sessions page
+import Contact from "@/pages/Contact"; //Import the Contact component
 
-export default function App() {
+
+function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <Router>
-        <div className="min-h-screen bg-background">
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/before-and-after" element={<BeforeAndAfter />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/info" element={<Info />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
-        <Toaster />
-      </Router>
-    </QueryClientProvider>
+    <div>
+      <BackgroundPattern />
+      <Navbar />
+      {children}
+    </div>
   );
 }
+
+function Router() {
+  return (
+    <Layout>
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/gallery" component={Gallery} />
+        <Route path="/before-and-after" component={BeforeAndAfter} />
+        <Route path="/sessions" component={Sessions} /> {/* Added Sessions route */}
+        <Route path="/pricing" component={Pricing} />
+        <Route path="/info" component={Info} />
+        <Route path="/about" component={About} />
+        <Route path="/contact" component={Contact} /> {/* Added Contact route */}
+        <Route component={NotFound} />
+      </Switch>
+    </Layout>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider defaultTheme="dark">
+      <LanguageProvider>
+        <QueryClientProvider client={queryClient}>
+          <Router />
+          <Toaster />
+        </QueryClientProvider>
+      </LanguageProvider>
+    </ThemeProvider>
+  );
+}
+
+export default App;

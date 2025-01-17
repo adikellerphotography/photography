@@ -4,7 +4,7 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       queryFn: async ({ queryKey }) => {
-        const res = await fetch(API_URL + (queryKey[0] as string), { // Modified to use API_URL
+        const res = await fetch(queryKey[0] as string, {
           credentials: "include",
         });
 
@@ -18,16 +18,13 @@ export const queryClient = new QueryClient({
 
         return res.json();
       },
-      retry: 2,
+      refetchInterval: false,
       refetchOnWindowFocus: false,
-      
+      staleTime: Infinity,
+      retry: false,
     },
     mutations: {
       retry: false,
     }
   },
 });
-
-export const API_URL = process.env.NODE_ENV === 'production' 
-  ? '/api' 
-  : 'http://localhost:5000/api';
