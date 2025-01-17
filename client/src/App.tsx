@@ -14,8 +14,9 @@ import Pricing from "@/pages/Pricing";
 import NotFound from "@/pages/not-found";
 import { Toaster } from "@/components/ui/toaster";
 import React from 'react';
-import Sessions from "./pages/Sessions"; // Added import for Sessions page
-import Contact from "@/pages/Contact"; //Import the Contact component
+import Sessions from "./pages/Sessions";
+import Contact from "@/pages/Contact";
+import FacebookGalleries from "@/pages/FacebookGalleries";
 
 
 function Layout({ children }: { children: React.ReactNode }) {
