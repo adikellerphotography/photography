@@ -3,37 +3,24 @@ import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
 import { SiFacebook } from "react-icons/si";
+import { sessionGroups } from "./Sessions";
+import { useIsMobile } from "@/hooks/use-mobile";
 
-interface SessionLink {
-  url: string;
-  number: number;
-  images: string[];
-}
-
-interface SessionGroup {
-  name: string;
-  links: SessionLink[];
-}
-
-const sessionGroups: SessionGroup[] = [
-  {
-    name: "Bat Mitsva",
-    links: [
-      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid032zVU11kqanfNEap8Q3iuJrbqo7zHzYY5dzFEb8yPJGR28csyd9H35Prn2vHR2h8Vl", number: 1, images: [
-        "/attached_assets/Bat_Mitsva/M68A0288-Edit Large.jpeg",
-        "/attached_assets/Bat_Mitsva/M68A0460-Edit-2 Large.jpeg",
-        "/attached_assets/Bat_Mitsva/M68A0544-Edit Large.jpeg",
-        "/attached_assets/Bat_Mitsva/M68A0765-Edit-Edit Large.jpeg"
-      ] },
-      // Add more links with images...
-    ]
-  },
-  // Add more groups...
-];
+const capitalizeWords = (str: string) => {
+  return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+};
 
 export default function FacebookGalleries() {
   const { t } = useTranslation();
   const { language } = useLanguage();
+  const isMobile = useIsMobile();
+
+  const getFacebookUrl = (url: string) => {
+    if (isMobile) {
+      return `fb://facewebmodal/f?href=${encodeURIComponent(url)}`;
+    }
+    return url;
+  };
 
   return (
     <div className="min-h-screen pt-8">
@@ -53,7 +40,7 @@ export default function FacebookGalleries() {
           {sessionGroups.map((group) => (
             <div key={group.name} className={`bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-white/30 ${language === 'he' ? 'rtl' : 'ltr'}`}>
               <div className="flex items-center gap-3 mb-4">
-                <h2 className="text-2xl font-semibold">{language === 'he' ? t(`sessions.${group.name}`) : group.name}</h2>
+                <h2 className="text-2xl font-semibold">{language === 'he' ? t(`sessions.${group.name}`) : capitalizeWords(group.name)}</h2>
                 <div className="flex items-center gap-2 bg-[#1877F2]/10 px-3 py-1 rounded-full">
                   <SiFacebook className="text-[#1877F2] w-4 h-4" />
                   <span className="text-sm text-[#1877F2] font-medium">{group.links.length} Posts</span>
@@ -63,23 +50,28 @@ export default function FacebookGalleries() {
                 {group.links.map((link) => (
                   <a
                     key={link.url}
-                    href={link.url}
+                    href={getFacebookUrl(link.url)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="relative group"
                   >
-                    <div className="grid grid-cols-2 gap-1 aspect-square overflow-hidden rounded-lg">
-                      {link.images.map((image, index) => (
-                        <img
-                          key={index}
-                          src={image}
-                          alt=""
-                          className="w-full h-full object-cover"
-                        />
+                    <div className="grid grid-cols-2 gap-1 aspect-square rounded-lg overflow-hidden bg-gray-100">
+                      {[1, 2, 3, 4].map((num) => (
+                        <div key={num} className="relative w-full h-full">
+                          <img
+                            src={`/attached_assets/${group.name.replace(/\s+/g, '_')}/${link.number}-${num}.jpg`}
+                            alt=""
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = '/attached_assets/placeholder.jpg';
+                            }}
+                          />
+                        </div>
                       ))}
                     </div>
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <span className="text-xl font-bold text-white">{link.number}</span>
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-lg">
+                      <span className="text-2xl font-bold text-white">{link.number}</span>
                     </div>
                   </a>
                 ))}
