@@ -9,6 +9,7 @@ const classes = [
     id: 1,
     icon: LuCamera,
     title: "Practical Field Workshop",
+    titleHe: "סדנת צילום מעשית",
     duration: "1-2 hours",
     price: "1 hour - 250 NIS | 2 hours - 450 NIS",
     topics: [
@@ -27,6 +28,7 @@ const classes = [
     id: 2,
     icon: LuLightbulb,
     title: "Lightroom",
+    titleHe: "לייטרום",
     duration: "2 hours",
     price: "1 hour - 250 NIS | 2 hours - 450 NIS",
     topics: [
@@ -42,6 +44,7 @@ const classes = [
     id: 3,
     icon: LuImage,
     title: "Basic Photoshop",
+    titleHe: "פוטושופ בסיסי",
     duration: "2 hours",
     price: "1 hour - 250 NIS | 2 hours - 450 NIS",
     topics: [
@@ -57,6 +60,7 @@ const classes = [
     id: 4,
     icon: LuWand,
     title: "Advanced Photoshop",
+    titleHe: "פוטושופ מתקדם",
     duration: "2 hours",
     price: "1 hour - 250 NIS | 2 hours - 450 NIS",
     topics: [
@@ -85,11 +89,11 @@ export default function GuidingAndMentoring() {
         className={`container mx-auto px-4 py-16 ${language === 'he' ? 'rtl text-right !font-heebo' : 'ltr text-left'}`}
       >
         <h1 className="text-3xl font-bold mb-8 text-[#FF9500]">
-          {t("guidingAndMentoring.title")}
+          {t("title") || "Photography & Image Editing Classes"}
         </h1>
 
         <div className="bg-card p-6 rounded-lg shadow-md mb-8 border border-white/30">
-          <h2 className="text-xl font-semibold mb-4">{t("guidingAndMentoring.generalInfo")}</h2>
+          <h2 className="text-xl font-semibold mb-4">{t("generalInfo") || "General Information"}</h2>
           <ul className="space-y-2 text-muted-foreground" dir={language === 'he' ? 'rtl' : 'ltr'}>
             <li>• {language === 'he' ? 'כל השיעורים הינם אחד על אחד' : 'All classes are one-on-one'}</li>
             <li>• {language === 'he' ? 'ההסברים מלווים בדוגמאות והדמיה על תמונות' : 'Instructions include examples and demonstrations on photos'}</li>
@@ -110,18 +114,18 @@ export default function GuidingAndMentoring() {
               <div className="flex items-center gap-3 mb-4">
                 <classItem.icon className="w-8 h-8 text-[#FF9500]" />
                 <div>
-                  <h3 className="text-xl font-semibold">{t(`guidingAndMentoring.class${classItem.id}.title`) || classItem.title}</h3>
+                  <h3 className="text-xl font-semibold">{language === 'he' ? classItem.titleHe : classItem.title}</h3>
                   <p className="text-sm text-muted-foreground">{classItem.duration}</p>
                 </div>
               </div>
 
               <div className="mb-4">
-                <div className="text-[#FF9500] font-semibold mb-1">{t("guidingAndMentoring.price")}</div>
+                <div className="text-[#FF9500] font-semibold mb-1">{t("price") || "Price"}</div>
                 <p className="text-muted-foreground">{classItem.price}</p>
               </div>
 
               <div>
-                <div className="text-[#FF9500] font-semibold mb-2">{t("guidingAndMentoring.topics")}</div>
+                <div className="text-[#FF9500] font-semibold mb-2">{t("topics") || "Topics"}</div>
                 <ul className="space-y-1">
                   {classItem.topics.map((topic, index) => (
                     <li key={index} className="text-sm text-muted-foreground">• {topic}</li>
@@ -131,7 +135,7 @@ export default function GuidingAndMentoring() {
 
               {classItem.bonus && (
                 <div className="mt-4">
-                  <div className="text-[#FF9500] font-semibold mb-1">{t("guidingAndMentoring.bonus")}</div>
+                  <div className="text-[#FF9500] font-semibold mb-1">{t("bonus") || "Bonus"}</div>
                   <p className="text-sm text-muted-foreground">{classItem.bonus}</p>
                 </div>
               )}
