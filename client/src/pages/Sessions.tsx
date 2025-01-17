@@ -230,9 +230,9 @@ export default function Sessions() {
                         e.currentTarget.style.setProperty('--transform-origin', `${originX} ${originY}`);
                       }}
                     >
-                      {group.name === "Bat Mitsva" && link.number <= 5 ? (
+                      {group.name === "Bat Mitsva" && link.number <= 14 ? (
                         <img 
-                          src={`/assets/facebook_posts_image/bat_mitsva/${link.number}.jpg`}
+                          src={`/attached_assets/facebook_posts_image/bat_mitsva/${link.number}.jpg`}
                           alt={`${group.name} session ${link.number}`}
                           className="w-full h-full object-cover"
                           onError={(e) => {
