@@ -35,7 +35,8 @@ function Router() {
         <Route path="/" component={Home} />
         <Route path="/gallery" component={Gallery} />
         <Route path="/before-and-after" component={BeforeAndAfter} />
-        <Route path="/sessions" component={Sessions} /> {/* Added Sessions route */}
+        <Route path="/sessions" component={Sessions} />
+        <Route path="/facebook-galleries" component={FacebookGalleries} />
         <Route path="/pricing" component={Pricing} />
         <Route path="/info" component={Info} />
         <Route path="/about" component={About} />

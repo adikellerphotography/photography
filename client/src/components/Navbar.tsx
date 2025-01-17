@@ -16,6 +16,7 @@ export default function Navbar() {
   const navigationItems = [
     { href: "/", label: language === "en" ? "Home" : "בית", icon: Home },
     { href: "/gallery", label: language === "en" ? "Gallery" : "גלריה", icon: Image },
+    { href: "/facebook-galleries", label: language === "en" ? "Facebook Galleries" : "גלריות פייסבוק", icon: SiFacebook },
     { href: "/before-and-after", label: language === "en" ? "Before & After" : "לפני ואחרי", icon: SplitSquareVertical },
     { href: "/pricing", label: language === "en" ? "Pricing" : "מחירים", icon: CreditCard },
     { href: "/info", label: language === "en" ? "Session Info" : "מידע על הצילומים", icon: FileText },
