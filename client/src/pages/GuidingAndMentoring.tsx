@@ -119,7 +119,7 @@ export default function GuidingAndMentoring() {
               transition={{ duration: 0.3 }}
               className="bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-white/30"
             >
-              <div className="flex items-center gap-3 mb-4">
+              <div className={`flex items-center gap-3 mb-4 ${language === 'he' ? 'flex-row-reverse justify-start' : ''}`}>
                 <classItem.icon className="w-8 h-8 text-[#FF9500]" />
                 <div>
                   <h3 className="text-xl font-semibold">{language === 'he' ? classItem.titleHe : classItem.title}</h3>
