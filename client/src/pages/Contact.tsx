@@ -95,7 +95,7 @@ export default function Contact() {
                     required
                     className="min-h-[120px]"
                   />
-                  <Button type="submit" className="w-full">
+                  <Button type="submit" className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800">
                     <Send className="w-4 h-4 mr-2" />
                     Send
                   </Button>
