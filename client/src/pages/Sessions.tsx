@@ -185,7 +185,7 @@ export default function Sessions() {
               <div className="mb-4">
                 <h2 className="text-2xl font-semibold">{language === 'he' ? t(`sessions.${group.name}`) : capitalizeWords(group.name)}</h2>
               </div>
-              <div className="grid grid-cols-3 md:flex md:flex-wrap gap-4">
+              <div className="grid grid-cols-3 md:grid-cols-6 gap-4 md:justify-start">
                 {group.links.map((link) => (
                   <a
                     key={link.url}
@@ -195,6 +195,11 @@ export default function Sessions() {
                     className="relative"
                     onMouseEnter={() => setHoveredLink(link.url)}
                     onMouseLeave={() => setHoveredLink(null)}
+                    onTouchEnd={() => {
+                      if (isMobile) {
+                        setHoveredLink(null);
+                      }
+                    }}
                   >
                     <motion.div
                       className="relative w-full md:w-28 h-24 md:h-28 overflow-hidden rounded-lg"
@@ -227,7 +232,7 @@ export default function Sessions() {
                     >
                       {group.name === "Bat Mitsva" && link.number <= 5 ? (
                         <img 
-                          src={`/assets/facebook_posts_image/bat_mitsva/${link.number}.jpg`}
+                          src={`/attached_assets/facebook_posts_image/bat_mitsva/${link.number}.jpg`}
                           alt={`${group.name} session ${link.number}`}
                           className="w-full h-full object-cover"
                           onError={(e) => {
