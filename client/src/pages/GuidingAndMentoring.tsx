@@ -95,16 +95,16 @@ export default function GuidingAndMentoring() {
           <h2 className="text-xl font-semibold mb-4">{language === 'he' ? 'מידע כללי' : 'General Info'}</h2>
           <ul className={`space-y-2 text-muted-foreground ${language === 'he' ? 'text-right' : ''}`} dir={language === 'he' ? 'rtl' : 'ltr'}>
             <li className={language === 'he' ? 'flex flex-row-reverse justify-end' : ''}>
-              {language === 'he' ? 'כל השיעורים הינם אחד על אחד •' : '• All classes are one-on-one'}
+              {language === 'he' ? '• כל השיעורים הינם אחד על אחד' : '• All classes are one-on-one'}
             </li>
             <li className={language === 'he' ? 'flex flex-row-reverse justify-end' : ''}>
-              {language === 'he' ? 'ההסברים מלווים בדוגמאות והדמיה על תמונות •' : '• Instructions include examples and demonstrations on photos'}
+              {language === 'he' ? '• ההסברים מלווים בדוגמאות והדמיה על תמונות' : '• Instructions include examples and demonstrations on photos'}
             </li>
             <li className={language === 'he' ? 'flex flex-row-reverse justify-end' : ''}>
-              {language === 'he' ? 'זמין לשאלות גם לאחר השיעורים •' : '• Available for questions even after classes'}
+              {language === 'he' ? '• זמין לשאלות גם לאחר השיעורים' : '• Available for questions even after classes'}
             </li>
             <li className={language === 'he' ? 'flex flex-row-reverse justify-end' : ''}>
-              {language === 'he' ? 'מומלץ להגיע עם מחשב נייד ומחברת •' : '• Recommended to bring a laptop and notebook'}
+              {language === 'he' ? '• מומלץ להגיע עם מחשב נייד ומחברת' : '• Recommended to bring a laptop and notebook'}
             </li>
           </ul>
         </div>
