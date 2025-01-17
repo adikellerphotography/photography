@@ -237,7 +237,8 @@ export function registerRoutes(app: Express): Server {
         return next();
       }
 
-      if (filePath.toLowerCase().endsWith('.jpg') || filePath.toLowerCase().endsWith('.jpeg')) {
+      if ((filePath.toLowerCase().endsWith('.jpg') || filePath.toLowerCase().endsWith('.jpeg')) 
+          && !filePath.includes('facebook_posts_image')) {
         const watermarkedImage = await addWatermark(filePath);
         res.type('image/jpeg');
         res.setHeader('Cache-Control', 'public, max-age=31536000');
