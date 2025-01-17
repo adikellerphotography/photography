@@ -18,14 +18,16 @@ export async function scanAndProcessImages(targetPath?: string) {
       !excludedCategories.includes(entry.name.replace(/_/g, ' ')) // Exclude specified categories
     );
 
-    console.log(`Found ${categoryDirs.length} category directories`);
+    console.log(`\n=== Starting Image Scan ===`);
+    console.log(`Found ${categoryDirs.length} category directories to process\n`);
 
     for (const dir of categoryDirs) {
       const categoryPath = dir.name;
       const categoryName = categoryPath.replace(/_/g, ' '); // Convert underscores to spaces for DB
       const fullPath = path.join(assetsPath, categoryPath);
 
-      console.log(`Processing category: ${categoryName} from path: ${categoryPath}`);
+      console.log(`\n>>> Processing category: ${categoryName}`);
+      console.log(`    Path: ${categoryPath}`);
 
       // Ensure category exists in database
       await db.insert(categories)
@@ -46,10 +48,12 @@ export async function scanAndProcessImages(targetPath?: string) {
         !file.includes('-thumb') // Exclude thumbnail files
       );
 
-      console.log(`Found ${imageFiles.length} images in ${categoryName}`);
+      console.log(`    Found ${imageFiles.length} images to process\n`);
 
       // Process each image
+      let processedCount = 0;
       for (const imageFile of imageFiles) {
+        processedCount++;
         try {
           // Check if image already exists in database
           const existingPhoto = await db.select()
@@ -77,15 +81,16 @@ export async function scanAndProcessImages(targetPath?: string) {
               displayOrder: 1
             });
 
-            console.log(`Added new photo: ${imageFile} in category ${categoryName}`);
+            console.log(`    [${processedCount}/${imageFiles.length}] Added: ${imageFile}`);
           }
         } catch (error) {
-          console.error(`Error processing image ${imageFile}:`, error);
+          console.error(`    [${processedCount}/${imageFiles.length}] Error processing ${imageFile}:`, error);
         }
       }
+      console.log(`\n    ✓ Completed ${categoryName}: ${processedCount} images processed\n`);
     }
 
-    console.log('Image scanning and processing complete');
+    console.log('\n=== Image scanning and processing complete ===\n');
   } catch (error) {
     console.error('Error scanning images:', error);
     throw error;
