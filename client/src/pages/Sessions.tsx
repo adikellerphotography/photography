@@ -208,38 +208,12 @@ export default function Sessions() {
                         zIndex: 50,
                         transformOrigin: "var(--transform-origin, center)"
                       }}
-                      animate={isMobile ? {
-                        scale: 1,
-                        zIndex: 1
-                      } : {}}
-                      whileTap={isMobile ? {
-                        scale: 2.5,
+                      whileTap={isMobile ? { 
+                        scale: 2.5, 
                         zIndex: 50,
                         transformOrigin: "var(--transform-origin, center)"
                       } : {}}
-                      transition={{ duration: 0 }}
-                      onTouchStart={(e) => {
-                        e.preventDefault(); // Prevent default touch behavior
-                        const rect = e.currentTarget.getBoundingClientRect();
-                        const viewportWidth = window.innerWidth;
-                        const viewportHeight = window.innerHeight;
-                        
-                        let originX = "center";
-                        let originY = "center";
-                        
-                        if (rect.left < viewportWidth * 0.3) originX = "left";
-                        if (rect.right > viewportWidth * 0.7) originX = "right";
-                        if (rect.top < viewportHeight * 0.3) originY = "top";
-                        if (rect.bottom > viewportHeight * 0.7) originY = "bottom";
-                        
-                        e.currentTarget.style.setProperty('--transform-origin', `${originX} ${originY}`);
-                      }}
-                      onContextMenu={(e) => e.preventDefault()} // Prevent context menu
-                      onTouchEnd={(e) => {
-                        e.preventDefault();
-                        const element = e.currentTarget;
-                        element.style.transform = 'none';
-                      }}
+                      transition={{ duration: 0.2 }}
                       onMouseEnter={(e) => {
                         const rect = e.currentTarget.getBoundingClientRect();
                         const viewportWidth = window.innerWidth;
