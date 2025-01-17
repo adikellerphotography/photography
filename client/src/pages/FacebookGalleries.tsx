@@ -24,16 +24,44 @@ const sessionGroups: SessionGroup[] = [
         url: "https://www.facebook.com/adi.keller.16/posts/pfbid032zVU11kqanfNEap8Q3iuJrbqo7zHzYY5dzFEb8yPJGR28csyd9H35Prn2vHR2h8Vl",
         number: 1,
         images: [
-          "/attached_assets/Bat_Mitsva/M68A0288-Edit Large.jpeg",
-          "/attached_assets/Bat_Mitsva/M68A0460-Edit-2 Large.jpeg",
-          "/attached_assets/Bat_Mitsva/M68A0544-Edit Large.jpeg",
-          "/attached_assets/Bat_Mitsva/M68A0765-Edit-Edit Large.jpeg"
+          "/assets/Bat_Mitsva/M68A0288-Edit Large.jpeg",
+          "/assets/Bat_Mitsva/M68A0460-Edit-2 Large.jpeg",
+          "/assets/Bat_Mitsva/M68A0544-Edit Large.jpeg",
+          "/assets/Bat_Mitsva/M68A0765-Edit-Edit Large.jpeg"
         ]
-      },
-      // Add more links with their respective images
+      }
     ]
   },
-  // Add other session groups
+  {
+    name: "Family",
+    links: [
+      {
+        url: "https://www.facebook.com/adi.keller.16/posts/pfbid0WQbN1Y8qMBDcGwVVErv87ydMq2qBuDMY1QWAcrtzSfZdcVRrx81cr6LrMM4HmQ2zl",
+        number: 1,
+        images: [
+          "/assets/Family/IMG_3472-Edit Large.jpeg",
+          "/assets/Family/IMG_7812-Edit-3 Large.jpeg",
+          "/assets/Family/IMG_7949-Edit Large.jpeg",
+          "/assets/Family/M68A0073-Edit Large.jpeg"
+        ]
+      }
+    ]
+  },
+  {
+    name: "Horses",
+    links: [
+      {
+        url: "https://www.facebook.com/adi.keller.16/posts/pfbid0378Rg2GuhDCxdJ2TtaNhmtgsRiH3hZ8obejJsFKs8hVGFGDfMqw4WhCA5yhqQ7TKjl",
+        number: 1,
+        images: [
+          "/assets/Horses/131013950_3532575663456976_669709130935509632_n.jpg",
+          "/assets/Horses/131026310_3532575490123660_1967417900678951125_n.jpg",
+          "/assets/Horses/131357687_3532575990123610_9100723896979190327_n.jpg",
+          "/assets/Horses/296985760_5389736637740860_6958474007824076057_n.jpg"
+        ]
+      }
+    ]
+  }
 ];
 
 const capitalizeWords = (str: string) => {
