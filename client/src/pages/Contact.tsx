@@ -47,7 +47,7 @@ export default function Contact() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Contact Information */}
-            <Card>
+            <Card className="bg-muted/50">
               <CardContent className="pt-6 space-y-4">
                 <div className="flex items-center gap-3">
                   <span className="text-xl font-semibold">Adi Keller</span>
@@ -72,7 +72,7 @@ export default function Contact() {
             </Card>
 
             {/* Contact Form */}
-            <Card className="bg-muted">
+            <Card className="bg-muted/50">
               <CardContent className="pt-6">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <Input
@@ -97,7 +97,7 @@ export default function Contact() {
                   />
                   <Button type="submit" className="w-full">
                     <Send className="w-4 h-4 mr-2" />
-                    {t("contact.send")}
+                    Send
                   </Button>
                 </form>
               </CardContent>
