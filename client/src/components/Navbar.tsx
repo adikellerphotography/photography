@@ -17,12 +17,12 @@ export default function Navbar() {
     { href: "/", label: language === "en" ? "Home" : "בית", icon: Home },
     { href: "/gallery", label: language === "en" ? "Gallery" : "גלריה", icon: Image },
     { href: "/before-and-after", label: language === "en" ? "Before & After" : "לפני ואחרי", icon: SplitSquareVertical },
-    { href: "/pricing", label: language === "en" ? "Pricing" : "מחירים", icon: CreditCard },
     { href: "/info", label: language === "en" ? "Session Info" : "מידע על הצילומים", icon: FileText },
     { href: "/sessions", label: language === "en" ? "Sessions" : "גלריות", icon: Image },
+    { href: "/pricing", label: language === "en" ? "Pricing" : "מחירים", icon: CreditCard },
+    { href: "/guiding-and-mentoring", label: language === "en" ? "Guiding & Mentoring" : "הדרכה וליווי", icon: User },
     { href: "/about", label: language === "en" ? "About" : "אודות", icon: InfoIcon },
-    { href: "/contact", label: language === "en" ? "Contact Me" : "צור קשר", icon: Mail },
-    { href: "/guiding-and-mentoring", label: language === "en" ? "Guiding & Mentoring" : "הדרכה וליווי אמן", icon: User } // Added Master Class navigation item
+    { href: "/contact", label: language === "en" ? "Contact Me" : "צור קשר", icon: Mail } // Added Master Class navigation item
   ];
 
   return (
