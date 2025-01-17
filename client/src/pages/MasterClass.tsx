@@ -81,7 +81,7 @@ export default function MasterClass() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`container mx-auto px-4 py-16 ${language === 'he' ? 'rtl text-right' : 'ltr text-left'}`}
+        className={`container mx-auto px-4 py-16 ${language === 'he' ? 'rtl text-right !font-heebo' : 'ltr text-left'}`}
       >
         <h1 className="text-3xl font-bold mb-8 text-[#FF9500]">
           {t("Photography") || "Photography & Image Editing Classes"}
@@ -89,11 +89,11 @@ export default function MasterClass() {
 
         <div className="bg-card p-6 rounded-lg shadow-md mb-8 border border-white/30">
           <h2 className="text-xl font-semibold mb-4">{t("General") || "General Information"}</h2>
-          <ul className="space-y-2 text-muted-foreground">
-            <li>• All classes are one-on-one</li>
-            <li>• Instructions include examples and demonstrations on photos</li>
-            <li>• Available for questions even after classes</li>
-            <li>• Recommended to bring a laptop and notebook</li>
+          <ul className="space-y-2 text-muted-foreground" dir={language === 'he' ? 'rtl' : 'ltr'}>
+            <li>• {language === 'he' ? 'כל השיעורים הינם אחד על אחד' : 'All classes are one-on-one'}</li>
+            <li>• {language === 'he' ? 'ההסברים מלווים בדוגמאות והדמיה על תמונות' : 'Instructions include examples and demonstrations on photos'}</li>
+            <li>• {language === 'he' ? 'זמין לשאלות גם לאחר השיעורים' : 'Available for questions even after classes'}</li>
+            <li>• {language === 'he' ? 'מומלץ להגיע עם מחשב נייד ומחברת' : 'Recommended to bring a laptop and notebook'}</li>
           </ul>
         </div>
 

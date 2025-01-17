@@ -270,6 +270,25 @@ export const translations = {
           "כולל את כל חומר הגלם"
         ]
       },
+      masterClass: {
+        title: "שיעורי צילום ועיבוד תמונה",
+        generalInfo: "מידע כללי",
+        price: "מחיר",
+        topics: "נושאי הלימוד",
+        bonus: "בונוס",
+        class1: {
+          title: "סדנה מעשית בשטח"
+        },
+        class2: {
+          title: "לייטרום"
+        },
+        class3: {
+          title: "פוטושופ בסיסי"
+        },
+        class4: {
+          title: "פוטושופ מתקדם"
+        }
+      },
       purim: {
         name: "צילומי פורים",
         price: "450₪",
