@@ -232,9 +232,10 @@ export default function MySessions() {
                     >
                       {["Bat Mitsva", "Bar Mitsva", "Horses", "Kids", "Family", "Big Family", "Sweet 16", "Purim", "Pregnancy", "Feminine", "Yoga", "Modeling"].includes(group.name) ? (
                         <img 
-                          src={`/assets/facebook_posts_image/${group.name.toLowerCase().replace(' ', '_')}/${link.number}.jpg`}
+                          src={`/assets/facebook_posts_image/${group.name.toLowerCase().replace(' ', '_')}/${link.number}.jpg?nocache=${Date.now()}`}
                           alt={`${group.name} session ${link.number}`}
                           className="w-full h-full object-cover"
+                          loading="lazy"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
                             target.style.backgroundColor = 'rgba(255, 149, 0, 0.1)';
