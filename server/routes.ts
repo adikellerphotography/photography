@@ -7,7 +7,7 @@ import path from "path";
 import express from "express";
 import { scanAndProcessImages } from "./utils/scan-images";
 import fs from "fs/promises";
-import { addWatermark } from "./utils/watermark";
+
 
 // Helper function to get the correct category path
 const getCategoryPath = (categoryName: string) => {
@@ -225,7 +225,7 @@ const togglePhotoLike = async (req: express.Request, res: express.Response) => {
 export function registerRoutes(app: Express): Server {
   const httpServer = createServer(app);
 
-  // Configure static file serving without watermark
+  // Configure static file serving
   const assetsPath = path.join(process.cwd(), 'attached_assets');
   app.use('/assets', express.static(assetsPath, {
     setHeaders: (res, filePath) => {
@@ -236,20 +236,12 @@ export function registerRoutes(app: Express): Server {
     }
   }));
 
-  // Add download endpoint
+  // Add download endpoint - simple file serve
   app.get('/download/:category/:filename', async (req, res) => {
     try {
       const { category, filename } = req.params;
       const filePath = path.join(assetsPath, category, filename);
-      const exists = await fs.access(filePath).then(() => true).catch(() => false);
-
-      if (!exists) {
-        return res.status(404).send('Image not found');
-      }
-
-      res.type('image/jpeg');
-      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-      return res.sendFile(filePath);
+      res.download(filePath);
     } catch (error) {
       console.error('Error serving download:', error);
       res.status(500).send('Error processing image');

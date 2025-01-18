@@ -1,3 +1,4 @@
+
 import sharp from 'sharp';
 
 export async function addWatermark(imagePath: string): Promise<Buffer> {
