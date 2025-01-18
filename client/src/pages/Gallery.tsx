@@ -20,7 +20,40 @@ export default function Gallery() {
   const [activeCategory, setActiveCategory] = useState<string>("");
   const [showLeftScroll, setShowLeftScroll] = useState(false);
   const [showRightScroll, setShowRightScroll] = useState(false);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
   const tabsListRef = useRef<HTMLDivElement>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.touches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!touchStart || !processedCategories) return;
+
+    const currentTouch = e.touches[0].clientX;
+    const diff = touchStart - currentTouch;
+
+    if (Math.abs(diff) > 50) {
+      const currentIndex = processedCategories.findIndex(c => c.name === activeCategory);
+      let newIndex = diff > 0 ? currentIndex + 1 : currentIndex - 1;
+
+      if (newIndex < 0) {
+        newIndex = processedCategories.length - 1;
+      } else if (newIndex >= processedCategories.length) {
+        newIndex = 0;
+      }
+
+      const newCategory = processedCategories[newIndex].name;
+      setActiveCategory(newCategory);
+      const newUrl = `/gallery?category=${encodeURIComponent(newCategory)}`;
+      window.history.pushState({ category: newCategory }, "", newUrl);
+      setTouchStart(null);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setTouchStart(null);
+  };
 
   // Define the allowed categories in the correct order
   const allowedCategories = ["Bat Mitsva", "Family", "Horses", "Modeling", "Women", "Yoga", "Kids"];
@@ -114,7 +147,12 @@ export default function Gallery() {
   }
 
   return (
-    <div className="min-h-screen pt-8">
+    <div 
+      className="min-h-screen pt-8"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       <motion.div
         initial="hidden"
         animate="visible"
