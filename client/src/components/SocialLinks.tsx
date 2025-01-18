@@ -1,3 +1,4 @@
+
 import { SiFacebook, SiInstagram, SiPinterest } from "react-icons/si";
 import { MdEmail } from "react-icons/md";
 import PhoneDialog from "./PhoneDialog";
@@ -27,7 +28,7 @@ export default function SocialLinks() {
   ];
 
   return (
-    <div className="flex gap-4 justify-center">
+    <div className="flex items-center gap-4 justify-center">
       {socialLinks.map(({ icon: Icon, href, label }) => (
         <a
           key={label}
@@ -41,6 +42,11 @@ export default function SocialLinks() {
         </a>
       ))}
       <PhoneDialog />
+      <img 
+        src="/my_logo.png" 
+        alt="Adi Keller Photography"
+        className="w-auto h-6 opacity-80 hover:opacity-100 transition-opacity"
+      />
     </div>
   );
 }
