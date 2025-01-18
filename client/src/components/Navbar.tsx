@@ -17,10 +17,10 @@ export default function Navbar() {
     { href: "/", label: language === "en" ? "Home" : "בית", icon: Home },
     { href: "/gallery", label: language === "en" ? "Gallery" : "גלריה", icon: Image },
     { href: "/before-and-after", label: language === "en" ? "Before & After" : "לפני ואחרי", icon: SplitSquareVertical },
-    { href: "/sessions", label: language === "en" ? "My Sessions" : "גלריות", icon: Image },
+    { href: "/sessions", label: language === "en" ? "My Sessions" : "גלריות", icon: User },
     { href: "/info", label: language === "en" ? "Guidelines" : "מידע על הצילומים", icon: FileText },
     { href: "/pricing", label: language === "en" ? "Pricing" : "מחירים", icon: CreditCard },
-    { href: "/workshop", label: language === "en" ? "Workshop" : "סדנאות", icon: SplitSquareVertical },
+    { href: "/workshop", label: language === "en" ? "Workshop" : "סדנאות", icon: Image },
     { href: "/about", label: language === "en" ? "About" : "אודות", icon: InfoIcon },
     { href: "/contact", label: language === "en" ? "Contact Me" : "צור קשר", icon: Mail } // Added Master Class navigation item
   ];
