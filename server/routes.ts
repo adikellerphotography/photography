@@ -29,7 +29,7 @@ const configureStaticFiles = (app: Express) => {
       } else if (filePath.toLowerCase().endsWith('.png')) {
         res.setHeader('Content-Type', 'image/png');
       }
-      res.setHeader('Cache-Control', 'public, max-age=31536000');
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable'); // Added immutable caching
     },
     dotfiles: 'ignore',
     fallthrough: true,
@@ -225,22 +225,14 @@ const togglePhotoLike = async (req: express.Request, res: express.Response) => {
 export function registerRoutes(app: Express): Server {
   const httpServer = createServer(app);
 
-  // Configure static file serving
-  const assetsPath = path.join(process.cwd(), 'attached_assets');
-  app.use('/assets', express.static(assetsPath, {
-    setHeaders: (res, filePath) => {
-      if (filePath.toLowerCase().endsWith('.jpg') || filePath.toLowerCase().endsWith('.jpeg')) {
-        res.setHeader('Content-Type', 'image/jpeg');
-      }
-      res.setHeader('Cache-Control', 'public, max-age=31536000');
-    }
-  }));
+  // Configure static file serving  - Enhanced for better caching
+  configureStaticFiles(app);
 
   // Add download endpoint - simple file serve
   app.get('/download/:category/:filename', async (req, res) => {
     try {
       const { category, filename } = req.params;
-      const filePath = path.join(assetsPath, category, filename);
+      const filePath = path.join(process.cwd(), 'attached_assets', category, filename);
       res.download(filePath);
     } catch (error) {
       console.error('Error serving download:', error);
@@ -302,7 +294,7 @@ export function registerRoutes(app: Express): Server {
 
       res.type('image/jpeg').sendFile(imagePath, {
         headers: {
-          'Cache-Control': 'public, max-age=31536000',
+          'Cache-Control': 'public, max-age=31536000, immutable', // Added immutable caching
           'Content-Type': 'image/jpeg'
         }
       });

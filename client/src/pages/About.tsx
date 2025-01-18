@@ -31,6 +31,9 @@ export default function About() {
                   className="object-cover w-full h-full"
                   width={300}
                   height={300}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
                   onLoad={(e) => {
                     const img = e.currentTarget;
                     img.style.opacity = '1';
