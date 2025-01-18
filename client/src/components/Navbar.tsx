@@ -57,6 +57,11 @@ export default function Navbar() {
             </NavigationMenuList>
             <LanguageToggle />
             <ThemeToggle />
+            <img
+              src="/logo-inverted.svg"
+              alt="Adi Keller Photography"
+              className="h-8 w-8 opacity-80 dark:invert"
+            />
           </div>
 
           {/* Mobile Navigation */}
