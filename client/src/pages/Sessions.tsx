@@ -185,7 +185,7 @@ export default function MySessions() {
               <div className="mb-4">
                 <h2 className="text-2xl font-semibold">{language === 'he' ? t(`sessions.${group.name}`) : capitalizeWords(group.name)}</h2>
               </div>
-              <div className="grid grid-cols-3 md:grid-cols-6 gap-4 md:justify-start">
+              <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {group.links.map((link) => (
                   <a
                     key={link.url}
@@ -202,7 +202,7 @@ export default function MySessions() {
                     }}
                   >
                     <motion.div
-                      className="relative w-full md:w-28 h-24 md:h-28 overflow-hidden rounded-lg"
+                      className="relative aspect-square w-full overflow-hidden rounded-lg"
                       whileHover={isMobile ? {} : { 
                         scale: 3, 
                         zIndex: 50,
