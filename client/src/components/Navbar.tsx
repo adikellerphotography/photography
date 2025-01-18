@@ -20,7 +20,7 @@ export default function Navbar() {
     { href: "/sessions", label: language === "en" ? "My Sessions" : "גלריות", icon: Image },
     { href: "/info", label: language === "en" ? "Guidelines" : "מידע על הצילומים", icon: FileText },
     { href: "/pricing", label: language === "en" ? "Pricing" : "מחירים", icon: CreditCard },
-    { href: "/guiding-and-mentoring", label: language === "en" ? "Guiding & Mentoring" : "הדרכה וליווי", icon: User },
+    { href: "/workshop", label: language === "en" ? "Workshop" : "סדנאות", icon: SplitSquareVertical },
     { href: "/about", label: language === "en" ? "About" : "אודות", icon: InfoIcon },
     { href: "/contact", label: language === "en" ? "Contact Me" : "צור קשר", icon: Mail } // Added Master Class navigation item
   ];

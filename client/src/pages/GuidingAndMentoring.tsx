@@ -1,9 +1,10 @@
+
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
 import { LuCamera, LuLightbulb, LuImage, LuWand } from "react-icons/lu";
 
-export default function GuidingAndMentoring() {
+export default function Workshop() {
   const { t } = useTranslation();
   const { language } = useLanguage();
 
@@ -87,7 +88,7 @@ export default function GuidingAndMentoring() {
         className={`container mx-auto px-4 py-16 ${language === 'he' ? 'rtl text-right !font-heebo' : 'ltr text-left'}`}
       >
         <h1 className="text-3xl font-bold mb-8 text-[#FF9500]">
-          {language === 'he' ? 'הדרכה וליווי' : 'Guiding and Mentoring'}
+          {language === 'he' ? 'סדנאות' : 'Workshop'}
         </h1>
 
         <div className="bg-card p-6 rounded-lg shadow-md mb-8 border border-white/30">
