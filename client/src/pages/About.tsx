@@ -21,21 +21,16 @@ export default function About() {
             <AspectRatio ratio={1}>
               <div className="relative w-full h-full overflow-hidden rounded-full">
                 <motion.img
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
                   src="/assets/IMG_1133.jpg"
                   alt=""
                   className="object-cover w-full h-full"
                   loading="eager"
                   decoding="async"
-                  priority={true}
+                  fetchpriority="high"
                   sizes="(max-width: 300px) 100vw, 300px"
-                  onLoad={(e) => {
-                    const img = e.target as HTMLImageElement;
-                    img.style.animation = "none";
-                    img.style.opacity = "1";
-                  }}
                 />
               </div>
             </AspectRatio>
