@@ -204,11 +204,7 @@ export default function MySessions() {
                   >
                     <motion.div
                       className="relative aspect-square w-full overflow-hidden rounded-lg"
-                      whileHover={isMobile ? {} : { 
-                        scale: 3, 
-                        zIndex: 50,
-                        transformOrigin: "var(--transform-origin, center)"
-                      }}
+                      whileHover={isMobile ? {} : {}}
                       whileTap={!isMobile ? {} : {
                         scale: 0.95
                       }}
