@@ -5,7 +5,7 @@ export default function BackgroundPattern() {
     <div className="fixed inset-0 -z-10 h-full w-full">
       <div className="absolute inset-0 bg-background bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(217,217,217,0.1),rgba(255,255,255,0))] dark:bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(255,255,255,0.03),rgba(0,0,0,0))]" />
       <svg
-        className="absolute inset-0 h-full w-full opacity-[0.12] dark:opacity-[0.18]"
+        className="absolute inset-0 h-full w-full opacity-[0.05] dark:opacity-[0.12]"
         viewBox="0 0 1000 1000"
         preserveAspectRatio="none"
       >
