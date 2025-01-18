@@ -251,7 +251,42 @@ export function registerRoutes(app: Express): Server {
   // API Routes
   app.get("/api/photos", getPhotos);
   app.get("/api/categories", getCategories);
-  app.get("/api/before-after", getBeforeAfterSets);
+  app.get("/api/before-after", async (_req, res) => {
+    try {
+      const beforeAfterPath = path.join(process.cwd(), 'attached_assets', 'before_and_after');
+      const files = await fs.readdir(beforeAfterPath);
+
+      const imageSets = [];
+      const imageMap = new Map();
+
+      files.forEach(file => {
+        if (file.endsWith(' Large.jpeg') || file.endsWith(' Large.jpg')) {
+          const base = file.replace(/-[12] Large\.(jpeg|jpg)$/, '');
+          imageMap.set(base, (imageMap.get(base) || '') + file);
+        }
+      });
+
+      let id = 1;
+      imageMap.forEach((_, key) => {
+        const beforeFile = files.find(f => f.startsWith(key) && f.includes('-1 Large'));
+        const afterFile = files.find(f => f.startsWith(key) && f.includes('-2 Large'));
+
+        if (beforeFile && afterFile) {
+          imageSets.push({
+            id: id++,
+            title: key.replace(/_/g, ' '),
+            beforeImage: `/assets/before_and_after/${beforeFile}`,
+            afterImage: `/assets/before_and_after/${afterFile}`
+          });
+        }
+      });
+
+      res.json(imageSets);
+    } catch (error) {
+      console.error('Error fetching before/after images:', error);
+      res.status(500).json({ error: "Failed to fetch before/after images" });
+    }
+  });
   app.post("/api/photos/scan", scanPhotos);
   app.post("/api/photos/:id/like", togglePhotoLike);
 

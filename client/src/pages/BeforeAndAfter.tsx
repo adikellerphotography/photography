@@ -78,8 +78,8 @@ export default function BeforeAndAfter() {
               className="space-y-4"
             >
               <ImageCompare
-                beforeImage={comparison.beforeImage}
-                afterImage={comparison.afterImage}
+                beforeImage={`${comparison.beforeImage}?noCache=${Date.now()}`}
+                afterImage={`${comparison.afterImage}?noCache=${Date.now()}`}
               />
             </motion.div>
           ))}
