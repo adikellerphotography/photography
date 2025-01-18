@@ -32,7 +32,7 @@ const sessionGroups: SessionGroup[] = [
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0AbV1GbY1N138PdEVes4CWAfQKZby4xJULmg5KLJYUN1zpmw7vs5yAhprL2TBmbkvl", number: 11 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid021Hf62pcxqcSWzZjsJ2UgZnz3TnjXTM4Xx6YtRTS1k1SS8bLQZxcjQDCCmHQhqQyrl", number: 12 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0RXdSHxLaGBm4RfgXhqYApXzdJQMEoyno9tykK2U4End79BTrdUTeGRcWebDrYGj4l", number: 13 },
-      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02HBAx8w5GRYa6z9ia97zvqeBhJCmuWjmT7ok35gWV9z9wJF4H2U8bn62B8nrzMN4sl", number: 14 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0HBAx8w5GRYa6z9ia97zvqeBhJCmuWjmT7ok35gWV9z9wJF4H2U8bn62B8nrzMN4l", number: 14 },
     ]
   },
   {
@@ -240,6 +240,19 @@ export default function MySessions() {
                       }}
                       onPointerUp={(e) => {
                         if (isMobile) {
+                          const element = e.currentTarget;
+                          element.style.position = '';
+                          element.style.left = '';
+                          element.style.top = '';
+                          element.style.transform = '';
+                          element.style.zIndex = '';
+                          element.style.width = '';
+                          element.style.height = '';
+                          element.style.boxShadow = '';
+                        }
+                      }}
+                      onClick={(e) => {
+                        if (e.currentTarget.style.zIndex === '100') {
                           const element = e.currentTarget;
                           element.style.position = '';
                           element.style.left = '';
