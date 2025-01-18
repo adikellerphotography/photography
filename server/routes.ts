@@ -255,7 +255,6 @@ export function registerRoutes(app: Express): Server {
   app.post("/api/photos/scan", scanPhotos);
   app.post("/api/photos/:id/like", togglePhotoLike);
 
-  // Watermarked photo route - removed watermarking
   app.get('/api/photos/:category/:filename', async (req, res) => {
     try {
       const { category, filename } = req.params;
