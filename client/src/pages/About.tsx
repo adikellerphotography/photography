@@ -23,7 +23,7 @@ export default function About() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8 }}
-                className="relative w-full h-full overflow-hidden rounded-full bg-muted"
+                className="relative w-full h-full overflow-hidden rounded-full"
               >
                 <img
                   src="/assets/IMG_1133.jpg"
