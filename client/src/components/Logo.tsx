@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 
 export default function Logo() {
@@ -7,7 +8,7 @@ export default function Logo() {
       animate={{ opacity: 1, y: 0 }}
       className="flex justify-center items-center my-8"
     >
-      <h2 className="font-logo text-4xl md:text-5xl text-[#C0C0C0] tracking-wider">
+      <h2 className="font-logo text-4xl md:text-5xl text-[#E67E00] tracking-wider">
         Adi Keller Photography
       </h2>
     </motion.div>
