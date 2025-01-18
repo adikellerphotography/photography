@@ -222,10 +222,11 @@ export default function MySessions() {
                               element.style.position = 'fixed';
                               element.style.left = '50%';
                               element.style.top = '50%';
-                              element.style.transform = 'translate(-50%, -50%) scale(3)';
+                              element.style.transform = 'translate(-50%, -50%) scale(0.9)';
                               element.style.zIndex = '100';
                               element.style.width = `${element.offsetWidth}px`;
                               element.style.height = `${element.offsetHeight}px`;
+                              element.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.3)';
                             }
                           }, 500);
 
@@ -247,6 +248,7 @@ export default function MySessions() {
                           element.style.zIndex = '';
                           element.style.width = '';
                           element.style.height = '';
+                          element.style.boxShadow = '';
                         }
                       }}
                       transition={{ duration: 0.2 }}
