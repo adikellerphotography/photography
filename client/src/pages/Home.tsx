@@ -157,7 +157,7 @@ export default function Home() {
             <img 
               src="/signature-inverted.svg"
               alt="Adi Keller Signature"
-              className="mt-8 h-12 w-auto opacity-80 dark:invert"
+              className="mt-8 h-24 mx-auto w-auto opacity-80 dark:invert"
             />
           </div>
         </motion.div>
