@@ -1,4 +1,3 @@
-
 import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -14,21 +13,13 @@ import Info from "@/pages/Info";
 import Pricing from "@/pages/Pricing";
 import NotFound from "@/pages/not-found";
 import { Toaster } from "@/components/ui/toaster";
-import React, { useEffect } from 'react';
+import React from 'react';
 import Sessions from "./pages/Sessions";
 import Contact from "@/pages/Contact";
 import GuidingAndMentoring from "./pages/GuidingAndMentoring";
 
-function updateScrollPosition() {
-  document.documentElement.style.setProperty('--scroll-offset', `${window.scrollY}px`);
-  requestAnimationFrame(updateScrollPosition);
-}
 
 function Layout({ children }: { children: React.ReactNode }) {
-  useEffect(() => {
-    requestAnimationFrame(updateScrollPosition);
-  }, []);
-
   return (
     <div>
       <BackgroundPattern />
@@ -57,7 +48,7 @@ function Router() {
   );
 }
 
-export default function App() {
+function App() {
   return (
     <ThemeProvider defaultTheme="dark">
       <LanguageProvider>
@@ -69,3 +60,5 @@ export default function App() {
     </ThemeProvider>
   );
 }
+
+export default App;
