@@ -193,11 +193,12 @@ export default function MySessions() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="relative"
-                    onMouseEnter={() => setHoveredLink(link.url)}
-                    onMouseLeave={() => setHoveredLink(null)}
-                    onTouchEnd={() => {
+                    onMouseEnter={() => !isMobile && setHoveredLink(link.url)}
+                    onMouseLeave={() => !isMobile && setHoveredLink(null)}
+                    onClick={(e) => {
                       if (isMobile) {
-                        setHoveredLink(null);
+                        e.preventDefault();
+                        window.location.href = getFacebookUrl(link.url);
                       }
                     }}
                   >
@@ -208,11 +209,42 @@ export default function MySessions() {
                         zIndex: 50,
                         transformOrigin: "var(--transform-origin, center)"
                       }}
-                      whileTap={isMobile ? { 
-                        scale: 2.5, 
-                        zIndex: 50,
-                        transformOrigin: "var(--transform-origin, center)"
-                      } : {}}
+                      whileTap={!isMobile ? {} : {
+                        scale: 0.95
+                      }}
+                      onPointerDown={(e) => {
+                        if (isMobile) {
+                          const timer = setTimeout(() => {
+                            const element = e.currentTarget;
+                            const rect = element.getBoundingClientRect();
+                            const viewportWidth = window.innerWidth;
+                            const viewportHeight = window.innerHeight;
+                            
+                            element.style.position = 'fixed';
+                            element.style.left = '50%';
+                            element.style.top = '50%';
+                            element.style.transform = 'translate(-50%, -50%) scale(2.5)';
+                            element.style.zIndex = '100';
+                          }, 500);
+
+                          const cleanup = () => {
+                            clearTimeout(timer);
+                            document.removeEventListener('pointerup', cleanup);
+                          };
+
+                          document.addEventListener('pointerup', cleanup);
+                        }
+                      }}
+                      onPointerUp={(e) => {
+                        if (isMobile) {
+                          const element = e.currentTarget;
+                          element.style.position = '';
+                          element.style.left = '';
+                          element.style.top = '';
+                          element.style.transform = '';
+                          element.style.zIndex = '';
+                        }
+                      }}
                       transition={{ duration: 0.2 }}
                       onMouseEnter={(e) => {
                         const rect = e.currentTarget.getBoundingClientRect();
