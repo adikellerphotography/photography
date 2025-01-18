@@ -28,10 +28,7 @@ export default function About() {
                 <img
                   src="/assets/IMG_1133.jpg"
                   alt="Profile"
-                  className="object-cover w-full h-full transform-gpu"
-                  loading="eager"
-                  decoding="sync"
-                  fetchPriority="high"
+                  className="object-cover w-full h-full"
                   width={300}
                   height={300}
                   onLoad={(e) => {
@@ -40,9 +37,7 @@ export default function About() {
                   }}
                   style={{ 
                     opacity: 0,
-                    transition: 'opacity 0.8s ease-in-out',
-                    transform: 'translate3d(0, 0, 0)',
-                    willChange: 'opacity'
+                    transition: 'opacity 0.8s ease-in-out'
                   }}
                 />
               </motion.div>
