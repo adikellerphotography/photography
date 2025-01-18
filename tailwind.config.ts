@@ -4,9 +4,6 @@ export default {
   darkMode: ["class"],
   content: ["./client/index.html", "./client/src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    fontFamily: {
-      'alex': ['Alex Brush', 'cursive'],
-    },
     extend: {
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in',

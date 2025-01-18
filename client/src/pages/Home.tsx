@@ -8,7 +8,6 @@ import type { Category } from "@/lib/types";
 import SocialLinks from "@/components/SocialLinks";
 import { useTranslation } from "@/hooks/use-translation";
 import { useEffect } from "react";
-import Logo from "@/components/Logo";
 import { Camera, Aperture, SplitSquareVertical } from "lucide-react";
 
 export default function Home() {
@@ -155,7 +154,6 @@ export default function Home() {
             </h1>
             <p className="text-lg">{t("home.subtitle")}</p>
             <SocialLinks />
-            <Logo />
           </div>
         </motion.div>
       </section>
