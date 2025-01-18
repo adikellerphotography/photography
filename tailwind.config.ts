@@ -6,6 +6,7 @@ export default {
   theme: {
     fontFamily: {
       'alex': ['Alex Brush', 'cursive'],
+      'sans': ['Quicksand', 'ui-sans-serif', 'system-ui', 'sans-serif'],
     },
     extend: {
       animation: {
