@@ -219,6 +219,18 @@ export default function MySessions() {
                             if (element) {
                               const viewportWidth = window.innerWidth;
                               const viewportHeight = window.innerHeight;
+                              
+                              // Create overlay
+                              const overlay = document.createElement('div');
+                              overlay.style.position = 'fixed';
+                              overlay.style.top = '0';
+                              overlay.style.left = '0';
+                              overlay.style.width = '100%';
+                              overlay.style.height = '100%';
+                              overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+                              overlay.style.zIndex = '99';
+                              document.body.appendChild(overlay);
+                              
                               element.style.position = 'fixed';
                               element.style.left = '50%';
                               element.style.top = '50%';
@@ -227,6 +239,23 @@ export default function MySessions() {
                               element.style.width = `${element.offsetWidth}px`;
                               element.style.height = `${element.offsetHeight}px`;
                               element.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.3)';
+
+                              const closeExpandedImage = (e: Event) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                element.style.position = '';
+                                element.style.left = '';
+                                element.style.top = '';
+                                element.style.transform = '';
+                                element.style.zIndex = '';
+                                element.style.width = '';
+                                element.style.height = '';
+                                element.style.boxShadow = '';
+                                document.body.removeChild(overlay);
+                                overlay.removeEventListener('click', closeExpandedImage);
+                              };
+
+                              overlay.addEventListener('click', closeExpandedImage);
                             }
                           }, 500);
 
