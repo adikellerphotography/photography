@@ -19,18 +19,33 @@ export default function About() {
           {/* Portrait Image Section */}
           <div className="mb-12 w-full max-w-[300px] mx-auto">
             <AspectRatio ratio={1}>
-              <div className="relative w-full h-full overflow-hidden rounded-full">
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.2 }}
+                className="relative w-full h-full overflow-hidden rounded-full bg-muted"
+              >
                 <img
                   src="/assets/IMG_1133.jpg"
                   alt="Profile"
-                  className="object-cover w-full h-full"
+                  className="object-cover w-full h-full transform-gpu"
                   loading="eager"
                   decoding="sync"
+                  fetchPriority="high"
                   width={300}
                   height={300}
-                  style={{ transform: 'translate3d(0, 0, 0)' }}
+                  onLoad={(e) => {
+                    const img = e.currentTarget;
+                    img.style.opacity = '1';
+                  }}
+                  style={{ 
+                    opacity: 0,
+                    transition: 'opacity 0.2s ease-in-out',
+                    transform: 'translate3d(0, 0, 0)',
+                    willChange: 'opacity'
+                  }}
                 />
-              </div>
+              </motion.div>
             </AspectRatio>
           </div>
 
