@@ -265,7 +265,12 @@ export function registerRoutes(app: Express): Server {
         return res.status(404).send('Image not found');
       }
 
-      res.type('image/jpeg').sendFile(imagePath);
+      res.type('image/jpeg').sendFile(imagePath, {
+        headers: {
+          'Cache-Control': 'public, max-age=31536000',
+          'Content-Type': 'image/jpeg'
+        }
+      });
     } catch (error) {
       console.error('Error serving image:', error);
       res.status(500).send('Error processing image');
