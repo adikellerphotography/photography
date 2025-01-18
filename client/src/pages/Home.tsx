@@ -154,6 +154,11 @@ export default function Home() {
             </h1>
             <p className="text-lg">{t("home.subtitle")}</p>
             <SocialLinks />
+            <img 
+              src="/my_logo.png" 
+              alt="Adi Keller Photography"
+              className="w-auto h-12 opacity-80 hover:opacity-100 transition-opacity mt-4"
+            />
           </div>
         </motion.div>
       </section>
