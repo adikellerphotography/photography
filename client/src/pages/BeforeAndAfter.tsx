@@ -68,7 +68,7 @@ export default function BeforeAndAfter() {
           {t("beforeAfter.description")}
         </p>
 
-        <div className="hidden md:grid grid-cols-3 gap-8 container mx-auto">
+        <div className="hidden md:grid grid-cols-2 gap-8 container mx-auto">
           {comparisons.map((comparison) => (
             <motion.div
               key={comparison.id}
