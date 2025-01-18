@@ -239,6 +239,15 @@ export default function Home() {
           </div>
         </motion.div>
       </section>
+
+      {/* Contact Button */}
+      <section className="container mx-auto px-4 pb-16 text-center">
+        <Link href="/contact">
+          <Button className="bg-[#FF9500] hover:bg-[#E67E00] text-white text-lg px-8 py-6">
+            {t("contact.contactMe")}
+          </Button>
+        </Link>
+      </section>
     </div>
   );
 }
