@@ -223,11 +223,6 @@ export default function Home() {
                               <h3 className="text-xl font-semibold text-white">
                                 {category.name}
                               </h3>
-                              {category.description && (
-                                <p className="text-sm text-white/80">
-                                  {category.description}
-                                </p>
-                              )}
                             </div>
                           </div>
                         </div>
