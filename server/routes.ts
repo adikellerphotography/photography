@@ -236,7 +236,7 @@ export function registerRoutes(app: Express): Server {
     }
   }));
 
-  // Add download endpoint with watermark
+  // Add download endpoint
   app.get('/download/:category/:filename', async (req, res) => {
     try {
       const { category, filename } = req.params;
@@ -247,12 +247,11 @@ export function registerRoutes(app: Express): Server {
         return res.status(404).send('Image not found');
       }
 
-      const watermarkedImage = await addWatermark(filePath, true); //Added true here to add watermark for downloads
       res.type('image/jpeg');
       res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-      return res.send(watermarkedImage);
+      return res.sendFile(filePath);
     } catch (error) {
-      console.error('Error serving watermarked download:', error);
+      console.error('Error serving download:', error);
       res.status(500).send('Error processing image');
     }
   });
