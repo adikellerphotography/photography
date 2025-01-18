@@ -1,7 +1,6 @@
-
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/hooks/use-language";
-import { Languages, Globe } from "lucide-react";
+import { GlobeIcon } from "lucide-react";
 
 export default function LanguageToggle() {
   const { language, setLanguage } = useLanguage();
@@ -11,11 +10,10 @@ export default function LanguageToggle() {
       variant="ghost"
       size="icon"
       onClick={() => setLanguage(language === "en" ? "he" : "en")}
-      className="w-10 h-10 relative"
+      className="w-10 h-10 flex items-center justify-center relative"
       title={language === "en" ? "Switch to Hebrew" : "Switch to English"}
     >
-      <Languages className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-      <Globe className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+      <GlobeIcon className="h-[1.2rem] w-[1.2rem] transition-all duration-200 hover:rotate-12" />
       <span className="sr-only">
         {language === "en" ? "Switch to Hebrew" : "Switch to English"}
       </span>
