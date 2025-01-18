@@ -245,7 +245,7 @@ export default function Home() {
       <section className="container mx-auto px-4 pb-16 text-center">
         <Link href="/contact">
           <Button className="bg-white hover:bg-gray-100 text-gray-800 text-lg px-8 py-6 border border-gray-300 shadow-sm hover:shadow-md transition-all">
-            {t("contact.contactMe")}
+            Contact Me
           </Button>
         </Link>
       </section>

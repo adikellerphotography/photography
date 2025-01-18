@@ -20,17 +20,11 @@ export default function About() {
           <div className="mb-12 w-full max-w-[300px] mx-auto">
             <AspectRatio ratio={1}>
               <div className="relative w-full h-full overflow-hidden rounded-full">
-                <motion.img
-                  initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
+                <img
                   src="/assets/IMG_1133.jpg"
                   alt=""
                   className="object-cover w-full h-full"
                   loading="eager"
-                  decoding="async"
-                  fetchpriority="high"
-                  sizes="(max-width: 300px) 100vw, 300px"
                 />
               </div>
             </AspectRatio>
