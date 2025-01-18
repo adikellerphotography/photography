@@ -5,7 +5,7 @@ export default {
   content: ["./client/index.html", "./client/src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     fontFamily: {
-      'logo': ['Great Vibes', 'cursive'],
+      'logo': ['Playfair Display', 'serif'],
       'sans': ['Quicksand', 'ui-sans-serif', 'system-ui', 'sans-serif'],
     },
     extend: {
