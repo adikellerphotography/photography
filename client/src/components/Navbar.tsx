@@ -70,7 +70,7 @@ export default function Navbar() {
           {/* Mobile Navigation */}
           <div className="md:hidden flex items-center ml-auto">
             {/* Theme and Language toggles */}
-            <div className="flex items-center gap-2 mr-auto px-4">
+            <div className="flex items-center gap-2 px-4">
               <LanguageToggle />
               <ThemeToggle />
             </div>
@@ -81,7 +81,7 @@ export default function Navbar() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-14 w-14 rounded-none border-l bg-accent/60 hover:bg-accent/80 transition-colors"
+                  className="h-14 w-14 rounded-none border-l bg-accent/60 hover:bg-accent/80 transition-colors fixed top-0 right-0"
                 >
                   <Menu className="h-5 w-5" />
                   <span className="sr-only">Toggle menu</span>
