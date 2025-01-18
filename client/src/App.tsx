@@ -1,3 +1,19 @@
+
+import { useEffect } from 'react';
+
+function updateScrollPosition() {
+  document.documentElement.style.setProperty('--scroll-offset', `${window.scrollY}px`);
+  requestAnimationFrame(updateScrollPosition);
+}
+
+export default function App({ children }: { children: React.ReactNode }) {
+  useEffect(() => {
+    requestAnimationFrame(updateScrollPosition);
+  }, []);
+
+  return <>{children}</>;
+}
+
 import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
