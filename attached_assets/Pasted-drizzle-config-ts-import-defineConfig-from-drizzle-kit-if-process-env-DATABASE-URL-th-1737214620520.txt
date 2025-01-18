@@ -1,0 +1,90 @@
+drizzle.config.ts
+import { defineConfig } from "drizzle-kit";
+
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL, ensure the database is provisioned");
+}
+
+export default defineConfig({
+  out: "./migrations",
+  schema: "./db/schema.ts",
+  dialect: "postgresql",
+  dbCredentials: {
+    url: process.env.DATABASE_URL,
+  },
+});
+
+Console
+Port :5000 opened on
+Webview
+/gallery?category=Family
+73
+
+Assistant
+Chats
+Archived
+Navigating Galleries Sliding Left Right
+just now
+white lines pattern design discussion
+2 hours ago
+website design improvements
+4 hours ago
+women representation design discussion
+7 hours ago
+gallery image display issues
+8 hours ago
+Updating Icons for Clarity and User Experience
+9 hours ago
+navbar page name update discussion
+10 hours ago
+facebook posts image folder reindexing process
+20 hours ago
+design session page image thumbnails hover effects
+24 hours ago
+master class rename guiding mentoring hebrew language update
+1 day ago
+Master Class Photography Editing Techniques I'll help you create a new page called "Master Class" with the content in a unified and visually appealing format. I'll add some icons to enhance the presentation. Would you like me to proceed with drafting the page layout?
+1 day ago
+New Product Feature Brainstorming
+1 day ago
+Unique Session Page Link IDs Strategy
+1 day ago
+sessions links id prefix
+1 day ago
+facebook galleries page with post preview grids
+1 day ago
+facebook galleries page removal process
+1 day ago
+facebook galleries page removal process
+1 day ago
+Website Loading Problem Troubleshooting
+1 day ago
+runtime error in sessions tsx module export
+1 day ago
+contact form placeholder text update
+1 day ago
+contact page design with messaging functionality
+1 day ago
+Photo Gallery Category Order Alignment
+2 days ago
+Code Readability Improvement Discussion
+2 days ago
+navbar spacing adjustment design
+2 days ago
+navbar spacing design adjustment
+2 days ago
+favorites bug likes persistence feature request
+2 days ago
+app design improvements download button
+2 days ago
+New Product Feature Brainstorming
+2 days ago
+picture management asset handling
+2 days ago
+website design improvements user feedback
+3 days ago
+Duplicate Kids Category Photo Gallery Bar
+4 days ago
+women photo galleries category update
+4 days ago
+In Gallery page, when slide right or left, move between the galleries
