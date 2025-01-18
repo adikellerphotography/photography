@@ -77,10 +77,12 @@ export default function BeforeAndAfter() {
               viewport={{ once: true }}
               className="w-full aspect-[3/4]"
             >
+              <div>
               <ImageCompare
                 beforeImage={`${comparison.beforeImage}?noCache=${Date.now()}`}
                 afterImage={`${comparison.afterImage}?noCache=${Date.now()}`}
               />
+              </div>
             </motion.div>
           ))}
         </div>
@@ -92,10 +94,12 @@ export default function BeforeAndAfter() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
+              <div>
               <ImageCompare
                 beforeImage={`${comparison.beforeImage}?noCache=${Date.now()}`}
                 afterImage={`${comparison.afterImage}?noCache=${Date.now()}`}
               />
+              </div>
             </motion.div>
           ))}
         </div>
