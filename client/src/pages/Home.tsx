@@ -40,7 +40,7 @@ export default function Home() {
         }
       };
     }
-    if (category.name === "Women") {
+    if (category.name === "Femininity") {
       return {
         ...category,
         firstPhoto: {
