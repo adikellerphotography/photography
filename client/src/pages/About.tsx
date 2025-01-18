@@ -22,7 +22,7 @@ export default function About() {
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.2 }}
+                transition={{ duration: 0.8 }}
                 className="relative w-full h-full overflow-hidden rounded-full bg-muted"
               >
                 <img
@@ -40,7 +40,7 @@ export default function About() {
                   }}
                   style={{ 
                     opacity: 0,
-                    transition: 'opacity 0.2s ease-in-out',
+                    transition: 'opacity 0.8s ease-in-out',
                     transform: 'translate3d(0, 0, 0)',
                     willChange: 'opacity'
                   }}
