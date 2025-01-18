@@ -152,7 +152,7 @@ const capitalizeWords = (str: string) => {
   return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 };
 
-export default function Sessions() {
+export default function MySessions() {
   const { t } = useTranslation();
   const { language } = useLanguage();
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
