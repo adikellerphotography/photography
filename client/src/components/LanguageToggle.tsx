@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/hooks/use-language";
-import { Language2 } from "lucide-react";
+import { Languages } from "lucide-react";
 
 export default function LanguageToggle() {
   const { language, setLanguage } = useLanguage();
@@ -14,7 +14,7 @@ export default function LanguageToggle() {
       className="w-10 h-10 flex items-center justify-center relative"
       title={language === "en" ? "Switch to Hebrew" : "Switch to English"}
     >
-      <Language2 className="h-[1.4rem] w-[1.4rem] transition-transform duration-200" />
+      <Languages className="h-[1.4rem] w-[1.4rem] transition-transform duration-200" />
       <span className="sr-only">
         {language === "en" ? "Switch to Hebrew" : "Switch to English"}
       </span>
