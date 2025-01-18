@@ -7,7 +7,7 @@ export default function Logo() {
       animate={{ opacity: 1, y: 0 }}
       className="flex justify-center items-center my-8"
     >
-      <h2 className="font-alex text-2xl md:text-3xl text-[#E67E00] tracking-wider">
+      <h2 className="font-alex text-3xl md:text-4xl text-[#C0C0C0] tracking-wider">
         Adi Keller Photography
       </h2>
     </motion.div>
