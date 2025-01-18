@@ -84,18 +84,22 @@ export default function BeforeAndAfter() {
             </motion.div>
           ))}
         </div>
-        <div className="md:hidden space-y-8 max-w-4xl mx-auto">
+        <div className="md:hidden portrait:space-y-8 landscape:grid landscape:grid-cols-2 landscape:gap-8 max-w-4xl mx-auto">
           {comparisons.map((comparison) => (
             <motion.div
               key={comparison.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              className="w-full h-full"
             >
+              <div className="relative h-full">
               <ImageCompare
                 beforeImage={`${comparison.beforeImage}?noCache=${Date.now()}`}
                 afterImage={`${comparison.afterImage}?noCache=${Date.now()}`}
+                className="!absolute inset-0 w-full h-full object-cover"
               />
+              </div>
             </motion.div>
           ))}
         </div>
