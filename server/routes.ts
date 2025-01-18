@@ -1,4 +1,3 @@
-
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { eq, and, desc, sql } from "drizzle-orm";
@@ -186,7 +185,7 @@ const togglePhotoLike = async (req: express.Request, res: express.Response) => {
   try {
     const photoId = parseInt(req.params.id);
     const fingerprint = req.headers['x-browser-fingerprint'] as string;
-    
+
     if (!fingerprint) {
       return res.status(400).json({ error: "Browser fingerprint required" });
     }
@@ -194,7 +193,7 @@ const togglePhotoLike = async (req: express.Request, res: express.Response) => {
     const photo = await db.query.photos.findFirst({
       where: eq(photos.id, photoId)
     });
-    
+
     if (!photo) {
       return res.status(404).json({ error: "Photo not found" });
     }
@@ -243,12 +242,12 @@ export function registerRoutes(app: Express): Server {
       const { category, filename } = req.params;
       const filePath = path.join(assetsPath, category, filename);
       const exists = await fs.access(filePath).then(() => true).catch(() => false);
-      
+
       if (!exists) {
         return res.status(404).send('Image not found');
       }
 
-      const watermarkedImage = await addWatermark(filePath);
+      const watermarkedImage = await addWatermark(filePath, true); //Added true here to add watermark for downloads
       res.type('image/jpeg');
       res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
       return res.send(watermarkedImage);
@@ -264,22 +263,21 @@ export function registerRoutes(app: Express): Server {
   app.get("/api/before-after", getBeforeAfterSets);
   app.post("/api/photos/scan", scanPhotos);
   app.post("/api/photos/:id/like", togglePhotoLike);
-  
-  // Watermarked photo route
+
+  // Watermarked photo route - removed watermarking
   app.get('/api/photos/:category/:filename', async (req, res) => {
     try {
       const { category, filename } = req.params;
       const imagePath = path.join(process.cwd(), 'attached_assets', category, filename);
-      
+
       const exists = await fs.access(imagePath).then(() => true).catch(() => false);
       if (!exists) {
         return res.status(404).send('Image not found');
       }
 
-      const watermarkedImage = await addWatermark(imagePath);
-      res.type('image/jpeg').send(watermarkedImage);
+      res.type('image/jpeg').sendFile(imagePath); // Removed watermarking here
     } catch (error) {
-      console.error('Error serving watermarked image:', error);
+      console.error('Error serving image:', error);
       res.status(500).send('Error processing image');
     }
   });
