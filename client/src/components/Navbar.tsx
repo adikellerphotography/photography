@@ -40,7 +40,7 @@ export default function Navbar() {
             </Link>
             <Link href="/">
               <NavigationMenuLink className={cn(
-                "h-14 px-4 py-2 text-lg font-cormorant transition-colors hover:bg-accent focus:outline-none cursor-pointer flex items-center",
+                "h-14 px-4 py-2 text-[1rem] font-cormorant transition-colors hover:bg-accent focus:outline-none cursor-pointer flex items-center whitespace-nowrap",
                 location.pathname === "/" ? "bg-accent/60" : ""
               )}>
                 Adi Keller Photography
