@@ -244,7 +244,7 @@ export default function Home() {
       {/* Contact Button */}
       <section className="container mx-auto px-4 pb-16 text-center">
         <Link href="/contact">
-          <Button className="bg-[#FF9500] hover:bg-[#E67E00] text-white text-lg px-8 py-6">
+          <Button className="bg-white hover:bg-gray-100 text-[#FF9500] text-lg px-8 py-6 border border-[#FF9500]">
             {t("contact.contactMe")}
           </Button>
         </Link>

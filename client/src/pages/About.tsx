@@ -23,13 +23,14 @@ export default function About() {
                 <motion.img
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
                   src="/assets/IMG_1133.jpg"
                   alt=""
                   className="object-cover w-full h-full"
                   loading="eager"
                   decoding="async"
-                  fetchPriority="high"
+                  priority={true}
+                  sizes="(max-width: 300px) 100vw, 300px"
                   onLoad={(e) => {
                     const img = e.target as HTMLImageElement;
                     img.style.animation = "none";
