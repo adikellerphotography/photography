@@ -214,17 +214,15 @@ export default function MySessions() {
                       }}
                       onPointerDown={(e) => {
                         if (isMobile) {
+                          const element = e.currentTarget;
                           const timer = setTimeout(() => {
-                            const element = e.currentTarget;
-                            const rect = element.getBoundingClientRect();
-                            const viewportWidth = window.innerWidth;
-                            const viewportHeight = window.innerHeight;
-                            
-                            element.style.position = 'fixed';
-                            element.style.left = '50%';
-                            element.style.top = '50%';
-                            element.style.transform = 'translate(-50%, -50%) scale(2.5)';
-                            element.style.zIndex = '100';
+                            if (element) {
+                              element.style.position = 'fixed';
+                              element.style.left = '50%';
+                              element.style.top = '50%';
+                              element.style.transform = 'translate(-50%, -50%) scale(2.5)';
+                              element.style.zIndex = '100';
+                            }
                           }, 500);
 
                           const cleanup = () => {
