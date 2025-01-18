@@ -29,14 +29,25 @@ export default function Navbar() {
     <div className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
       <NavigationMenu className="w-full">
         <div className="w-full flex items-center h-14">
-          <Link href="/">
-            <NavigationMenuLink className={cn(
-              "h-14 px-4 py-2 text-lg font-cormorant transition-colors hover:bg-accent focus:outline-none cursor-pointer flex items-center",
-              location.pathname === "/" ? "bg-accent/60" : ""
-            )}>
-              Adi Keller Photography
-            </NavigationMenuLink>
-          </Link>
+          <div className="flex items-center">
+            <Link href="/">
+              <NavigationMenuLink className={cn(
+                "h-14 px-4 py-2 text-lg font-cormorant transition-colors hover:bg-accent focus:outline-none cursor-pointer flex items-center",
+                location.pathname === "/" ? "bg-accent/60" : ""
+              )}>
+                Adi Keller Photography
+              </NavigationMenuLink>
+            </Link>
+            <Link href="/">
+              <NavigationMenuLink className={cn(
+                "h-14 px-4 py-2 transition-colors hover:bg-accent focus:outline-none cursor-pointer flex items-center gap-2",
+                location.pathname === "/" ? "bg-accent/60" : ""
+              )}>
+                <Home className="h-4 w-4" />
+                Home
+              </NavigationMenuLink>
+            </Link>
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-4 ml-auto px-4">
