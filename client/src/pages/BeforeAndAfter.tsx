@@ -68,14 +68,29 @@ export default function BeforeAndAfter() {
           {t("beforeAfter.description")}
         </p>
 
-        <div className="space-y-16 max-w-4xl mx-auto">
+        <div className="hidden md:grid grid-cols-3 gap-8 container mx-auto">
           {comparisons.map((comparison) => (
             <motion.div
               key={comparison.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="space-y-4"
+              className="w-full aspect-[3/4]"
+            >
+              <ImageCompare
+                beforeImage={`${comparison.beforeImage}?noCache=${Date.now()}`}
+                afterImage={`${comparison.afterImage}?noCache=${Date.now()}`}
+              />
+            </motion.div>
+          ))}
+        </div>
+        <div className="md:hidden space-y-8 max-w-4xl mx-auto">
+          {comparisons.map((comparison) => (
+            <motion.div
+              key={comparison.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
             >
               <ImageCompare
                 beforeImage={`${comparison.beforeImage}?noCache=${Date.now()}`}
