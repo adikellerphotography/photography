@@ -32,19 +32,18 @@ export default function Navbar() {
           <div className="flex items-center">
             <Link href="/">
               <NavigationMenuLink className={cn(
-                "h-14 px-4 py-2 text-lg font-cormorant transition-colors hover:bg-accent focus:outline-none cursor-pointer flex items-center",
-                location.pathname === "/" ? "bg-accent/60" : ""
-              )}>
-                Adi Keller Photography
-              </NavigationMenuLink>
-            </Link>
-            <Link href="/">
-              <NavigationMenuLink className={cn(
                 "h-14 px-4 py-2 transition-colors hover:bg-accent focus:outline-none cursor-pointer flex items-center gap-2",
                 location.pathname === "/" ? "bg-accent/60" : ""
               )}>
                 <Home className="h-4 w-4" />
-                Home
+              </NavigationMenuLink>
+            </Link>
+            <Link href="/">
+              <NavigationMenuLink className={cn(
+                "h-14 px-4 py-2 text-lg font-cormorant transition-colors hover:bg-accent focus:outline-none cursor-pointer flex items-center",
+                location.pathname === "/" ? "bg-accent/60" : ""
+              )}>
+                Adi Keller Photography
               </NavigationMenuLink>
             </Link>
           </div>
