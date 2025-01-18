@@ -25,16 +25,29 @@ export default function CategoryCard({ name, description, imageUrl, thumbnailUrl
       <Card className="group cursor-pointer overflow-hidden hover:shadow-lg transition-shadow duration-300">
         <AspectRatio ratio={3/2} className="bg-muted overflow-hidden">
           {displayUrl ? (
-            <div className="relative w-full h-full overflow-hidden">
+            <div className="relative w-full h-full overflow-hidden bg-muted">
               <img
                 src={displayUrl}
                 alt={translatedName}
+                loading="lazy"
                 className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                 onError={(e) => {
-                  console.error('Image failed to load:', displayUrl);
                   const target = e.target as HTMLImageElement;
-                  target.onerror = null; // Prevent infinite loop
-                  target.src = '/placeholder.jpg'; // You might want to add a placeholder image
+                  if (!target.dataset.retryCount || parseInt(target.dataset.retryCount) < 3) {
+                    target.dataset.retryCount = target.dataset.retryCount ? (parseInt(target.dataset.retryCount) + 1).toString() : "1";
+                    setTimeout(() => {
+                      target.src = displayUrl;
+                    }, 1000);
+                  } else {
+                    target.style.display = 'none';
+                    const parent = target.parentElement;
+                    if (parent) {
+                      const fallback = document.createElement('div');
+                      fallback.className = 'w-full h-full flex items-center justify-center';
+                      fallback.innerHTML = `<span class="text-muted-foreground">${t("common.noPreview")}</span>`;
+                      parent.appendChild(fallback);
+                    }
+                  }
                 }}
               />
               <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
