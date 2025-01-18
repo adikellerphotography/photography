@@ -217,11 +217,15 @@ export default function MySessions() {
                           const element = e.currentTarget;
                           const timer = setTimeout(() => {
                             if (element) {
+                              const viewportWidth = window.innerWidth;
+                              const viewportHeight = window.innerHeight;
                               element.style.position = 'fixed';
                               element.style.left = '50%';
                               element.style.top = '50%';
-                              element.style.transform = 'translate(-50%, -50%) scale(2.5)';
+                              element.style.transform = 'translate(-50%, -50%) scale(3)';
                               element.style.zIndex = '100';
+                              element.style.width = `${element.offsetWidth}px`;
+                              element.style.height = `${element.offsetHeight}px`;
                             }
                           }, 500);
 
@@ -241,6 +245,8 @@ export default function MySessions() {
                           element.style.top = '';
                           element.style.transform = '';
                           element.style.zIndex = '';
+                          element.style.width = '';
+                          element.style.height = '';
                         }
                       }}
                       transition={{ duration: 0.2 }}
