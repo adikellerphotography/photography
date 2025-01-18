@@ -66,22 +66,6 @@ export default function Gallery() {
     return () => window.removeEventListener("resize", checkScroll);
   }, [categories]);
 
-  const navigateCategory = (direction: "left" | "right") => {
-    const currentIndex = processedCategories.findIndex(c => c.name === activeCategory);
-    let newIndex = direction === "right" ? currentIndex + 1 : currentIndex - 1;
-
-    if (newIndex < 0) {
-      newIndex = processedCategories.length - 1;
-    } else if (newIndex >= processedCategories.length) {
-      newIndex = 0;
-    }
-
-    const newCategory = processedCategories[newIndex].name;
-    setActiveCategory(newCategory);
-    const newUrl = `/gallery?category=${encodeURIComponent(newCategory)}`;
-    window.history.pushState({ category: newCategory }, "", newUrl);
-  };
-
   const scroll = (direction: "left" | "right") => {
     if (tabsListRef.current) {
       const scrollAmount = 200;
@@ -91,19 +75,6 @@ export default function Gallery() {
       });
     }
   };
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") {
-        navigateCategory("left");
-      } else if (e.key === "ArrowRight") {
-        navigateCategory("right");
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [activeCategory, processedCategories]);
 
   // Animation variants
   const containerVariants = {
