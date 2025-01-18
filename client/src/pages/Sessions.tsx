@@ -96,7 +96,7 @@ const sessionGroups: SessionGroup[] = [
     ]
   },
   {
-    name: "Feminine",
+    name: "Femininity",
     links: [
       { url: "https://www.facebook.com/dalia.zvikler/posts/pfbid02waJ1fwPEfTadroXp2HYtqgruo4ucaZRQf9YexZDiXy36YGMWujErcx7rqkSpg9EFl", number: 1 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0GJcFw5tgBJxcEwmc1DF7wgoAQRkti5ibTr5eQYGNGEgXjKHxx7khJsmm1Shsy4p2l", number: 2 },
@@ -230,7 +230,7 @@ export default function MySessions() {
                         e.currentTarget.style.setProperty('--transform-origin', `${originX} ${originY}`);
                       }}
                     >
-                      {["Bat Mitsva", "Bar Mitsva", "Horses", "Kids", "Family", "Big Family", "Sweet 16", "Purim", "Pregnancy", "Feminine", "Yoga", "Modeling"].includes(group.name) ? (
+                      {["Bat Mitsva", "Bar Mitsva", "Horses", "Kids", "Family", "Big Family", "Sweet 16", "Purim", "Pregnancy", "Femininity", "Yoga", "Modeling"].includes(group.name) ? (
                         <img 
                           src={`/assets/facebook_posts_image/${group.name.toLowerCase().replace(' ', '_')}/${link.number}.jpg?nocache=${Date.now()}`}
                           alt={`${group.name} session ${link.number}`}
