@@ -216,15 +216,12 @@ export default function MySessions() {
                       onPointerDown={(e) => {
                         if (isMobile) {
                           const element = e.currentTarget;
-                          const viewportWidth = window.innerWidth;
                           const timer = setTimeout(() => {
                             if (element) {
-                              const targetWidth = viewportWidth * 0.7;
-                              const scale = targetWidth / element.offsetWidth;
                               element.style.position = 'fixed';
                               element.style.left = '50%';
                               element.style.top = '50%';
-                              element.style.transform = `translate(-50%, -50%) scale(${scale})`;
+                              element.style.transform = 'translate(-50%, -50%) scale(3)';
                               element.style.zIndex = '100';
                             }
                           }, 500);
