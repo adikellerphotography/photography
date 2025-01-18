@@ -195,21 +195,9 @@ export default function MySessions() {
                     className="relative"
                     onMouseEnter={() => setHoveredLink(link.url)}
                     onMouseLeave={() => setHoveredLink(null)}
-                    onTouchStart={(e) => {
+                    onTouchEnd={() => {
                       if (isMobile) {
-                        const startTime = Date.now();
-                        e.currentTarget.dataset.touchStartTime = startTime.toString();
-                      }
-                    }}
-                    onTouchEnd={(e) => {
-                      if (isMobile) {
-                        const touchStartTime = parseInt(e.currentTarget.dataset.touchStartTime || '0');
-                        const touchDuration = Date.now() - touchStartTime;
-                        
-                        if (touchDuration < 500) {
-                          // Short press - navigate to Facebook
-                          window.location.href = getFacebookUrl(link.url);
-                        }
+                        setHoveredLink(null);
                       }
                     }}
                   >
@@ -221,13 +209,9 @@ export default function MySessions() {
                         transformOrigin: "var(--transform-origin, center)"
                       }}
                       whileTap={isMobile ? { 
-                        scale: 4,
-                        position: 'fixed',
-                        top: '50%',
-                        left: '50%',
-                        x: '-50%',
-                        y: '-50%',
-                        zIndex: 100
+                        scale: 2.5, 
+                        zIndex: 50,
+                        transformOrigin: "var(--transform-origin, center)"
                       } : {}}
                       transition={{ duration: 0.2 }}
                       onMouseEnter={(e) => {
