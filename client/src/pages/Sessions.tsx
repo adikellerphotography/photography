@@ -210,17 +210,21 @@ export default function MySessions() {
                         transformOrigin: "var(--transform-origin, center)"
                       }}
                       whileTap={!isMobile ? {} : {
-                        scale: 0.95
+                        scale: 0.9,
+                        transition: { duration: 0.1 }
                       }}
                       onPointerDown={(e) => {
                         if (isMobile) {
                           const element = e.currentTarget;
+                          const viewportWidth = window.innerWidth;
                           const timer = setTimeout(() => {
                             if (element) {
+                              const targetWidth = viewportWidth * 0.7;
+                              const scale = targetWidth / element.offsetWidth;
                               element.style.position = 'fixed';
                               element.style.left = '50%';
                               element.style.top = '50%';
-                              element.style.transform = 'translate(-50%, -50%) scale(2.5)';
+                              element.style.transform = `translate(-50%, -50%) scale(${scale})`;
                               element.style.zIndex = '100';
                             }
                           }, 500);
