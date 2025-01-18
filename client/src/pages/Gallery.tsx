@@ -56,7 +56,7 @@ export default function Gallery() {
   };
 
   // Define the allowed categories in the correct order
-  const allowedCategories = ["Bat Mitsva", "Family", "Horses", "Modeling", "Women", "Yoga", "Kids"];
+  const allowedCategories = ["Bat Mitsva", "Family", "Horses", "Modeling", "Femininity", "Yoga", "Kids"];
 
   // Filter and sort categories, ensuring uniqueness
   const processedCategories = categories
