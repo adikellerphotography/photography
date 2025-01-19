@@ -297,32 +297,42 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               <div className="relative w-full h-full overflow-hidden bg-muted">
 
                 <img
+                  key={`${photo.id}-${photo.imageUrl}`}
                   src={photo.thumbnailUrl || photo.imageUrl}
-                  data-src={photo.imageUrl}
-                  alt=""
+                  alt={photo.title || ""}
                   className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
-                    const currentSrc = target.src;
+                    const retryCount = parseInt(target.dataset.retryCount || '0');
                     
-                    // If current source is thumbnail, try main image
-                    if (currentSrc === photo.thumbnailUrl) {
-                      target.src = photo.imageUrl;
-                    } else if (!target.dataset.retryCount || parseInt(target.dataset.retryCount) < 2) {
-                      // Implement retry logic with exponential backoff
-                      target.dataset.retryCount = target.dataset.retryCount ? 
-                        (parseInt(target.dataset.retryCount) + 1).toString() : "1";
+                    if (retryCount < 3) {
+                      target.dataset.retryCount = (retryCount + 1).toString();
                       
-                      setTimeout(() => {
-                        target.src = currentSrc;
-                      }, parseInt(target.dataset.retryCount) * 1000);
+                      // Try loading the full image URL if thumbnail fails
+                      if (target.src === photo.thumbnailUrl) {
+                        console.log('Thumbnail failed, trying full image:', photo.imageUrl);
+                        target.src = photo.imageUrl;
+                      } else {
+                        // Add cache-busting parameter
+                        const timestamp = Date.now();
+                        const url = new URL(target.src, window.location.origin);
+                        url.searchParams.set('v', timestamp.toString());
+                        
+                        setTimeout(() => {
+                          target.src = url.toString();
+                        }, Math.pow(2, retryCount) * 1000); // Exponential backoff
+                      }
                     } else {
                       console.error('Failed to load image after retries:', photo.imageUrl);
                       target.src = '/placeholder.jpg';
                       target.onerror = null;
                     }
+                  }}
+                  style={{
+                    backgroundColor: '#f3f4f6', // Light background while loading
+                    minHeight: '200px'
                   }}
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
