@@ -273,7 +273,7 @@ export default function MySessions() {
       </motion.div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-[90vw] max-h-[90vh]" onInteractOutside={() => setIsDialogOpen(false)}>
+        <DialogContent className="sm:max-w-[90vw] max-h-[90vh] !p-0 border-none bg-transparent shadow-none" onInteractOutside={() => setIsDialogOpen(false)}>
           {selectedImage && (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
