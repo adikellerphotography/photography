@@ -30,6 +30,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [isFullImageLoaded, setIsFullImageLoaded] = useState(false);
   const [showHeart, setShowHeart] = useState(false);
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
   const galleryRef = useRef<HTMLDivElement>(null);
   const loaderRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -248,6 +249,18 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [transitionDirection, setTransitionDirection] = useState<"next" | "prev" | null>(null);
   const [isNextImageLoaded, setIsNextImageLoaded] = useState(false);
 
+  const handleImageError = (imageUrl: string) => {
+    setFailedImages(prev => new Set(prev).add(imageUrl));
+    console.error(`Failed to load image: ${imageUrl}`);
+  };
+
+  const getImagePath = (photo: Photo) => {
+    if (failedImages.has(photo.imageUrl)) {
+      // Try thumbnail as fallback
+      return photo.thumbnailUrl || '/assets/placeholder.jpg';
+    }
+    return photo.imageUrl;
+  };
 
   if (isLoading) {
     return (
@@ -305,40 +318,14 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    const retryCount = parseInt(target.dataset.retryCount || '0');
-                    
-                    if (retryCount < 3) {
-                      target.dataset.retryCount = (retryCount + 1).toString();
-                      
-                      // Try loading the full image URL if thumbnail fails
-                      if (target.src === photo.thumbnailUrl) {
-                        console.log('Thumbnail failed, trying full image:', photo.imageUrl);
-                        target.src = photo.imageUrl;
-                      } else {
-                        // Add cache-busting parameter
-                        const timestamp = Date.now();
-                        const url = new URL(target.src, window.location.origin);
-                        url.searchParams.set('v', timestamp.toString());
-                        
-                        setTimeout(() => {
-                          target.src = url.toString();
-                        }, Math.pow(2, retryCount) * 1000); // Exponential backoff
-                      }
-                    } else {
-                      console.error('Failed to load image after retries:', photo.imageUrl);
-                      target.src = '/placeholder.jpg';
-                      target.onerror = null;
-                    }
-                  }}
+                  onError={() => handleImageError(photo.imageUrl)}
                   style={{
                     backgroundColor: '#f3f4f6', // Light background while loading
                     minHeight: '200px'
                   }}
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                
+
               </div>
             </AspectRatio>
           </motion.div>
@@ -463,7 +450,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   transition={{ duration: 0.2 }}
                 >
                   <img
-                    src={selectedPhoto.imageUrl}
+                    src={getImagePath(selectedPhoto)}
                     alt=""
                     className="w-full h-full object-contain"
                     loading="eager"
@@ -475,7 +462,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 </motion.div>
               </div>
 
-              
+
             </div>
           )}
         </DialogContent>

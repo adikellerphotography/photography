@@ -37,7 +37,7 @@ async function processDirectory(dirPath: string, categoryName: string) {
         await db.insert(photos).values({
           title: path.basename(imageFile, path.extname(imageFile)),
           category: categoryName.replace(/_/g, ' '),
-          imageUrl: path.join(categoryName, imageFile),
+          imageUrl: path.join(categoryName.replace(/\s+/g, '_'), imageFile),
           thumbnailUrl,
           displayOrder: 1
         }).onConflictDoUpdate({
@@ -84,7 +84,7 @@ async function processFacebookPosts(basePath: string) {
         }
 
         // Insert or update in database
-        const relativePath = path.join('facebook_posts_image', categoryPath, imageFile);
+        const relativePath = path.join('facebook_posts_image', categoryPath.replace(/\s+/g, '_'), imageFile);
         await db.insert(photos).values({
           title: path.basename(imageFile, path.extname(imageFile)),
           category: categoryPath.replace(/_/g, ' '),
