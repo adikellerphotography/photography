@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLanguage } from "@/hooks/use-language";
 import { SiFacebook } from "react-icons/si";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 interface SessionLink {
   url: string;
