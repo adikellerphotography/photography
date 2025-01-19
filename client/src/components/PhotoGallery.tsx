@@ -448,29 +448,14 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               />
 
               <div className="relative w-full h-full overflow-hidden">
-                <AnimatePresence mode="wait" initial={false}>
-                  <motion.div
-                    key={selectedPhoto.id}
-                    className="absolute inset-0"
-                    initial={{ 
-                      x: transitionDirection === "next" ? 1000 : -1000,
-                      opacity: 0 
-                    }}
-                    animate={{ 
-                      x: 0,
-                      opacity: 1 
-                    }}
-                    exit={{ 
-                      x: transitionDirection === "next" ? -1000 : 1000,
-                      opacity: 0
-                    }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 300,
-                      damping: 30,
-                      duration: 0.5
-                    }}
-                  >
+                <motion.div
+                  key={selectedPhoto.id}
+                  className="absolute inset-0"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
                   <img
                     src={selectedPhoto.imageUrl}
                     alt=""
