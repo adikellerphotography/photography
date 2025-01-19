@@ -182,15 +182,19 @@ export default function MySessions() {
     
     if (clickTimer.current && (now - clickTimer.current) < 300) {
       // Double click/tap detected
-      const fbUrl = getFacebookUrl(link.url);
       if (isMobile) {
+        const fbUrl = getFacebookUrl(link.url);
         window.location.href = fbUrl;
         // Fallback to browser after a small delay if FB app doesn't open
         setTimeout(() => {
           window.location.href = link.url;
         }, 500);
       } else {
-        window.open(link.url, '_blank');
+        // For desktop, directly open in new tab with referrer policy
+        const newWindow = window.open('about:blank', '_blank');
+        if (newWindow) {
+          newWindow.location.href = link.url;
+        }
       }
       clickTimer.current = 0;
     } else {
