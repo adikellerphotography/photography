@@ -66,7 +66,7 @@ export default function Navbar() {
               <LanguageToggle />
               <ThemeToggle />
             </div>
-            <div className="text-sm font-cormorant tracking-wide text-foreground/70 text-center absolute w-full px-12">
+            <div className="text-lg font-semibold text-foreground/70"> {/*Opacity adjusted here */}
               Adi Keller Photography
             </div>
 
