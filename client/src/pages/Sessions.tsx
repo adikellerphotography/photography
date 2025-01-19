@@ -155,14 +155,33 @@ const capitalizeWords = (str: string) => {
 export default function MySessions() {
   const { t } = useTranslation();
   const { language } = useLanguage();
-  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<{ url: string; number: number; groupName: string } | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const isMobile = useIsMobile();
+  const clickTimer = useRef<NodeJS.Timeout | null>(null);
 
   const getFacebookUrl = (url: string) => {
     if (isMobile) {
       return `fb://facewebmodal/f?href=${encodeURIComponent(url)}`;
     }
     return url;
+  };
+
+  const handleImageClick = (event: React.MouseEvent, link: SessionLink, groupName: string) => {
+    event.preventDefault();
+    if (clickTimer.current) {
+      // Double click detected
+      clearTimeout(clickTimer.current);
+      clickTimer.current = null;
+      window.open(getFacebookUrl(link.url), '_blank');
+    } else {
+      // Single click behavior
+      clickTimer.current = setTimeout(() => {
+        setSelectedImage({ url: `/assets/facebook_posts_image/${groupName.toLowerCase().replace(' ', '_')}/${link.number}.jpg`, number: link.number, groupName });
+        setIsDialogOpen(true);
+        clickTimer.current = null;
+      }, 250);
+    }
   };
 
   return (
@@ -187,13 +206,10 @@ export default function MySessions() {
               </div>
               <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {group.links.map((link) => (
-                  <a
+                  <div
                     key={link.url}
-                    href={getFacebookUrl(link.url)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="relative"
-                    className="relative"
+                    className="relative cursor-pointer"
+                    onClick={(e) => handleImageClick(e, link, group.name)}
                   >
                     <motion.div
                       className="relative aspect-square w-full overflow-hidden rounded-lg"
@@ -220,13 +236,34 @@ export default function MySessions() {
                         />
                       )}
                     </motion.div>
-                  </a>
+                  </div>
                 ))}
               </div>
             </div>
           ))}
         </div>
       </motion.div>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="sm:max-w-[90vw] max-h-[90vh]" onInteractOutside={() => setIsDialogOpen(false)}>
+          {selectedImage && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="relative w-full h-full flex items-center justify-center"
+              onClick={() => setIsDialogOpen(false)}
+            >
+              <img
+                src={`${selectedImage.url}?nocache=${Date.now()}`}
+                alt={`${selectedImage.groupName} session ${selectedImage.number}`}
+                className="max-w-full max-h-[80vh] object-contain rounded-lg"
+                loading="lazy"
+              />
+            </motion.div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
