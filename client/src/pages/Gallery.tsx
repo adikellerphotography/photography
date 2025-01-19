@@ -174,7 +174,7 @@ export default function Gallery() {
 
   return (
     <div 
-      className="min-h-screen pt-8"
+      className="min-h-screen pt-8 overflow-x-hidden"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -250,21 +250,20 @@ export default function Gallery() {
                 className="relative"
               >
                 <motion.div
-                  initial={(isHorizontalSwipe === null || isHorizontalSwipe) ? 
-                    { opacity: 0, x: swipeDirection === "left" ? 300 : -300 } : 
-                    { opacity: 0, scale: 0.8 }
-                  }
-                  animate={{ opacity: 1, x: 0, scale: 1 }}
-                  exit={(isHorizontalSwipe === null || isHorizontalSwipe) ? 
-                    { opacity: 0, x: touchStartX && touchStartX - (currentX || 0) > 0 ? -300 : 300 } : 
-                    { opacity: 0, scale: 0.8 }
-                  }
+                  initial={{ opacity: 0, x: swipeDirection === "left" ? 300 : -300 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ 
+                    opacity: 0, 
+                    x: touchStartX && touchStartX - (currentX || 0) > 0 ? -300 : 300,
+                    transition: {
+                      duration: 0.2
+                    }
+                  }}
                   transition={{
                     type: "spring",
                     stiffness: 200,
                     damping: 25,
                     mass: 1,
-                    velocity: 2
                   }}
                 >
                   <Card>
