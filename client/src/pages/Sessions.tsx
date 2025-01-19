@@ -202,17 +202,6 @@ export default function MySessions() {
                       }
 
                       const element = e.currentTarget;
-                      const lastClick = element.getAttribute('data-last-click');
-                      const now = Date.now();
-
-                      if (lastClick && now - parseInt(lastClick) < 300) {
-                        // Double click detected, don't enlarge
-                        return;
-                      }
-
-                      element.setAttribute('data-last-click', now.toString());
-
-                      // Delay enlargement to wait for potential double click
                       const viewportWidth = window.innerWidth;
                       const viewportHeight = window.innerHeight;
 
