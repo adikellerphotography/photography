@@ -14,6 +14,9 @@ const getCategoryPath = (categoryName: string) => {
   if (categoryName.toLowerCase() === 'kids') {
     return 'kids';
   }
+  if (categoryName === 'Bat Mitsva') {
+    return 'Bat_Mitsva';
+  }
   return categoryName.split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join('_');
