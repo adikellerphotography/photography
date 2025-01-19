@@ -451,22 +451,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 <motion.div
                   key={selectedPhoto.id}
                   className="absolute inset-0"
-                  initial={{ 
-                    opacity: 0,
-                    x: transitionDirection === 'next' ? '100%' : '-100%'
-                  }}
-                  animate={{ 
-                    opacity: 1,
-                    x: 0
-                  }}
-                  exit={{ 
-                    opacity: 0,
-                    x: transitionDirection === 'next' ? '-100%' : '100%'
-                  }}
-                  transition={{ 
-                    duration: 0.3,
-                    ease: "easeInOut"
-                  }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
                 >
                   <img
                     src={selectedPhoto.imageUrl}
