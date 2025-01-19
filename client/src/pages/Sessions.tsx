@@ -197,17 +197,17 @@ export default function MySessions() {
         clickTimer.current = null;
         
         // Get post ID from URL
-        const postId = link.url.split('/posts/')[1];
+        const fbPostId = link.url.match(/pfbid[A-Za-z0-9]+/)?.[0] || '';
         
         // iOS
         if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-          window.location.href = `fb://post/${postId}`;
+          window.location.href = `fb://profile/adi.keller.16/posts/${fbPostId}`;
           return;
         }
         
         // Android
         if (/Android/.test(navigator.userAgent)) {
-          window.location.href = `intent://facebook.com/posts/${postId}#Intent;package=com.facebook.katana;scheme=https;end`;
+          window.location.href = `intent://www.facebook.com/story.php?story_fbid=${fbPostId}&id=adi.keller.16#Intent;package=com.facebook.katana;scheme=https;end`;
           return;
         }
         
