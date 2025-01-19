@@ -480,7 +480,9 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               </div>
 
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background/90 to-background/0">
-                <h3 className="text-lg font-semibold text-white">{selectedPhoto.title}</h3>
+                <h3 className="text-lg font-semibold text-white">
+                  {selectedPhoto.title.split(':')[0].trim()}
+                </h3>
                 {selectedPhoto.description && (
                   <p className="text-sm text-white/80">{selectedPhoto.description}</p>
                 )}
