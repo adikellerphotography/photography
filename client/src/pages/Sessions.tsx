@@ -209,6 +209,7 @@ export default function MySessions() {
                       } : {}}
                       onPointerDown={(e) => {
                         if (isMobile) {
+                          e.preventDefault(); // Prevent native menu
                           const element = e.currentTarget;
                           const timer = setTimeout(() => {
                             if (element) {
