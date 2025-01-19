@@ -199,9 +199,23 @@ export default function MySessions() {
                       if (isMobile) {
                         e.preventDefault();
                       }
-                      const element = e.currentTarget;
-                      const viewportWidth = window.innerWidth;
-                      const viewportHeight = window.innerHeight;
+                      const element = e.currentTarget as HTMLElement;
+                      const lastClick = element.getAttribute('data-last-click');
+                      const now = Date.now();
+                      
+                      if (lastClick && now - parseInt(lastClick) < 300) {
+                        // Double click detected - open Facebook
+                        window.open(getFacebookUrl(link.url), '_blank');
+                        element.removeAttribute('data-last-click');
+                        return;
+                      }
+                      
+                      element.setAttribute('data-last-click', now.toString());
+                      setTimeout(() => {
+                        if (element.getAttribute('data-last-click') === now.toString()) {
+                          // Single click confirmed - enlarge image
+                          const viewportWidth = window.innerWidth;
+                          const viewportHeight = window.innerHeight;
                       
                       // Create overlay
                       const overlay = document.createElement('div');
