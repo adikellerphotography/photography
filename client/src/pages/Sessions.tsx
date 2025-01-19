@@ -219,10 +219,7 @@ export default function MySessions() {
         </h1>
         <div className={`flex items-center gap-2 mb-8 ${language === 'he' ? 'justify-end' : ''}`}>
           <SiFacebook className="text-[#1877F2] w-6 h-6 animate-pulse" />
-          <div className="flex items-center gap-2">
-            <span className="text-foreground font-semibold">Double-click to open on Facebook</span>
-            <SiFacebook className="text-[#1877F2] w-5 h-5" />
-          </div>
+          <span className="text-foreground font-semibold">{t("sessions.description")}</span>
         </div>
         <div className="space-y-8">
           {sessionGroups.map((group) => (
