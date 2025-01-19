@@ -31,20 +31,11 @@ export default function Gallery() {
     if (!touchStart || !processedCategories) return;
 
     const currentTouch = e.touches[0].clientX;
-    const touchY = e.touches[0].clientY;
-    const diffX = touchStart - currentTouch;
-    
-    // Check if the swipe is more horizontal than vertical
-    const element = e.currentTarget as HTMLDivElement;
-    const { scrollTop, scrollHeight, clientHeight } = element;
-    const isAtTopEdge = scrollTop <= 0;
-    const isAtBottomEdge = scrollTop + clientHeight >= scrollHeight;
-    
-    // Only handle horizontal swipes when at scroll boundaries
-    if (Math.abs(diffX) > 50 && (isAtTopEdge || isAtBottomEdge)) {
-      e.preventDefault(); // Prevent default only for horizontal swipes
+    const diff = touchStart - currentTouch;
+
+    if (Math.abs(diff) > 50) {
       const currentIndex = processedCategories.findIndex(c => c.name === activeCategory);
-      let newIndex = diffX > 0 ? currentIndex + 1 : currentIndex - 1;
+      let newIndex = diff > 0 ? currentIndex + 1 : currentIndex - 1;
 
       if (newIndex < 0) {
         newIndex = processedCategories.length - 1;

@@ -204,10 +204,9 @@ export default function MySessions() {
                   >
                     <motion.div
                       className="relative aspect-square w-full overflow-hidden rounded-lg"
-                      whileHover={isMobile ? {} : {}}
-                      whileTap={!isMobile ? {} : {
+                      whileTap={isMobile ? {
                         scale: 0.95
-                      }}
+                      } : {}}
                       onPointerDown={(e) => {
                         if (isMobile) {
                           const element = e.currentTarget;
@@ -290,21 +289,6 @@ export default function MySessions() {
                         }
                       }}
                       transition={{ duration: 0.2 }}
-                      onMouseEnter={(e) => {
-                        const rect = e.currentTarget.getBoundingClientRect();
-                        const viewportWidth = window.innerWidth;
-                        const viewportHeight = window.innerHeight;
-
-                        let originX = "center";
-                        let originY = "center";
-
-                        if (rect.left < viewportWidth * 0.3) originX = "left";
-                        if (rect.right > viewportWidth * 0.7) originX = "right";
-                        if (rect.top < viewportHeight * 0.3) originY = "top";
-                        if (rect.bottom > viewportHeight * 0.7) originY = "bottom";
-
-                        e.currentTarget.style.setProperty('--transform-origin', `${originX} ${originY}`);
-                      }}
                     >
                       {["Bat Mitsva", "Bar Mitsva", "Horses", "Kids", "Family", "Big Family", "Sweet 16", "Purim", "Pregnancy", "Feminine", "Yoga", "Modeling"].includes(group.name) ? (
                         <img 
