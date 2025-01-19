@@ -259,12 +259,12 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     if (failedImages.has(photo.imageUrl)) {
       return photo.thumbnailUrl || '/assets/placeholder.jpg';
     }
-    
+
     // Ensure paths start with /assets/
     const normalizedImageUrl = photo.imageUrl.startsWith('/assets/') ? 
       photo.imageUrl : 
       `/assets/${photo.imageUrl}`;
-      
+
     return normalizedImageUrl;
   };
 
@@ -303,7 +303,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"> {/* Changed grid to columns */}
         {displayPhotos?.map((photo, index) => (
           <motion.div
-            key={photo.id}
+            key={`${photo.id}-${photo.imageUrl}`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
