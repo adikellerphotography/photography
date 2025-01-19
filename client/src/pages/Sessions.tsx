@@ -217,26 +217,9 @@ export default function MySessions() {
         <h1 className="text-3xl font-bold mb-4 text-[#FF9500]">
           {t("sessions.title")}
         </h1>
-        <div className={`flex items-center gap-3 mb-8 ${language === 'he' ? 'justify-end' : ''}`}>
-          <div className="flex items-center gap-2">
-            <SiFacebook className="text-[#1877F2] w-6 h-6" />
-            <svg 
-              viewBox="0 0 24 24" 
-              className="w-5 h-5 text-foreground/80"
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="2"
-            >
-              <path d="M19 11.5a7.5 7.5 0 0 0-15 0M19 11.5v4M4 11.5v4" />
-              <circle cx="11.5" cy="11.5" r="2.5" fill="currentColor"/>
-            </svg>
-          </div>
-          <span className="text-foreground font-semibold">
-            {t("sessions.description")} 
-            <span className="text-foreground/70 text-sm ml-2">
-              (Double-click to open Facebook post)
-            </span>
-          </span>
+        <div className={`flex items-center gap-2 mb-8 ${language === 'he' ? 'justify-end' : ''}`}>
+          <SiFacebook className="text-[#1877F2] w-6 h-6 animate-pulse" />
+          <span className="text-foreground font-semibold">{t("sessions.description")}</span>
         </div>
         <div className="space-y-8">
           {sessionGroups.map((group) => (
