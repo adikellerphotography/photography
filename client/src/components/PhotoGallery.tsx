@@ -338,11 +338,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   }}
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden md:block">
-                  <p className={`text-white text-sm font-medium truncate ${language === 'he' ? 'text-right' : ''}`}>
-                    {t(photo.title)}
-                  </p>
-                </div>
+                
               </div>
             </AspectRatio>
           </motion.div>
@@ -479,14 +475,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 </motion.div>
               </div>
 
-              <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background/90 to-background/0">
-                <h3 className="text-lg font-semibold text-white">
-                  {selectedPhoto.title.split(':')[0].trim()}
-                </h3>
-                {selectedPhoto.description && (
-                  <p className="text-sm text-white/80">{selectedPhoto.description}</p>
-                )}
-              </div>
+              
             </div>
           )}
         </DialogContent>
