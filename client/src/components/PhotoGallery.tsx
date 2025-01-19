@@ -251,15 +251,21 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   const handleImageError = (imageUrl: string) => {
     setFailedImages(prev => new Set(prev).add(imageUrl));
-    console.error(`Failed to load image: ${imageUrl}`);
+    console.error(`Failed to load image after retries:`, imageUrl);
   };
 
   const getImagePath = (photo: Photo) => {
+    // First try thumbnail, then full image, then placeholder
     if (failedImages.has(photo.imageUrl)) {
-      // Try thumbnail as fallback
       return photo.thumbnailUrl || '/assets/placeholder.jpg';
     }
-    return photo.imageUrl;
+    
+    // Ensure paths start with /assets/
+    const normalizedImageUrl = photo.imageUrl.startsWith('/assets/') ? 
+      photo.imageUrl : 
+      `/assets/${photo.imageUrl}`;
+      
+    return normalizedImageUrl;
   };
 
   if (isLoading) {

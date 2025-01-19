@@ -37,12 +37,15 @@ async function processDirectory(dirPath: string, categoryName: string) {
         await db.insert(photos).values({
           title: path.basename(imageFile, path.extname(imageFile)),
           category: categoryName.replace(/_/g, ' '),
-          imageUrl: path.join(categoryName.replace(/\s+/g, '_'), imageFile),
-          thumbnailUrl,
+          imageUrl: `/assets/${path.join(categoryName.replace(/\s+/g, '_'), imageFile)}`,
+          thumbnailUrl: thumbnailUrl ? `/assets/${thumbnailUrl}` : null,
           displayOrder: 1
         }).onConflictDoUpdate({
           target: [photos.imageUrl],
-          set: { thumbnailUrl }
+          set: { 
+            thumbnailUrl: thumbnailUrl ? `/assets/${thumbnailUrl}` : null,
+            imageUrl: `/assets/${path.join(categoryName.replace(/\s+/g, '_'), imageFile)}`
+          }
         });
 
         console.log(`Processed: ${imageFile}`);
@@ -88,12 +91,15 @@ async function processFacebookPosts(basePath: string) {
         await db.insert(photos).values({
           title: path.basename(imageFile, path.extname(imageFile)),
           category: categoryPath.replace(/_/g, ' '),
-          imageUrl: relativePath,
-          thumbnailUrl,
+          imageUrl: `/assets/${relativePath}`,
+          thumbnailUrl: thumbnailUrl ? `/assets/${thumbnailUrl}` : null,
           displayOrder: 1
         }).onConflictDoUpdate({
           target: [photos.imageUrl],
-          set: { thumbnailUrl }
+          set: { 
+            thumbnailUrl: thumbnailUrl ? `/assets/${thumbnailUrl}` : null,
+            imageUrl: `/assets/${relativePath}`
+          }
         });
 
         console.log(`Processed: ${imageFile}`);
