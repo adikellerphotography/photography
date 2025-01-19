@@ -66,7 +66,7 @@ export default function Navbar() {
               <LanguageToggle />
               <ThemeToggle />
             </div>
-            <div className="text-lg font-semibold text-foreground">
+            <div className="text-lg font-serif italic tracking-wide text-foreground text-center flex-1">
               Adi Keller Photography
             </div>
 
