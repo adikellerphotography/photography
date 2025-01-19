@@ -159,7 +159,7 @@ export default function MySessions() {
   const [selectedImage, setSelectedImage] = useState<{ url: string; number: number; groupName: string } | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const isMobile = useIsMobile();
-  const clickTimer = useRef<NodeJS.Timeout | null>(null);
+  const clickTimer = useRef<number>(0);
 
   const getFacebookUrl = (url: string) => {
     if (isMobile) {
@@ -175,20 +175,40 @@ export default function MySessions() {
     return url;
   };
 
-  const handleImageClick = (event: React.MouseEvent, link: SessionLink, groupName: string) => {
+  const handleImageClick = (event: React.MouseEvent | React.TouchEvent, link: SessionLink, groupName: string) => {
     event.preventDefault();
-    if (clickTimer.current) {
-      // Double click detected
-      clearTimeout(clickTimer.current);
-      clickTimer.current = null;
-      window.open(getFacebookUrl(link.url), '_blank');
+    const now = Date.now();
+    
+    if (clickTimer.current && (now - clickTimer.current) < 300) {
+      // Double click/tap detected
+      const fbUrl = getFacebookUrl(link.url);
+      // Try to open in Facebook app first on mobile
+      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        window.location.href = `fb://facewebmodal/f?href=${encodeURIComponent(fbUrl)}`;
+        // Fallback to browser after a small delay if FB app doesn't open
+        setTimeout(() => {
+          window.location.href = fbUrl;
+        }, 300);
+      } else {
+        window.open(fbUrl, '_blank');
+      }
+      clickTimer.current = 0;
     } else {
-      // Single click behavior
-      clickTimer.current = setTimeout(() => {
-        setSelectedImage({ url: `/assets/facebook_posts_image/${groupName.toLowerCase().replace(' ', '_')}/${link.number}.jpg`, number: link.number, groupName });
-        setIsDialogOpen(true);
-        clickTimer.current = null;
-      }, 250);
+      // Single click/tap behavior
+      if (clickTimer.current === 0) {
+        clickTimer.current = now;
+        setTimeout(() => {
+          if (clickTimer.current !== 0) {
+            setSelectedImage({ 
+              url: `/assets/facebook_posts_image/${groupName.toLowerCase().replace(' ', '_')}/${link.number}.jpg`,
+              number: link.number, 
+              groupName 
+            });
+            setIsDialogOpen(true);
+          }
+          clickTimer.current = 0;
+        }, 300);
+      }
     }
   };
 
