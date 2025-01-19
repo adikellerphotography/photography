@@ -39,6 +39,8 @@ export default function Gallery() {
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.closest('[role="dialog"]')) return;
     if (!touchStartX || !touchStartY || !processedCategories) return;
 
     const x = e.touches[0].clientX;

@@ -361,9 +361,19 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       <Dialog open={!!selectedPhoto} onOpenChange={(open) => !open && setSelectedPhoto(null)}>
         <DialogContent 
           className="max-w-[90vw] max-h-[90vh] w-full h-full p-0"
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
+          onTouchStart={(e) => {
+            e.stopPropagation();
+            handleTouchStart(e);
+          }}
+          onTouchMove={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            handleTouchMove(e);
+          }}
+          onTouchEnd={(e) => {
+            e.stopPropagation();
+            handleTouchEnd();
+          }}
         >
           {selectedPhoto && (
             <div 
