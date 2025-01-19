@@ -152,7 +152,11 @@ export default function Home() {
             <h1 className="text-4xl md:text-6xl font-bold font-cormorant">
               {t("home.title")}
             </h1>
-            <p className="text-lg">{t("home.subtitle")}</p>
+            <p className="text-lg">
+              <span className="text-gray-400">
+                {t("home.subtitle")}
+              </span>
+            </p>
             <SocialLinks />
           </div>
         </motion.div>
