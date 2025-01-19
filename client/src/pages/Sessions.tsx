@@ -202,54 +202,92 @@ export default function MySessions() {
                       }
 
                       const element = e.currentTarget;
-                      const viewportWidth = window.innerWidth;
-                      const viewportHeight = window.innerHeight;
+                      const lastClick = element.getAttribute('data-last-click');
+                      const now = Date.now();
 
-                      // Create overlay
-                      const overlay = document.createElement('div');
-                      overlay.style.position = 'fixed';
-                      overlay.style.top = '0';
-                      overlay.style.left = '0';
-                      overlay.style.width = '100%';
-                      overlay.style.height = '100%';
-                      overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-                      overlay.style.zIndex = '99';
-                      document.body.appendChild(overlay);
+                      if (lastClick && now - parseInt(lastClick) < 300) {
+                        // Double click detected, don't enlarge
+                        return;
+                      }
 
-                      element.style.position = 'fixed';
-                      element.style.left = '50%';
-                      element.style.top = '50%';
-                      const screenWidth = window.innerWidth * 0.8;
-                      const ratio = screenWidth / element.offsetWidth;
-                      element.style.transform = `translate(-50%, -50%) scale(${ratio})`;
-                      element.style.zIndex = '100';
-                      element.style.width = `${element.offsetWidth}px`;
-                      element.style.height = `${element.offsetHeight}px`;
-                      element.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.3)';
+                      element.setAttribute('data-last-click', now.toString());
 
-                      const closeExpandedImage = () => {
-                        element.style.position = '';
-                        element.style.left = '';
-                        element.style.top = '';
-                        element.style.transform = '';
-                        element.style.zIndex = '';
-                        element.style.width = '';
-                        element.style.height = '';
-                        element.style.boxShadow = '';
-                        if (overlay.parentNode === document.body) {
-                          document.body.removeChild(overlay);
+                      // Delay enlargement to wait for potential double click
+                      setTimeout(() => {
+                        const lastClickTime = parseInt(element.getAttribute('data-last-click') || '0');
+                        if (now === lastClickTime) {
+                          const viewportWidth = window.innerWidth;
+                          const viewportHeight = window.innerHeight;
+
+                          // Create overlay
+                          const overlay = document.createElement('div');
+                          overlay.style.position = 'fixed';
+                          overlay.style.top = '0';
+                          overlay.style.left = '0';
+                          overlay.style.width = '100%';
+                          overlay.style.height = '100%';
+                          overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+                          overlay.style.zIndex = '99';
+                          document.body.appendChild(overlay);
+
+                          element.style.position = 'fixed';
+                          element.style.left = '50%';
+                          element.style.top = '50%';
+                          const screenWidth = window.innerWidth * 0.8;
+                          const ratio = screenWidth / element.offsetWidth;
+                          element.style.transform = `translate(-50%, -50%) scale(${ratio})`;
+                          element.style.zIndex = '100';
+                          element.style.width = `${element.offsetWidth}px`;
+                          element.style.height = `${element.offsetHeight}px`;
+                          element.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.3)';
+
+                          const closeExpandedImage = () => {
+                            element.style.position = '';
+                            element.style.left = '';
+                            element.style.top = '';
+                            element.style.transform = '';
+                            element.style.zIndex = '';
+                            element.style.width = '';
+                            element.style.height = '';
+                            element.style.boxShadow = '';
+                            if (overlay.parentNode === document.body) {
+                              document.body.removeChild(overlay);
+                            }
+                          };
+
+                          const handleClick = (e: MouseEvent) => {
+                            e.stopPropagation();
+                            closeExpandedImage();
+                          };
+
+                          overlay.onclick = handleClick;
+                          element.onclick = handleClick;
                         }
-                      };
-
-                      const handleClick = (e: MouseEvent) => {
-                        e.stopPropagation();
-                        closeExpandedImage();
-                      };
-
-                      overlay.onclick = handleClick;
-                      element.onclick = handleClick;
+                      }, 300);
                     }}
-                    
+                    onDoubleClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+
+                      // Reset any enlarged state
+                      const element = e.currentTarget;
+                      element.style.position = '';
+                      element.style.left = '';
+                      element.style.top = '';
+                      element.style.transform = '';
+                      element.style.zIndex = '';
+                      element.style.width = '';
+                      element.style.height = '';
+                      element.style.boxShadow = '';
+
+                      // Remove overlay if it exists
+                      const overlay = document.querySelector('div[style*="position: fixed"]');
+                      if (overlay && overlay.parentNode === document.body) {
+                        document.body.removeChild(overlay);
+                      }
+
+                      window.open(getFacebookUrl(link.url), '_blank');
+                    }}
                   >
                     <motion.div
                       className="relative aspect-square w-full overflow-hidden rounded-lg"
