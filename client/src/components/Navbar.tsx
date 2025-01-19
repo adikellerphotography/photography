@@ -60,14 +60,16 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Navigation */}
-          <div className="md:hidden flex items-center justify-between flex-1">
+          <div className="md:hidden flex items-center relative flex-1">
             {/* Theme and Language toggles */}
-            <div className="flex items-center gap-2 px-4">
+            <div className="flex items-center gap-2 px-4 z-10">
               <LanguageToggle />
               <ThemeToggle />
             </div>
-            <div className="text-lg font-serif italic tracking-wide text-foreground text-center flex-1">
-              Adi Keller Photography
+            <div className="absolute w-full flex justify-center">
+              <span className="text-lg font-serif italic tracking-wide text-foreground px-4">
+                Adi Keller Photography
+              </span>
             </div>
 
             {/* Menu button floating on the right with brighter background */}
