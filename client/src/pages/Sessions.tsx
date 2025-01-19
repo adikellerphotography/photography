@@ -262,8 +262,9 @@ export default function MySessions() {
 
                       overlay.onclick = handleClick;
                       element.onclick = handleClick;
-                    }}
-                    onDoubleClick={(e) => {
+                    }, 300);
+                  }},
+                  onDoubleClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
                       
