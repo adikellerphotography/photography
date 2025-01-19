@@ -195,7 +195,7 @@ export default function MySessions() {
         setTimeout(() => {
           if (clickTimer.current !== 0) {
             setSelectedImage({ 
-              url: `/facebook_posts_image/${groupName.toLowerCase().replace(' ', '_')}/${link.number}.jpg`,
+              url: `/assets/facebook_posts_image/${groupName.toLowerCase().replace(' ', '_')}/${link.number}.jpg`,
               number: link.number, 
               groupName 
             });
