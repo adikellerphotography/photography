@@ -232,11 +232,18 @@ export default function MySessions() {
                         element.style.width = '';
                         element.style.height = '';
                         element.style.boxShadow = '';
-                        document.body.removeChild(overlay);
+                        if (overlay.parentNode === document.body) {
+                          document.body.removeChild(overlay);
+                        }
                       };
 
-                      overlay.onclick = closeExpandedImage;
-                      element.onclick = closeExpandedImage;
+                      const handleClick = (e: MouseEvent) => {
+                        e.stopPropagation();
+                        closeExpandedImage();
+                      };
+
+                      overlay.onclick = handleClick;
+                      element.onclick = handleClick;
                     }}
                     onDoubleClick={(e) => {
                       e.preventDefault();
