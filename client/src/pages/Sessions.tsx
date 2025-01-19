@@ -198,21 +198,37 @@ export default function MySessions() {
                     onClick={(e) => {
                       if (isMobile) {
                         e.preventDefault();
+                        return;
                       }
-                      const element = e.currentTarget;
-                      const viewportWidth = window.innerWidth;
-                      const viewportHeight = window.innerHeight;
                       
-                      // Create overlay
-                      const overlay = document.createElement('div');
-                      overlay.style.position = 'fixed';
-                      overlay.style.top = '0';
-                      overlay.style.left = '0';
-                      overlay.style.width = '100%';
-                      overlay.style.height = '100%';
-                      overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-                      overlay.style.zIndex = '99';
-                      document.body.appendChild(overlay);
+                      const element = e.currentTarget;
+                      const lastClick = element.getAttribute('data-last-click');
+                      const now = Date.now();
+                      
+                      if (lastClick && now - parseInt(lastClick) < 300) {
+                        // Double click detected, don't enlarge
+                        return;
+                      }
+                      
+                      element.setAttribute('data-last-click', now.toString());
+                      
+                      // Delay enlargement to wait for potential double click
+                      setTimeout(() => {
+                        const lastClickTime = parseInt(element.getAttribute('data-last-click') || '0');
+                        if (now === lastClickTime) {
+                          const viewportWidth = window.innerWidth;
+                          const viewportHeight = window.innerHeight;
+                          
+                          // Create overlay
+                          const overlay = document.createElement('div');
+                          overlay.style.position = 'fixed';
+                          overlay.style.top = '0';
+                          overlay.style.left = '0';
+                          overlay.style.width = '100%';
+                          overlay.style.height = '100%';
+                          overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+                          overlay.style.zIndex = '99';
+                          document.body.appendChild(overlay);
                       
                       element.style.position = 'fixed';
                       element.style.left = '50%';
