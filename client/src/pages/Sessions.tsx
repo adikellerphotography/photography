@@ -163,77 +163,25 @@ export default function MySessions() {
 
   const getFacebookUrl = (url: string) => {
     if (isMobile) {
-      // Extract post ID from URL
-      const postId = url.split('/posts/')[1];
-      
-      // iOS devices
-      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-        return `fb://post/${postId}`;
-      }
-      
-      // Android devices
-      if (/Android/.test(navigator.userAgent)) {
-        // Try to open in Facebook app first
-        return `intent://facebook.com/posts/${postId}#Intent;` +
-               'package=com.facebook.katana;' +
-               'scheme=https;' +
-               'end';
-      }
-      
-      // Fallback for other mobile browsers
-      return url;
+      return `fb://facewebmodal/f?href=${encodeURIComponent(url)}`;
     }
     return url;
   };
 
-  const handleImageClick = (event: React.TouchEvent | React.MouseEvent, link: SessionLink, groupName: string) => {
+  const handleImageClick = (event: React.MouseEvent, link: SessionLink, groupName: string) => {
     event.preventDefault();
-    
-    // For touch devices
-    if ('ontouchstart' in window) {
-      if (clickTimer.current) {
-        // Double tap detected
-        clearTimeout(clickTimer.current);
-        clickTimer.current = null;
-        
-        // Get post ID from URL
-        const fbPostId = link.url.match(/pfbid[A-Za-z0-9]+/)?.[0] || '';
-        
-        // iOS
-        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-          window.location.href = `fb://profile/adi.keller.16/posts/${fbPostId}`;
-          return;
-        }
-        
-        // Android
-        if (/Android/.test(navigator.userAgent)) {
-          window.location.href = `intent://www.facebook.com/story.php?story_fbid=${fbPostId}&id=adi.keller.16#Intent;package=com.facebook.katana;scheme=https;end`;
-          return;
-        }
-        
-        // Fallback to browser
-        window.open(link.url, '_blank');
-      } else {
-        // Single tap behavior
-        clickTimer.current = setTimeout(() => {
-          setSelectedImage({ url: `/assets/facebook_posts_image/${groupName.toLowerCase().replace(' ', '_')}/${link.number}.jpg`, number: link.number, groupName });
-          setIsDialogOpen(true);
-          clickTimer.current = null;
-        }, 250);
-      }
+    if (clickTimer.current) {
+      // Double click detected
+      clearTimeout(clickTimer.current);
+      clickTimer.current = null;
+      window.open(getFacebookUrl(link.url), '_blank');
     } else {
-      // Desktop behavior remains the same
-      if (clickTimer.current) {
-        clearTimeout(clickTimer.current);
+      // Single click behavior
+      clickTimer.current = setTimeout(() => {
+        setSelectedImage({ url: `/assets/facebook_posts_image/${groupName.toLowerCase().replace(' ', '_')}/${link.number}.jpg`, number: link.number, groupName });
+        setIsDialogOpen(true);
         clickTimer.current = null;
-        window.open(link.url, '_blank');
-      } else {
-        clickTimer.current = setTimeout(() => {
-          setSelectedImage({ url: `/assets/facebook_posts_image/${groupName.toLowerCase().replace(' ', '_')}/${link.number}.jpg`, number: link.number, groupName });
-          setIsDialogOpen(true);
-          clickTimer.current = null;
-        }, 250);
-      }
+      }, 250);
     }
   };
 
