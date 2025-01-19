@@ -263,28 +263,28 @@ export default function MySessions() {
                     }
                   }}
                   onDoubleClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
+                    e.preventDefault();
+                    e.stopPropagation();
 
-                      // Reset any enlarged state
-                      const element = e.currentTarget;
-                      element.style.position = '';
-                      element.style.left = '';
-                      element.style.top = '';
-                      element.style.transform = '';
-                      element.style.zIndex = '';
-                      element.style.width = '';
-                      element.style.height = '';
-                      element.style.boxShadow = '';
+                    // Reset any enlarged state
+                    const element = e.currentTarget;
+                    element.style.position = '';
+                    element.style.left = '';
+                    element.style.top = '';
+                    element.style.transform = '';
+                    element.style.zIndex = '';
+                    element.style.width = '';
+                    element.style.height = '';
+                    element.style.boxShadow = '';
 
-                      // Remove overlay if it exists
-                      const overlay = document.querySelector('div[style*="position: fixed"]');
-                      if (overlay && overlay.parentNode === document.body) {
-                        document.body.removeChild(overlay);
-                      }
+                    // Remove overlay if it exists
+                    const overlay = document.querySelector('div[style*="position: fixed"]');
+                    if (overlay && overlay.parentNode === document.body) {
+                      document.body.removeChild(overlay);
+                    }
 
-                      window.open(getFacebookUrl(link.url), '_blank');
-                    }}
+                    window.open(getFacebookUrl(link.url), '_blank');
+                  }}
                   >
                     <motion.div
                       className="relative aspect-square w-full overflow-hidden rounded-lg"
