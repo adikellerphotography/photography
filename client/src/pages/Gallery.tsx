@@ -68,31 +68,37 @@ export default function Gallery() {
       const newCategory = processedCategories[newIndex].name;
       setActiveCategory(newCategory);
 
-      // Ensure smooth category navigation sync
+      // Ensure smooth category navigation sync with improved visibility
       if (tabsListRef.current) {
         const tabTrigger = tabsListRef.current.querySelector(`[value="${newCategory}"]`) as HTMLButtonElement;
         if (tabTrigger) {
-          // Force tab activation
-          tabTrigger.click();
-          
-          // Calculate scroll position to keep the active tab visible on the left
+          // Calculate visible area
           const container = tabsListRef.current;
-          const scrollLeft = Math.max(0, tabTrigger.offsetLeft - 16);
+          const containerWidth = container.offsetWidth;
+          const tabWidth = tabTrigger.offsetWidth;
           
-          // Smooth scroll with animation matching the swipe
+          // Calculate scroll position to center the tab
+          const desiredScrollLeft = Math.max(0, 
+            tabTrigger.offsetLeft - (containerWidth / 2) + (tabWidth / 2)
+          );
+          
+          // Smooth scroll with animation
           container.scrollTo({
-            left: scrollLeft,
+            left: desiredScrollLeft,
             behavior: 'smooth'
           });
 
-          // Update active state visually
+          // Update tab states
           const allTriggers = container.querySelectorAll('[role="tab"]');
           allTriggers.forEach(trigger => {
             trigger.setAttribute('aria-selected', 'false');
             trigger.classList.remove('bg-gray-100/10');
           });
+          
+          // Activate new tab
           tabTrigger.setAttribute('aria-selected', 'true');
           tabTrigger.classList.add('bg-gray-100/10');
+          tabTrigger.click();
         }
       }
       
