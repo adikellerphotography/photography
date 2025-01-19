@@ -212,53 +212,74 @@ export default function MySessions() {
 
                       element.setAttribute('data-last-click', now.toString());
 
-                      // Delay enlargement to wait for potential double click
-                      const viewportWidth = window.innerWidth;
-                      const viewportHeight = window.innerHeight;
-
-                      // Create overlay
+                      // Create modal overlay with animation
                       const overlay = document.createElement('div');
                       overlay.style.position = 'fixed';
                       overlay.style.top = '0';
                       overlay.style.left = '0';
                       overlay.style.width = '100%';
                       overlay.style.height = '100%';
-                      overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+                      overlay.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+                      overlay.style.backdropFilter = 'blur(5px)';
                       overlay.style.zIndex = '99';
+                      overlay.style.display = 'flex';
+                      overlay.style.alignItems = 'center';
+                      overlay.style.justifyContent = 'center';
+                      overlay.style.transition = 'background-color 0.3s ease';
                       document.body.appendChild(overlay);
 
-                      element.style.position = 'fixed';
-                      element.style.left = '50%';
-                      element.style.top = '50%';
-                      const screenWidth = window.innerWidth * 0.8;
-                      const ratio = screenWidth / element.offsetWidth;
-                      element.style.transform = `translate(-50%, -50%) scale(${ratio})`;
-                      element.style.zIndex = '100';
-                      element.style.width = `${element.offsetWidth}px`;
-                      element.style.height = `${element.offsetHeight}px`;
-                      element.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.3)';
+                      // Create a wrapper for the image
+                      const wrapper = document.createElement('div');
+                      wrapper.style.position = 'relative';
+                      wrapper.style.maxWidth = '90vw';
+                      wrapper.style.maxHeight = '90vh';
+                      wrapper.style.transform = 'scale(0.9)';
+                      wrapper.style.opacity = '0';
+                      wrapper.style.transition = 'all 0.3s ease';
+                      overlay.appendChild(wrapper);
 
-                      const closeExpandedImage = () => {
-                        element.style.position = '';
-                        element.style.left = '';
-                        element.style.top = '';
-                        element.style.transform = '';
-                        element.style.zIndex = '';
-                        element.style.width = '';
-                        element.style.height = '';
-                        element.style.boxShadow = '';
-                        if (overlay.parentNode === document.body) {
-                          document.body.removeChild(overlay);
+                      // Clone the image for the modal
+                      const img = element.querySelector('img')!.cloneNode(true) as HTMLImageElement;
+                      img.style.maxWidth = '100%';
+                      img.style.maxHeight = '90vh';
+                      img.style.objectFit = 'contain';
+                      img.style.borderRadius = '8px';
+                      img.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.3)';
+                      wrapper.appendChild(img);
+
+                      // Trigger animations after a frame
+                      requestAnimationFrame(() => {
+                        overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+                        wrapper.style.transform = 'scale(1)';
+                        wrapper.style.opacity = '1';
+                      });
+
+                      const closeModal = (e?: Event) => {
+                        if (e) {
+                          e.stopPropagation();
+                        }
+                        wrapper.style.transform = 'scale(0.9)';
+                        wrapper.style.opacity = '0';
+                        overlay.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+                        
+                        setTimeout(() => {
+                          if (overlay.parentNode === document.body) {
+                            document.body.removeChild(overlay);
+                          }
+                        }, 300);
+                      };
+
+                      overlay.onclick = closeModal;
+                      img.onclick = closeModal;
+
+                      // Add escape key handler
+                      const handleEscape = (e: KeyboardEvent) => {
+                        if (e.key === 'Escape') {
+                          closeModal();
+                          document.removeEventListener('keydown', handleEscape);
                         }
                       };
-
-                      const handleClick = (e: MouseEvent) => {
-                        e.stopPropagation();
-                        closeExpandedImage();
-                      };
-
-                      overlay.onclick = handleClick;
-                      element.onclick = handleClick;
+                      document.addEventListener('keydown', handleEscape);
                     }}
                     onDoubleClick={(e) => {
                       e.preventDefault();
