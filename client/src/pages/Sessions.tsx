@@ -262,7 +262,8 @@ export default function MySessions() {
 
                       overlay.onclick = handleClick;
                       element.onclick = handleClick;
-                    }, 300);
+                    }
+                  }, 300);
                   }},
                   onDoubleClick={(e) => {
                       e.preventDefault();
