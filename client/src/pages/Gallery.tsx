@@ -237,7 +237,7 @@ export default function Gallery() {
                   <TabsTrigger
                     key={category.id}
                     value={category.name}
-                    className="min-w-[120px] transition-all duration-300 ease-in-out"
+                    className="min-w-[120px] transition-all duration-300 ease-in-out data-[state=active]:bg-gray-100/10 rounded-md"
                   >
                     {category.name}
                   </TabsTrigger>
