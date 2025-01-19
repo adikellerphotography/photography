@@ -240,7 +240,7 @@ export default function MySessions() {
                     >
                       {["Bat Mitsva", "Bar Mitsva", "Horses", "Kids", "Family", "Big Family", "Sweet 16", "Purim", "Pregnancy", "Feminine", "Yoga", "Modeling"].includes(group.name) ? (
                         <img 
-                          src={`/assets/facebook_posts_image/${group.name.toLowerCase().replace(' ', '_')}/${link.number}.jpg?nocache=${Date.now()}`}
+                          src={`/assets/facebook_posts_image/${group.name.toLowerCase().replace(' ', '_')}/${link.number}.jpg${isMobile ? '?no_watermark=true' : ''}?nocache=${Date.now()}`}
                           alt={`${group.name} session ${link.number}`}
                           className="w-full h-full object-cover"
                           loading="lazy"

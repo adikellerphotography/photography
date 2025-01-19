@@ -285,7 +285,20 @@ export function registerRoutes(app: Express): Server {
   app.get('/api/photos/:category/:filename', async (req, res) => {
     try {
       const { category, filename } = req.params;
-      const imagePath = path.join(process.cwd(), 'attached_assets', category, filename);
+      const noWatermark = req.query.no_watermark === 'true';
+      let imagePath = path.join(process.cwd(), 'attached_assets', category, filename);
+
+      // Attempt to find non-watermarked version if available
+      if (noWatermark) {
+        const nonWatermarkedPath = path.join(process.cwd(), 'attached_assets', category, 'nowatermark', filename);
+        try {
+          await fs.access(nonWatermarkedPath);
+          imagePath = nonWatermarkedPath;
+        } catch (err) {
+          // Ignore error if non-watermarked version is not found
+        }
+      }
+
 
       const exists = await fs.access(imagePath).then(() => true).catch(() => false);
       if (!exists) {
