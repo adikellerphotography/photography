@@ -242,13 +242,21 @@ export default function Gallery() {
                 className="relative"
               >
                 <motion.div
-                  initial={{ opacity: 0, x: 300 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -300 }}
+                  initial={(isHorizontalSwipe === null || isHorizontalSwipe) ? 
+                    { opacity: 0, x: touchStartX && touchStartX - (currentX || 0) > 0 ? 300 : -300 } : 
+                    { opacity: 0, scale: 0.8 }
+                  }
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  exit={(isHorizontalSwipe === null || isHorizontalSwipe) ? 
+                    { opacity: 0, x: touchStartX && touchStartX - (currentX || 0) > 0 ? -300 : 300 } : 
+                    { opacity: 0, scale: 0.8 }
+                  }
                   transition={{
                     type: "spring",
-                    stiffness: 260,
-                    damping: 20
+                    stiffness: 200,
+                    damping: 25,
+                    mass: 1,
+                    velocity: 2
                   }}
                 >
                   <Card>
