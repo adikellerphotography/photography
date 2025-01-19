@@ -466,23 +466,9 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 <motion.div
                   key={selectedPhoto.id + "-full"}
                   className="absolute inset-0"
-                  initial={{ 
-                    opacity: 0, 
-                    x: transitionDirection === 'next' ? 100 : -100,
-                    scale: 0.95
-                  }}
-                  animate={{ 
-                    opacity: isFullImageLoaded ? 1 : 0,
-                    x: isFullImageLoaded ? 0 : (transitionDirection === 'next' ? 100 : -100),
-                    scale: isFullImageLoaded ? 1 : 0.95
-                  }}
-                  transition={{ 
-                    type: "spring",
-                    stiffness: 150,
-                    damping: 20,
-                    mass: 1,
-                    opacity: { duration: 0.5, ease: "easeInOut" }
-                  }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: isFullImageLoaded ? 1 : 0 }}
+                  transition={{ duration: 0.3 }}
                 >
                   <img
                     src={selectedPhoto.imageUrl}
