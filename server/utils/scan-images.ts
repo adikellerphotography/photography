@@ -9,6 +9,17 @@ export async function scanAndProcessImages(targetPath?: string) {
   try {
     const assetsPath = targetPath || path.join(process.cwd(), 'attached_assets');
     
+    if (process.argv.includes('--scan-all-directories')) {
+      console.log('Scanning all image directories...');
+      const mainDirs = ['Bat_Mitsva', 'Family', 'Horses', 'Modeling', 'Women', 'Yoga', 'kids'];
+      for (const dir of mainDirs) {
+        const dirPath = path.join(process.cwd(), 'attached_assets', dir);
+        console.log(`Processing directory: ${dir}`);
+        await processDirectory(dirPath, dir);
+      }
+      return;
+    }
+    
     // If targeting facebook posts, adjust the path
     if (process.argv.includes('--scan-facebook-posts')) {
       console.log('Scanning Facebook posts images...');
@@ -136,6 +147,57 @@ async function processFacebookPosts(basePath: string) {
         const relativePath = path.join('facebook_posts_image', categoryPath, imageFile);
         await db.insert(photos).values({
           title: path.basename(imageFile, path.extname(imageFile)),
+
+async function processDirectory(dirPath: string, categoryName: string) {
+  try {
+    // Ensure directory exists
+    await fs.access(dirPath);
+    
+    // Get all images in this category
+    const files = await fs.readdir(dirPath);
+    const imageFiles = files.filter(file => 
+      /\.(jpg|jpeg|png)$/i.test(file) && 
+      !file.includes('-thumb') // Exclude thumbnail files
+    );
+
+    console.log(`Found ${imageFiles.length} images in ${categoryName}`);
+
+    // Process each image
+    for (const imageFile of imageFiles) {
+      try {
+        const imagePath = path.join(dirPath, imageFile);
+        let thumbnailUrl;
+
+        try {
+          thumbnailUrl = await generateThumbnail(imagePath);
+          console.log(`Generated thumbnail for ${imageFile}`);
+        } catch (error) {
+          console.error(`Error generating thumbnail for ${imageFile}:`, error);
+          continue;
+        }
+
+        // Insert or update in database
+        await db.insert(photos).values({
+          title: path.basename(imageFile, path.extname(imageFile)),
+          category: categoryName.replace(/_/g, ' '),
+          imageUrl: path.join(categoryName, imageFile),
+          thumbnailUrl,
+          displayOrder: 1
+        }).onConflictDoUpdate({
+          target: [photos.imageUrl],
+          set: { thumbnailUrl }
+        });
+
+        console.log(`Processed: ${imageFile}`);
+      } catch (error) {
+        console.error(`Error processing ${imageFile}:`, error);
+      }
+    }
+  } catch (error) {
+    console.error(`Error processing directory ${categoryName}:`, error);
+  }
+}
+
           category: categoryPath.replace(/_/g, ' '),
           imageUrl: relativePath,
           thumbnailUrl,
