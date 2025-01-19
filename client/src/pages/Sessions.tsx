@@ -217,7 +217,9 @@ export default function MySessions() {
                       element.style.position = 'fixed';
                       element.style.left = '50%';
                       element.style.top = '50%';
-                      element.style.transform = 'translate(-50%, -50%) scale(0.9)';
+                      const screenWidth = window.innerWidth * 0.8;
+                      const ratio = screenWidth / element.offsetWidth;
+                      element.style.transform = `translate(-50%, -50%) scale(${ratio})`;
                       element.style.zIndex = '100';
                       element.style.width = `${element.offsetWidth}px`;
                       element.style.height = `${element.offsetHeight}px`;
@@ -247,6 +249,25 @@ export default function MySessions() {
                     }}
                     onDoubleClick={(e) => {
                       e.preventDefault();
+                      e.stopPropagation();
+                      
+                      // Reset any enlarged state
+                      const element = e.currentTarget;
+                      element.style.position = '';
+                      element.style.left = '';
+                      element.style.top = '';
+                      element.style.transform = '';
+                      element.style.zIndex = '';
+                      element.style.width = '';
+                      element.style.height = '';
+                      element.style.boxShadow = '';
+                      
+                      // Remove overlay if it exists
+                      const overlay = document.querySelector('div[style*="position: fixed"]');
+                      if (overlay && overlay.parentNode === document.body) {
+                        document.body.removeChild(overlay);
+                      }
+                      
                       window.open(getFacebookUrl(link.url), '_blank');
                     }}
                   >
