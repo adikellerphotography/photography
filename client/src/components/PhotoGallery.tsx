@@ -308,10 +308,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     const retryCount = parseInt(target.dataset.retryCount || '0');
-                    
+
                     if (retryCount < 3) {
                       target.dataset.retryCount = (retryCount + 1).toString();
-                      
+
                       // Try loading the full image URL if thumbnail fails
                       if (target.src === photo.thumbnailUrl) {
                         console.log('Thumbnail failed, trying full image:', photo.imageUrl);
@@ -321,7 +321,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                         const timestamp = Date.now();
                         const url = new URL(target.src, window.location.origin);
                         url.searchParams.set('v', timestamp.toString());
-                        
+
                         setTimeout(() => {
                           target.src = url.toString();
                         }, Math.pow(2, retryCount) * 1000); // Exponential backoff
@@ -481,7 +481,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background/90 to-background/0">
                 <h3 className="text-lg font-semibold text-white">
-                  {selectedPhoto.title.split(':')[0].trim()}
+                  {window.innerWidth <= 768 ? selectedPhoto.title.split('.')[0].split('_')[0] : selectedPhoto.title.split(':')[0].trim()}
                 </h3>
                 {selectedPhoto.description && (
                   <p className="text-sm text-white/80">{selectedPhoto.description}</p>
