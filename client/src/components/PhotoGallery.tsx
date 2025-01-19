@@ -306,10 +306,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     const retryCount = parseInt(target.dataset.retryCount || '0');
-
+                    
                     if (retryCount < 3) {
                       target.dataset.retryCount = (retryCount + 1).toString();
-
+                      
                       // Try loading the full image URL if thumbnail fails
                       if (target.src === photo.thumbnailUrl) {
                         console.log('Thumbnail failed, trying full image:', photo.imageUrl);
@@ -319,7 +319,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                         const timestamp = Date.now();
                         const url = new URL(target.src, window.location.origin);
                         url.searchParams.set('v', timestamp.toString());
-
+                        
                         setTimeout(() => {
                           target.src = url.toString();
                         }, Math.pow(2, retryCount) * 1000); // Exponential backoff
@@ -446,42 +446,29 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               />
 
               <div className="relative w-full h-full overflow-hidden">
-                <motion.div
-                  initial={{opacity: 1}}
-                  animate={{opacity: isFullImageLoaded ? 0 : 1}}
-                  transition={{duration: 0.4, ease: "easeOut"}}
+                <img
+                  src={selectedPhoto.thumbnailUrl || selectedPhoto.imageUrl}
+                  alt=""
                   className="absolute inset-0 w-full h-full object-contain"
-                >
-                  <img
-                    src={selectedPhoto.thumbnailUrl || selectedPhoto.imageUrl}
-                    alt=""
-                    className="absolute inset-0 w-full h-full object-contain"
-                    style={{ 
-                      opacity: 1,
-                      transition: 'opacity 0.3s ease-in-out'
-                    }}
-                  />
-                </motion.div>
-                <motion.div
-                  initial={{opacity: 0}}
-                  animate={{opacity: isFullImageLoaded ? 1 : 0}}
-                  transition={{duration: 0.4, ease: "easeOut"}}
+                  style={{ 
+                    opacity: isFullImageLoaded ? 0 : 1,
+                    transition: 'opacity 0.3s ease-in-out'
+                  }}
+                />
+
+                <img
+                  src={selectedPhoto.imageUrl}
+                  alt=""
                   className="absolute inset-0 w-full h-full object-contain"
-                >
-                  <img
-                    src={selectedPhoto.imageUrl}
-                    alt=""
-                    className="absolute inset-0 w-full h-full object-contain"
-                    style={{ 
-                      opacity: 1,
-                      transition: 'opacity 0.3s ease-in-out'
-                    }}
-                    onLoad={() => {
-                      setIsFullImageLoaded(true);
-                      setTransitionDirection(null);
-                    }}
-                  />
-                </motion.div>
+                  style={{ 
+                    opacity: isFullImageLoaded ? 1 : 0,
+                    transition: 'opacity 0.3s ease-in-out'
+                  }}
+                  onLoad={() => {
+                    setIsFullImageLoaded(true);
+                    setTransitionDirection(null);
+                  }}
+                />
               </div>
 
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background/90 to-background/0">
