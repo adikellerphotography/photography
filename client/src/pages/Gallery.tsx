@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import PhotoGallery from "@/components/PhotoGallery";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Category } from "@/lib/types";
@@ -236,12 +236,27 @@ export default function Gallery() {
 
           <motion.div variants={itemVariants}>
             {processedCategories.map((category) => (
-              <TabsContent key={category.id} value={category.name}>
-                <Card>
-                  <CardContent className="pt-6">
-                    <PhotoGallery category={category.name} />
-                  </CardContent>
-                </Card>
+              <TabsContent 
+                key={category.id} 
+                value={category.name}
+                className="relative"
+              >
+                <motion.div
+                  initial={{ opacity: 0, x: 300 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -300 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 260,
+                    damping: 20
+                  }}
+                >
+                  <Card>
+                    <CardContent className="pt-6">
+                      <PhotoGallery category={category.name} />
+                    </CardContent>
+                  </Card>
+                </motion.div>
               </TabsContent>
             ))}
           </motion.div>
