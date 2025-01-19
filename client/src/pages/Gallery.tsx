@@ -68,19 +68,18 @@ export default function Gallery() {
       const newCategory = processedCategories[newIndex].name;
       setActiveCategory(newCategory);
       
-      // Force trigger tab change
-      const tabTrigger = tabsListRef.current?.querySelector(`[value="${newCategory}"]`) as HTMLButtonElement;
-      if (tabTrigger) {
-        tabTrigger.click();
-        
-        // Scroll the tab into view
-        const container = tabsListRef.current;
-        const scrollLeft = tabTrigger.offsetLeft - 16;
-        
-        container?.scrollTo({
-          left: scrollLeft,
-          behavior: 'smooth'
-        });
+      // Ensure active category tab is visible by scrolling it into view
+      if (tabsListRef.current) {
+        const tabElement = tabsListRef.current.querySelector(`[data-state="active"]`) as HTMLElement;
+        if (tabElement) {
+          const container = tabsListRef.current;
+          const scrollLeft = tabElement.offsetLeft - 16; // 16px padding
+          
+          container.scrollTo({
+            left: scrollLeft,
+            behavior: swipeDirection ? 'auto' : 'smooth'
+          });
+        }
       }
 
       const newUrl = `/gallery?category=${encodeURIComponent(newCategory)}`;
