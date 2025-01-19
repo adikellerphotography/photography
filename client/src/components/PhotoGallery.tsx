@@ -297,17 +297,32 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               <div className="relative w-full h-full overflow-hidden bg-muted">
 
                 <img
-                  src={photo.thumbnailUrl || '/placeholder.jpg'}
+                  src={photo.thumbnailUrl || photo.imageUrl}
                   data-src={photo.imageUrl}
                   alt=""
                   className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   onError={(e) => {
-                    console.error('Failed to load image:', photo.imageUrl);
                     const target = e.target as HTMLImageElement;
-                    target.onerror = null;
-                    target.src = '/placeholder.jpg';
+                    const currentSrc = target.src;
+                    
+                    // If current source is thumbnail, try main image
+                    if (currentSrc === photo.thumbnailUrl) {
+                      target.src = photo.imageUrl;
+                    } else if (!target.dataset.retryCount || parseInt(target.dataset.retryCount) < 2) {
+                      // Implement retry logic with exponential backoff
+                      target.dataset.retryCount = target.dataset.retryCount ? 
+                        (parseInt(target.dataset.retryCount) + 1).toString() : "1";
+                      
+                      setTimeout(() => {
+                        target.src = currentSrc;
+                      }, parseInt(target.dataset.retryCount) * 1000);
+                    } else {
+                      console.error('Failed to load image after retries:', photo.imageUrl);
+                      target.src = '/placeholder.jpg';
+                      target.onerror = null;
+                    }
                   }}
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
