@@ -163,7 +163,25 @@ export default function MySessions() {
 
   const getFacebookUrl = (url: string) => {
     if (isMobile) {
-      return `fb://facewebmodal/f?href=${encodeURIComponent(url)}`;
+      // Extract post ID from URL
+      const postId = url.split('/posts/')[1];
+      
+      // iOS devices
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        return `fb://post/${postId}`;
+      }
+      
+      // Android devices
+      if (/Android/.test(navigator.userAgent)) {
+        // Try to open in Facebook app first
+        return `intent://facebook.com/posts/${postId}#Intent;` +
+               'package=com.facebook.katana;' +
+               'scheme=https;' +
+               'end';
+      }
+      
+      // Fallback for other mobile browsers
+      return url;
     }
     return url;
   };
