@@ -182,17 +182,19 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const navigatePhotos = (direction: "next" | "prev") => {
     if (!photos) return;
 
-    setTransitionDirection(direction);
     setIsFullImageLoaded(false);
-    setIsNextImageLoaded(false);
+    setTransitionDirection(direction);
 
-    let newIndex = direction === "next" ? selectedIndex + 1 : selectedIndex - 1;
+    const newIndex = direction === "next" 
+      ? (selectedIndex + 1) % photos.length 
+      : selectedIndex === 0 ? photos.length - 1 : selectedIndex - 1;
 
-    if (newIndex < 0) {
-      newIndex = photos.length - 1;
-    } else if (newIndex >= photos.length) {
-      newIndex = 0;
-    }
+    // Preload next/prev images
+    const preloadIndex = direction === "next" 
+      ? (newIndex + 1) % photos.length 
+      : newIndex === 0 ? photos.length - 1 : newIndex - 1;
+
+    new Image().src = photos[preloadIndex].imageUrl;
 
     const newPhoto = photos[newIndex];
     setSelectedIndex(newIndex);
@@ -446,29 +448,47 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               />
 
               <div className="relative w-full h-full overflow-hidden">
-                <img
-                  src={selectedPhoto.thumbnailUrl || selectedPhoto.imageUrl}
-                  alt=""
-                  className="absolute inset-0 w-full h-full object-contain"
-                  style={{ 
-                    opacity: isFullImageLoaded ? 0 : 1,
-                    transition: 'opacity 0.3s ease-in-out'
-                  }}
-                />
+                <motion.div
+                  key={selectedPhoto.id + "-thumb"}
+                  className="absolute inset-0"
+                  initial={{ opacity: 1 }}
+                  animate={{ opacity: isFullImageLoaded ? 0 : 1 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                >
+                  <img
+                    src={selectedPhoto.thumbnailUrl || selectedPhoto.imageUrl}
+                    alt=""
+                    className="w-full h-full object-contain"
+                    loading="eager"
+                  />
+                </motion.div>
 
-                <img
-                  src={selectedPhoto.imageUrl}
-                  alt=""
-                  className="absolute inset-0 w-full h-full object-contain"
-                  style={{ 
+                <motion.div
+                  key={selectedPhoto.id + "-full"}
+                  className="absolute inset-0"
+                  initial={{ opacity: 0, x: transitionDirection === 'next' ? 20 : -20 }}
+                  animate={{ 
                     opacity: isFullImageLoaded ? 1 : 0,
-                    transition: 'opacity 0.3s ease-in-out'
+                    x: isFullImageLoaded ? 0 : (transitionDirection === 'next' ? 20 : -20)
                   }}
-                  onLoad={() => {
-                    setIsFullImageLoaded(true);
-                    setTransitionDirection(null);
+                  transition={{ 
+                    duration: 0.5,
+                    ease: "easeOut",
+                    opacity: { duration: 0.3 },
+                    x: { duration: 0.4 }
                   }}
-                />
+                >
+                  <img
+                    src={selectedPhoto.imageUrl}
+                    alt=""
+                    className="w-full h-full object-contain"
+                    loading="eager"
+                    onLoad={() => {
+                      setIsFullImageLoaded(true);
+                      setTransitionDirection(null);
+                    }}
+                  />
+                </motion.div>
               </div>
 
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background/90 to-background/0">
