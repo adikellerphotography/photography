@@ -68,17 +68,48 @@ export default function Gallery() {
       const newCategory = processedCategories[newIndex].name;
       setActiveCategory(newCategory);
 
-      // Ensure tab visibility
+      // Ensure smooth category navigation sync
       if (tabsListRef.current) {
         const tabTrigger = tabsListRef.current.querySelector(`[value="${newCategory}"]`) as HTMLButtonElement;
         if (tabTrigger) {
-          // Calculate scroll position to center the tab
+          // Force tab activation
+          tabTrigger.click();
+          
+          // Calculate scroll position to keep the active tab visible on the left
           const container = tabsListRef.current;
-          const scrollLeft = tabTrigger.offsetLeft - (container.offsetWidth / 2) + (tabTrigger.offsetWidth / 2);
-
-          // Smooth scroll
+          const scrollLeft = Math.max(0, tabTrigger.offsetLeft - 16);
+          
+          // Smooth scroll with animation matching the swipe
           container.scrollTo({
-            left: Math.max(0, scrollLeft),
+            left: scrollLeft,
+            behavior: 'smooth'
+          });
+
+          // Update active state visually
+          const allTriggers = container.querySelectorAll('[role="tab"]');
+          allTriggers.forEach(trigger => {
+            trigger.setAttribute('aria-selected', 'false');
+            trigger.classList.remove('bg-gray-100/10');
+          });
+          tabTrigger.setAttribute('aria-selected', 'true');
+          tabTrigger.classList.add('bg-gray-100/10');
+        }
+      }
+      
+      // Force category tab update and scroll into view
+      if (tabsListRef.current) {
+        // Find and update the tab trigger
+        const tabTrigger = tabsListRef.current.querySelector(`[value="${newCategory}"]`) as HTMLButtonElement;
+        if (tabTrigger) {
+          // Force tab activation
+          tabTrigger.click();
+          
+          // Scroll into view with consistent behavior
+          const container = tabsListRef.current;
+          const scrollLeft = tabTrigger.offsetLeft - 16;
+          
+          container.scrollTo({
+            left: scrollLeft,
             behavior: 'smooth'
           });
         }
