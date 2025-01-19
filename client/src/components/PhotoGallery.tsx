@@ -245,8 +245,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     }
   }, [selectedPhoto, photos, selectedIndex]);
 
-  let setTransitionDirection = (direction: "next" | "prev" | null) => {};
-  let setIsNextImageLoaded = (loaded: boolean) => {};
+  const [transitionDirection, setTransitionDirection] = useState<"next" | "prev" | null>(null);
+  const [isNextImageLoaded, setIsNextImageLoaded] = useState(false);
 
 
   if (isLoading) {
