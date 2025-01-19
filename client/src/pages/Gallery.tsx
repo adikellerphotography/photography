@@ -25,21 +25,29 @@ export default function Gallery() {
 
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [touchStartY, setTouchStartY] = useState<number | null>(null);
+  const [currentX, setCurrentX] = useState<number | null>(null);
+  const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(null);
   const [isHorizontalSwipe, setIsHorizontalSwipe] = useState<boolean | null>(null);
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStartX(e.touches[0].clientX);
+    const x = e.touches[0].clientX;
+    setTouchStartX(x);
+    setCurrentX(x);
     setTouchStartY(e.touches[0].clientY);
     setIsHorizontalSwipe(null);
+    setSwipeDirection(null);
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
     if (!touchStartX || !touchStartY || !processedCategories) return;
 
-    const currentX = e.touches[0].clientX;
+    const x = e.touches[0].clientX;
     const currentY = e.touches[0].clientY;
-    const diffX = touchStartX - currentX;
+    const diffX = touchStartX - x;
     const diffY = touchStartY - currentY;
+
+    setCurrentX(x);
+    setSwipeDirection(diffX > 0 ? "left" : "right");
 
     // Determine swipe direction on first significant movement
     if (isHorizontalSwipe === null && (Math.abs(diffX) > 10 || Math.abs(diffY) > 10)) {
@@ -243,7 +251,7 @@ export default function Gallery() {
               >
                 <motion.div
                   initial={(isHorizontalSwipe === null || isHorizontalSwipe) ? 
-                    { opacity: 0, x: touchStartX && touchStartX - (currentX || 0) > 0 ? 300 : -300 } : 
+                    { opacity: 0, x: swipeDirection === "left" ? 300 : -300 } : 
                     { opacity: 0, scale: 0.8 }
                   }
                   animate={{ opacity: 1, x: 0, scale: 1 }}
