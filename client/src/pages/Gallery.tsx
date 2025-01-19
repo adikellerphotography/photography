@@ -67,6 +67,21 @@ export default function Gallery() {
 
       const newCategory = processedCategories[newIndex].name;
       setActiveCategory(newCategory);
+      
+      // Ensure active category tab is visible by scrolling it into view
+      if (tabsListRef.current) {
+        const tabElement = tabsListRef.current.querySelector(`[data-state="active"]`) as HTMLElement;
+        if (tabElement) {
+          const container = tabsListRef.current;
+          const scrollLeft = tabElement.offsetLeft - 16; // 16px padding
+          
+          container.scrollTo({
+            left: scrollLeft,
+            behavior: swipeDirection ? 'auto' : 'smooth'
+          });
+        }
+      }
+
       const newUrl = `/gallery?category=${encodeURIComponent(newCategory)}`;
       window.history.pushState({ category: newCategory }, "", newUrl);
       setTouchStartX(null);
@@ -213,16 +228,16 @@ export default function Gallery() {
             )}
 
             <div
-              className="overflow-x-auto scrollbar-hide relative"
+              className="overflow-x-auto scrollbar-hide relative scroll-smooth"
               onScroll={checkScroll}
               ref={tabsListRef}
             >
-              <TabsList className="inline-flex min-w-full justify-start px-8 border-0">
+              <TabsList className="inline-flex min-w-full justify-start px-8 border-0 sticky left-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                 {processedCategories.map((category) => (
                   <TabsTrigger
                     key={category.id}
                     value={category.name}
-                    className="min-w-[120px]"
+                    className="min-w-[120px] transition-all duration-300 ease-in-out"
                   >
                     {category.name}
                   </TabsTrigger>
