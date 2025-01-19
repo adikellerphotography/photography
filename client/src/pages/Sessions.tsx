@@ -195,7 +195,7 @@ export default function MySessions() {
         setTimeout(() => {
           if (clickTimer.current !== 0) {
             setSelectedImage({ 
-              url: `/attached_assets/${groupName.replace(' ', '')}/${link.number}.jpg`,
+              url: `/assets/facebook_posts_image/${groupName.toLowerCase().replace(' ', '_')}/${link.number}.jpg`,
               number: link.number, 
               groupName 
             });
@@ -240,7 +240,7 @@ export default function MySessions() {
                     >
                       {["Bat Mitsva", "Bar Mitsva", "Horses", "Kids", "Family", "Big Family", "Sweet 16", "Purim", "Pregnancy", "Feminine", "Yoga", "Modeling"].includes(group.name) ? (
                         <img 
-                          src={`/attached_assets/${group.name.replace(' ', '')}/${link.number}.jpg?nocache=${Date.now()}`}
+                          src={`/assets/facebook_posts_image/${group.name.toLowerCase().replace(' ', '_')}/${link.number}.jpg?nocache=${Date.now()}`}
                           alt={`${group.name} session ${link.number}`}
                           className="w-full h-full object-cover"
                           loading="lazy"
