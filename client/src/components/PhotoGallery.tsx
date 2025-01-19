@@ -308,10 +308,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     const retryCount = parseInt(target.dataset.retryCount || '0');
-                    
+
                     if (retryCount < 3) {
                       target.dataset.retryCount = (retryCount + 1).toString();
-                      
+
                       // Try loading the full image URL if thumbnail fails
                       if (target.src === photo.thumbnailUrl) {
                         console.log('Thumbnail failed, trying full image:', photo.imageUrl);
@@ -321,7 +321,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                         const timestamp = Date.now();
                         const url = new URL(target.src, window.location.origin);
                         url.searchParams.set('v', timestamp.toString());
-                        
+
                         setTimeout(() => {
                           target.src = url.toString();
                         }, Math.pow(2, retryCount) * 1000); // Exponential backoff
@@ -471,15 +471,16 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   >
                     <img
                       src={selectedPhoto.imageUrl}
-                    alt=""
-                    className="w-full h-full object-contain"
-                    loading="eager"
-                    onLoad={() => {
-                      setIsFullImageLoaded(true);
-                      setTransitionDirection(null);
-                    }}
-                  />
-                </motion.div>
+                      alt=""
+                      className="w-full h-full object-contain"
+                      loading="eager"
+                      onLoad={() => {
+                        setIsFullImageLoaded(true);
+                        setTransitionDirection(null);
+                      }}
+                    />
+                  </motion.div>
+                </AnimatePresence>
               </div>
 
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background/90 to-background/0">
