@@ -163,13 +163,14 @@ export default function MySessions() {
 
   const getFacebookUrl = (url: string) => {
     if (isMobile) {
+      const postId = url.split('/posts/')[1];
       // For iOS
       if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
-        return `fb://post?id=${url.split('/posts/')[1]}`;
+        return `fb://post/${postId}`;
       }
       // For Android
       if (/Android/.test(navigator.userAgent)) {
-        return `intent://facebook.com${url.split('facebook.com')[1]}#Intent;package=com.facebook.katana;scheme=https;end`;
+        return `fb://facewebmodal/f?href=${encodeURIComponent(url)}`;
       }
     }
     return url;
@@ -182,15 +183,14 @@ export default function MySessions() {
     if (clickTimer.current && (now - clickTimer.current) < 300) {
       // Double click/tap detected
       const fbUrl = getFacebookUrl(link.url);
-      // Try to open in Facebook app first on mobile
-      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-        window.location.href = `fb://facewebmodal/f?href=${encodeURIComponent(fbUrl)}`;
+      if (isMobile) {
+        window.location.href = fbUrl;
         // Fallback to browser after a small delay if FB app doesn't open
         setTimeout(() => {
-          window.location.href = fbUrl;
-        }, 300);
+          window.location.href = link.url;
+        }, 500);
       } else {
-        window.open(fbUrl, '_blank');
+        window.open(link.url, '_blank');
       }
       clickTimer.current = 0;
     } else {
