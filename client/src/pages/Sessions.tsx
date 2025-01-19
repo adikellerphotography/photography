@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLanguage } from "@/hooks/use-language";
 import { SiFacebook } from "react-icons/si";
