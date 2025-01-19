@@ -223,9 +223,7 @@ export default function MySessions() {
                       element.style.height = `${element.offsetHeight}px`;
                       element.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.3)';
 
-                      const closeExpandedImage = (e: Event) => {
-                        e.preventDefault();
-                        e.stopPropagation();
+                      const closeExpandedImage = () => {
                         element.style.position = '';
                         element.style.left = '';
                         element.style.top = '';
@@ -235,10 +233,10 @@ export default function MySessions() {
                         element.style.height = '';
                         element.style.boxShadow = '';
                         document.body.removeChild(overlay);
-                        overlay.removeEventListener('click', closeExpandedImage);
                       };
 
-                      overlay.addEventListener('click', closeExpandedImage);
+                      overlay.onclick = closeExpandedImage;
+                      element.onclick = closeExpandedImage;
                     }}
                     onDoubleClick={(e) => {
                       e.preventDefault();
