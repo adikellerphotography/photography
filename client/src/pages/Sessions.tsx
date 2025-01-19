@@ -202,17 +202,6 @@ export default function MySessions() {
                       }
 
                       const element = e.currentTarget;
-                      const lastClick = element.getAttribute('data-last-click');
-                      const now = Date.now();
-
-                      if (lastClick && now - parseInt(lastClick) < 300) {
-                        // Double click detected, don't enlarge
-                        return;
-                      }
-
-                      element.setAttribute('data-last-click', now.toString());
-
-                      // Delay enlargement to wait for potential double click
                       const viewportWidth = window.innerWidth;
                       const viewportHeight = window.innerHeight;
 
@@ -263,24 +252,6 @@ export default function MySessions() {
                     onDoubleClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-
-                      // Reset any enlarged state
-                      const element = e.currentTarget;
-                      element.style.position = '';
-                      element.style.left = '';
-                      element.style.top = '';
-                      element.style.transform = '';
-                      element.style.zIndex = '';
-                      element.style.width = '';
-                      element.style.height = '';
-                      element.style.boxShadow = '';
-
-                      // Remove overlay if it exists
-                      const overlay = document.querySelector('div[style*="position: fixed"]');
-                      if (overlay && overlay.parentNode === document.body) {
-                        document.body.removeChild(overlay);
-                      }
-
                       window.open(getFacebookUrl(link.url), '_blank');
                     }}
                   >
