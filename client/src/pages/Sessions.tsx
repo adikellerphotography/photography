@@ -163,14 +163,7 @@ export default function MySessions() {
 
   const getFacebookUrl = (url: string) => {
     if (isMobile) {
-      // For iOS
-      if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
-        return `fb://post?id=${url.split('/posts/')[1]}`;
-      }
-      // For Android
-      if (/Android/.test(navigator.userAgent)) {
-        return `intent://facebook.com${url.split('facebook.com')[1]}#Intent;package=com.facebook.katana;scheme=https;end`;
-      }
+      return `fb://facewebmodal/f?href=${encodeURIComponent(url)}`;
     }
     return url;
   };
