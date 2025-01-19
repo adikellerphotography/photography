@@ -279,23 +279,7 @@ export default function Gallery() {
                 value={category.name}
                 className="relative"
               >
-                <motion.div
-                  initial={{ opacity: 0, x: swipeDirection === "left" ? 300 : -300 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ 
-                    opacity: 0, 
-                    x: touchStartX && touchStartX - (currentX || 0) > 0 ? -300 : 300,
-                    transition: {
-                      duration: 0.2
-                    }
-                  }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 200,
-                    damping: 25,
-                    mass: 1,
-                  }}
-                >
+                <div>
                   <Card>
                     <CardContent className="pt-6">
                       <PhotoGallery category={category.name} />
