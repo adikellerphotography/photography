@@ -179,7 +179,7 @@ export default function MySessions() {
   const handleImageClick = (event: React.MouseEvent | React.TouchEvent, link: SessionLink, groupName: string) => {
     event.preventDefault();
     const now = Date.now();
-    
+
     if (clickTimer.current && (now - clickTimer.current) < 300) {
       // Double click/tap detected
       if (isMobile) {
@@ -246,8 +246,7 @@ export default function MySessions() {
                           loading="lazy"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
-                            target.style.backgroundColor = 'rgba(255, 149, 0, 0.1)';
-                            target.style.border = '1px solid #FF9500';
+                            target.style.backgroundColor = 'rgba(0, 0, 0, 0.03)';
                           }}
                         />
                       ) : (
