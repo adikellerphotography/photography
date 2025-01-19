@@ -80,10 +80,11 @@ const initializeServer = async () => {
       log("🛠️ Running in development mode");
     }
 
-    const PORT = parseInt(process.env.PORT || "5000", 10);
+    const PORT = parseInt(process.env.PORT || "3000", 10);
+    const HOST = "0.0.0.0";
 
-    server.listen(PORT, "0.0.0.0", () => {
-      log(`✨ Server running on port ${PORT}`);
+    server.listen(PORT, HOST, () => {
+      console.log(`✨ Server running at http://${HOST}:${PORT}`);
       log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
     });
 
