@@ -241,7 +241,7 @@ export default function MySessions() {
                           element.style.height = `${element.offsetHeight}px`;
                           element.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.3)';
 
-                          const handleClick = () => {
+                          const closeExpandedImage = () => {
                             element.style.position = '';
                             element.style.left = '';
                             element.style.top = '';
@@ -253,6 +253,11 @@ export default function MySessions() {
                             if (overlay.parentNode === document.body) {
                               document.body.removeChild(overlay);
                             }
+                          };
+
+                          const handleClick = (e: MouseEvent) => {
+                            e.stopPropagation();
+                            closeExpandedImage();
                           };
 
                           overlay.onclick = handleClick;
