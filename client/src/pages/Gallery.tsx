@@ -222,7 +222,7 @@ export default function Gallery() {
 
   return (
     <div 
-      className="min-h-screen pt-8 overflow-x-hidden"
+      className="min-h-screen overflow-x-hidden"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -231,7 +231,7 @@ export default function Gallery() {
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        className="container mx-auto px-4 py-16 mt-12"
+        className="container mx-auto px-4 py-8"
       >
         <div className="flex justify-between items-center mb-8">
           <motion.h1 variants={itemVariants} className="text-3xl font-bold text-[#FF9500]">
