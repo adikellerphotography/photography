@@ -68,16 +68,21 @@ export default function Gallery() {
       const newCategory = processedCategories[newIndex].name;
       setActiveCategory(newCategory);
       
-      // Ensure active category tab is visible by scrolling it into view
+      // Force category tab update and scroll into view
       if (tabsListRef.current) {
-        const tabElement = tabsListRef.current.querySelector(`[data-state="active"]`) as HTMLElement;
-        if (tabElement) {
+        // Find and update the tab trigger
+        const tabTrigger = tabsListRef.current.querySelector(`[value="${newCategory}"]`) as HTMLButtonElement;
+        if (tabTrigger) {
+          // Force tab activation
+          tabTrigger.click();
+          
+          // Scroll into view with consistent behavior
           const container = tabsListRef.current;
-          const scrollLeft = tabElement.offsetLeft - 16; // 16px padding
+          const scrollLeft = tabTrigger.offsetLeft - 16;
           
           container.scrollTo({
             left: scrollLeft,
-            behavior: swipeDirection ? 'auto' : 'smooth'
+            behavior: 'smooth'
           });
         }
       }
