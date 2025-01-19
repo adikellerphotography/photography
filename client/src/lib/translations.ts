@@ -34,6 +34,7 @@ export const translations = {
     },
     home: {
       title: "When Art Meets the Lens",
+      titleClasses: "opacity-70",
       subtitle: "Artistic portrait photography, transforming storytelling moments into stunning works of photographic art.",
       galleryTitle: "Photo Galleries",
     },

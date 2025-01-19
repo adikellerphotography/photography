@@ -149,7 +149,7 @@ export default function Home() {
             </div>
           </div>
           <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h1 className="text-4xl md:text-6xl font-bold font-cormorant">
+            <h1 className={cn("text-4xl md:text-6xl font-bold font-cormorant", t("home.titleClasses"))}>
               {t("home.title")}
             </h1>
             <p className="text-lg">{t("home.subtitle")}</p>
