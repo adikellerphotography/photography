@@ -449,26 +449,12 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
               <div className="relative w-full h-full overflow-hidden">
                 <motion.div
-                  key={selectedPhoto.id + "-thumb"}
-                  className="absolute inset-0"
-                  initial={{ opacity: 1 }}
-                  animate={{ opacity: isFullImageLoaded ? 0 : 1 }}
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
-                >
-                  <img
-                    src={selectedPhoto.thumbnailUrl || selectedPhoto.imageUrl}
-                    alt=""
-                    className="w-full h-full object-contain"
-                    loading="eager"
-                  />
-                </motion.div>
-
-                <motion.div
-                  key={selectedPhoto.id + "-full"}
+                  key={selectedPhoto.id}
                   className="absolute inset-0"
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: isFullImageLoaded ? 1 : 0 }}
-                  transition={{ duration: 0.3 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
                 >
                   <img
                     src={selectedPhoto.imageUrl}
