@@ -23,19 +23,33 @@ export default function Gallery() {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const tabsListRef = useRef<HTMLDivElement>(null);
 
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [touchStartY, setTouchStartY] = useState<number | null>(null);
+  const [isHorizontalSwipe, setIsHorizontalSwipe] = useState<boolean | null>(null);
+
   const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.touches[0].clientX);
+    setTouchStartX(e.touches[0].clientX);
+    setTouchStartY(e.touches[0].clientY);
+    setIsHorizontalSwipe(null);
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (!touchStart || !processedCategories) return;
+    if (!touchStartX || !touchStartY || !processedCategories) return;
 
-    const currentTouch = e.touches[0].clientX;
-    const diff = touchStart - currentTouch;
+    const currentX = e.touches[0].clientX;
+    const currentY = e.touches[0].clientY;
+    const diffX = touchStartX - currentX;
+    const diffY = touchStartY - currentY;
 
-    if (Math.abs(diff) > 50) {
+    // Determine swipe direction on first significant movement
+    if (isHorizontalSwipe === null && (Math.abs(diffX) > 10 || Math.abs(diffY) > 10)) {
+      setIsHorizontalSwipe(Math.abs(diffX) > Math.abs(diffY));
+    }
+
+    // Only handle horizontal swipes
+    if (isHorizontalSwipe && Math.abs(diffX) > 50) {
       const currentIndex = processedCategories.findIndex(c => c.name === activeCategory);
-      let newIndex = diff > 0 ? currentIndex + 1 : currentIndex - 1;
+      let newIndex = diffX > 0 ? currentIndex + 1 : currentIndex - 1;
 
       if (newIndex < 0) {
         newIndex = processedCategories.length - 1;
@@ -47,12 +61,16 @@ export default function Gallery() {
       setActiveCategory(newCategory);
       const newUrl = `/gallery?category=${encodeURIComponent(newCategory)}`;
       window.history.pushState({ category: newCategory }, "", newUrl);
-      setTouchStart(null);
+      setTouchStartX(null);
+      setTouchStartY(null);
+      setIsHorizontalSwipe(null);
     }
   };
 
   const handleTouchEnd = () => {
-    setTouchStart(null);
+    setTouchStartX(null);
+    setTouchStartY(null);
+    setIsHorizontalSwipe(null);
   };
 
   // Define the allowed categories in the correct order
