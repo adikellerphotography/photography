@@ -159,8 +159,7 @@ export default function MySessions() {
   const [selectedImage, setSelectedImage] = useState<{ url: string; number: number; groupName: string } | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const isMobile = useIsMobile();
-  const lastClickTime = useRef<number>(0);
-  const DOUBLE_CLICK_DELAY = 300;
+  const clickTimer = useRef<NodeJS.Timeout | null>(null);
 
   const getFacebookUrl = (url: string) => {
     if (isMobile) {
@@ -189,23 +188,19 @@ export default function MySessions() {
 
   const handleImageClick = (event: React.MouseEvent, link: SessionLink, groupName: string) => {
     event.preventDefault();
-    const currentTime = Date.now();
-    const timeDiff = currentTime - lastClickTime.current;
-
-    if (timeDiff < DOUBLE_CLICK_DELAY) {
+    if (clickTimer.current) {
       // Double click detected
-      window.location.href = getFacebookUrl(link.url);
+      clearTimeout(clickTimer.current);
+      clickTimer.current = null;
+      window.open(getFacebookUrl(link.url), '_blank');
     } else {
       // Single click behavior
-      setTimeout(() => {
-        if (currentTime - lastClickTime.current >= DOUBLE_CLICK_DELAY) {
-          setSelectedImage({ url: `/assets/facebook_posts_image/${groupName.toLowerCase().replace(' ', '_')}/${link.number}.jpg`, number: link.number, groupName });
-          setIsDialogOpen(true);
-        }
-      }, DOUBLE_CLICK_DELAY);
+      clickTimer.current = setTimeout(() => {
+        setSelectedImage({ url: `/assets/facebook_posts_image/${groupName.toLowerCase().replace(' ', '_')}/${link.number}.jpg`, number: link.number, groupName });
+        setIsDialogOpen(true);
+        clickTimer.current = null;
+      }, 250);
     }
-    
-    lastClickTime.current = currentTime;
   };
 
   return (
