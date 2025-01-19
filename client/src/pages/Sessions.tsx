@@ -199,24 +199,10 @@ export default function MySessions() {
                       if (isMobile) {
                         e.preventDefault();
                       }
-                      const element = e.currentTarget as HTMLElement;
-                      const lastClick = element.getAttribute('data-last-click');
-                      const now = Date.now();
-
-                      if (lastClick && now - parseInt(lastClick) < 300) {
-                        // Double click detected - open Facebook
-                        window.open(getFacebookUrl(link.url), '_blank');
-                        element.removeAttribute('data-last-click');
-                        return;
-                      }
-
-                      element.setAttribute('data-last-click', now.toString());
-                      setTimeout(() => {
-                        if (element.getAttribute('data-last-click') === now.toString()) {
-                          // Single click confirmed - enlarge image
-                          const viewportWidth = window.innerWidth;
-                          const viewportHeight = window.innerHeight;
-
+                      const element = e.currentTarget;
+                      const viewportWidth = window.innerWidth;
+                      const viewportHeight = window.innerHeight;
+                      
                       // Create overlay
                       const overlay = document.createElement('div');
                       overlay.style.position = 'fixed';
@@ -227,7 +213,7 @@ export default function MySessions() {
                       overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
                       overlay.style.zIndex = '99';
                       document.body.appendChild(overlay);
-
+                      
                       element.style.position = 'fixed';
                       element.style.left = '50%';
                       element.style.top = '50%';
@@ -260,31 +246,30 @@ export default function MySessions() {
 
                       overlay.onclick = handleClick;
                       element.onclick = handleClick;
-                    }
-                  }}
-                  onDoubleClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    // Reset any enlarged state
-                    const element = e.currentTarget;
-                    element.style.position = '';
-                    element.style.left = '';
-                    element.style.top = '';
-                    element.style.transform = '';
-                    element.style.zIndex = '';
-                    element.style.width = '';
-                    element.style.height = '';
-                    element.style.boxShadow = '';
-
-                    // Remove overlay if it exists
-                    const overlay = document.querySelector('div[style*="position: fixed"]');
-                    if (overlay && overlay.parentNode === document.body) {
-                      document.body.removeChild(overlay);
-                    }
-
-                    window.open(getFacebookUrl(link.url), '_blank');
-                  }}
+                    }}
+                    onDoubleClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      
+                      // Reset any enlarged state
+                      const element = e.currentTarget;
+                      element.style.position = '';
+                      element.style.left = '';
+                      element.style.top = '';
+                      element.style.transform = '';
+                      element.style.zIndex = '';
+                      element.style.width = '';
+                      element.style.height = '';
+                      element.style.boxShadow = '';
+                      
+                      // Remove overlay if it exists
+                      const overlay = document.querySelector('div[style*="position: fixed"]');
+                      if (overlay && overlay.parentNode === document.body) {
+                        document.body.removeChild(overlay);
+                      }
+                      
+                      window.open(getFacebookUrl(link.url), '_blank');
+                    }}
                   >
                     <motion.div
                       className="relative aspect-square w-full overflow-hidden rounded-lg"
@@ -299,7 +284,7 @@ export default function MySessions() {
                             if (element) {
                               const viewportWidth = window.innerWidth;
                               const viewportHeight = window.innerHeight;
-
+                              
                               // Create overlay
                               const overlay = document.createElement('div');
                               overlay.style.position = 'fixed';
@@ -310,7 +295,7 @@ export default function MySessions() {
                               overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
                               overlay.style.zIndex = '99';
                               document.body.appendChild(overlay);
-
+                              
                               element.style.position = 'fixed';
                               element.style.left = '50%';
                               element.style.top = '50%';
