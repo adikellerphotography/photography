@@ -74,11 +74,11 @@ export default function Gallery() {
         if (tabTrigger) {
           // Force tab activation
           tabTrigger.click();
-          
+
           // Calculate scroll position to keep the active tab visible on the left
           const container = tabsListRef.current;
           const scrollLeft = Math.max(0, tabTrigger.offsetLeft - 16);
-          
+
           // Smooth scroll with animation matching the swipe
           container.scrollTo({
             left: scrollLeft,
@@ -95,7 +95,7 @@ export default function Gallery() {
           tabTrigger.classList.add('bg-gray-100/10');
         }
       }
-      
+
       // Force category tab update and scroll into view
       if (tabsListRef.current) {
         // Find and update the tab trigger
@@ -103,11 +103,11 @@ export default function Gallery() {
         if (tabTrigger) {
           // Force tab activation
           tabTrigger.click();
-          
+
           // Scroll into view with consistent behavior
           const container = tabsListRef.current;
           const scrollLeft = tabTrigger.offsetLeft - 16;
-          
+
           container.scrollTo({
             left: scrollLeft,
             behavior: 'smooth'
@@ -231,7 +231,7 @@ export default function Gallery() {
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        className="container mx-auto px-4 py-16"
+        className="container mx-auto px-4 py-16 mt-12"
       >
         <div className="flex justify-between items-center mb-8">
           <motion.h1 variants={itemVariants} className="text-3xl font-bold text-[#FF9500]">
@@ -265,7 +265,7 @@ export default function Gallery() {
               onScroll={checkScroll}
               ref={tabsListRef}
             >
-              <TabsList className="inline-flex min-w-full justify-start px-8 border-0 sticky left-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+              <TabsList className="inline-flex min-w-full justify-start px-8 border-0 sticky top-0 left-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                 {processedCategories.map((category) => (
                   <TabsTrigger
                     key={category.id}
