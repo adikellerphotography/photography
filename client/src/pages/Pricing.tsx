@@ -84,7 +84,7 @@ export default function Pricing() {
                 </Card>
               </motion.div>
             ))}
-            
+
             {/* Additional Information Section */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -107,20 +107,20 @@ export default function Pricing() {
 
           {/* Albums Section */}
           <div className="mt-16 bg-gray-100/10 p-8 rounded-lg border border-white/10 backdrop-blur-sm">
-            <h2 className="text-2xl font-bold mb-6 text-center text-[#E67E00]">
+            <h2 className={`text-2xl font-bold mb-6 text-center text-[#E67E00] ${language === 'he' ? 'text-right' : ''}`}>
               {t("pricing.albums.title") || "Albums"}
             </h2>
-            <p className="text-start rtl:text-end mb-8 max-w-2xl mx-auto">
+            <p className={`text-start rtl:text-end mb-8 max-w-2xl mx-auto ${language === 'he' ? 'text-right' : ''}`}>
               {t("pricing.albums.description") || "I work with two professional designers who create beautiful albums, handle printing, and deliver directly to customers."}
             </p>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               <Card className="group hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-amber-50/5 to-orange-50/5 backdrop-blur-sm border border-white/20">
                 <CardHeader className="text-center">
-                  <CardTitle className="text-2xl font-serif">Anastasia Katsz</CardTitle>
+                  <CardTitle className="text-2xl font-serif">{language === 'he' ? 'אנסטסיה כץ' : 'Anastasia Katsz'}</CardTitle>
                   <div className="w-16 h-1 bg-gradient-to-r from-amber-500 to-orange-500 mx-auto my-2 rounded-full"></div>
                   <p className="text-sm text-muted-foreground italic">
-                    Album Designer
+                    {language === 'he' ? 'מעצב גרפי' : 'Album Designer'}
                   </p>
                   <p className="text-sm text-muted-foreground mt-2 group-hover:text-[#E67E00] transition-colors">
                     <a href="tel:0546335594" className="flex items-center justify-center gap-2">
@@ -135,17 +135,17 @@ export default function Pricing() {
                     className="w-full group-hover:bg-gradient-to-r from-amber-500 to-orange-500 group-hover:text-white transition-all duration-300"
                     onClick={() => setShowAnastasiaDialog(true)}
                   >
-                    View Pricing
+                    {language === 'he' ? 'טבלת מחירים' : 'View Pricing'}
                   </Button>
                 </CardContent>
               </Card>
 
               <Card className="group hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-amber-50/5 to-orange-50/5 backdrop-blur-sm border border-white/20">
                 <CardHeader className="text-center">
-                  <CardTitle className="text-2xl font-serif">Nir Gil</CardTitle>
+                  <CardTitle className="text-2xl font-serif">{language === 'he' ? 'ניר גיל' : 'Nir Gil'}</CardTitle>
                   <div className="w-16 h-1 bg-gradient-to-r from-amber-500 to-orange-500 mx-auto my-2 rounded-full"></div>
                   <p className="text-sm text-muted-foreground italic">
-                    Album Designer
+                    {language === 'he' ? 'מעצב גרפי' : 'Album Designer'}
                   </p>
                   <p className="text-sm text-muted-foreground mt-2 group-hover:text-[#E67E00] transition-colors">
                     <a href="tel:0547982299" className="flex items-center justify-center gap-2">
@@ -160,7 +160,7 @@ export default function Pricing() {
                     className="w-full group-hover:bg-gradient-to-r from-amber-500 to-orange-500 group-hover:text-white transition-all duration-300"
                     onClick={() => setShowNirDialog(true)}
                   >
-                    View Pricing
+                    {language === 'he' ? 'טבלת מחירים' : 'View Pricing'}
                   </Button>
                 </CardContent>
               </Card>
@@ -170,7 +170,7 @@ export default function Pricing() {
           <Dialog open={showNirDialog} onOpenChange={setShowNirDialog}>
             <DialogContent className="max-w-3xl">
               <DialogHeader>
-                <DialogTitle>Nir Gil - Album Pricing</DialogTitle>
+                <DialogTitle>{language === 'he' ? 'ניר גיל - מחירון אלבומים' : 'Nir Gil - Album Pricing'}</DialogTitle>
               </DialogHeader>
               <div className="relative">
                 <img src="/assets/nir_gil.jpg" alt="Nir Gil Album Pricing" className="w-full" />
@@ -200,7 +200,7 @@ export default function Pricing() {
           <Dialog open={showAnastasiaDialog} onOpenChange={setShowAnastasiaDialog}>
             <DialogContent className="max-w-3xl">
               <DialogHeader>
-                <DialogTitle>Anastasia Katsz - Album Pricing</DialogTitle>
+                <DialogTitle>{language === 'he' ? 'אנסטסיה כץ - מחירון אלבומים' : 'Anastasia Katsz - Album Pricing'}</DialogTitle>
               </DialogHeader>
               <div className="relative">
                 <img src="/assets/anastasia_katz.jpg" alt="Anastasia Album Pricing" className="w-full" />
