@@ -14,6 +14,7 @@ import { SiWhatsapp } from "react-icons/si";
 export default function Contact() {
   const { t } = useTranslation();
   const { language } = useLanguage();
+  const isRTL = language === 'he';
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -39,35 +40,37 @@ export default function Contact() {
   const dir = isRTL ? 'rtl' : 'ltr';
 
   return (
-    <div className="min-h-screen pt-8" dir={dir}>
+    <div className="min-h-screen pt-8" dir={isRTL ? 'rtl' : 'ltr'}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="container mx-auto px-4 py-16"
       >
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl font-bold mb-8 text-[#FF9500]">{t('contact.title')}</h1>
+          <h1 className={`text-3xl font-bold mb-8 text-[#FF9500] ${isRTL ? 'text-right' : 'text-left'}`}>
+            {t('contact.title')}
+          </h1>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <Card className="bg-muted/50">
               <CardContent className="pt-6 space-y-4">
-                <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <span className="text-xl font-semibold">Adi Keller</span>
+                <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
+                  <span className="text-xl font-semibold">עדי קלר</span>
                 </div>
                 
-                <a href="tel:054-5667827" className={`flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <a href="tel:054-5667827" className={`flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
                   <Phone className="w-5 h-5" />
                   <span>054-5667827</span>
                 </a>
                 
-                <a href="mailto:adi.keller.photography@gmail.com" className={`flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <a href="mailto:adi.keller.photography@gmail.com" className={`flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
                   <Mail className="w-5 h-5" />
                   <span>adi.keller.photography@gmail.com</span>
                 </a>
                 
-                <div className={`flex items-center gap-3 text-muted-foreground ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className={`flex items-center gap-3 text-muted-foreground ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
                   <MapPin className="w-5 h-5" />
-                  <span>Netanya, Israel</span>
+                  <span>{t('contact.location')}</span>
                   <IL className="w-6 h-6" />
                 </div>
               </CardContent>
