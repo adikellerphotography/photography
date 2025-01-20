@@ -36,7 +36,6 @@ export default function Contact() {
     window.location.href = mailtoUrl;
   };
 
-  const isRTL = language === 'he';
   const dir = isRTL ? 'rtl' : 'ltr';
 
   return (
