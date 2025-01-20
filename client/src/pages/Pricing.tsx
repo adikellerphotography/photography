@@ -1,12 +1,15 @@
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useLanguage } from "@/hooks/use-language";
 import { useTranslation } from "@/hooks/use-translation";
 
 export default function Pricing() {
   const { language } = useLanguage();
   const { t } = useTranslation();
+  const [showNirDialog, setShowNirDialog] = React.useState(false);
+  const [showAnastasiaDialog, setShowAnastasiaDialog] = React.useState(false);
 
   const packages = [
     {
@@ -122,10 +125,7 @@ export default function Pricing() {
                   <Button 
                     variant="outline" 
                     className="w-full"
-                    onClick={() => {
-                      // Add dialog/modal to show pricing image
-                      alert("Pricing image coming soon");
-                    }}
+                    onClick={() => setShowAnastasiaDialog(true)}
                   >
                     View Pricing
                   </Button>
@@ -143,10 +143,7 @@ export default function Pricing() {
                   <Button 
                     variant="outline" 
                     className="w-full"
-                    onClick={() => {
-                      // Add dialog/modal to show pricing image
-                      alert("Pricing image coming soon");
-                    }}
+                    onClick={() => setShowNirDialog(true)}
                   >
                     View Pricing
                   </Button>
@@ -154,6 +151,24 @@ export default function Pricing() {
               </Card>
             </div>
           </div>
+
+          <Dialog open={showNirDialog} onOpenChange={setShowNirDialog}>
+            <DialogContent className="max-w-3xl">
+              <DialogHeader>
+                <DialogTitle>Nir Gil - Album Pricing</DialogTitle>
+              </DialogHeader>
+              <img src="/attached_assets/nir_gil_pricing.jpg" alt="Nir Gil Album Pricing" className="w-full" />
+            </DialogContent>
+          </Dialog>
+
+          <Dialog open={showAnastasiaDialog} onOpenChange={setShowAnastasiaDialog}>
+            <DialogContent className="max-w-3xl">
+              <DialogHeader>
+                <DialogTitle>Anastasia Katsz - Album Pricing</DialogTitle>
+              </DialogHeader>
+              <img src="/attached_assets/anastasia_pricing.jpg" alt="Anastasia Album Pricing" className="w-full" />
+            </DialogContent>
+          </Dialog>
         </div>
       </motion.div>
     </div>
