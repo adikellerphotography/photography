@@ -11,13 +11,16 @@ import fs from "fs/promises";
 
 // Helper function to get the correct category path
 const getCategoryPath = (categoryName: string) => {
-  if (categoryName.toLowerCase() === 'kids') {
-    return 'kids';
-  }
-  if (categoryName === 'Bat Mitsva') {
-    return 'Bat_Mitsva';
-  }
-  return categoryName.split(' ')
+  const categoryMappings: Record<string, string> = {
+    'kids': 'kids',
+    'Bat Mitsva': 'Bat_Mitsva',
+    'Family': 'Family',
+    'Horses': 'Horses',
+    'Modeling': 'Modeling',
+    'Women': 'Women',
+    'Yoga': 'Yoga'
+  };
+  return categoryMappings[categoryName] || categoryName.split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join('_');
 };
@@ -69,16 +72,19 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
 
     console.log('Fetched photos for category:', category, 'Count:', results.length);
 
-    const processedPhotos = results.map(photo => {
-      const paddedId = String(photo.id).padStart(3, '0');
+    const processedPhotos = await Promise.all(results.map(async (photo, index) => {
+      const paddedId = String(index + 1).padStart(3, '0');
       const categoryPath = getCategoryPath(photo.category);
+      const imageUrl = `/assets/${categoryPath}/${paddedId}.jpeg`;
+      const thumbnailUrl = `/assets/${categoryPath}/${paddedId}-thumb.jpeg`;
       return {
         ...photo,
-        imageUrl: `/assets/${categoryPath}/${paddedId}.jpeg`,
-        thumbnailUrl: `/assets/${categoryPath}/${paddedId}-thumb.jpeg`,
-        isLiked: false
+        imageUrl,
+        thumbnailUrl,
+        isLiked: false,
+        displayOrder: index + 1
       };
-    });
+    }));
 
     console.log('Processed photos:', processedPhotos);
     res.json(processedPhotos);
