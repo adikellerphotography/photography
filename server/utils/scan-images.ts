@@ -113,17 +113,15 @@ async function processFacebookPosts(basePath: string) {
 export async function scanAndProcessImages(targetPath?: string) {
   try {
     const assetsPath = targetPath || path.join(process.cwd(), 'attached_assets');
-
-    if (process.argv.includes('--scan-all-directories')) {
-      console.log('Scanning all image directories...');
-      const mainDirs = ['Bat_Mitsva', 'Family', 'Horses', 'Modeling', 'Women', 'Yoga', 'kids'];
-      for (const dir of mainDirs) {
-        const dirPath = path.join(process.cwd(), 'attached_assets', dir);
-        console.log(`Processing directory: ${dir}`);
-        await processDirectory(dirPath, dir);
-      }
-      return;
+    const mainDirs = ['Bat_Mitsva', 'Family', 'Horses', 'Kids', 'Modeling', 'Women', 'Yoga'];
+    
+    console.log('Scanning specified directories...');
+    for (const dir of mainDirs) {
+      const dirPath = path.join(process.cwd(), 'attached_assets', dir);
+      console.log(`Processing directory: ${dir}`);
+      await processDirectory(dirPath, dir);
     }
+    return;
 
     // If targeting facebook posts, adjust the path
     if (process.argv.includes('--scan-facebook-posts')) {
