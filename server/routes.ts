@@ -362,12 +362,29 @@ export function registerRoutes(app: Express): Server {
   app.get("/api/sessions/:category", async (req, res) => {
     try {
       const { category } = req.params;
-      const dirPath = path.join(process.cwd(), 'attached_assets', 'facebook_posts_image', category.toLowerCase().replace(' ', '_'));
+      const categoryMappings: Record<string, string> = {
+        'Bat_Mitsva': 'bat_mitsva',
+        'Bar_Mitsva': 'bar_mitsva',
+        'Women': 'feminine',
+        'Kids': 'kids',
+        'Family': 'family',
+        'Big Family': 'big_family',
+        'Horses': 'horses',
+        'Modeling': 'modeling',
+        'Sweet 16': 'sweet_16',
+        'Purim': 'purim',
+        'Pregnancy': 'pregnancy',
+        'Yoga': 'yoga'
+      };
+      
+      const folderName = categoryMappings[category] || category.toLowerCase().replace(' ', '_');
+      const dirPath = path.join(process.cwd(), 'attached_assets', 'facebook_posts_image', folderName);
+      
       const files = await fs.readdir(dirPath);
       const imageFiles = files.filter(file => /\.(jpg|jpeg)$/i.test(file));
       const images = imageFiles.map(file => ({
         number: parseInt(file.replace(/\D/g, '')),
-        url: `/assets/facebook_posts_image/${category.toLowerCase().replace(' ', '_')}/${file}`
+        url: `/assets/facebook_posts_image/${folderName}/${file}`
       }));
       res.json(images);
     } catch (error) {
