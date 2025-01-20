@@ -68,9 +68,9 @@ export default function Pricing() {
                 <Card className="backdrop-blur-sm bg-gray-100/5 border border-white/10 hover:border-white/20 transition-all">
                   <CardHeader className="space-y-2 pb-4">
                     <CardTitle className="text-xl font-semibold text-[#E67E00]">{pkg.name}</CardTitle>
-                    <div className="h-[1px] w-12 bg-gradient-to-r from-[#E67E00] to-amber-300"></div>
-                    <p className="text-2xl font-light tracking-tight">{pkg.price}</p>
-                    <p className="text-sm text-muted-foreground/80 font-light">{pkg.description}</p>
+                    <div className={`h-[1px] w-12 bg-gradient-to-r from-[#E67E00] to-amber-300 ${language === 'he' ? 'mr-0' : ''}`}></div>
+                    <p className={`text-2xl font-light tracking-tight ${language === 'he' ? 'text-right' : ''}`}>{pkg.price}</p>
+                    <p className={`text-sm text-muted-foreground/80 font-light ${language === 'he' ? 'text-right' : ''}`}>{pkg.description}</p>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-1.5 text-sm">
