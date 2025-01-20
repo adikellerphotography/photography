@@ -78,8 +78,8 @@ export default function BeforeAndAfter() {
               className="w-full aspect-[3/4]"
             >
               <ImageCompare
-                beforeImage={`${comparison.beforeImage}?noCache=${Date.now()}`}
-                afterImage={`${comparison.afterImage}?noCache=${Date.now()}`}
+                beforeImage={comparison.beforeImage}
+                afterImage={comparison.afterImage}
               />
             </motion.div>
           ))}
