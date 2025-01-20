@@ -1,3 +1,4 @@
+
 import path from 'path';
 import fs from 'fs/promises';
 import { db } from "@db";
@@ -26,30 +27,28 @@ async function processDirectory(dirPath: string, categoryName: string) {
 
       try {
         let thumbnailPath = path.join(dirPath, `${path.basename(imageFile, path.extname(imageFile))}-thumb${path.extname(imageFile)}`);
+        console.log(`Processing image: ${imageFile} (ID: ${id})`);
 
         if (!await fs.access(thumbnailPath).then(() => true).catch(() => false)) {
+          console.log(`Generating thumbnail for: ${imageFile}`);
           await generateThumbnail(imagePath);
         }
 
-        await db.insert(photos).values({
+        const imageRecord = {
           id,
           title: `${categoryName} Portrait Session`,
           category: categoryName,
           imageUrl: `/attached_assets/${categoryName}/${imageFile}`,
           thumbnailUrl: `/attached_assets/${categoryName}/${path.basename(imageFile, path.extname(imageFile))}-thumb${path.extname(imageFile)}`,
           displayOrder: id
-        }).onConflictDoUpdate({
+        };
+
+        await db.insert(photos).values(imageRecord).onConflictDoUpdate({
           target: [photos.id],
-          set: { 
-            title: `${categoryName} Portrait Session`,
-            category: categoryName,
-            imageUrl: `/attached_assets/${categoryName}/${imageFile}`,
-            thumbnailUrl: `/attached_assets/${categoryName}/${path.basename(imageFile, path.extname(imageFile))}-thumb${path.extname(imageFile)}`,
-            displayOrder: id
-          }
+          set: imageRecord
         });
 
-        console.log(`Processed: ${imageFile}`);
+        console.log(`Successfully processed: ${imageFile}`);
       } catch (error) {
         console.error(`Error processing ${imageFile}:`, error);
       }
@@ -65,6 +64,7 @@ export async function scanAndProcessImages() {
     const mainDirs = ['Bat_Mitsva', 'Family', 'Horses', 'Kids', 'Modeling', 'Women', 'Yoga'];
 
     console.log('\n=== Starting Image Scan ===');
+    console.log('Assets path:', assetsPath);
 
     // Clear existing records
     await db.delete(photos);
@@ -72,9 +72,13 @@ export async function scanAndProcessImages() {
 
     for (const dir of mainDirs) {
       const dirPath = path.join(assetsPath, dir);
-      console.log(`\nProcessing directory: ${dir}`);
+      console.log(`\nProcessing directory: ${dir} (${dirPath})`);
       await processDirectory(dirPath, dir);
     }
+
+    // Verify records were inserted
+    const count = await db.select({ count: sql`count(*)` }).from(photos);
+    console.log(`Total photos in database after scan: ${count[0].count}`);
 
     console.log('\n=== Image scanning and processing complete ===\n');
   } catch (error) {
