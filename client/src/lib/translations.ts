@@ -20,6 +20,18 @@ export const translations = {
       en: "Send Message",
       he: "שלח הודעה"
     },
+    phone: {
+      en: "Phone",
+      he: "טלפון"
+    },
+    email: {
+      en: "Email",
+      he: "דוא״ל"
+    },
+    location: {
+      en: "Netanya, Israel",
+      he: "נתניה, ישראל"
+    }
   },
   en: {
     nav: {

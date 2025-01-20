@@ -40,7 +40,7 @@ export default function Contact() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="container mx-auto px-4 py-16"
+        className={`container mx-auto px-4 py-16 ${language === 'he' ? 'rtl' : 'ltr'}`}
       >
         <div className="max-w-3xl mx-auto">
           <h1 className="text-3xl font-bold mb-8 text-[#FF9500]">Contact Me</h1>
