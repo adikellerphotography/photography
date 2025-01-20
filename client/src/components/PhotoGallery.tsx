@@ -82,10 +82,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   });
 
   useEffect(() => {
-    if (error) {
-      console.error('Error in PhotoGallery:', error);
+    if (infiniteError) {
+      console.error('Error in PhotoGallery:', infiniteError);
     }
-  }, [error]);
+  }, [infiniteError]);
 
   const allPhotos = data?.pages.flat() || [];
   const filteredPhotos = allPhotos.filter(photo => 
