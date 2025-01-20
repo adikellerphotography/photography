@@ -5,7 +5,7 @@ import { db } from "@db";
 import { photos, categories, photoLikes } from "@db/schema";
 import path from "path";
 import express from "express";
-import { scanAndProcessImages } from "./utils/scan-images";
+import { scanImages } from "./utils/scan-images";
 import fs from "fs/promises";
 
 
@@ -176,7 +176,7 @@ const getBeforeAfterSets = async (_req: express.Request, res: express.Response) 
 const scanPhotos = async (req: express.Request, res: express.Response) => {
   try {
     const targetPath = req.query.path ? path.join(process.cwd(), 'attached_assets', req.query.path as string) : undefined;
-    await scanAndProcessImages(targetPath);
+    await scanImages(targetPath);
     res.json({ message: "Successfully scanned and processed all images" });
   } catch (error) {
     console.error('Error scanning images:', error);
