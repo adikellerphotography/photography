@@ -195,7 +195,7 @@ export default function MySessions() {
         setTimeout(() => {
           if (clickTimer.current !== 0) {
             setSelectedImage({ 
-              url: `/assets/facebook_posts_image/${groupName.toLowerCase().replace(' ', '_')}/${link.number}.jpg`,
+              url: `/assets/${groupName.toLowerCase().replace(' ', '_')}/${String(link.number).padStart(3, '0')}.jpeg`,
               number: link.number, 
               groupName 
             });
@@ -245,8 +245,8 @@ export default function MySessions() {
                           <div className="absolute inset-0 animate-pulse bg-muted duration-200 transition-opacity" 
                                style={{ animationDuration: '0.8s' }} />
                           <img 
-                            src={shouldLoad ? `/assets/facebook_posts_image/${group.name.toLowerCase().replace(' ', '_')}/${link.number}.jpg${isMobile ? '?no_watermark=true' : ''}?nocache=${Date.now()}` : ''}
-                            data-src={`/assets/facebook_posts_image/${group.name.toLowerCase().replace(' ', '_')}/${link.number}.jpg${isMobile ? '?no_watermark=true' : ''}?nocache=${Date.now()}`}
+                            src={shouldLoad ? `/assets/${group.name.toLowerCase().replace(' ', '_')}/${String(link.number).padStart(3, '0')}.jpeg${isMobile ? '?no_watermark=true' : ''}?nocache=${Date.now()}` : ''}
+                            data-src={`/assets/${group.name.toLowerCase().replace(' ', '_')}/${String(link.number).padStart(3, '0')}.jpeg${isMobile ? '?no_watermark=true' : ''}?nocache=${Date.now()}`}
                             alt={`${group.name} session ${link.number}`}
                             className="w-full h-full object-cover relative z-10 transition-opacity duration-200"
                             loading="lazy"
