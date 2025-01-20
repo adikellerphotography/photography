@@ -2,11 +2,10 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-async function renameFiles() {
-  const dirPath = path.join(process.cwd(), 'attached_assets', 'Bat_Mitsva');
+async function renameFilesInDirectory(dirPath: string) {
   try {
     const files = await fs.readdir(dirPath);
-    const imageFiles = files.filter(file => /\.jpeg$/i.test(file));
+    const imageFiles = files.filter(file => /\.(jpg|jpeg)$/i.test(file));
     
     for (let i = 0; i < imageFiles.length; i++) {
       const oldPath = path.join(dirPath, imageFiles[i]);
@@ -17,10 +16,27 @@ async function renameFiles() {
       console.log(`Renamed ${imageFiles[i]} to ${newName}`);
     }
     
-    console.log('File renaming completed successfully');
+    console.log(`File renaming completed for ${dirPath}`);
   } catch (error) {
-    console.error('Error renaming files:', error);
+    console.error(`Error renaming files in ${dirPath}:`, error);
   }
 }
 
-renameFiles();
+async function renameAllDirectories() {
+  const directories = [
+    'Family',
+    'Horses',
+    'kids',
+    'Modeling',
+    'Women',
+    'Yoga'
+  ];
+
+  for (const dir of directories) {
+    const dirPath = path.join(process.cwd(), 'attached_assets', dir);
+    console.log(`Processing directory: ${dir}`);
+    await renameFilesInDirectory(dirPath);
+  }
+}
+
+renameAllDirectories();
