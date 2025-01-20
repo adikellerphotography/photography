@@ -84,7 +84,7 @@ export default function Pricing() {
                 </Card>
               </motion.div>
             ))}
-            
+
             {/* Additional Information Section */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -113,7 +113,7 @@ export default function Pricing() {
             <p className="text-start rtl:text-end mb-8 max-w-2xl mx-auto">
               {t("pricing.albums.description") || "I work with two professional designers who create beautiful albums, handle printing, and deliver directly to customers."}
             </p>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               <Card className="group hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-amber-50/5 to-orange-50/5 backdrop-blur-sm border border-white/20">
                 <CardHeader className="text-center">
@@ -164,6 +164,24 @@ export default function Pricing() {
                   </Button>
                 </CardContent>
               </Card>
+            </div>
+          </div>
+
+          {/* Additional Services */}
+          <div className="mt-16">
+            <div className="bg-gradient-to-b from-gray-100/5 to-gray-100/10 p-12 rounded-xl border border-white/20 backdrop-blur-sm shadow-lg">
+              <h2 className="text-3xl font-serif mb-8 text-center text-[#E67E00] tracking-wide">
+                {t("pricing.additional.name") || "Service Details"}
+              </h2>
+              <div className="w-16 h-[1px] bg-gradient-to-r from-amber-500/20 via-[#E67E00] to-amber-500/20 mx-auto mb-8"></div>
+              <div className="max-w-2xl mx-auto space-y-6">
+                {(t("pricing.additional.features", { returnObjects: true }) || []).map((feature, index) => (
+                  <div key={index} className="flex items-start gap-4 p-4 bg-white/5 rounded-lg backdrop-blur-sm border border-white/10 transition-all duration-300 hover:border-white/20">
+                    <div className="w-2 h-2 rounded-full bg-[#E67E00] mt-2"></div>
+                    <p className="font-light leading-relaxed text-gray-200/90">{feature}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
