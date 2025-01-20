@@ -79,6 +79,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       return lastPage.length > 0 ? allPages.length + 1 : undefined;
     },
     initialPageParam: 1,
+    maxPages: Math.ceil(71 / 20),
     staleTime: 0,
     refetchOnWindowFocus: false
   });

@@ -64,11 +64,11 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
     const query = db.select()
       .from(photos)
       .where(category ? eq(photos.category, decodeURIComponent(category as string)) : undefined)
-      .orderBy(sql`random()`);
-
-    const results = await query
+      .orderBy(photos.displayOrder)
       .limit(pageSize)
       .offset((page - 1) * pageSize);
+
+    const results = await query;
 
     // If no results in database but files exist in directory, create entries
     if (results.length === 0 && category) {
