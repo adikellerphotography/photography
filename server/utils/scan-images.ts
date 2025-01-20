@@ -2,9 +2,8 @@
 import path from 'path';
 import fs from 'fs/promises';
 import { db } from "@db";
-import { photos } from "@db/schema";
+import { photos, categories } from "@db/schema";
 import { sql } from 'drizzle-orm';
-import { generateThumbnail } from './image';
 
 export async function scanImages() {
   try {
@@ -16,7 +15,18 @@ export async function scanImages() {
 
     // Clear existing records
     await db.delete(photos);
+    await db.delete(categories);
     
+    // Insert categories first
+    for (const [index, dir] of mainDirs.entries()) {
+      const categoryName = dir.replace(/_/g, ' ');
+      await db.insert(categories).values({
+        name: categoryName,
+        displayOrder: index + 1,
+        description: `${categoryName} Photography Sessions`
+      });
+    }
+
     async function processDirectory(dirPath: string, categoryName: string) {
       try {
         const files = await fs.readdir(dirPath);
@@ -30,14 +40,12 @@ export async function scanImages() {
         for (const imageFile of imageFiles) {
           try {
             const id = parseInt(imageFile.split('.')[0]);
-            const imagePath = path.join(dirPath, imageFile);
-            
             console.log(`Processing ${categoryName}/${imageFile}`);
 
             await db.insert(photos).values({
               id,
               title: `${categoryName} Portrait Session`,
-              category: categoryName,
+              category: categoryName.replace(/_/g, ' '),
               imageUrl: `/attached_assets/${categoryName}/${imageFile}`,
               thumbnailUrl: `/attached_assets/${categoryName}/${path.basename(imageFile, path.extname(imageFile))}-thumb${path.extname(imageFile)}`,
               displayOrder: id
@@ -45,7 +53,7 @@ export async function scanImages() {
               target: [photos.id],
               set: { 
                 title: `${categoryName} Portrait Session`,
-                category: categoryName,
+                category: categoryName.replace(/_/g, ' '),
                 imageUrl: `/attached_assets/${categoryName}/${imageFile}`,
                 thumbnailUrl: `/attached_assets/${categoryName}/${path.basename(imageFile, path.extname(imageFile))}-thumb${path.extname(imageFile)}`,
                 displayOrder: id
@@ -66,8 +74,10 @@ export async function scanImages() {
       await processDirectory(dirPath, dir);
     }
 
-    const count = await db.select({ count: sql`count(*)` }).from(photos);
-    console.log(`Total photos in database after scan: ${count[0].count}`);
+    const photoCount = await db.select({ count: sql`count(*)` }).from(photos);
+    const categoryCount = await db.select({ count: sql`count(*)` }).from(categories);
+    console.log(`Total photos in database: ${photoCount[0].count}`);
+    console.log(`Total categories in database: ${categoryCount[0].count}`);
 
   } catch (error) {
     console.error('Error during image scan:', error);
