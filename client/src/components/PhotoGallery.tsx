@@ -301,15 +301,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
         ))}
       </div>
 
-      {(hasNextPage || isFetchingNextPage) && (
-        <div 
-          ref={loaderRef}
-          className="flex justify-center py-8"
-        >
-          <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
-        </div>
-      )}
-
       <Dialog open={!!selectedPhoto} onOpenChange={(open) => !open && setSelectedPhoto(null)}>
         <DialogContent 
           className="max-w-[90vw] max-h-[90vh] w-full h-full p-0"
