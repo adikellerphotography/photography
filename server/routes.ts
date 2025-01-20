@@ -104,8 +104,11 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
       }
     }
 
-    // Sort results by ID to ensure correct order
-    results.sort((a, b) => a.id - b.id);
+    // Randomly shuffle the results array
+    for (let i = results.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [results[i], results[j]] = [results[j], results[i]];
+    }
 
     console.log('Fetched photos for category:', category, 'Count:', results.length);
 

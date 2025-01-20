@@ -44,7 +44,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   }, [category]);
 
   const { data: photos = [], isLoading } = useQuery<Photo[]>({
-    queryKey: ["/api/photos", category],
+    queryKey: ["/api/photos", category, Math.random()], // Add random key to force new fetch
     queryFn: async () => {
       const response = await fetch(`/api/photos?category=${encodeURIComponent(category || '')}`);
       if (!response.ok) {
