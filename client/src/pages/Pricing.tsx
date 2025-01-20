@@ -135,58 +135,59 @@ export default function Pricing() {
                 </p>
               </CardHeader>
               <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                  <Card className="group hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-amber-50/5 to-orange-50/5 backdrop-blur-sm border border-white/20">
+                    <CardHeader className="text-center">
+                      <CardTitle className={`text-2xl ${language === 'he' ? 'font-bold' : 'font-serif'}`}>{language === 'he' ? 'אנסטסיה כץ' : 'Anastasia Katsz'}</CardTitle>
+                      <div className="w-16 h-1 bg-gradient-to-r from-amber-500 to-orange-500 mx-auto my-2 rounded-full"></div>
+                      <p className="text-sm text-muted-foreground italic">
+                        {language === 'he' ? 'מעצב גרפי' : 'Album Designer'}
+                      </p>
+                      <p className="text-sm text-muted-foreground mt-2 group-hover:text-[#E67E00] transition-colors">
+                        <a href="tel:0546335594" className="flex items-center justify-center gap-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                          054-633-5594
+                        </a>
+                      </p>
+                    </CardHeader>
+                    <CardContent className="pt-4">
+                      <Button 
+                        variant="outline" 
+                        className="w-full group-hover:bg-gradient-to-r from-amber-500 to-orange-500 group-hover:text-white transition-all duration-300"
+                        onClick={() => setShowAnastasiaDialog(true)}
+                      >
+                        {language === 'he' ? 'טבלת מחירים' : 'View Pricing'}
+                      </Button>
+                    </CardContent>
+                  </Card>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <Card className="group hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-amber-50/5 to-orange-50/5 backdrop-blur-sm border border-white/20">
-                  <CardHeader className="text-center">
-                    <CardTitle className={`text-2xl ${language === 'he' ? 'font-bold' : 'font-serif'}`}>{language === 'he' ? 'אנסטסיה כץ' : 'Anastasia Katsz'}</CardTitle>
-                  <div className="w-16 h-1 bg-gradient-to-r from-amber-500 to-orange-500 mx-auto my-2 rounded-full"></div>
-                  <p className="text-sm text-muted-foreground italic">
-                    {language === 'he' ? 'מעצב גרפי' : 'Album Designer'}
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-2 group-hover:text-[#E67E00] transition-colors">
-                    <a href="tel:0546335594" className="flex items-center justify-center gap-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                      054-633-5594
-                    </a>
-                  </p>
-                </CardHeader>
-                <CardContent className="pt-4">
-                  <Button 
-                    variant="outline" 
-                    className="w-full group-hover:bg-gradient-to-r from-amber-500 to-orange-500 group-hover:text-white transition-all duration-300"
-                    onClick={() => setShowAnastasiaDialog(true)}
-                  >
-                    {language === 'he' ? 'טבלת מחירים' : 'View Pricing'}
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className="group hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-amber-50/5 to-orange-50/5 backdrop-blur-sm border border-white/20">
-                <CardHeader className="text-center">
-                  <CardTitle className={`text-2xl ${language === 'he' ? 'font-bold' : 'font-serif'}`}>{language === 'he' ? 'ניר גיל' : 'Nir Gil'}</CardTitle>
-                  <div className="w-16 h-1 bg-gradient-to-r from-amber-500 to-orange-500 mx-auto my-2 rounded-full"></div>
-                  <p className="text-sm text-muted-foreground italic">
-                    {language === 'he' ? 'מעצב גרפי' : 'Album Designer'}
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-2 group-hover:text-[#E67E00] transition-colors">
-                    <a href="tel:0547982299" className="flex items-center justify-center gap-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                      054-798-2299
-                    </a>
-                  </p>
-                </CardHeader>
-                <CardContent className="pt-4">
-                  <Button 
-                    variant="outline" 
-                    className="w-full group-hover:bg-gradient-to-r from-amber-500 to-orange-500 group-hover:text-white transition-all duration-300"
-                    onClick={() => setShowNirDialog(true)}
-                  >
-                    {language === 'he' ? 'טבלת מחירים' : 'View Pricing'}
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
+                  <Card className="group hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-amber-50/5 to-orange-50/5 backdrop-blur-sm border border-white/20">
+                    <CardHeader className="text-center">
+                      <CardTitle className={`text-2xl ${language === 'he' ? 'font-bold' : 'font-serif'}`}>{language === 'he' ? 'ניר גיל' : 'Nir Gil'}</CardTitle>
+                      <div className="w-16 h-1 bg-gradient-to-r from-amber-500 to-orange-500 mx-auto my-2 rounded-full"></div>
+                      <p className="text-sm text-muted-foreground italic">
+                        {language === 'he' ? 'מעצב גרפי' : 'Album Designer'}
+                      </p>
+                      <p className="text-sm text-muted-foreground mt-2 group-hover:text-[#E67E00] transition-colors">
+                        <a href="tel:0547982299" className="flex items-center justify-center gap-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                          054-798-2299
+                        </a>
+                      </p>
+                    </CardHeader>
+                    <CardContent className="pt-4">
+                      <Button 
+                        variant="outline" 
+                        className="w-full group-hover:bg-gradient-to-r from-amber-500 to-orange-500 group-hover:text-white transition-all duration-300"
+                        onClick={() => setShowNirDialog(true)}
+                      >
+                        {language === 'he' ? 'טבלת מחירים' : 'View Pricing'}
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           <Dialog open={showNirDialog} onOpenChange={setShowNirDialog}>
