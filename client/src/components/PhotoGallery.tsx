@@ -318,31 +318,30 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 }}
               >
                 <div className="relative overflow-hidden rounded-lg cursor-pointer group">
-            <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
-              <div className="relative w-full h-full overflow-hidden bg-muted">
-
-                <img
-                  key={`${photo.id}-${photo.imageUrl}`}
-                  src={photo.thumbnailUrl || photo.imageUrl}
-                  alt={photo.title || ""}
-                  className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                  loading="lazy"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  onError={() => handleImageError(photo.imageUrl)}
-                  style={{
-                    backgroundColor: '#f3f4f6', // Light background while loading
-                    minHeight: '200px'
-                  }}
-                />
-                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-              </div>
-              </AspectRatio>
-            </motion.div>
-          ))}
+                  <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
+                    <div className="relative w-full h-full overflow-hidden bg-muted">
+                      <img
+                        key={`${photo.id}-${photo.imageUrl}`}
+                        src={photo.thumbnailUrl || photo.imageUrl}
+                        alt={photo.title || ""}
+                        className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                        loading="lazy"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        onError={() => handleImageError(photo.imageUrl)}
+                        style={{
+                          backgroundColor: '#f3f4f6',
+                          minHeight: '200px'
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
+                  </AspectRatio>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
 
       {/* Vertical Images Grid */}
       <div className="mt-8">
