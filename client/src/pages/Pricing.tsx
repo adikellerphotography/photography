@@ -85,7 +85,7 @@ export default function Pricing() {
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="md:col-span-2 bg-card/50 p-8 rounded-lg border border-white/10"
+              className="md:col-span-2 bg-gradient-to-br from-amber-900/10 to-orange-700/10 p-8 rounded-lg border border-white/10 backdrop-blur-sm"
             >
               <h2 className="text-2xl font-bold mb-6 text-center text-[#E67E00]">
                 {t("pricing.additional.name")}
@@ -102,7 +102,7 @@ export default function Pricing() {
           </div>
 
           {/* Albums Section */}
-          <div className="mt-16 bg-card/50 p-8 rounded-lg border border-white/10">
+          <div className="mt-16 bg-gradient-to-br from-amber-900/10 to-orange-700/10 p-8 rounded-lg border border-white/10 backdrop-blur-sm">
             <h2 className="text-2xl font-bold mb-6 text-center text-[#E67E00]">
               {t("pricing.albums.title") || "Albums"}
             </h2>
