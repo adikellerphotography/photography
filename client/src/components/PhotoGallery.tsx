@@ -255,7 +255,18 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   };
 
   const getImagePath = (photo: Photo) => {
-    return `/attached_assets/${photo.category?.toLowerCase().replace(' ', '_')}/${String(photo.id).padStart(3, '0')}.jpeg`;
+    const categoryMap: Record<string, string> = {
+      'Kids': 'kids',
+      'Bat Mitsva': 'Bat_Mitsva',
+      'Family': 'Family',
+      'Horses': 'Horses',
+      'Modeling': 'Modeling',
+      'Women': 'Women',
+      'Yoga': 'Yoga'
+    };
+    
+    const category = categoryMap[photo.category || ''] || photo.category?.replace(' ', '_');
+    return `/assets/${category}/${String(photo.id).padStart(3, '0')}.jpeg`;
   };
 
   if (isLoading) {
