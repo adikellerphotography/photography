@@ -11,7 +11,7 @@ import { useEffect } from "react";
 import { Camera, Aperture, SplitSquareVertical } from "lucide-react";
 
 export default function Home() {
-  const { data: categories } = useQuery<Category[]>({
+  const { data: categories, isLoading: categoriesLoading } = useQuery<Category[]>({
     queryKey: ["/api/categories"],
   });
 
