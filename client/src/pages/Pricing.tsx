@@ -57,7 +57,7 @@ export default function Pricing() {
             {t("pricing.title")}
           </h1>
 
-          <div className={`grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto ${language === 'he' ? 'text-right' : ''}`}>
+          <div className={`grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto w-[70%] md:w-full ${language === 'he' ? 'text-right' : ''}`}>
             {packages.filter(pkg => pkg.name !== t("pricing.additional.name")).map((pkg, index) => (
               <motion.div
                 key={pkg.name}
