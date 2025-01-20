@@ -13,24 +13,34 @@ import { Camera, Aperture, SplitSquareVertical } from "lucide-react";
 
 export default function Home() {
   const { language } = useLanguage();
-  const { data: categories, isLoading: categoriesLoading } = useQuery<Category[]>({
+  const { data: categories, isLoading: categoriesLoading } = useQuery<
+    Category[]
+  >({
     queryKey: ["/api/categories"],
   });
 
   const { t } = useTranslation();
 
-  const allowedCategories = ["Bat Mitsva", "Family", "Horses", "Kids", "Modeling", "Women", "Yoga"];
+  const allowedCategories = [
+    "Bat Mitsva",
+    "Family",
+    "Horses",
+    "Kids",
+    "Modeling",
+    "Women",
+    "Yoga",
+  ];
 
   // Override the firstPhoto for specific categories
-  const processedCategories = categories?.map(category => {
+  const processedCategories = categories?.map((category) => {
     if (category.name === "Family") {
       return {
         ...category,
         firstPhoto: {
           ...category.firstPhoto,
-          imageUrl: "/assets/Family/M68A9203-Edit Large.jpeg",
-          thumbnailUrl: "/assets/Family/M68A9203-Edit Large-thumb.jpeg"
-        }
+          imageUrl: "/assets/Family/001.jpeg",
+          thumbnailUrl: "/assets/Family/001-thumb.jpeg",
+        },
       };
     }
     if (category.name === "Kids") {
@@ -38,9 +48,9 @@ export default function Home() {
         ...category,
         firstPhoto: {
           ...category.firstPhoto,
-          imageUrl: "/assets/kids/IMG_5537-Edit-Edit Large.jpeg",
-          thumbnailUrl: "/assets/kids/IMG_5537-Edit-Edit Large-thumb.jpeg"
-        }
+          imageUrl: "/assets/kids/011.jpeg",
+          thumbnailUrl: "/assets/kids/011-thumb.jpeg",
+        },
       };
     }
     if (category.name === "Women") {
@@ -48,9 +58,9 @@ export default function Home() {
         ...category,
         firstPhoto: {
           ...category.firstPhoto,
-          imageUrl: "/assets/Women/IMG_5605-Edit Large.jpeg",
-          thumbnailUrl: "/assets/Women/IMG_5605-Edit Large-thumb.jpeg"
-        }
+          imageUrl: "/assets/Women/006.jpeg",
+          thumbnailUrl: "/assets/Women/006-thumb.jpeg",
+        },
       };
     }
     if (category.name === "Yoga") {
@@ -58,9 +68,9 @@ export default function Home() {
         ...category,
         firstPhoto: {
           ...category.firstPhoto,
-          imageUrl: "/assets/Yoga/IMG_6161-Edit Large.jpeg",
-          thumbnailUrl: "/assets/Yoga/IMG_6161-Edit Large-thumb.jpeg"
-        }
+          imageUrl: "/assets/Yoga/001.jpeg",
+          thumbnailUrl: "/assets/Yoga/001-thumb.jpeg",
+        },
       };
     }
     if (category.name === "Bat Mitsva") {
@@ -68,9 +78,9 @@ export default function Home() {
         ...category,
         firstPhoto: {
           ...category.firstPhoto,
-          imageUrl: "/assets/Bat_Mitsva/IMG_8705-Edit_5 Large.jpeg",
-          thumbnailUrl: "/assets/Bat_Mitsva/IMG_8705-Edit_5 Large.jpeg"
-        }
+          imageUrl: "/assets/Bat_Mitsva/001.jpeg",
+          thumbnailUrl: "/assets/Bat_Mitsva/001-thumb.jpeg",
+        },
       };
     }
     if (category.name === "Modeling") {
@@ -78,9 +88,9 @@ export default function Home() {
         ...category,
         firstPhoto: {
           ...category.firstPhoto,
-          imageUrl: "/assets/Modeling/M68A1663-Edit-2 Large.jpeg",
-          thumbnailUrl: "/assets/Modeling/M68A1663-Edit-2 Large-thumb.jpeg"
-        }
+          imageUrl: "/assets/Modeling/004.jpeg",
+          thumbnailUrl: "/assets/Modeling/004-thumb.jpeg",
+        },
       };
     }
     if (category.name === "Horses") {
@@ -88,17 +98,18 @@ export default function Home() {
         ...category,
         firstPhoto: {
           ...category.firstPhoto,
-          imageUrl: "/assets/Horses/IMG_0001 Large.jpg",
-          thumbnailUrl: "/assets/Horses/IMG_0001 Large-thumb.jpg"
-        }
+          imageUrl: "/assets/Horses/015.jpeg",
+          thumbnailUrl: "/assets/Horses/015-thumb.jpeg",
+        },
       };
     }
     return category;
   });
 
-  const filteredCategories = processedCategories?.filter(category => 
-    allowedCategories.includes(category.name)
-  ) || [];
+  const filteredCategories =
+    processedCategories?.filter((category) =>
+      allowedCategories.includes(category.name),
+    ) || [];
 
   return (
     <div className="min-h-screen pt-16">
@@ -112,8 +123,8 @@ export default function Home() {
           <div className="flex justify-center gap-12 mb-8">
             <div className="relative">
               <motion.div
-                initial={{ backgroundColor: '#E67E00' }}
-                animate={{ backgroundColor: ['#E67E00', '#733F00', '#E67E00'] }}
+                initial={{ backgroundColor: "#E67E00" }}
+                animate={{ backgroundColor: ["#E67E00", "#733F00", "#E67E00"] }}
                 transition={{ duration: 1.6, times: [0, 0.5, 1] }}
                 className="absolute inset-0 rounded-full -z-10"
               />
@@ -125,8 +136,8 @@ export default function Home() {
             </div>
             <div className="relative">
               <motion.div
-                initial={{ backgroundColor: '#E67E00' }}
-                animate={{ backgroundColor: ['#E67E00', '#733F00', '#E67E00'] }}
+                initial={{ backgroundColor: "#E67E00" }}
+                animate={{ backgroundColor: ["#E67E00", "#733F00", "#E67E00"] }}
                 transition={{ duration: 1.6, times: [0, 0.5, 1] }}
                 className="absolute inset-0 rounded-full -z-10"
               />
@@ -138,8 +149,8 @@ export default function Home() {
             </div>
             <div className="relative">
               <motion.div
-                initial={{ backgroundColor: '#E67E00' }}
-                animate={{ backgroundColor: ['#E67E00', '#733F00', '#E67E00'] }}
+                initial={{ backgroundColor: "#E67E00" }}
+                animate={{ backgroundColor: ["#E67E00", "#733F00", "#E67E00"] }}
                 transition={{ duration: 1.6, times: [0, 0.5, 1] }}
                 className="absolute inset-0 rounded-full -z-10"
               />
@@ -151,13 +162,13 @@ export default function Home() {
             </div>
           </div>
           <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h1 className={`font-bold font-cormorant ${language === 'he' ? 'text-3xl md:text-5xl' : 'text-4xl md:text-6xl'}`}>
+            <h1
+              className={`font-bold font-cormorant ${language === "he" ? "text-3xl md:text-5xl" : "text-4xl md:text-6xl"}`}
+            >
               {t("home.title")}
             </h1>
             <p className="text-lg">
-              <span className="text-gray-400">
-                {t("home.subtitle")}
-              </span>
+              <span className="text-gray-400">{t("home.subtitle")}</span>
             </p>
             <SocialLinks />
           </div>
@@ -179,15 +190,15 @@ export default function Home() {
               <motion.div
                 key={category.id}
                 initial={{ opacity: 0, y: 50, scale: 0.95 }}
-                whileInView={{ 
-                  opacity: 1, 
-                  y: 0, 
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
                   scale: 1,
-                  transition: { 
+                  transition: {
                     duration: 0.6,
                     delay: index * 0.15,
-                    ease: "easeOut"
-                  }
+                    ease: "easeOut",
+                  },
                 }}
                 viewport={{ once: true, margin: "-50px" }}
                 whileHover={{ scale: 1.02 }}
@@ -200,7 +211,10 @@ export default function Home() {
                       <AspectRatio ratio={4 / 3} className="bg-muted">
                         <div className="relative w-full h-full">
                           <img
-                            src={category.firstPhoto?.imageUrl || `/assets/${category.name}/${category.name.toLowerCase()}-1.jpg`}
+                            src={
+                              category.firstPhoto?.imageUrl ||
+                              `/assets/${category.name}/${category.name.toLowerCase()}-1.jpg`
+                            }
                             alt={category.name}
                             className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
                             style={{
@@ -215,7 +229,7 @@ export default function Home() {
                             onError={(e) => {
                               console.error(
                                 "Failed to load image:",
-                                category.firstPhoto?.imageUrl
+                                category.firstPhoto?.imageUrl,
                               );
                               const target = e.target as HTMLImageElement;
                               target.onerror = null;
