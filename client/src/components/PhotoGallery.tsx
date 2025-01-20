@@ -265,18 +265,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   };
 
   const getImagePath = (photo: Photo) => {
-    const categoryMap: Record<string, string> = {
-      'Kids': 'kids',
-      'Bat Mitsva': 'Bat_Mitsva',
-      'Family': 'Family',
-      'Horses': 'Horses',
-      'Modeling': 'Modeling',
-      'Women': 'Women',
-      'Yoga': 'Yoga'
-    };
-    
-    const category = categoryMap[photo.category || ''] || photo.category?.replace(' ', '_');
-    return `/assets/${category}/${String(photo.id).padStart(3, '0')}.jpeg`;
+    return `/attached_assets/${photo.category}/${String(photo.id).padStart(3, '0')}.jpeg`;
   };
 
   if (isLoading) {
@@ -330,7 +319,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
                 <img
                   key={`${photo.id}-${photo.imageUrl}`}
-                  src={`/attached_assets/${photo.category?.toLowerCase().replace(' ', '_')}/${String(photo.id).padStart(3, '0')}.jpeg`}
+                  src={`/attached_assets/${photo.category}/${String(photo.id).padStart(3, '0')}.jpeg`}
                   alt={photo.title || ""}
                   className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
