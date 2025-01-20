@@ -92,30 +92,49 @@ export default function Pricing() {
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="md:col-span-2 bg-gray-100/10 p-8 rounded-lg border border-white/10 backdrop-blur-sm"
+              className="md:col-span-2"
             >
-              <h2 className="text-2xl font-bold mb-6 text-center text-[#E67E00]">
-                {t("pricing.additional.name")}
-              </h2>
-              <ul className="space-y-2 max-w-2xl mx-auto">
-                {packages.find(pkg => pkg.name === t("pricing.additional.name"))?.features.map((feature: string) => (
-                  <li key={feature} className={`flex items-center ${language === 'he' ? 'flex-row-reverse text-right' : ''}`}>
-                    <span className={`${language === 'he' ? 'ml-2' : 'mr-2'}`}>•</span>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
+              <Card className="backdrop-blur-sm bg-gray-100/5 border border-white/10 hover:border-white/20 transition-all h-full">
+                <CardHeader className="space-y-2 pb-4">
+                  <CardTitle className="text-xl font-semibold text-[#E67E00]">
+                    {t("pricing.additional.name")}
+                  </CardTitle>
+                  <div className="flex">
+                    <div className={`h-[1px] w-12 bg-gradient-to-r from-[#E67E00] to-amber-300 ${language === 'he' ? 'mr-0 ml-auto' : ''}`}></div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-1.5">
+                    {packages.find(pkg => pkg.name === t("pricing.additional.name"))?.features.map((feature: string) => (
+                      <li key={feature} className={`flex items-center ${language === 'he' ? 'flex-row-reverse text-right' : ''}`}>
+                        <span className={`text-[#E67E00] text-xs ${language === 'he' ? 'ml-2' : 'mr-2'}`}>◆</span>
+                        <span className="font-light">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
             </motion.div>
           </div>
 
           {/* Albums Section */}
-          <div className="mt-16 bg-gray-100/10 p-8 rounded-lg border border-white/10 backdrop-blur-sm">
-            <h2 className="text-3xl font-bold mb-6 text-center text-[#E67E00]">
+          <div className="mt-16">
+            <h2 className="text-3xl font-bold mb-8 text-center text-[#E67E00]">
               {t("pricing.albums.title") || "Albums"}
             </h2>
-            <p className={`mb-8 max-w-2xl mx-auto ${language === 'he' ? 'text-right' : 'text-left'}`}>
-              {t("pricing.albums.description")}
-            </p>
+            <Card className="backdrop-blur-sm bg-gray-100/5 border border-white/10 hover:border-white/20 transition-all">
+              <CardHeader className="space-y-2 pb-4">
+                <CardTitle className="text-xl font-semibold text-[#E67E00]">
+                  {t("pricing.albums.title")}
+                </CardTitle>
+                <div className="flex">
+                  <div className={`h-[1px] w-12 bg-gradient-to-r from-[#E67E00] to-amber-300 ${language === 'he' ? 'mr-0 ml-auto' : ''}`}></div>
+                </div>
+                <p className={`text-sm text-muted-foreground/80 font-light ${language === 'he' ? 'text-right' : 'text-left'}`}>
+                  {t("pricing.albums.description")}
+                </p>
+              </CardHeader>
+              <CardContent>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               <Card className="group hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-amber-50/5 to-orange-50/5 backdrop-blur-sm border border-white/20">
