@@ -64,6 +64,7 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
     const query = db.select()
       .from(photos)
       .where(category ? eq(photos.category, decodeURIComponent(category as string)) : undefined)
+      .orderBy(desc(photos.displayOrder))
       .orderBy(desc(photos.id));
 
     const results = await query

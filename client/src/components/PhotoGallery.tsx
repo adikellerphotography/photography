@@ -76,9 +76,11 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       return data;
     },
     getNextPageParam: (lastPage, allPages) => {
-      return lastPage.length === pageSize ? allPages.length + 1 : undefined;
+      return lastPage.length > 0 ? allPages.length + 1 : undefined;
     },
-    initialPageParam: 1
+    initialPageParam: 1,
+    staleTime: 0,
+    refetchOnWindowFocus: false
   });
 
   useEffect(() => {
