@@ -311,19 +311,13 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
                 className="flex-none w-[300px] md:w-[350px]"
+                onClick={() => {
+                  setSelectedPhoto(photo);
+                  setSelectedIndex(index);
+                  setScrollPosition(window.scrollY);
+                }}
               >
-          <motion.div
-            key={`${photo.id}-${photo.imageUrl}`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            onClick={() => {
-              setSelectedPhoto(photo);
-              setSelectedIndex(index);
-              setScrollPosition(window.scrollY);
-            }}
-            className="relative overflow-hidden rounded-lg cursor-pointer group"
-          >
+                <div className="relative overflow-hidden rounded-lg cursor-pointer group">
             <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
               <div className="relative w-full h-full overflow-hidden bg-muted">
 
@@ -343,12 +337,12 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
               </div>
-            </AspectRatio>
-          </motion.div>
-            ))}
-          </div>
+              </AspectRatio>
+            </motion.div>
+          ))}
         </div>
       </div>
+    </div>
 
       {/* Vertical Images Grid */}
       <div className="mt-8">
