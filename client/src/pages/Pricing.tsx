@@ -87,7 +87,7 @@ export default function Pricing() {
             <h2 className="text-2xl font-bold mb-6 text-center text-[#E67E00]">
               {t("pricing.albums.title") || "Albums"}
             </h2>
-            <p className="text-center mb-8 max-w-2xl mx-auto">
+            <p className="text-start rtl:text-end mb-8 max-w-2xl mx-auto">
               {t("pricing.albums.description") || "I work with two professional designers who create beautiful albums, handle printing, and deliver directly to customers."}
             </p>
             

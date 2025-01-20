@@ -75,7 +75,7 @@ export const translations = {
       title: "Photography Packages",
       albums: {
         title: "Albums",
-        description: "I collaborate with expert designers who specialize in crafting stunning, high-quality photo albums tailored to your unique story. Our service includes professional printing and direct delivery, ensuring a seamless experience that beautifully preserves your cherished memories.",
+        description: "I collaborate with expert designers who specialize in crafting stunning, high-quality photo albums tailored to your unique story. Their service includes professional printing and direct delivery, ensuring a seamless experience that beautifully preserves your cherished memories.",
       },
       batMitzvah: {
         name: "Bat/Bar Mitzvah",
