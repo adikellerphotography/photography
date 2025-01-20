@@ -320,5 +320,22 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
+  app.get("/api/sessions/:category", async (req, res) => {
+    try {
+      const { category } = req.params;
+      const dirPath = path.join(process.cwd(), 'attached_assets', category.replace(' ', '_'));
+      const files = await fs.readdir(dirPath);
+      const imageFiles = files.filter(file => /\.(jpg|jpeg)$/i.test(file) && !file.includes('-thumb'));
+      const images = imageFiles.map(file => ({
+        number: parseInt(file.replace(/\D/g, '')),
+        url: `/assets/${category.replace(' ', '_')}/${file}`
+      }));
+      res.json(images);
+    } catch (error) {
+      console.error('Error fetching session images:', error);
+      res.status(500).json({ error: "Failed to fetch session images" });
+    }
+  });
+
   return httpServer;
 }

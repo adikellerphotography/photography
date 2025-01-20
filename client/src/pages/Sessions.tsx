@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLanguage } from "@/hooks/use-language";
 import { SiFacebook } from "react-icons/si";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useQuery } from "@tanstack/react-query";
 
 interface SessionLink {
   url: string;
@@ -14,6 +15,12 @@ interface SessionLink {
 interface SessionGroup {
   name: string;
   links: SessionLink[];
+}
+
+async function fetchImages(category: string): Promise<SessionLink[]> {
+  const response = await fetch(`/api/sessions/${category}`);
+  if (!response.ok) throw new Error('Failed to fetch images');
+  return response.json();
 }
 
 const sessionGroups: SessionGroup[] = [
@@ -160,6 +167,29 @@ export default function MySessions() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const isMobile = useIsMobile();
   const clickTimer = useRef<number>(0);
+  const [groups, setGroups] = useState<SessionGroup[]>([]);
+
+  useEffect(() => {
+    async function loadImages() {
+      const categories = ['Bat_Mitsva', 'Family', 'Horses', 'Kids', 'Modeling', 'Women', 'Yoga'];
+      const loadedGroups = await Promise.all(
+        categories.map(async (category) => {
+          try {
+            const images = await fetchImages(category);
+            return {
+              name: category.replace('_', ' '),
+              links: images
+            };
+          } catch (error) {
+            console.error(`Error loading ${category} images:`, error);
+            return null;
+          }
+        })
+      );
+      setGroups(loadedGroups.filter((g): g is SessionGroup => g !== null));
+    }
+    loadImages();
+  }, []);
 
   const getFacebookUrl = (url: string) => {
     if (isMobile) {
@@ -222,7 +252,7 @@ export default function MySessions() {
           <span className="text-foreground font-semibold">{t("sessions.description")}</span>
         </div>
         <div className="space-y-8">
-          {sessionGroups.map((group) => (
+          {groups.map((group) => (
             <div key={group.name} className={`bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-white/30 ${language === 'he' ? 'rtl' : 'ltr'}`}>
               <div className="mb-4">
                 <h2 className="text-2xl font-semibold">{language === 'he' ? t(`sessions.${group.name}`) : capitalizeWords(group.name)}</h2>
