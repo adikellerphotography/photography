@@ -300,7 +300,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   return (
     <div className="space-y-8" ref={galleryRef}>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 auto-rows-auto"> 
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"> {/* Changed grid to columns */}
         {displayPhotos?.map((photo, index) => (
           <motion.div
             key={`${photo.id}-${photo.imageUrl}`}
@@ -312,10 +312,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               setSelectedIndex(index);
               setScrollPosition(window.scrollY);
             }}
-            className={cn(
-              "relative overflow-hidden rounded-lg cursor-pointer group",
-              photo.imageUrl.includes("vertical") ? "row-span-2" : "col-span-1"
-            )}
+            className="relative overflow-hidden rounded-lg cursor-pointer group"
           >
             <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
               <div className="relative w-full h-full overflow-hidden bg-muted">
