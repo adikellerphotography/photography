@@ -60,8 +60,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    isLoading,
-    error
+    error: infiniteError
   } = useInfiniteQuery({
     queryKey: ["/api/photos", { category }],
     queryFn: async ({ pageParam = 1 }) => {
