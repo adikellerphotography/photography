@@ -262,7 +262,7 @@ export default function MySessions() {
                       )}
                     </motion.div>
                   </div>
-                ))}
+                )))}
               </div>
             </div>
           ))}
