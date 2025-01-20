@@ -75,7 +75,7 @@ export const translations = {
       title: "Photography Packages",
       albums: {
         title: "Albums",
-        description: "I work with two professional designers who create beautiful albums, handle printing, and deliver directly to customers.",
+        description: "I collaborate with expert designers who specialize in crafting stunning, high-quality photo albums tailored to your unique story. Our service includes professional printing and direct delivery, ensuring a seamless experience that beautifully preserves your cherished memories.",
       },
       batMitzvah: {
         name: "Bat/Bar Mitzvah",
@@ -243,7 +243,7 @@ export const translations = {
       title: "חבילות צילום",
       albums: {
         title: "אלבומים",
-        description: "אני עובד עם שני מעצבים מקצועיים שיוצרים אלבומים יפהפיים, מטפלים בהדפסה ומספקים ישירות ללקוחות.",
+        description: "אני משתף פעולה עם מעצבים מומחים המתמחים ביצירת אלבומי תמונות מרהיבים ואיכותיים המותאמים לסיפור הייחודי שלך. השירות שלנו כולל הדפסה מקצועית ומשלוח ישיר, המבטיח חוויה חלקה השומרת על הזכרונות היקרים שלך בצורה יפה.",
       },
       batMitzvah: {
         name: "בת/בר מצווה",
