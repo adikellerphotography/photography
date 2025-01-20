@@ -236,8 +236,8 @@ export default function Pricing() {
               </div>
             </DialogContent>
           </Dialog>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 }
