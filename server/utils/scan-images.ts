@@ -16,9 +16,6 @@ export async function scanImages() {
     // Clear existing records
     await db.delete(photos);
     await db.delete(categories);
-
-    // Get all directories in facebook_posts_image
-    const dirs = await fs.readdir(facebookPostsPath);
     
     // Get all subdirectories in facebook_posts_image
     const dirs = await fs.readdir(facebookPostsPath);
