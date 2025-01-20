@@ -107,17 +107,17 @@ export default function Pricing() {
 
           {/* Albums Section */}
           <div className="mt-16 bg-gray-100/10 p-8 rounded-lg border border-white/10 backdrop-blur-sm">
-            <h2 className={`text-2xl font-bold mb-6 text-center text-[#E67E00] ${language === 'he' ? 'text-right' : ''}`}>
+            <h2 className="text-3xl font-bold mb-6 text-center text-[#E67E00]">
               {t("pricing.albums.title") || "Albums"}
             </h2>
             <p className={`text-start rtl:text-end mb-8 max-w-2xl mx-auto ${language === 'he' ? 'text-right' : ''}`}>
-              {t("pricing.albums.description") || "I work with two professional designers who create beautiful albums, handle printing, and deliver directly to customers."}
+              {t("pricing.albums.description")}
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               <Card className="group hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-amber-50/5 to-orange-50/5 backdrop-blur-sm border border-white/20">
                 <CardHeader className="text-center">
-                  <CardTitle className="text-2xl font-serif">{language === 'he' ? 'אנסטסיה כץ' : 'Anastasia Katsz'}</CardTitle>
+                  <CardTitle className={`text-2xl ${language === 'he' ? 'font-bold' : 'font-serif'}`}>{language === 'he' ? 'אנסטסיה כץ' : 'Anastasia Katsz'}</CardTitle>
                   <div className="w-16 h-1 bg-gradient-to-r from-amber-500 to-orange-500 mx-auto my-2 rounded-full"></div>
                   <p className="text-sm text-muted-foreground italic">
                     {language === 'he' ? 'מעצב גרפי' : 'Album Designer'}
@@ -142,7 +142,7 @@ export default function Pricing() {
 
               <Card className="group hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-amber-50/5 to-orange-50/5 backdrop-blur-sm border border-white/20">
                 <CardHeader className="text-center">
-                  <CardTitle className="text-2xl font-serif">{language === 'he' ? 'ניר גיל' : 'Nir Gil'}</CardTitle>
+                  <CardTitle className={`text-2xl ${language === 'he' ? 'font-bold' : 'font-serif'}`}>{language === 'he' ? 'ניר גיל' : 'Nir Gil'}</CardTitle>
                   <div className="w-16 h-1 bg-gradient-to-r from-amber-500 to-orange-500 mx-auto my-2 rounded-full"></div>
                   <p className="text-sm text-muted-foreground italic">
                     {language === 'he' ? 'מעצב גרפי' : 'Album Designer'}
