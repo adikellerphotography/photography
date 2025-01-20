@@ -54,7 +54,7 @@ export default function Pricing() {
           </h1>
 
           <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto ${language === 'he' ? 'text-right' : ''}`}>
-            {packages.map((pkg, index) => (
+            {packages.filter(pkg => pkg.name !== t("pricing.additional.name")).map((pkg, index) => (
               <motion.div
                 key={pkg.name}
                 initial={{ opacity: 0, y: 20 }}
@@ -80,10 +80,29 @@ export default function Pricing() {
                 </Card>
               </motion.div>
             ))}
+            
+            {/* Additional Information Section */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="md:col-span-2 bg-card/50 p-8 rounded-lg border border-white/10"
+            >
+              <h2 className="text-2xl font-bold mb-6 text-center text-[#E67E00]">
+                {t("pricing.additional.name")}
+              </h2>
+              <ul className="space-y-2 max-w-2xl mx-auto">
+                {packages.find(pkg => pkg.name === t("pricing.additional.name"))?.features.map((feature: string) => (
+                  <li key={feature} className={`flex items-center ${language === 'he' ? 'flex-row-reverse text-right' : ''}`}>
+                    <span className={`${language === 'he' ? 'ml-2' : 'mr-2'}`}>•</span>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
           </div>
 
           {/* Albums Section */}
-          <div className="mt-16">
+          <div className="mt-16 bg-card/50 p-8 rounded-lg border border-white/10">
             <h2 className="text-2xl font-bold mb-6 text-center text-[#E67E00]">
               {t("pricing.albums.title") || "Albums"}
             </h2>
