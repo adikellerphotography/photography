@@ -95,7 +95,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     return () => observer.disconnect();
   }, [photos]);
 
-  
+
 
 
   const handleLike = async (photo: Photo) => {
@@ -271,23 +271,34 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
             key={`${photo.id}-${photo.imageUrl}`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
+            transition={{ delay: Math.min(index * 0.05, 1) }}
             onClick={() => {
               setSelectedPhoto(photo);
               setSelectedIndex(index);
               setScrollPosition(window.scrollY);
+              // Preload next few images
+              const preloadCount = 3;
+              for (let i = 1; i <= preloadCount; i++) {
+                const nextIndex = (index + i) % displayPhotos.length;
+                const nextPhoto = displayPhotos[nextIndex];
+                if (nextPhoto) {
+                  const img = new Image();
+                  img.src = getImagePath(nextPhoto);
+                }
+              }
             }}
             className="relative overflow-hidden rounded-lg cursor-pointer group"
           >
             <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
               <div className="relative w-full h-full overflow-hidden bg-muted">
-
                 <img
                   key={`${photo.id}-${photo.imageUrl}`}
                   src={getImagePath(photo)}
                   alt={photo.title || ""}
                   className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                  loading="lazy"
+                  loading={index < 12 ? "eager" : "lazy"}
+                  decoding={index < 12 ? "sync" : "async"}
+                  fetchPriority={index < 6 ? "high" : "auto"}
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   onError={(e) => {
                     const img = e.target as HTMLImageElement;
