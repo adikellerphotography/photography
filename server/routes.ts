@@ -70,6 +70,31 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
       .limit(pageSize)
       .offset((page - 1) * pageSize);
 
+    // If no results in database but files exist in directory, create entries
+    if (results.length === 0 && category) {
+      const categoryPath = getCategoryPath(category);
+      const dirPath = path.join(process.cwd(), 'attached_assets', categoryPath);
+      try {
+        const files = await fs.readdir(dirPath);
+        const photoFiles = files.filter(f => f.endsWith('.jpeg') && !f.includes('-thumb'));
+        const entries = photoFiles.map((file, idx) => ({
+          id: Date.now() + idx,
+          title: `${category} Portrait Session`,
+          category: category,
+          imageUrl: file,
+          thumbnailUrl: file.replace('.jpeg', '-thumb.jpeg'),
+          displayOrder: idx + 1
+        }));
+        
+        if (entries.length > 0) {
+          await db.insert(photos).values(entries);
+          results.push(...entries);
+        }
+      } catch (err) {
+        console.error('Error reading directory:', err);
+      }
+    }
+
     console.log('Fetched photos for category:', category, 'Count:', results.length);
 
     const processedPhotos = await Promise.all(results.map(async (photo, index) => {
