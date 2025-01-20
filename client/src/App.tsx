@@ -13,7 +13,7 @@ import Info from "@/pages/Info";
 import Pricing from "@/pages/Pricing";
 import NotFound from "@/pages/not-found";
 import { Toaster } from "@/components/ui/toaster";
-import React from 'react';
+import React, { useEffect } from 'react';
 import Sessions from "./pages/Sessions";
 import Contact from "@/pages/Contact";
 import GuidingAndMentoring from "./pages/GuidingAndMentoring";
