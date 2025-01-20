@@ -76,16 +76,21 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
       const dirPath = path.join(process.cwd(), 'attached_assets', categoryPath);
       try {
         const files = await fs.readdir(dirPath);
-        const photoFiles = files.filter(f => f.endsWith('.jpeg') && !f.includes('-thumb'));
+        const photoFiles = files.filter(f => (f.endsWith('.jpeg') || f.endsWith('.jpg')) && !f.includes('-thumb'))
+          .sort((a, b) => {
+            const numA = parseInt(a.match(/\d+/)?.[0] || '0');
+            const numB = parseInt(b.match(/\d+/)?.[0] || '0');
+            return numA - numB;
+          });
         const entries = photoFiles.map((file, idx) => ({
           id: idx + 1,
           title: `${category} Portrait Session`,
           category: category,
           imageUrl: file,
-          thumbnailUrl: file.replace('.jpeg', '-thumb.jpeg'),
+          thumbnailUrl: file.replace('.jpeg', '-thumb.jpeg').replace('.jpg', '-thumb.jpg'),
           displayOrder: idx + 1
         }));
-        
+
         if (entries.length > 0) {
           await db.insert(photos).values(entries);
           results.push(...entries);
