@@ -321,7 +321,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
                 <img
                   key={`${photo.id}-${photo.imageUrl}`}
-                  src={`/attached_assets/${photo.category}/${String(photo.id).padStart(3, '0')}.jpeg`}
+                  src={getImagePath(photo)}
                   alt={photo.title || ""}
                   className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
@@ -329,9 +329,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   onError={(e) => {
                     const img = e.target as HTMLImageElement;
                     console.error('Image load error:', img.src);
-                    if (!img.src.includes('retry')) {
-                      img.src = `${img.src}?retry=1&nocache=${Date.now()}`;
-                    }
+                    handleImageError(img.src);
                   }}
                   style={{
                     backgroundColor: '#f3f4f6',

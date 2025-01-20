@@ -60,12 +60,12 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
 
     const query = db.select()
       .from(photos)
-      .where(category ? eq(photos.category, decodeURIComponent(category as string)) : undefined);
+      .where(category ? eq(photos.category, decodeURIComponent(category as string)) : undefined)
+      .orderBy(desc(photos.id));
 
     const results = await query
       .limit(pageSize)
-      .offset((page - 1) * pageSize)
-      .orderBy(sql`RANDOM()`);
+      .offset((page - 1) * pageSize);
 
     const processedPhotos = results.map(photo => {
       const categoryPath = getCategoryPath(photo.category);
