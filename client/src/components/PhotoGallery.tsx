@@ -255,17 +255,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   };
 
   const getImagePath = (photo: Photo) => {
-    // First try thumbnail, then full image, then placeholder
-    if (failedImages.has(photo.imageUrl)) {
-      return photo.thumbnailUrl || '/assets/placeholder.jpg';
-    }
-
-    // Ensure paths start with /assets/
-    const normalizedImageUrl = photo.imageUrl.startsWith('/assets/') ? 
-      photo.imageUrl : 
-      `/assets/${photo.imageUrl}`;
-
-    return normalizedImageUrl;
+    return `/assets/${photo.category?.toLowerCase()}/${String(photo.id).padStart(3, '0')}.jpeg`;
   };
 
   if (isLoading) {
@@ -319,14 +309,23 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
                 <img
                   key={`${photo.id}-${photo.imageUrl}`}
-                  src={photo.thumbnailUrl || photo.imageUrl}
+                  src={`/assets/${photo.category?.toLowerCase()}/${String(photo.id).padStart(3, '0')}.jpeg`}
                   alt={photo.title || ""}
                   className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  onError={() => handleImageError(photo.imageUrl)}
+                  onError={(e) => {
+                    const img = e.target as HTMLImageElement;
+                    if (!img.src.includes('retry')) {
+                      img.src = `${img.src}?retry=1&nocache=${Date.now()}`;
+                    } else {
+                      console.error('Failed to load image:', img.src);
+                      img.style.display = 'none';
+                      img.parentElement?.classList.add('bg-gray-200');
+                    }
+                  }}
                   style={{
-                    backgroundColor: '#f3f4f6', // Light background while loading
+                    backgroundColor: '#f3f4f6',
                     minHeight: '200px'
                   }}
                 />
