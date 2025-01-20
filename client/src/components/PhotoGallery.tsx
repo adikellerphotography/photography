@@ -55,31 +55,19 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   }, [category]);
 
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    error: infiniteError
-  } = useInfiniteQuery({
-    queryKey: ["/api/photos", { category }],
-    queryFn: async ({ pageParam = 1 }) => {
-      console.log('Fetching photos for category:', category, 'page:', pageParam);
-      const response = await fetch(`/api/photos?category=${encodeURIComponent(category || '')}&page=${pageParam}&pageSize=${pageSize}`);
+  const { data: photos = [], isLoading } = useQuery<Photo[]>({
+    queryKey: ["/api/photos", category],
+    queryFn: async () => {
+      const response = await fetch(`/api/photos?category=${encodeURIComponent(category || '')}`);
       if (!response.ok) {
         const errorText = await response.text();
         console.error('Error fetching photos:', errorText);
         throw new Error(`Failed to fetch photos: ${errorText}`);
       }
-      const data: Photo[] = await response.json();
-      console.log('Received photos:', data.length, 'First photo:', data[0]);
+      const data = await response.json();
+      console.log('Received photos:', data.length);
       return data;
     },
-    getNextPageParam: (lastPage, allPages) => {
-      return lastPage.length > 0 ? allPages.length + 1 : undefined;
-    },
-    initialPageParam: 1,
-    maxPages: Math.ceil(71 / 20),
     staleTime: 0,
     refetchOnWindowFocus: false
   });

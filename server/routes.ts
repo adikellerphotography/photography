@@ -47,8 +47,6 @@ const configureStaticFiles = (app: Express) => {
 const getPhotos = async (req: express.Request, res: express.Response) => {
   try {
     const { category } = req.query;
-    const page = Number(req.query.page) || 1;
-    const pageSize = Number(req.query.pageSize) || 20;
 
     if (category && typeof category === 'string') {
       const categoryExists = await db.select({ id: categories.id })
@@ -64,9 +62,7 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
     const query = db.select()
       .from(photos)
       .where(category ? eq(photos.category, decodeURIComponent(category as string)) : undefined)
-      .orderBy(photos.displayOrder)
-      .limit(pageSize)
-      .offset((page - 1) * pageSize);
+      .orderBy(photos.displayOrder);
 
     const results = await query;
 
