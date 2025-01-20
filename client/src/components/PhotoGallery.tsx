@@ -88,7 +88,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   }, [error]);
 
   const allPhotos = data?.pages.flat() || [];
-  const photos = allPhotos.filter(photo => 
+  const filteredPhotos = allPhotos.filter(photo => 
     photo.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -140,7 +140,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   };
 
   // Removed favorites filter
-  const displayPhotos = photos;
+  const displayPhotos = filteredPhotos;
 
   useEffect(() => {
     if (selectedPhoto) {
