@@ -7,10 +7,12 @@ import { Button } from "@/components/ui/button";
 import type { Category } from "@/lib/types";
 import SocialLinks from "@/components/SocialLinks";
 import { useTranslation } from "@/hooks/use-translation";
+import { useLanguage } from "@/hooks/use-language";
 import { useEffect } from "react";
 import { Camera, Aperture, SplitSquareVertical } from "lucide-react";
 
 export default function Home() {
+  const { language } = useLanguage();
   const { data: categories, isLoading: categoriesLoading } = useQuery<Category[]>({
     queryKey: ["/api/categories"],
   });
