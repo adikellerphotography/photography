@@ -10,12 +10,15 @@ export async function scanImages() {
     const assetsPath = path.join(process.cwd(), 'attached_assets');
     const facebookPostsPath = path.join(assetsPath, 'facebook_posts_image');
     
-    console.log('\n=== Starting Facebook Posts Image Scan ===');
+    console.log('\n=== Starting Image Scan ===');
     console.log('Assets path:', facebookPostsPath);
 
     // Clear existing records
     await db.delete(photos);
     await db.delete(categories);
+
+    // Get all directories in facebook_posts_image
+    const dirs = await fs.readdir(facebookPostsPath);
     
     // Get all subdirectories in facebook_posts_image
     const dirs = await fs.readdir(facebookPostsPath);
@@ -33,6 +36,8 @@ export async function scanImages() {
       'pregnancy': 'Pregnancy',
       'yoga': 'Yoga'
     };
+
+    console.log('Found directories:', dirs);
 
     // Insert categories first
     for (const [index, dir] of dirs.entries()) {
@@ -53,8 +58,12 @@ export async function scanImages() {
       try {
         const files = await fs.readdir(dirPath);
         const imageFiles = files.filter(file => 
-          /\.(jpg|jpeg)$/i.test(file)
-        );
+          /\.(jpg|jpeg)$/i.test(file) && !file.startsWith('.')
+        ).sort((a, b) => {
+          const numA = parseInt(a.split('.')[0]);
+          const numB = parseInt(b.split('.')[0]);
+          return numA - numB;
+        });
 
         console.log(`Found ${imageFiles.length} images in ${categoryName}`);
 
