@@ -74,8 +74,8 @@ export const translations = {
     pricing: {
       title: "Photography Packages",
       albums: {
-        title: "Albums",
-        description: "I collaborate with expert designers who specialize in crafting stunning, high-quality photo albums tailored to your unique story. Their service includes professional printing and direct delivery, ensuring a seamless experience that beautifully preserves your cherished memories.",
+        title: "Fine Art Albums",
+        description: "Each album is a masterpiece of artisanal craftsmanship, featuring museum-quality prints on premium archival paper. Our timeless designs emphasize simplicity and sophistication, preserving your moments with unparalleled elegance. Hand-bound with the finest materials, these albums become cherished family heirlooms.",
       },
       batMitzvah: {
         name: "Bat/Bar Mitzvah",
@@ -141,14 +141,14 @@ export const translations = {
         ]
       },
       additional: {
-        name: "Additional Information",
+        name: "Service Details",
         price: "",
-        description: "Important pricing details",
+        description: "Refined Photography Experience",
         features: [
-          "Album not included in price",
-          "Travel fees: 150₪ (over 30min) or 250₪ (over 1hr)",
-          "Extra 30min shooting: 300₪ (includes more edited photos)",
-          "Extra hour shooting: 600₪",
+          "Bespoke album design available upon request",
+          "Location service: 150₪ (30-60min) or 250₪ (60min+)",
+          "Extended session (30min): 300₪ with curated edits",
+          "Extended session (60min): 600₪ with full editing suite",
           "Horse photoshoots: 350₪/30min (may vary by farm)",
           "Preference for Friday afternoon sessions"
         ]
