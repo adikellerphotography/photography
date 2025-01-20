@@ -300,80 +300,42 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   return (
     <div className="space-y-8" ref={galleryRef}>
-      {/* Horizontal Images Row */}
-      <div className="mb-8">
-        <div className="overflow-x-auto">
-          <div className="flex gap-4 pb-4">
-            {displayPhotos?.filter(photo => !photo.imageUrl.includes("vertical")).map((photo, index) => (
-              <motion.div
-                key={`${photo.id}-${photo.imageUrl}`}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="flex-none w-[300px] md:w-[350px]"
-                onClick={() => {
-                  setSelectedPhoto(photo);
-                  setSelectedIndex(index);
-                  setScrollPosition(window.scrollY);
-                }}
-              >
-                <div className="relative overflow-hidden rounded-lg cursor-pointer group">
-                  <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
-                    <div className="relative w-full h-full overflow-hidden bg-muted">
-                      <img
-                        key={`${photo.id}-${photo.imageUrl}`}
-                        src={photo.thumbnailUrl || photo.imageUrl}
-                        alt={photo.title || ""}
-                        className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                        loading="lazy"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                        onError={() => handleImageError(photo.imageUrl)}
-                        style={{
-                          backgroundColor: '#f3f4f6',
-                          minHeight: '200px'
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    </div>
-                  </AspectRatio>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"> {/* Changed grid to columns */}
+        {displayPhotos?.map((photo, index) => (
+          <motion.div
+            key={`${photo.id}-${photo.imageUrl}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            onClick={() => {
+              setSelectedPhoto(photo);
+              setSelectedIndex(index);
+              setScrollPosition(window.scrollY);
+            }}
+            className="relative overflow-hidden rounded-lg cursor-pointer group"
+          >
+            <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
+              <div className="relative w-full h-full overflow-hidden bg-muted">
 
-      {/* Vertical Images Grid */}
-      <div className="mt-8">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {displayPhotos?.filter(photo => photo.imageUrl.includes("vertical")).map((photo, index) => (
-            <motion.div
-              key={`${photo.id}-${photo.imageUrl}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="relative overflow-hidden rounded-lg cursor-pointer group"
-            >
-              <AspectRatio ratio={2/3}>
-                <div className="relative w-full h-full overflow-hidden bg-muted">
-                  <img
-                    src={photo.thumbnailUrl || photo.imageUrl}
-                    alt={photo.title || ""}
-                    className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                    loading="lazy"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    onError={() => handleImageError(photo.imageUrl)}
-                    style={{
-                      backgroundColor: '#f3f4f6',
-                      minHeight: '200px'
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-              </AspectRatio>
-            </motion.div>
-          ))}
-        </div>
+                <img
+                  key={`${photo.id}-${photo.imageUrl}`}
+                  src={photo.thumbnailUrl || photo.imageUrl}
+                  alt={photo.title || ""}
+                  className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  onError={() => handleImageError(photo.imageUrl)}
+                  style={{
+                    backgroundColor: '#f3f4f6', // Light background while loading
+                    minHeight: '200px'
+                  }}
+                />
+                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+              </div>
+            </AspectRatio>
+          </motion.div>
+        ))}
       </div>
 
       {(hasNextPage || isFetchingNextPage) && (
