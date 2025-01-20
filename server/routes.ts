@@ -66,35 +66,46 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
 
     const results = await query;
 
-    // If no results in database but files exist in directory, create entries
-    if (results.length === 0 && category) {
+    // If no results in database or results are incomplete, scan directory
+    if (category) {
       const categoryPath = getCategoryPath(category);
       const dirPath = path.join(process.cwd(), 'attached_assets', categoryPath);
       try {
         const files = await fs.readdir(dirPath);
-        const photoFiles = files.filter(f => (f.endsWith('.jpeg') || f.endsWith('.jpg')) && !f.includes('-thumb'))
+        const photoFiles = files
+          .filter(f => (f.endsWith('.jpeg') || f.endsWith('.jpg')) && !f.includes('-thumb'))
           .sort((a, b) => {
             const numA = parseInt(a.match(/\d+/)?.[0] || '0');
             const numB = parseInt(b.match(/\d+/)?.[0] || '0');
             return numA - numB;
           });
-        const entries = photoFiles.map((file, idx) => ({
-          id: idx + 1,
-          title: `${category} Portrait Session`,
-          category: category,
-          imageUrl: file,
-          thumbnailUrl: file.replace('.jpeg', '-thumb.jpeg').replace('.jpg', '-thumb.jpg'),
-          displayOrder: idx + 1
-        }));
 
-        if (entries.length > 0) {
-          await db.insert(photos).values(entries);
-          results.push(...entries);
+        // Create entries for any missing photos
+        for (let i = 0; i < photoFiles.length; i++) {
+          const fileNum = i + 1;
+          const paddedId = String(fileNum).padStart(3, '0');
+          const exists = results.some(photo => photo.id === fileNum);
+
+          if (!exists) {
+            const newPhoto = {
+              id: fileNum,
+              title: `${category} Portrait Session`,
+              category: category,
+              imageUrl: `/assets/${categoryPath}/${paddedId}.jpeg`,
+              thumbnailUrl: `/assets/${categoryPath}/${paddedId}-thumb.jpeg`,
+              displayOrder: fileNum,
+              likesCount: 0
+            };
+            results.push(newPhoto);
+          }
         }
       } catch (err) {
         console.error('Error reading directory:', err);
       }
     }
+
+    // Sort results by ID to ensure correct order
+    results.sort((a, b) => a.id - b.id);
 
     console.log('Fetched photos for category:', category, 'Count:', results.length);
 
