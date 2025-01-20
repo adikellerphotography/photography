@@ -228,19 +228,22 @@ export default function MySessions() {
                 <h2 className="text-2xl font-semibold">{language === 'he' ? t(`sessions.${group.name}`) : capitalizeWords(group.name)}</h2>
               </div>
               <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                {group.links.map((link) => (
-                  <div
-                    key={link.url}
-                    className="relative cursor-pointer"
-                    onClick={(e) => handleImageClick(e, link, group.name)}
-                  >
+                {group.links.map((link, idx) => {
+                  const shouldLoad = idx < 3 || document.visibilityState === 'visible';
+                  return (
+                    <div
+                      key={link.url}
+                      className="relative cursor-pointer"
+                      onClick={(e) => handleImageClick(e, link, group.name)}
+                    >
                     <motion.div
                       className="relative aspect-square w-full overflow-hidden rounded-lg"
                       transition={{ duration: 0.2 }}
                     >
                       {["Bat Mitsva", "Bar Mitsva", "Horses", "Kids", "Family", "Big Family", "Sweet 16", "Purim", "Pregnancy", "Feminine", "Yoga", "Modeling"].includes(group.name) ? (
                         <img 
-                          src={`/assets/facebook_posts_image/${group.name.toLowerCase().replace(' ', '_')}/${link.number}.jpg${isMobile ? '?no_watermark=true' : ''}?nocache=${Date.now()}`}
+                          src={shouldLoad ? `/assets/facebook_posts_image/${group.name.toLowerCase().replace(' ', '_')}/${link.number}.jpg${isMobile ? '?no_watermark=true' : ''}?nocache=${Date.now()}` : ''}
+                          data-src={`/assets/facebook_posts_image/${group.name.toLowerCase().replace(' ', '_')}/${link.number}.jpg${isMobile ? '?no_watermark=true' : ''}?nocache=${Date.now()}`}
                           alt={`${group.name} session ${link.number}`}
                           className="w-full h-full object-cover"
                           loading="lazy"
