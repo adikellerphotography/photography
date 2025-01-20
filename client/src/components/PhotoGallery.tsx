@@ -38,22 +38,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const pageSize = 20;
 
-  const { data: photos = [], isLoading } = useQuery<Photo[]>({
-    queryKey: ["/api/photos", category],
-    queryFn: async () => {
-      const params = new URLSearchParams();
-      if (category) params.append("category", category);
-      const response = await fetch(`/api/photos?${params.toString()}`);
-      if (!response.ok) throw new Error("Failed to fetch photos");
-      return response.json();
-    },
-  });
-
   // Log the category prop for debugging
   useEffect(() => {
     console.log('PhotoGallery mounted with category:', category);
   }, [category]);
-
 
   const { data: photos = [], isLoading } = useQuery<Photo[]>({
     queryKey: ["/api/photos", category],
