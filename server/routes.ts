@@ -78,7 +78,7 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
         const files = await fs.readdir(dirPath);
         const photoFiles = files.filter(f => f.endsWith('.jpeg') && !f.includes('-thumb'));
         const entries = photoFiles.map((file, idx) => ({
-          id: Date.now() + idx,
+          id: idx + 1,
           title: `${category} Portrait Session`,
           category: category,
           imageUrl: file,
