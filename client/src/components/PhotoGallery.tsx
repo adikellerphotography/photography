@@ -265,7 +265,9 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   };
 
   const getImagePath = (photo: Photo) => {
-    return `/attached_assets/${photo.category}/${String(photo.id).padStart(3, '0')}.jpeg`;
+    // Handle special case for Bat Mitsva category
+    const categoryPath = photo.category === 'Bat Mitsva' ? 'Bat_Mitsva' : photo.category;
+    return `/assets/${categoryPath}/${String(photo.id).padStart(3, '0')}.jpeg`;
   };
 
   if (isLoading) {
