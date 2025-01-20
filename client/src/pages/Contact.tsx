@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
+import { useLanguage } from "@/hooks/use-language";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,6 +13,7 @@ import { SiWhatsapp } from "react-icons/si";
 
 export default function Contact() {
   const { t } = useTranslation();
+  const { language } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
