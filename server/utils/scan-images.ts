@@ -62,7 +62,7 @@ async function processDirectory(dirPath: string, categoryName: string) {
 export async function scanAndProcessImages() {
   try {
     const assetsPath = path.join(process.cwd(), 'attached_assets');
-    const mainDirs = ['Bat_Mitsva', 'Family', 'Horses', 'kids', 'Modeling', 'Women', 'Yoga'];
+    const mainDirs = ['Bat_Mitsva', 'Family', 'Horses', 'Kids', 'Modeling', 'Women', 'Yoga'];
 
     console.log('\n=== Starting Image Scan ===');
 
