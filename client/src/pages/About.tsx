@@ -84,7 +84,7 @@ export default function About() {
             <div className="mt-12 text-center">
               <Link href="/contact">
                 <Button className="bg-white hover:bg-gray-100 text-gray-800 text-lg px-8 py-6 border border-gray-300 shadow-sm hover:shadow-md transition-all">
-                  {t("common.contact")}
+                  Contact Me
                 </Button>
               </Link>
             </div>
