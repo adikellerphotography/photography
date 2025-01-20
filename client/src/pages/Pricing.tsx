@@ -122,8 +122,9 @@ export default function Pricing() {
                 </p>
               </CardHeader>
 
-            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              <Card className="group hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-amber-50/5 to-orange-50/5 backdrop-blur-sm border border-white/20">
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <Card className="group hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-amber-50/5 to-orange-50/5 backdrop-blur-sm border border-white/20">
                 <CardHeader className="text-center">
                   <CardTitle className={`text-2xl ${language === 'he' ? 'font-bold' : 'font-serif'}`}>{language === 'he' ? 'אנסטסיה כץ' : 'Anastasia Katsz'}</CardTitle>
                   <div className="w-16 h-1 bg-gradient-to-r from-amber-500 to-orange-500 mx-auto my-2 rounded-full"></div>
@@ -173,7 +174,8 @@ export default function Pricing() {
                 </CardContent>
               </Card>
             </div>
-          </div>
+            </CardContent>
+          </Card>
 
           <Dialog open={showNirDialog} onOpenChange={setShowNirDialog}>
             <DialogContent className="max-w-3xl">
