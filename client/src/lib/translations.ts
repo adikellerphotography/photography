@@ -6,19 +6,19 @@ export const translations = {
     },
     namePlaceholder: {
       en: "Your Name",
-      he: "שם מלא"
+      he: "השם שלך"
     },
     phonePlaceholder: {
-      en: "Phone Number", 
-      he: "טלפון נייד"
+      en: "Phone Number",
+      he: "מספר טלפון"
     },
     messagePlaceholder: {
       en: "Your Message",
-      he: "תוכן ההודעה"
+      he: "ההודעה שלך"
     },
     send: {
       en: "Send Message",
-      he: "שליחת הודעה"
+      he: "שלח הודעה"
     },
     location: {
       en: "Netanya, Israel",
