@@ -79,9 +79,12 @@ export default function About() {
               </div>
             </div>
 
-            <div className="mt-12">
-              <h2 className="text-xl font-semibold mb-4">{t("about.connect")}</h2>
-              <SocialLinks />
+            <div className="mt-12 text-center">
+              <Link href="/contact">
+                <Button className="bg-white hover:bg-gray-100 text-gray-800 text-lg px-8 py-6 border border-gray-300 shadow-sm hover:shadow-md transition-all">
+                  {t("common.contact")}
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
