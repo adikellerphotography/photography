@@ -107,10 +107,10 @@ export default function Pricing() {
 
           {/* Albums Section */}
           <div className="mt-16 bg-gray-100/10 p-8 rounded-lg border border-white/10 backdrop-blur-sm">
-            <h2 className={`text-3xl font-bold mb-6 text-[#E67E00] ${language === 'he' ? 'text-right' : 'text-center'}`}>
+            <h2 className="text-3xl font-bold mb-6 text-center text-[#E67E00]">
               {t("pricing.albums.title") || "Albums"}
             </h2>
-            <p className={`text-start rtl:text-end mb-8 max-w-2xl mx-auto ${language === 'he' ? 'text-right' : ''}`}>
+            <p className={`mb-8 max-w-2xl mx-auto ${language === 'he' ? 'text-right' : 'text-left'}`}>
               {t("pricing.albums.description")}
             </p>
 
