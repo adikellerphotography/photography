@@ -241,17 +241,27 @@ export default function MySessions() {
                       transition={{ duration: 0.2 }}
                     >
                       {["Bat Mitsva", "Bar Mitsva", "Horses", "Kids", "Family", "Big Family", "Sweet 16", "Purim", "Pregnancy", "Feminine", "Yoga", "Modeling"].includes(group.name) ? (
-                        <img 
-                          src={shouldLoad ? `/assets/facebook_posts_image/${group.name.toLowerCase().replace(' ', '_')}/${link.number}.jpg${isMobile ? '?no_watermark=true' : ''}?nocache=${Date.now()}` : ''}
-                          data-src={`/assets/facebook_posts_image/${group.name.toLowerCase().replace(' ', '_')}/${link.number}.jpg${isMobile ? '?no_watermark=true' : ''}?nocache=${Date.now()}`}
-                          alt={`${group.name} session ${link.number}`}
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.style.backgroundColor = 'rgba(0, 0, 0, 0.03)';
-                          }}
-                        />
+                        <>
+                          <div className="absolute inset-0 animate-pulse bg-muted duration-200 transition-opacity" 
+                               style={{ animationDuration: '0.8s' }} />
+                          <img 
+                            src={shouldLoad ? `/assets/facebook_posts_image/${group.name.toLowerCase().replace(' ', '_')}/${link.number}.jpg${isMobile ? '?no_watermark=true' : ''}?nocache=${Date.now()}` : ''}
+                            data-src={`/assets/facebook_posts_image/${group.name.toLowerCase().replace(' ', '_')}/${link.number}.jpg${isMobile ? '?no_watermark=true' : ''}?nocache=${Date.now()}`}
+                            alt={`${group.name} session ${link.number}`}
+                            className="w-full h-full object-cover relative z-10 transition-opacity duration-200"
+                            loading="lazy"
+                            onLoad={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.style.opacity = '1';
+                              target.previousElementSibling?.remove();
+                            }}
+                            style={{ opacity: 0 }}
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.style.backgroundColor = 'rgba(0, 0, 0, 0.03)';
+                            }}
+                          />
+                        </>
                       ) : (
                         <div 
                           className="w-full h-full rounded-lg"
