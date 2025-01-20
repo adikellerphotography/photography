@@ -98,8 +98,8 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
 
     console.log('Fetched photos for category:', category, 'Count:', results.length);
 
-    const processedPhotos = await Promise.all(results.map(async (photo, index) => {
-      const paddedId = String(index + 1).padStart(3, '0');
+    const processedPhotos = await Promise.all(results.map(async (photo) => {
+      const paddedId = String(photo.id).padStart(3, '0');
       const categoryPath = getCategoryPath(photo.category);
       const imageUrl = `/assets/${categoryPath}/${paddedId}.jpeg`;
       const thumbnailUrl = `/assets/${categoryPath}/${paddedId}-thumb.jpeg`;
@@ -107,8 +107,7 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
         ...photo,
         imageUrl,
         thumbnailUrl,
-        isLiked: false,
-        displayOrder: index + 1
+        isLiked: false
       };
     }));
 
