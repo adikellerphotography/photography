@@ -64,6 +64,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   } = useInfiniteQuery({
     queryKey: ["/api/photos", { category }],
     queryFn: async ({ pageParam = 1 }) => {
+      console.log('Fetching photos for category:', category, 'page:', pageParam);
       const response = await fetch(`/api/photos?category=${encodeURIComponent(category || '')}&page=${pageParam}&pageSize=${pageSize}`);
       if (!response.ok) {
         const errorText = await response.text();
@@ -71,12 +72,14 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
         throw new Error(`Failed to fetch photos: ${errorText}`);
       }
       const data: Photo[] = await response.json();
+      console.log('Received photos:', data.length, 'First photo:', data[0]);
       return data;
     },
-    getNextPageParam: (lastPage) => {
-      return lastPage.length >= pageSize ? lastPage[lastPage.length - 1].displayOrder + 1 : undefined;
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.length > 0 ? allPages.length + 1 : undefined;
     },
     initialPageParam: 1,
+    maxPages: Math.ceil(71 / 20),
     staleTime: 0,
     refetchOnWindowFocus: false
   });
