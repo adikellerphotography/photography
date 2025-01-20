@@ -80,6 +80,60 @@ export default function Pricing() {
               </motion.div>
             ))}
           </div>
+
+          {/* Albums Section */}
+          <div className="mt-16">
+            <h2 className="text-2xl font-bold mb-6 text-center text-[#E67E00]">
+              {t("pricing.albums.title") || "Albums"}
+            </h2>
+            <p className="text-center mb-8 max-w-2xl mx-auto">
+              {t("pricing.albums.description") || "I work with two professional designers who create beautiful albums, handle printing, and deliver directly to customers."}
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Anastasia Katsz</CardTitle>
+                  <p className="text-sm text-muted-foreground">
+                    <a href="tel:0546335594" className="hover:text-[#E67E00]">054-633-5594</a>
+                  </p>
+                </CardHeader>
+                <CardContent>
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={() => {
+                      // Add dialog/modal to show pricing image
+                      alert("Pricing image coming soon");
+                    }}
+                  >
+                    View Pricing
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Nir Gil</CardTitle>
+                  <p className="text-sm text-muted-foreground">
+                    <a href="tel:0547982299" className="hover:text-[#E67E00]">054-798-2299</a>
+                  </p>
+                </CardHeader>
+                <CardContent>
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={() => {
+                      // Add dialog/modal to show pricing image
+                      alert("Pricing image coming soon");
+                    }}
+                  >
+                    View Pricing
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </div>
       </motion.div>
     </div>

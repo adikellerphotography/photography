@@ -73,6 +73,10 @@ export const translations = {
     },
     pricing: {
       title: "Photography Packages",
+      albums: {
+        title: "Albums",
+        description: "I work with two professional designers who create beautiful albums, handle printing, and deliver directly to customers.",
+      },
       batMitzvah: {
         name: "Bat/Bar Mitzvah",
         price: "2000₪",
@@ -237,6 +241,10 @@ export const translations = {
     },
     pricing: {
       title: "חבילות צילום",
+      albums: {
+        title: "אלבומים",
+        description: "אני עובד עם שני מעצבים מקצועיים שיוצרים אלבומים יפהפיים, מטפלים בהדפסה ומספקים ישירות ללקוחות.",
+      },
       batMitzvah: {
         name: "בת/בר מצווה",
         price: "2000₪",
