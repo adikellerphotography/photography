@@ -60,15 +60,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     refetchOnWindowFocus: false
   });
 
-  useEffect(() => {
-    if (infiniteError) {
-      console.error('Error in PhotoGallery:', infiniteError);
-    }
-  }, [infiniteError]);
-
-  const allPhotos = data?.pages.flat() || [];
-  const filteredPhotos = allPhotos.filter(photo => 
-    photo.title.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredPhotos = photos.filter(photo => 
+    photo.title?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   useEffect(() => {
@@ -96,22 +89,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     return () => observer.disconnect();
   }, [photos]);
 
-  useEffect(() => {
-    const loaderObserver = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (loaderRef.current) {
-      loaderObserver.observe(loaderRef.current);
-    }
-
-    return () => loaderObserver.disconnect();
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+  
 
 
   const handleLike = async (photo: Photo) => {
