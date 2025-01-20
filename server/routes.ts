@@ -362,12 +362,12 @@ export function registerRoutes(app: Express): Server {
   app.get("/api/sessions/:category", async (req, res) => {
     try {
       const { category } = req.params;
-      const dirPath = path.join(process.cwd(), 'attached_assets', category.replace(' ', '_'));
+      const dirPath = path.join(process.cwd(), 'attached_assets', 'facebook_posts_image', category.toLowerCase().replace(' ', '_'));
       const files = await fs.readdir(dirPath);
-      const imageFiles = files.filter(file => /\.(jpg|jpeg)$/i.test(file) && !file.includes('-thumb'));
+      const imageFiles = files.filter(file => /\.(jpg|jpeg)$/i.test(file));
       const images = imageFiles.map(file => ({
         number: parseInt(file.replace(/\D/g, '')),
-        url: `/assets/${category.replace(' ', '_')}/${file}`
+        url: `/assets/facebook_posts_image/${category.toLowerCase().replace(' ', '_')}/${file}`
       }));
       res.json(images);
     } catch (error) {
