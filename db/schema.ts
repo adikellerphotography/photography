@@ -13,7 +13,7 @@ export const photos = pgTable("photos", {
   title: text("title").notNull(),
   description: text("description"),
   category: varchar("category", { length: 50 }).notNull(),
-  imageUrl: text("image_url").notNull(),
+  imageUrl: text("image_url").notNull().unique(),
   thumbnailUrl: text("thumbnail_url"), 
   uploadedAt: timestamp("uploaded_at").defaultNow(),
   displayOrder: integer("display_order").default(0).notNull(),
