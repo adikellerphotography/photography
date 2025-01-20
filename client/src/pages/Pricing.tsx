@@ -57,7 +57,7 @@ export default function Pricing() {
             {t("pricing.title")}
           </h1>
 
-          <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto ${language === 'he' ? 'text-right' : ''}`}>
+          <div className={`grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto ${language === 'he' ? 'text-right' : ''}`}>
             {packages.filter(pkg => pkg.name !== t("pricing.additional.name")).map((pkg, index) => (
               <motion.div
                 key={pkg.name}
@@ -65,18 +65,19 @@ export default function Pricing() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card>
-                  <CardHeader>
-                    <CardTitle>{pkg.name}</CardTitle>
-                    <p className="text-2xl font-bold">{pkg.price}</p>
-                    <p className="text-sm text-muted-foreground">{pkg.description}</p>
+                <Card className="backdrop-blur-sm bg-gray-100/5 border border-white/10 hover:border-white/20 transition-all">
+                  <CardHeader className="space-y-2 pb-4">
+                    <CardTitle className="text-xl font-semibold text-[#E67E00]">{pkg.name}</CardTitle>
+                    <div className="h-[1px] w-12 bg-gradient-to-r from-[#E67E00] to-amber-300"></div>
+                    <p className="text-2xl font-light tracking-tight">{pkg.price}</p>
+                    <p className="text-sm text-muted-foreground/80 font-light">{pkg.description}</p>
                   </CardHeader>
                   <CardContent>
-                    <ul className="space-y-2">
+                    <ul className="space-y-1.5 text-sm">
                       {pkg.features.map((feature: string) => (
                         <li key={feature} className={`flex items-center ${language === 'he' ? 'flex-row-reverse text-right' : ''}`}>
-                          <span className={`${language === 'he' ? 'ml-2' : 'mr-2'}`}>•</span>
-                          {feature}
+                          <span className={`text-[#E67E00] text-xs ${language === 'he' ? 'ml-2' : 'mr-2'}`}>◆</span>
+                          <span className="font-light">{feature}</span>
                         </li>
                       ))}
                     </ul>
