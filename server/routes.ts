@@ -80,18 +80,7 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
       };
     });
 
-      if (!baseFileName) {
-        return null;
-      }
-
-      return {
-        ...photo,
-        imageUrl: `/assets/${categoryPath}/${baseFileName}`,
-        thumbnailUrl: thumbFileName ? `/assets/${categoryPath}/${thumbFileName}` : undefined,
-        isLiked: false
-      };
-    }).filter(Boolean);
-
+    console.log('Processed photos:', processedPhotos);
     res.json(processedPhotos);
   } catch (error: any) {
     console.error('Error fetching photos:', error);
