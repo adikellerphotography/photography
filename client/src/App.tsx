@@ -20,6 +20,12 @@ import GuidingAndMentoring from "./pages/GuidingAndMentoring";
 
 
 function Layout({ children }: { children: React.ReactNode }) {
+  const [location] = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
   return (
     <div>
       <BackgroundPattern />
