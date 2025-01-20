@@ -9,7 +9,7 @@ export const translations = {
       he: "השם שלך"
     },
     phonePlaceholder: {
-      en: "Your Phone",
+      en: "Phone Number",
       he: "מספר טלפון"
     },
     messagePlaceholder: {
@@ -194,8 +194,7 @@ export const translations = {
       pricing: "מחירים",
       info: "מידע על הצילומים",
       about: "אודות",
-      sessions: "גלריות",
-      contact: "צור קשר"
+      sessions: "גלריות"
     },
     home: {
       title: "כשאומנות פוגשת את העדשה",
