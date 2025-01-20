@@ -3,7 +3,6 @@ import path from 'path';
 import fs from 'fs/promises';
 import { db } from "@db";
 import { photos } from "@db/schema";
-import sharp from 'sharp';
 import { sql } from 'drizzle-orm';
 import { generateThumbnail } from './image';
 
@@ -23,37 +22,35 @@ export async function scanImages() {
         const files = await fs.readdir(dirPath);
         const imageFiles = files.filter(file => 
           !file.includes('-thumb') && 
-          file.match(/\.(jpg|jpeg|png)$/i)
+          file.match(/\.(jpg|jpeg)$/i)
         );
 
-        for (const [index, imageFile] of imageFiles.entries()) {
-          const id = parseInt(imageFile.split('.')[0]);
-          const imagePath = path.join(dirPath, imageFile);
+        console.log(`Found ${imageFiles.length} images in ${categoryName}`);
 
+        for (const imageFile of imageFiles) {
           try {
-            const thumbnailPath = path.join(dirPath, `${path.basename(imageFile, path.extname(imageFile))}-thumb${path.extname(imageFile)}`);
-            console.log(`Processing image: ${imageFile} (ID: ${id})`);
+            const id = parseInt(imageFile.split('.')[0]);
+            const imagePath = path.join(dirPath, imageFile);
+            
+            console.log(`Processing ${categoryName}/${imageFile}`);
 
-            if (!await fs.access(thumbnailPath).then(() => true).catch(() => false)) {
-              console.log(`Generating thumbnail for: ${imageFile}`);
-              await generateThumbnail(imagePath);
-            }
-
-            const imageRecord = {
+            await db.insert(photos).values({
               id,
               title: `${categoryName} Portrait Session`,
               category: categoryName,
               imageUrl: `/attached_assets/${categoryName}/${imageFile}`,
               thumbnailUrl: `/attached_assets/${categoryName}/${path.basename(imageFile, path.extname(imageFile))}-thumb${path.extname(imageFile)}`,
               displayOrder: id
-            };
-
-            await db.insert(photos).values(imageRecord).onConflictDoUpdate({
+            }).onConflictDoUpdate({
               target: [photos.id],
-              set: imageRecord
+              set: { 
+                title: `${categoryName} Portrait Session`,
+                category: categoryName,
+                imageUrl: `/attached_assets/${categoryName}/${imageFile}`,
+                thumbnailUrl: `/attached_assets/${categoryName}/${path.basename(imageFile, path.extname(imageFile))}-thumb${path.extname(imageFile)}`,
+                displayOrder: id
+              }
             });
-
-            console.log(`Successfully processed: ${imageFile}`);
           } catch (error) {
             console.error(`Error processing ${imageFile}:`, error);
           }
@@ -65,15 +62,13 @@ export async function scanImages() {
 
     for (const dir of mainDirs) {
       const dirPath = path.join(assetsPath, dir);
-      console.log(`\nProcessing directory: ${dir} (${dirPath})`);
+      console.log(`\nProcessing directory: ${dir}`);
       await processDirectory(dirPath, dir);
     }
 
-    // Verify records were inserted
     const count = await db.select({ count: sql`count(*)` }).from(photos);
     console.log(`Total photos in database after scan: ${count[0].count}`);
 
-    console.log('\n=== Image scanning and processing complete ===\n');
   } catch (error) {
     console.error('Error during image scan:', error);
     throw error;
