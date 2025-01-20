@@ -65,8 +65,15 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
       .from(photos)
       .where(category ? eq(photos.category, decodeURIComponent(category as string)) : undefined)
       .orderBy(photos.displayOrder)
-      .limit(pageSize)
-      .offset((page - 1) * pageSize);
+      .where(
+        category ? 
+        and(
+          eq(photos.category, decodeURIComponent(category as string)),
+          photos.displayOrder > (page - 1) * pageSize
+        ) : 
+        undefined
+      )
+      .limit(pageSize);
 
     const results = await query;
 
