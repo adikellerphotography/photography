@@ -67,10 +67,18 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
       .limit(pageSize)
       .offset((page - 1) * pageSize);
 
+    console.log('Fetched photos for category:', category, 'Count:', results.length);
+
     const processedPhotos = results.map(photo => {
+      const paddedId = String(photo.id).padStart(3, '0');
       const categoryPath = getCategoryPath(photo.category);
-      const baseFileName = photo.imageUrl.split('/').pop();
-      const thumbFileName = photo.thumbnailUrl?.split('/').pop();
+      return {
+        ...photo,
+        imageUrl: `/assets/${categoryPath}/${paddedId}.jpeg`,
+        thumbnailUrl: `/assets/${categoryPath}/${paddedId}-thumb.jpeg`,
+        isLiked: false
+      };
+    });
 
       if (!baseFileName) {
         return null;
