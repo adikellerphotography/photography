@@ -28,7 +28,7 @@ const getCategoryPath = (categoryName: string) => {
 // Configure static file serving
 const configureStaticFiles = (app: Express) => {
   const assetsPath = path.join(process.cwd(), 'attached_assets');
-  app.use('/assets', express.static(assetsPath, {
+  app.use('/attached_assets', express.static(assetsPath, {
     setHeaders: (res, filePath) => {
       if (filePath.toLowerCase().endsWith('.jpg') || filePath.toLowerCase().endsWith('.jpeg')) {
         res.setHeader('Content-Type', 'image/jpeg');
@@ -376,15 +376,15 @@ export function registerRoutes(app: Express): Server {
         'Pregnancy': 'pregnancy',
         'Yoga': 'yoga'
       };
-      
+
       const folderName = categoryMappings[category] || category.toLowerCase().replace(' ', '_');
-      const dirPath = path.join(process.cwd(), 'public', 'assets', 'facebook_posts_image', folderName);
-      
+      const dirPath = path.join(process.cwd(), 'attached_assets', 'facebook_posts_image', folderName); // Corrected path
+
       const files = await fs.readdir(dirPath);
       const imageFiles = files.filter(file => /\.(jpg|jpeg)$/i.test(file));
       const images = imageFiles.map(file => ({
         number: parseInt(file.replace(/\D/g, '')),
-        url: `/assets/facebook_posts_image/${folderName}/${file}`
+        url: `/attached_assets/facebook_posts_image/${folderName}/${file}` // Corrected path
       }));
       res.json(images);
     } catch (error) {

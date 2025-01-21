@@ -217,7 +217,7 @@ export default function MySessions() {
   const handleImageClick = (event: React.MouseEvent | React.TouchEvent, link: SessionLink, groupName: string) => {
     event.preventDefault();
     setSelectedImage({ 
-      url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
+      url: `/attached_assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
       number: link.number, 
       groupName 
     });
