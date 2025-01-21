@@ -231,14 +231,12 @@ export default function MySessions() {
       clickTimer.current = 0;
       setIsDialogOpen(false);
       
-      const currentGroup = sessionGroups.find(group => group.name === groupName);
-      const fbPost = currentGroup?.links.find(l => l.number === link.number);
+      const groupLinks = sessionGroups.find(group => group.name === groupName)?.links;
+      const fbPost = groupLinks?.find(l => l.number === link.number);
       
       if (fbPost) {
         const fbUrl = getFacebookUrl(fbPost.url);
         window.open(fbUrl, '_blank', 'noopener,noreferrer');
-      } else {
-        console.warn(`No Facebook post found for ${groupName} image ${link.number}`);
       }
     } else {
       // Single click - set timer to detect potential double click
