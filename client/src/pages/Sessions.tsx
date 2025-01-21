@@ -168,7 +168,7 @@ const categoryMappings: Record<string, string> = {
   'Big Family': 'big_family',
   'Horses': 'horses',
   'Modeling': 'modeling',
-  'Women': 'feminine',
+  'Feminine': 'feminine',
   'Sweet 16': 'sweet_16',
   'Purim': 'purim',
   'Pregnancy': 'pregnancy',
