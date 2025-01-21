@@ -209,13 +209,15 @@ export default function MySessions() {
   const getFacebookUrl = (url: string) => {
     if (isMobile) {
       const postId = url.split('pfbid')[1];
-      // For iOS
-      if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
-        return `fb://profile/adi.keller.16/posts/pfbid${postId}`;
-      }
-      // For Android
-      if (/Android/.test(navigator.userAgent)) {
-        return `intent://facebook.com/adi.keller.16/posts/pfbid${postId}#Intent;package=com.facebook.katana;scheme=https;end`;
+      if (postId) {
+        // For iOS
+        if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+          return `fb://post/pfbid${postId}`;
+        }
+        // For Android
+        if (/Android/.test(navigator.userAgent)) {
+          return `intent://facebook.com/adi.keller.16/posts/pfbid${postId}#Intent;package=com.facebook.katana;scheme=https;end`;
+        }
       }
     }
     return url;
@@ -226,11 +228,14 @@ export default function MySessions() {
     const now = Date.now();
     
     if (clickTimer.current && (now - clickTimer.current) < 300) {
-      // Double click - open Facebook
+      // Double click - open Facebook post
       event.stopPropagation();
       clickTimer.current = 0;
       setIsDialogOpen(false);
-      window.open(link.url, '_blank', 'noopener,noreferrer');
+      
+      // Get the appropriate URL based on device
+      const fbUrl = getFacebookUrl(link.url);
+      window.open(fbUrl, '_blank', 'noopener,noreferrer');
       return;
     }
 
