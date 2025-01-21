@@ -123,16 +123,16 @@ export default function Home() {
           <div className="flex justify-center gap-12 mb-8">
             <div className="relative">
               <motion.div
-                initial={{ scale: 0.95, opacity: 0 }}
+                initial={{ scale: 0, opacity: 0 }}
                 animate={{ 
-                  scale: [0.95, 1.05, 1],
-                  opacity: [0, 1, 1],
-                  backgroundColor: ["#E67E00", "#733F00", "#E67E00"]
+                  scale: [0, 1.05, 1],
+                  opacity: [0, 0.8, 1],
+                  backgroundColor: ["#E67E00", "#E67E00", "#E67E00"]
                 }}
                 transition={{ 
-                  duration: 1.5,
-                  times: [0, 0.6, 1],
-                  ease: "easeOut"
+                  duration: 0.8,
+                  times: [0, 0.4, 1],
+                  ease: [0.34, 1.56, 0.64, 1]
                 }}
                 whileTap={{
                   scale: 0.9,
@@ -156,16 +156,16 @@ export default function Home() {
             </div>
             <div className="relative">
               <motion.div
-                initial={{ scale: 0.95, opacity: 0 }}
+                initial={{ scale: 0, opacity: 0 }}
                 animate={{ 
-                  scale: [0.95, 1.05, 1],
-                  opacity: [0, 1, 1],
-                  backgroundColor: ["#E67E00", "#733F00", "#E67E00"]
+                  scale: [0, 1.05, 1],
+                  opacity: [0, 0.8, 1],
+                  backgroundColor: ["#E67E00", "#E67E00", "#E67E00"]
                 }}
                 transition={{ 
-                  duration: 1.5,
-                  times: [0, 0.6, 1],
-                  ease: "easeOut"
+                  duration: 0.8,
+                  times: [0, 0.4, 1],
+                  ease: [0.34, 1.56, 0.64, 1]
                 }}
                 whileTap={{
                   scale: 0.9,
@@ -189,16 +189,16 @@ export default function Home() {
             </div>
             <div className="relative">
               <motion.div
-                initial={{ scale: 0.95, opacity: 0 }}
+                initial={{ scale: 0, opacity: 0 }}
                 animate={{ 
-                  scale: [0.95, 1.05, 1],
-                  opacity: [0, 1, 1],
-                  backgroundColor: ["#E67E00", "#733F00", "#E67E00"]
+                  scale: [0, 1.05, 1],
+                  opacity: [0, 0.8, 1],
+                  backgroundColor: ["#E67E00", "#E67E00", "#E67E00"]
                 }}
                 transition={{ 
-                  duration: 1.5,
-                  times: [0, 0.6, 1],
-                  ease: "easeOut"
+                  duration: 0.8,
+                  times: [0, 0.4, 1],
+                  ease: [0.34, 1.56, 0.64, 1]
                 }}
                 whileTap={{
                   scale: 0.9,
