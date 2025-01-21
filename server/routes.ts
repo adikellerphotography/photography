@@ -376,28 +376,16 @@ export function registerRoutes(app: Express): Server {
         'Pregnancy': 'pregnancy',
         'Yoga': 'yoga'
       };
-
-      const sessionData = {
-        'Bat_Mitsva': require('../data/sessions/bat_mitsva.json'),
-        'Family': require('../data/sessions/family.json'),
-        'Horses': require('../data/sessions/horses.json'),
-        'Kids': require('../data/sessions/kids.json'),
-        'Modeling': require('../data/sessions/modeling.json'),
-        'Feminine': require('../data/sessions/feminine.json'),
-        'Yoga': require('../data/sessions/yoga.json')
-      };
-
+      
       const folderName = categoryMappings[category] || category.toLowerCase().replace(' ', '_');
-      const data = sessionData[folderName] || []; // Use placeholder data if not found
-
-      //Simulate data structure from mapping file
-      const images = data.map((item:any) => ({
-        number: item.id,
-        url: `/assets/facebook_posts_image/${folderName}/${item.filename}`,
-        fbDesktopUrl: item.fbDesktopUrl,
-        fbMobileUrl: item.fbMobileUrl
+      const dirPath = path.join(process.cwd(), 'attached_assets', 'facebook_posts_image', folderName);
+      
+      const files = await fs.readdir(dirPath);
+      const imageFiles = files.filter(file => /\.(jpg|jpeg)$/i.test(file));
+      const images = imageFiles.map(file => ({
+        number: parseInt(file.replace(/\D/g, '')),
+        url: `/assets/facebook_posts_image/${folderName}/${file}`
       }));
-
       res.json(images);
     } catch (error) {
       console.error('Error fetching session images:', error);
