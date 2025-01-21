@@ -223,26 +223,19 @@ export default function MySessions() {
 
   const handleImageClick = (event: React.MouseEvent | React.TouchEvent, link: SessionLink, groupName: string) => {
     event.preventDefault();
-    event.stopPropagation();
-    
     const now = Date.now();
     
     if (clickTimer.current && (now - clickTimer.current) < 300) {
-      // Double click - open Facebook post directly
+      // Double click - open Facebook
+      event.stopPropagation();
       clickTimer.current = 0;
       setIsDialogOpen(false);
-      
-      const group = sessionGroups.find(g => g.name === groupName);
-      if (!group) return;
-      
-      const fbLink = group.links.find(l => l.number === link.number);
-      if (!fbLink?.url) return;
-      
-      const fbUrl = getFacebookUrl(fbLink.url);
-      window.open(fbUrl, '_blank', 'noopener,noreferrer');
-    } else {
-      // Single click - show image
-      clickTimer.current = now;
+      window.open(link.url, '_blank', 'noopener,noreferrer');
+      return;
+    }
+
+    // Single click - show image
+    clickTimer.current = now;
       setSelectedImage({ 
         url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
         number: link.number, 
