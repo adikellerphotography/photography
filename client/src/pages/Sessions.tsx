@@ -237,6 +237,8 @@ export default function MySessions() {
       if (fbPost) {
         const fbUrl = getFacebookUrl(fbPost.url);
         window.open(fbUrl, '_blank', 'noopener,noreferrer');
+      } else {
+        console.warn(`No Facebook post found for ${groupName} image ${link.number}`);
       }
     } else {
       // Single click - set timer to detect potential double click
