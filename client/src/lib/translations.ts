@@ -209,15 +209,12 @@ export const translations = {
     categories: {
       "Bat Mitsva": "בת מצווה",
       "Family": "משפחה",
-      "Events": "אירועים",
-      "Portraits": "פורטרטים",
-      "Nature": "טבע",
-      "Wedding": "חתונה",
+      "Kids": "ילדים",
       "Modeling": "דוגמנות",
       "Feminine": "נשי",
       "Yoga": "יוגה",
       "Horses": "סוסים",
-      "Women": "נשיות"
+      "Women": "נשים"
     },
     contact: {
       phone: "מספר טלפון",

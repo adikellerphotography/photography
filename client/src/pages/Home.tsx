@@ -22,13 +22,13 @@ export default function Home() {
   const { t } = useTranslation();
 
   const allowedCategories = [
-    "Bat Mitsva",
-    "Family",
-    "Horses",
-    "Kids",
-    "Modeling",
-    "Women",
-    "Yoga",
+    "בת מצווה",
+    "משפחה",
+    "סוסים",
+    "ילדים",
+    "דוגמנות",
+    "נשים",
+    "יוגה",
   ];
 
   // Override the firstPhoto for specific categories
