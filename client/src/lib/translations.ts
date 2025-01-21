@@ -155,9 +155,9 @@ export const translations = {
       }
     },
     gallery: {
-      noPhotos: "No photos found in this category",
-      loading: "Loading more photos...",
-      photoGalleries: "Photo Galleries",
+      noPhotos: "לא נמצאו תמונות בקטגוריה זו",
+      loading: "טוען תמונות נוספות...",
+      photoGalleries: "גלריית תמונות",
     },
     common: {
       loading: "Loading...",

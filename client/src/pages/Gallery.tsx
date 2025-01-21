@@ -241,8 +241,8 @@ export default function Gallery() {
         className="container mx-auto px-4 py-8"
       >
         <div className="flex justify-between items-center mb-8">
-          <motion.h1 variants={itemVariants} className="text-3xl font-bold text-[#FF9500]">
-            Photo Gallery
+          <motion.h1 variants={itemVariants} className="text-3xl font-bold text-[#FF9500] text-right w-full">
+            {language === 'he' ? 'גלריית תמונות' : 'Photo Gallery'}
           </motion.h1>
         </div>
 
