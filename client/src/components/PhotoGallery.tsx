@@ -303,6 +303,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               }
             }}
             className="relative overflow-hidden rounded-lg cursor-pointer group"
+            data-photo-id={photo.id}
           >
             <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
               <div className="relative w-full h-full overflow-hidden bg-muted">
@@ -333,7 +334,24 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
         ))}
       </div>
 
-      <Dialog open={!!selectedPhoto} onOpenChange={(open) => !open && setSelectedPhoto(null)}>
+      <Dialog 
+        open={!!selectedPhoto} 
+        onOpenChange={(open) => {
+          if (!open) {
+            // Find the element that matches the current photo
+            const imageElement = document.querySelector(`[data-photo-id="${selectedPhoto?.id}"]`);
+            if (imageElement) {
+              // Add highlight animation
+              imageElement.classList.add('highlight-viewed');
+              // Remove class after animation completes
+              setTimeout(() => {
+                imageElement.classList.remove('highlight-viewed');
+              }, 1000);
+            }
+            setSelectedPhoto(null);
+          }
+        }}
+      >
         <DialogContent 
           className="max-w-[90vw] max-h-[90vh] w-full h-full p-0"
           onTouchStart={(e) => {
