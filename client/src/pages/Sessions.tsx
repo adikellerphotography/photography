@@ -208,14 +208,14 @@ export default function MySessions() {
 
   const getFacebookUrl = (url: string) => {
     if (isMobile) {
-      const postId = url.split('/posts/')[1];
+      const postId = url.split('pfbid')[1];
       // For iOS
       if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
-        return `fb://post/${postId}`;
+        return `fb://profile/adi.keller.16/posts/pfbid${postId}`;
       }
       // For Android
       if (/Android/.test(navigator.userAgent)) {
-        return `fb://facewebmodal/f?href=${encodeURIComponent(url)}`;
+        return `intent://facebook.com/adi.keller.16/posts/pfbid${postId}#Intent;package=com.facebook.katana;scheme=https;end`;
       }
     }
     return url;
