@@ -226,23 +226,24 @@ export default function MySessions() {
     const now = Date.now();
 
     if (clickTimer.current && (now - clickTimer.current) < 300) {
-      // Double click detected
+      // Double click - find and open Facebook post
       event.stopPropagation();
       clickTimer.current = 0;
       setIsDialogOpen(false);
+
+      const group = sessionGroups.find(g => g.name === groupName);
+      const fbLink = group?.links.find(l => l.number === link.number);
       
-      // Delay opening Facebook to ensure dialog closes first
-      setTimeout(() => {
-        const fbUrl = getFacebookUrl(link.url);
+      if (fbLink?.url) {
+        const fbUrl = getFacebookUrl(fbLink.url);
         window.open(fbUrl, '_blank', 'noopener,noreferrer');
-      }, 50);
+      }
       return;
     }
-    
+
     // Single click - show image
     clickTimer.current = now;
     
-    // Delay showing image slightly to allow for double click detection
     setTimeout(() => {
       if (clickTimer.current === now) {
         setSelectedImage({ 
