@@ -224,38 +224,25 @@ export default function MySessions() {
   const handleImageClick = (event: React.MouseEvent | React.TouchEvent, link: SessionLink, groupName: string) => {
     event.preventDefault();
     const now = Date.now();
-
-    if (clickTimer.current && (now - clickTimer.current) < 300) {
-      // Double click - find and open Facebook post
-      event.stopPropagation();
-      clickTimer.current = 0;
-      setIsDialogOpen(false);
-
-      const group = sessionGroups.find(g => g.name === groupName);
-      const fbLink = group?.links.find(l => l.number === link.number);
-      
-      if (fbLink?.url) {
-        const fbUrl = getFacebookUrl(fbLink.url);
-        window.open(fbUrl, '_blank', 'noopener,noreferrer');
-      } else {
-        console.warn(`No Facebook URL found for ${groupName} image #${link.number}`);
-      }
-      return;
-    }
-
-    // Single click - show image
-    clickTimer.current = now;
     
-    setTimeout(() => {
-      if (clickTimer.current === now) {
-        setSelectedImage({ 
-          url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
-          number: link.number, 
-          groupName 
-        });
-        setIsDialogOpen(true);
-      }
-    }, 150);
+    if (clickTimer.current && (now - clickTimer.current) < 300) {
+      // Double click - open Facebook post
+      event.stopPropagation();
+      setIsDialogOpen(false);
+      
+      const fbUrl = getFacebookUrl(link.url);
+      window.open(fbUrl, '_blank', 'noopener,noreferrer');
+      clickTimer.current = 0;
+    } else {
+      // Single click - show image
+      clickTimer.current = now;
+      setSelectedImage({ 
+        url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
+        number: link.number, 
+        groupName 
+      });
+      setIsDialogOpen(true);
+    }
   };
 
   return (
