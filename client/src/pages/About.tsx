@@ -36,13 +36,21 @@ export default function About() {
                   loading="eager"
                   fetchPriority="high"
                   decoding="async"
+                  sizes="(max-width: 768px) 280px, 300px"
+                  style={{ 
+                    opacity: 0,
+                    transition: 'opacity 0.8s ease-in-out',
+                    willChange: 'transform',
+                    transform: 'translate3d(0, 0, 0)',
+                    WebkitTransform: 'translate3d(0, 0, 0)',
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                    perspective: '1000',
+                    WebkitPerspective: '1000'
+                  }}
                   onLoad={(e) => {
                     const img = e.currentTarget;
                     img.style.opacity = '1';
-                  }}
-                  style={{ 
-                    opacity: 0,
-                    transition: 'opacity 0.8s ease-in-out'
                   }}
                 />
               </motion.div>
