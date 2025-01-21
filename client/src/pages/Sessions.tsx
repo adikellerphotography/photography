@@ -237,6 +237,8 @@ export default function MySessions() {
       if (fbLink?.url) {
         const fbUrl = getFacebookUrl(fbLink.url);
         window.open(fbUrl, '_blank', 'noopener,noreferrer');
+      } else {
+        console.warn(`No Facebook URL found for ${groupName} image #${link.number}`);
       }
       return;
     }
