@@ -77,14 +77,14 @@ export default function Contact() {
               <CardContent className="pt-6">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <Input
-                    placeholder={t("contact.namePlaceholder")}
+                    placeholder={t("Your Name")}
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
                     required
                     className={`${isRTL ? 'text-right placeholder:text-right' : ''}`}
                   />
                   <Input
-                    placeholder={t("contact.phonePlaceholder")}
+                    placeholder={t("Your Phone Number")}
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
@@ -92,7 +92,7 @@ export default function Contact() {
                     className={`${isRTL ? 'text-right placeholder:text-right' : ''}`}
                   />
                   <Textarea
-                    placeholder={t("contact.messagePlaceholder")}
+                    placeholder={t("Message")}
                     value={formData.message}
                     onChange={(e) => setFormData({...formData, message: e.target.value})}
                     required
