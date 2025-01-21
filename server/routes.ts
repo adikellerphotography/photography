@@ -12,7 +12,7 @@ import fs from "fs/promises";
 // Helper function to get the correct category path
 const getCategoryPath = (categoryName: string) => {
   const categoryMappings: Record<string, string> = {
-    'kids': 'kids',
+    'Kids': 'kids',
     'Bat Mitsva': 'Bat_Mitsva',
     'Family': 'Family',
     'Horses': 'Horses',
