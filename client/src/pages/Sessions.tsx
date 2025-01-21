@@ -229,29 +229,25 @@ export default function MySessions() {
       // Double click/tap detected
       clickTimer.current = 0;
       if (isMobile) {
-        // For mobile, try to open in Facebook app
-        const fbUrl = getFacebookUrl(link.url);
-        setTimeout(() => {
-          window.location.href = fbUrl;
-        }, 50);
+        window.location.href = link.url;
       } else {
         window.open(link.url, '_blank');
       }
-    } else {
-      // Single click/tap behavior
-      clickTimer.current = now;
-      setTimeout(() => {
-        if (clickTimer.current !== 0) {
-          setSelectedImage({ 
-            url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
-            number: link.number, 
-            groupName 
-          });
-          setIsDialogOpen(true);
-        }
-        clickTimer.current = 0;
-      }, 300);
+      return;
     }
+
+    clickTimer.current = now;
+    setTimeout(() => {
+      if (clickTimer.current !== 0) {
+        setSelectedImage({ 
+          url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
+          number: link.number, 
+          groupName 
+        });
+        setIsDialogOpen(true);
+      }
+      clickTimer.current = 0;
+    }, 300);
   };
 
   return (
