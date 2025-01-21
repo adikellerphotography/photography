@@ -5,7 +5,7 @@ export const translations = {
       he: "צרו קשר"
     },
     namePlaceholder: {
-      en: "Your Name",
+      en: "Full Name",
       he: "שם מלא"
     },
     phonePlaceholder: {
@@ -13,7 +13,7 @@ export const translations = {
       he: "מספר טלפון"
     },
     messagePlaceholder: {
-      en: "Your Message",
+      en: "Message",
       he: "הודעה"
     },
     send: {
