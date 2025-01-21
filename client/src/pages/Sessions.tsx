@@ -17,11 +17,19 @@ interface SessionGroup {
   links: SessionLink[];
 }
 
-async function fetchImages(category: string): Promise<SessionLink[]> {
-  const response = await fetch(`/api/sessions/${category}`);
-  if (!response.ok) throw new Error('Failed to fetch images');
-  return response.json();
-}
+const fetchImages = async (category: string): Promise<SessionLink[]> => {
+    try {
+      const response = await fetch(`/api/sessions/${category}`);
+      if (!response.ok) {
+        console.warn(`Failed to fetch ${category} images:`, response.statusText);
+        return [];
+      }
+      return response.json();
+    } catch (error) {
+      console.warn(`Error fetching ${category} images:`, error);
+      return [];
+    }
+  }
 
 const sessionGroups: SessionGroup[] = [
   {
