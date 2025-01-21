@@ -228,21 +228,20 @@ export default function MySessions() {
     if (clickTimer.current && (now - clickTimer.current) < 300) {
       // Double click/tap detected
       clickTimer.current = 0;
-      setIsDialogOpen(false); // Close any open dialog
       const fbUrl = getFacebookUrl(link.url);
       window.open(fbUrl, '_blank', 'noopener,noreferrer');
     } else {
       // Single click
       clickTimer.current = now;
+      setSelectedImage({ 
+        url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
+        number: link.number, 
+        groupName 
+      });
+      setIsDialogOpen(true);
+      
+      // Reset click timer after 300ms
       setTimeout(() => {
-        if (clickTimer.current !== 0) {
-          setSelectedImage({ 
-            url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
-            number: link.number, 
-            groupName 
-          });
-          setIsDialogOpen(true);
-        }
         clickTimer.current = 0;
       }, 300);
     }
