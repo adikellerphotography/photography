@@ -168,7 +168,7 @@ const categoryMappings: Record<string, string> = {
   'Big Family': 'big_family',
   'Horses': 'horses',
   'Modeling': 'modeling',
-  'Feminine': 'feminine',
+  'Women': 'feminine',
   'Sweet 16': 'sweet_16',
   'Purim': 'purim',
   'Pregnancy': 'pregnancy',
@@ -286,27 +286,23 @@ export default function MySessions() {
                       transition={{ duration: 0.2 }}
                     >
                       {["Bat Mitsva", "Bar Mitsva", "Horses", "Kids", "Family", "Big Family", "Sweet 16", "Purim", "Pregnancy", "Feminine", "Yoga", "Modeling"].includes(group.name) ? (
-                        <>
-                          <div className="absolute inset-0 animate-pulse bg-muted duration-200 transition-opacity" 
-                               style={{ animationDuration: '0.8s' }} />
+                        <div className="relative w-full h-full">
                           <img 
-                            src={shouldLoad ? `/assets/${categoryMappings[group.name] || group.name.toLowerCase().replace(' ', '_')}/${String(link.number).padStart(3, '0')}.jpeg${isMobile ? '?no_watermark=true' : ''}?nocache=${Date.now()}` : ''}
-                            data-src={`/assets/${categoryMappings[group.name] || group.name.toLowerCase().replace(' ', '_')}/${String(link.number).padStart(3, '0')}.jpeg${isMobile ? '?no_watermark=true' : ''}?nocache=${Date.now()}`}
+                            src={`/assets/facebook_posts_image/${categoryMappings[group.name]}/${link.number}.jpg`}
                             alt={`${group.name} session ${link.number}`}
-                            className="w-full h-full object-cover relative z-10 transition-opacity duration-200"
-                            loading="lazy"
-                            onLoad={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              target.style.opacity = '1';
-                              target.previousElementSibling?.remove();
+                            className="w-full h-full object-cover transition-all duration-300 ease-in-out"
+                            loading={idx < 6 ? "eager" : "lazy"}
+                            style={{ 
+                              backgroundColor: '#f3f4f6',
+                              minHeight: '200px'
                             }}
-                            style={{ opacity: 0 }}
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
-                              target.style.backgroundColor = 'rgba(0, 0, 0, 0.03)';
+                              target.style.opacity = '0.3';
                             }}
                           />
-                        </>
+                          <div className="absolute inset-0 bg-gradient-to-b from-black/[0.075] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        </div>
                       ) : (
                         <div 
                           className="w-full h-full rounded-lg"
