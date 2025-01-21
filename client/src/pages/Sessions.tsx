@@ -282,10 +282,13 @@ export default function MySessions() {
                     >
                       {["Bat Mitsva", "Bar Mitsva", "Horses", "Kids", "Family", "Big Family", "Sweet 16", "Purim", "Pregnancy", "Feminine", "Yoga", "Modeling"].includes(group.name) ? (
                         <>
+                          <div className="absolute inset-0 animate-pulse bg-muted duration-200 transition-opacity" 
+                               style={{ animationDuration: '0.8s' }} />
                           <img 
-                            src={`/assets/${categoryMappings[group.name] || group.name.toLowerCase().replace(' ', '_')}/${String(link.number).padStart(3, '0')}.jpeg${isMobile ? '?no_watermark=true' : ''}`}
+                            src={shouldLoad ? `/assets/${categoryMappings[group.name] || group.name.toLowerCase().replace(' ', '_')}/${String(link.number).padStart(3, '0')}.jpeg${isMobile ? '?no_watermark=true' : ''}?nocache=${Date.now()}` : ''}
+                            data-src={`/assets/${categoryMappings[group.name] || group.name.toLowerCase().replace(' ', '_')}/${String(link.number).padStart(3, '0')}.jpeg${isMobile ? '?no_watermark=true' : ''}?nocache=${Date.now()}`}
                             alt={`${group.name} session ${link.number}`}
-                            className="w-full h-full object-cover relative z-10"
+                            className="w-full h-full object-cover relative z-10 transition-opacity duration-200"
                             loading="lazy"
                             onLoad={(e) => {
                               const target = e.target as HTMLImageElement;
