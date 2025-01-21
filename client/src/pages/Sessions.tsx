@@ -228,8 +228,13 @@ export default function MySessions() {
     if (clickTimer.current && (now - clickTimer.current) < 300) {
       // Double click/tap detected
       clickTimer.current = 0;
-      const fbUrl = getFacebookUrl(link.url);
-      window.open(fbUrl, '_blank', 'noopener,noreferrer');
+      setIsDialogOpen(false);
+      const matchingPost = sessionGroups.find(group => group.name === groupName)
+                          ?.links.find(l => l.number === link.number);
+      if (matchingPost) {
+        const fbUrl = getFacebookUrl(matchingPost.url);
+        window.open(fbUrl, '_blank', 'noopener,noreferrer');
+      }
     } else {
       // Single click
       clickTimer.current = now;
@@ -240,7 +245,6 @@ export default function MySessions() {
       });
       setIsDialogOpen(true);
       
-      // Reset click timer after 300ms
       setTimeout(() => {
         clickTimer.current = 0;
       }, 300);
