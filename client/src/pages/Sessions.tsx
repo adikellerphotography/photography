@@ -228,26 +228,27 @@ export default function MySessions() {
     if (clickTimer.current && (now - clickTimer.current) < 300) {
       // Double click/tap detected
       clickTimer.current = 0;
+      const fbUrl = getFacebookUrl(link.url);
       if (isMobile) {
-        window.location.href = link.url;
+        window.location.href = fbUrl;
       } else {
-        window.open(link.url, '_blank');
+        window.open(fbUrl, '_blank');
       }
-      return;
+    } else {
+      // Single click
+      clickTimer.current = now;
+      setTimeout(() => {
+        if (clickTimer.current !== 0) {
+          setSelectedImage({ 
+            url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
+            number: link.number, 
+            groupName 
+          });
+          setIsDialogOpen(true);
+        }
+        clickTimer.current = 0;
+      }, 300);
     }
-
-    clickTimer.current = now;
-    setTimeout(() => {
-      if (clickTimer.current !== 0) {
-        setSelectedImage({ 
-          url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
-          number: link.number, 
-          groupName 
-        });
-        setIsDialogOpen(true);
-      }
-      clickTimer.current = 0;
-    }, 300);
   };
 
   return (
