@@ -226,34 +226,29 @@ export default function MySessions() {
     const now = Date.now();
 
     if (clickTimer.current && (now - clickTimer.current) < 300) {
-      // Double click detected - clear timer and open Facebook post
+      // Double click - open Facebook post
       clearTimeout(clickTimer.current);
       clickTimer.current = 0;
       setIsDialogOpen(false);
       
-      const groupLinks = sessionGroups.find(group => group.name === groupName)?.links;
-      const fbPost = groupLinks?.find(l => l.number === link.number);
+      // Find matching Facebook post from sessionGroups
+      const currentGroup = sessionGroups.find(group => group.name === groupName);
+      const fbPost = currentGroup?.links.find(l => l.number === link.number);
       
-      if (fbPost) {
+      if (fbPost?.url) {
         const fbUrl = getFacebookUrl(fbPost.url);
         window.open(fbUrl, '_blank', 'noopener,noreferrer');
       }
     } else {
-      // Single click - set timer to detect potential double click
-      if (clickTimer.current) {
-        clearTimeout(clickTimer.current);
-      }
+      // First click - start timer and show image
+      clickTimer.current = now;
       
-      clickTimer.current = window.setTimeout(() => {
-        // Only open image if it wasn't a double click
-        setSelectedImage({ 
-          url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
-          number: link.number, 
-          groupName 
-        });
-        setIsDialogOpen(true);
-        clickTimer.current = 0;
-      }, 300);
+      setSelectedImage({ 
+        url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
+        number: link.number, 
+        groupName 
+      });
+      setIsDialogOpen(true);
     }
   };
 
