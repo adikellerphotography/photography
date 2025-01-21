@@ -229,7 +229,7 @@ export default function MySessions() {
       // Double click/tap detected
       clickTimer.current = 0;
       setIsDialogOpen(false); // Close any open dialog
-      const fbUrl = getFacebookUrl(link.url);
+      const fbUrl = link.url;
       window.open(fbUrl, '_blank', 'noopener,noreferrer');
     } else {
       // Single click
@@ -246,11 +246,6 @@ export default function MySessions() {
         clickTimer.current = 0;
       }, 300);
     }
-
-    // Reset timer after reaching delay
-    setTimeout(() => {
-      clickTimer.current = 0;
-    }, 300);
   };
 
   return (
