@@ -280,11 +280,11 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   return (
     <div className="space-y-8" ref={galleryRef}>
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"> {/* Changed grid to columns */}
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-background/50"> {/* Changed grid to columns */}
         {displayPhotos?.map((photo, index) => (
           <motion.div
             key={`${photo.id}-${photo.imageUrl}`}
-            initial={{ opacity: 0, scale: 0.97 }}
+            initial={{ opacity: 0, scale: 0.97, backgroundColor: 'var(--background)' }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ 
               duration: 0.5,
