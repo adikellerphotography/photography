@@ -114,7 +114,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
-      if (event.state?.photo) {
+      if (event.state?.photo && !event.state?.isGalleryView) {
         setSelectedPhoto(event.state.photo);
         setSelectedIndex(event.state.index);
       } else {
@@ -126,6 +126,16 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
+
+  // Handle initial photo selection
+  useEffect(() => {
+    if (selectedPhoto) {
+      const state = { photo: selectedPhoto, index: selectedIndex, isGalleryView: false };
+      window.history.pushState(state, '', window.location.pathname + window.location.search);
+      // Add gallery view state
+      window.history.pushState({ isGalleryView: true }, '', window.location.pathname + window.location.search);
+    }
+  }, [selectedPhoto !== null]);
 
   useEffect(() => {
     setIsFullImageLoaded(false);
@@ -174,8 +184,9 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     setSelectedIndex(newIndex);
     setSelectedPhoto(newPhoto);
 
-    const state = { photo: newPhoto, index: newIndex };
-    window.history.pushState(state, '', window.location.pathname + window.location.search);
+    // Replace the current state instead of pushing a new one
+    const state = { photo: newPhoto, index: newIndex, isGalleryView: false };
+    window.history.replaceState(state, '', window.location.pathname + window.location.search);
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
