@@ -310,8 +310,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
             data-photo-id={photo.id}
           >
             <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
-              <div className="relative w-full h-full overflow-hidden bg-muted">
-                <div className="absolute inset-0 flex items-center justify-center">
+              <div className="relative w-full h-full overflow-hidden bg-background/50 backdrop-blur-sm">
+                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-background/80 to-background/40">
                   <img
                     key={`${photo.id}-${photo.imageUrl}`}
                     src={getImagePath(photo)}
