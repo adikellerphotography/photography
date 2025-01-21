@@ -248,7 +248,6 @@ export default function MySessions() {
       });
       setIsDialogOpen(true);
     }
-    setIsDialogOpen(true);
   };
 
   return (
