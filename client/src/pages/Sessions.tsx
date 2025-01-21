@@ -186,7 +186,7 @@ export default function MySessions() {
 
   useEffect(() => {
     async function loadImages() {
-      const categories = ['Bat_Mitsva', 'Family', 'Horses', 'Kids', 'Modeling', 'Women', 'Yoga'];
+      const categories = ['Bat_Mitsva', 'Family', 'Horses', 'Kids', 'Modeling', 'Feminine', 'Yoga'];
       const loadedGroups = await Promise.all(
         categories.map(async (category) => {
           try {
