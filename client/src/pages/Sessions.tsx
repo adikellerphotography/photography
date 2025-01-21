@@ -181,7 +181,6 @@ export default function MySessions() {
   const [selectedImage, setSelectedImage] = useState<{ url: string; number: number; groupName: string } | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const isMobile = useIsMobile();
-  //const clickTimer = useRef<number>(0); //removed
   const [groups, setGroups] = useState<SessionGroup[]>([]);
 
   useEffect(() => {
@@ -239,7 +238,23 @@ export default function MySessions() {
               </div>
               <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {group.links.map((link, idx) => {
-                  const shouldLoad = idx < 3 || document.visibilityState === 'visible';
+                  const [isInView, setIsInView] = useState(false);
+                  const imageRef = useRef<HTMLImageElement>(null);
+
+                  useEffect(() => {
+                    const observer = new IntersectionObserver(
+                      ([entry]) => setIsInView(entry.isIntersecting),
+                      { rootMargin: '50px' }
+                    );
+
+                    if (imageRef.current) {
+                      observer.observe(imageRef.current);
+                    }
+
+                    return () => observer.disconnect();
+                  }, []);
+
+                  const shouldLoad = isInView || idx < 3;
                   return (
                     <div
                       key={link.url}
@@ -253,14 +268,20 @@ export default function MySessions() {
                       {["Bat Mitsva", "Bar Mitsva", "Horses", "Kids", "Family", "Big Family", "Sweet 16", "Purim", "Pregnancy", "Feminine", "Yoga", "Modeling"].includes(group.name) ? (
                         <div className="relative w-full pb-[100%]">
                           <img 
-                            src={`/assets/facebook_posts_image/${categoryMappings[group.name]}/${link.number}.jpg`}
+                            ref={imageRef}
+                            src={shouldLoad ? `/assets/facebook_posts_image/${categoryMappings[group.name]}/${link.number}.jpg` : ''}
                             alt={`${group.name} session ${link.number}`}
-                            className="absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-in-out"
+                            className={`absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-in-out 
+                              ${isInView ? 'opacity-100' : 'opacity-0'}`}
                             loading={idx < 6 ? "eager" : "lazy"}
                             style={{ 
                               backgroundColor: '#f3f4f6',
                               objectFit: 'cover',
                               objectPosition: 'center'
+                            }}
+                            onLoad={(e) => {
+                              const img = e.target as HTMLImageElement;
+                              img.style.opacity = '1';
                             }}
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
@@ -279,8 +300,8 @@ export default function MySessions() {
                       )}
                     </motion.div>
                   </div>
-                );
-              })}
+                  );
+                })}
               </div>
             </div>
           ))}
