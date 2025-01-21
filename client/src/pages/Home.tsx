@@ -123,10 +123,30 @@ export default function Home() {
           <div className="flex justify-center gap-12 mb-8">
             <div className="relative">
               <motion.div
-                initial={{ backgroundColor: "#E67E00" }}
-                animate={{ backgroundColor: ["#E67E00", "#733F00", "#E67E00"] }}
-                transition={{ duration: 1.6, times: [0, 0.5, 1] }}
-                className="absolute inset-0 rounded-full -z-10"
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ 
+                  scale: [0.95, 1.05, 0.95],
+                  opacity: 1,
+                  backgroundColor: ["#E67E00", "#733F00", "#E67E00"]
+                }}
+                transition={{ 
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                whileTap={{
+                  scale: 0.9,
+                  transition: {
+                    duration: 0.3,
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 17
+                  }
+                }}
+                className="absolute inset-0 rounded-full -z-10 shadow-lg"
+                style={{
+                  backgroundImage: "radial-gradient(circle at 30% 30%, rgb(255 255 255 / 0.1), transparent)"
+                }}
               />
               <Link href="/before-and-after">
                 <button className="p-4 rounded-full hover:bg-accent transition-colors text-white">
@@ -136,10 +156,30 @@ export default function Home() {
             </div>
             <div className="relative">
               <motion.div
-                initial={{ backgroundColor: "#E67E00" }}
-                animate={{ backgroundColor: ["#E67E00", "#733F00", "#E67E00"] }}
-                transition={{ duration: 1.6, times: [0, 0.5, 1] }}
-                className="absolute inset-0 rounded-full -z-10"
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ 
+                  scale: [0.95, 1.05, 0.95],
+                  opacity: 1,
+                  backgroundColor: ["#E67E00", "#733F00", "#E67E00"]
+                }}
+                transition={{ 
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                whileTap={{
+                  scale: 0.9,
+                  transition: {
+                    duration: 0.3,
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 17
+                  }
+                }}
+                className="absolute inset-0 rounded-full -z-10 shadow-lg"
+                style={{
+                  backgroundImage: "radial-gradient(circle at 30% 30%, rgb(255 255 255 / 0.1), transparent)"
+                }}
               />
               <Link href="/gallery">
                 <button className="p-4 rounded-full hover:bg-accent transition-colors text-white">
@@ -149,10 +189,30 @@ export default function Home() {
             </div>
             <div className="relative">
               <motion.div
-                initial={{ backgroundColor: "#E67E00" }}
-                animate={{ backgroundColor: ["#E67E00", "#733F00", "#E67E00"] }}
-                transition={{ duration: 1.6, times: [0, 0.5, 1] }}
-                className="absolute inset-0 rounded-full -z-10"
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ 
+                  scale: [0.95, 1.05, 0.95],
+                  opacity: 1,
+                  backgroundColor: ["#E67E00", "#733F00", "#E67E00"]
+                }}
+                transition={{ 
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                whileTap={{
+                  scale: 0.9,
+                  transition: {
+                    duration: 0.3,
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 17
+                  }
+                }}
+                className="absolute inset-0 rounded-full -z-10 shadow-lg"
+                style={{
+                  backgroundImage: "radial-gradient(circle at 30% 30%, rgb(255 255 255 / 0.1), transparent)"
+                }}
               />
               <Link href="/sessions">
                 <button className="p-4 rounded-full hover:bg-accent transition-colors text-white">
