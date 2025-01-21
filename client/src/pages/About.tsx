@@ -24,7 +24,7 @@ export default function About() {
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.8 }}
+                transition={{ duration: 0.4 }}
                 className="relative w-full h-full overflow-hidden rounded-full"
               >
                 <img
@@ -33,16 +33,21 @@ export default function About() {
                   className="object-cover w-full h-full"
                   width={300}
                   height={300}
+                  priority="high"
                   loading="eager"
                   fetchPriority="high"
-                  decoding="async"
-                  onLoad={(e) => {
-                    const img = e.currentTarget;
-                    img.style.opacity = '1';
+                  decoding="sync"
+                  sizes="300px"
+                  style={{
+                    transform: 'translate3d(0, 0, 0)',
+                    backfaceVisibility: 'hidden',
+                    willChange: 'transform'
                   }}
-                  style={{ 
-                    opacity: 0,
-                    transition: 'opacity 0.8s ease-in-out'
+                />
+                <div 
+                  className="absolute inset-0 bg-gradient-to-b from-transparent to-background/10"
+                  style={{
+                    mixBlendMode: 'overlay'
                   }}
                 />
               </motion.div>
