@@ -240,9 +240,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   const getImagePath = (photo: Photo) => {
     // Handle special case for Bat Mitsva category
-    const categoryPath = photo.category === 'Bat Mitsva' ? 'Bat_Mitsva' : photo.category.toLowerCase();
-    const timestamp = Date.now();
-    return `/assets/${categoryPath}/${String(photo.id).padStart(3, '0')}.jpeg?t=${timestamp}`;
+    const categoryPath = photo.category === 'Bat Mitsva' ? 'Bat_Mitsva' : photo.category;
+    return `/assets/${categoryPath}/${String(photo.id).padStart(3, '0')}.jpeg`;
   };
 
   if (isLoading) {
