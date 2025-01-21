@@ -221,34 +221,70 @@ export default function MySessions() {
     return url;
   };
 
+  const [touchTimeout, setTouchTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [touchCount, setTouchCount] = useState(0);
+
   const handleImageClick = (event: React.MouseEvent | React.TouchEvent, link: SessionLink, groupName: string) => {
     event.preventDefault();
-    const now = Date.now();
+    
+    // Handle touch events differently from mouse events
+    if ('touches' in event) {
+      setTouchCount(prev => prev + 1);
+      
+      if (touchTimeout) {
+        clearTimeout(touchTimeout);
+      }
+      
+      if (touchCount === 1) {
+        // Double tap detected
+        setTouchCount(0);
+        setIsDialogOpen(false);
+        
+        const group = sessionGroups.find(g => g.name === groupName);
+        const fbLink = group?.links.find(l => l.number === link.number);
+        
+        if (fbLink?.url) {
+          const fbUrl = getFacebookUrl(fbLink.url);
+          window.open(fbUrl, '_blank');
+        }
+      } else {
+        // First tap
+        const timeout = setTimeout(() => {
+          setTouchCount(0);
+          setSelectedImage({
+            url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
+            number: link.number,
+            groupName
+          });
+          setIsDialogOpen(true);
+        }, 300);
+        setTouchTimeout(timeout);
+      }
+      return;
+    }
 
+    // Handle mouse events (desktop)
+    const now = Date.now();
     if (clickTimer.current && (now - clickTimer.current) < 300) {
-      // Double click detected
       event.stopPropagation();
       clickTimer.current = 0;
       setIsDialogOpen(false);
 
-      // Find matching Facebook post URL
       const group = sessionGroups.find(g => g.name === groupName);
       const fbLink = group?.links.find(l => l.number === link.number);
       
       if (fbLink?.url) {
         const fbUrl = getFacebookUrl(fbLink.url);
-        window.open(fbUrl, '_blank'); 
+        window.open(fbUrl, '_blank');
       }
     } else {
-      // First click - start timer and show image
       clickTimer.current = now;
-      
       setTimeout(() => {
         if (clickTimer.current === now) {
-          setSelectedImage({ 
+          setSelectedImage({
             url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
-            number: link.number, 
-            groupName 
+            number: link.number,
+            groupName
           });
           setIsDialogOpen(true);
         }
