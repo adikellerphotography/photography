@@ -277,7 +277,7 @@ export default function MySessions() {
                         <div className="relative w-full pb-[100%]">
                           <img 
                             ref={imageRef}
-                            src={shouldLoad ? `/assets/facebook_posts_image/${categoryMappings[group.name]}/${link.number}.jpg` : ''}
+                            src={shouldLoad ? `/attached_assets/facebook_posts_image/${categoryMappings[group.name]}/${link.number}.jpg` : ''}
                             alt={`${group.name} session ${link.number}`}
                             className={`absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-in-out 
                               ${isInView ? 'opacity-100' : 'opacity-0'}`}
