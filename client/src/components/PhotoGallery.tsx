@@ -239,8 +239,12 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   };
 
   const getImagePath = (photo: Photo) => {
-    // Handle special case for Bat Mitsva category
-    const categoryPath = photo.category === 'Bat Mitsva' ? 'Bat_Mitsva' : photo.category;
+    // Handle special cases for category paths
+    const categoryMappings: Record<string, string> = {
+      'Bat Mitsva': 'Bat_Mitsva',
+      'Kids': 'kids'
+    };
+    const categoryPath = categoryMappings[photo.category] || photo.category;
     return `/assets/${categoryPath}/${String(photo.id).padStart(3, '0')}.jpeg`;
   };
 
