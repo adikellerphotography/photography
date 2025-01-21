@@ -224,31 +224,24 @@ export default function MySessions() {
   const handleImageClick = (event: React.MouseEvent | React.TouchEvent, link: SessionLink, groupName: string) => {
     event.preventDefault();
     const now = Date.now();
-
+    
     if (clickTimer.current && (now - clickTimer.current) < 300) {
-      // Double click detected
+      // Double click - open Facebook post
       event.stopPropagation();
       setIsDialogOpen(false);
-      clickTimer.current = 0;
       
       const fbUrl = getFacebookUrl(link.url);
-      setTimeout(() => {
-        window.open(fbUrl, '_blank', 'noopener,noreferrer');
-      }, 50);
+      window.open(fbUrl, '_blank', 'noopener,noreferrer');
+      clickTimer.current = 0;
     } else {
-      // First click
+      // Single click - show image
       clickTimer.current = now;
-      setTimeout(() => {
-        if (clickTimer.current === now) {
-          // Single click confirmed
-          setSelectedImage({ 
-            url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
-            number: link.number, 
-            groupName 
-          });
-          setIsDialogOpen(true);
-        }
-      }, 300);
+      setSelectedImage({ 
+        url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
+        number: link.number, 
+        groupName 
+      });
+      setIsDialogOpen(true);
     }
   };
 
