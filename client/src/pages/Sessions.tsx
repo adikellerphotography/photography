@@ -160,6 +160,16 @@ const capitalizeWords = (str: string) => {
   return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 };
 
+const categoryMappings: Record<string, string> = {
+  'kids': 'facebook_posts_image/kids',
+  'Bat Mitsva': 'facebook_posts_image/bat_mitsva',
+  'Family': 'facebook_posts_image/family',
+  'Horses': 'facebook_posts_image/horses',
+  'Modeling': 'facebook_posts_image/modeling',
+  'Women': 'facebook_posts_image/feminine',
+  'Yoga': 'facebook_posts_image/yoga'
+};
+
 export default function MySessions() {
   const { t } = useTranslation();
   const { language } = useLanguage();
@@ -225,7 +235,7 @@ export default function MySessions() {
         setTimeout(() => {
           if (clickTimer.current !== 0) {
             setSelectedImage({ 
-              url: `/assets/${groupName.toLowerCase().replace(' ', '_')}/${String(link.number).padStart(3, '0')}.jpeg`,
+              url: `/assets/${categoryMappings[groupName] || groupName.toLowerCase().replace(' ', '_')}/${String(link.number).padStart(3, '0')}.jpeg`,
               number: link.number, 
               groupName 
             });
@@ -275,8 +285,8 @@ export default function MySessions() {
                           <div className="absolute inset-0 animate-pulse bg-muted duration-200 transition-opacity" 
                                style={{ animationDuration: '0.8s' }} />
                           <img 
-                            src={shouldLoad ? `/assets/${group.name.toLowerCase().replace(' ', '_')}/${String(link.number).padStart(3, '0')}.jpeg${isMobile ? '?no_watermark=true' : ''}?nocache=${Date.now()}` : ''}
-                            data-src={`/assets/${group.name.toLowerCase().replace(' ', '_')}/${String(link.number).padStart(3, '0')}.jpeg${isMobile ? '?no_watermark=true' : ''}?nocache=${Date.now()}`}
+                            src={shouldLoad ? `/assets/${categoryMappings[group.name] || group.name.toLowerCase().replace(' ', '_')}/${String(link.number).padStart(3, '0')}.jpeg${isMobile ? '?no_watermark=true' : ''}?nocache=${Date.now()}` : ''}
+                            data-src={`/assets/${categoryMappings[group.name] || group.name.toLowerCase().replace(' ', '_')}/${String(link.number).padStart(3, '0')}.jpeg${isMobile ? '?no_watermark=true' : ''}?nocache=${Date.now()}`}
                             alt={`${group.name} session ${link.number}`}
                             className="w-full h-full object-cover relative z-10 transition-opacity duration-200"
                             loading="lazy"
