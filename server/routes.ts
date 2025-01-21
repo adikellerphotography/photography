@@ -377,27 +377,18 @@ export function registerRoutes(app: Express): Server {
         'Yoga': 'yoga'
       };
 
-      const folderName = categoryMappings[category] || category.toLowerCase().replace(' ', '_');
-      
-      const getSessionData = async (category: string) => {
-        try {
-          const imageFiles = await fs.readdir(path.join(process.cwd(), 'attached_assets/facebook_posts_image', folderName));
-          const photoFiles = imageFiles.filter(f => f.endsWith('.jpg')).sort();
-          
-          return photoFiles.map((filename, index) => ({
-            id: index + 1,
-            filename,
-            fbDesktopUrl: `https://www.facebook.com/example/posts/${index + 1}`,
-            fbMobileUrl: `fb://post/${index + 1}`
-          }));
-        } catch (error) {
-          console.error(`Error reading directory for ${category}:`, error);
-          return [];
-        }
+      const sessionData = {
+        'Bat_Mitsva': require('../data/sessions/bat_mitsva.json'),
+        'Family': require('../data/sessions/family.json'),
+        'Horses': require('../data/sessions/horses.json'),
+        'Kids': require('../data/sessions/kids.json'),
+        'Modeling': require('../data/sessions/modeling.json'),
+        'Feminine': require('../data/sessions/feminine.json'),
+        'Yoga': require('../data/sessions/yoga.json')
       };
 
       const folderName = categoryMappings[category] || category.toLowerCase().replace(' ', '_');
-      const data = await getSessionData(category);
+      const data = sessionData[folderName] || []; // Use placeholder data if not found
 
       //Simulate data structure from mapping file
       const images = data.map((item:any) => ({
