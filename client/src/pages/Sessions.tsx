@@ -230,13 +230,7 @@ export default function MySessions() {
       clickTimer.current = 0;
       setIsDialogOpen(false); // Close any open dialog
       const fbUrl = getFacebookUrl(link.url);
-      setTimeout(() => {
-        if (isMobile) {
-          window.location.href = fbUrl;
-        } else {
-          window.open(fbUrl, '_blank', 'noopener,noreferrer');
-        }
-      }, 50);
+      window.open(fbUrl, '_blank', 'noopener,noreferrer');
     } else {
       // Single click
       clickTimer.current = now;
