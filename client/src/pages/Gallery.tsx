@@ -190,15 +190,37 @@ export default function Gallery() {
     return (
       <div className="min-h-screen pt-16">
         <div className="container mx-auto px-4 py-16">
-          <div className="animate-pulse">
-            <div className="h-8 w-48 bg-muted rounded mb-8" />
-            <div className="h-12 w-full bg-muted rounded mb-8" />
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="h-64 bg-muted rounded" />
+              {Array.from({ length: 8 }).map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{
+                    duration: 0.3,
+                    delay: i * 0.1,
+                    ease: [0.34, 1.56, 0.64, 1]
+                  }}
+                >
+                  <div className="relative overflow-hidden rounded-lg bg-muted/30">
+                    <AspectRatio ratio={1.5}>
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-muted/10 to-transparent animate-shimmer" 
+                           style={{
+                             backgroundSize: "200% 100%",
+                             animation: "shimmer 2s infinite linear"
+                           }}
+                      />
+                    </AspectRatio>
+                  </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     );
