@@ -286,15 +286,16 @@ export default function MySessions() {
                       transition={{ duration: 0.2 }}
                     >
                       {["Bat Mitsva", "Bar Mitsva", "Horses", "Kids", "Family", "Big Family", "Sweet 16", "Purim", "Pregnancy", "Feminine", "Yoga", "Modeling"].includes(group.name) ? (
-                        <div className="relative w-full h-full">
+                        <div className="relative w-full pb-[100%]">
                           <img 
                             src={`/assets/facebook_posts_image/${categoryMappings[group.name]}/${link.number}.jpg`}
                             alt={`${group.name} session ${link.number}`}
-                            className="w-full h-full object-cover transition-all duration-300 ease-in-out"
+                            className="absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-in-out"
                             loading={idx < 6 ? "eager" : "lazy"}
                             style={{ 
                               backgroundColor: '#f3f4f6',
-                              minHeight: '200px'
+                              objectFit: 'cover',
+                              objectPosition: 'center'
                             }}
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
