@@ -185,25 +185,7 @@ export default function MySessions() {
   const [groups, setGroups] = useState<SessionGroup[]>([]);
 
   useEffect(() => {
-    async function loadImages() {
-      const categories = ['Bat_Mitsva', 'Family', 'Horses', 'Kids', 'Modeling', 'Feminine', 'Yoga'];
-      const loadedGroups = await Promise.all(
-        categories.map(async (category) => {
-          try {
-            const images = await fetchImages(category);
-            return {
-              name: category.replace('_', ' '),
-              links: images
-            };
-          } catch (error) {
-            console.error(`Error loading ${category} images:`, error);
-            return null;
-          }
-        })
-      );
-      setGroups(loadedGroups.filter((g): g is SessionGroup => g !== null));
-    }
-    loadImages();
+    setGroups(sessionGroups);
   }, []);
 
   const getFacebookUrl = (url: string) => {
@@ -229,8 +211,7 @@ export default function MySessions() {
       // Double click/tap detected
       clickTimer.current = 0;
       setIsDialogOpen(false); // Close any open dialog
-      const fbUrl = link.url;
-      window.open(fbUrl, '_blank', 'noopener,noreferrer');
+      window.open(link.url, '_blank', 'noopener,noreferrer');
     } else {
       // Single click
       clickTimer.current = now;
