@@ -269,9 +269,13 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
         {displayPhotos?.map((photo, index) => (
           <motion.div
             key={`${photo.id}-${photo.imageUrl}`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: Math.min(index * 0.05, 1) }}
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ 
+              duration: 0.5,
+              delay: Math.min(index * 0.1, 1),
+              ease: [0.34, 1.56, 0.64, 1]
+            }}
             onClick={() => {
               setSelectedPhoto(photo);
               setSelectedIndex(index);
