@@ -224,25 +224,35 @@ export default function MySessions() {
   const handleImageClick = (event: React.MouseEvent | React.TouchEvent, link: SessionLink, groupName: string) => {
     event.preventDefault();
     const now = Date.now();
-    
+
     if (clickTimer.current && (now - clickTimer.current) < 300) {
-      // Double click - open Facebook post
+      // Double click detected
       event.stopPropagation();
+      clickTimer.current = 0;
       setIsDialogOpen(false);
       
-      const fbUrl = getFacebookUrl(link.url);
-      window.open(fbUrl, '_blank', 'noopener,noreferrer');
-      clickTimer.current = 0;
-    } else {
-      // Single click - show image
-      clickTimer.current = now;
-      setSelectedImage({ 
-        url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
-        number: link.number, 
-        groupName 
-      });
-      setIsDialogOpen(true);
+      // Delay opening Facebook to ensure dialog closes first
+      setTimeout(() => {
+        const fbUrl = getFacebookUrl(link.url);
+        window.open(fbUrl, '_blank', 'noopener,noreferrer');
+      }, 50);
+      return;
     }
+    
+    // Single click - show image
+    clickTimer.current = now;
+    
+    // Delay showing image slightly to allow for double click detection
+    setTimeout(() => {
+      if (clickTimer.current === now) {
+        setSelectedImage({ 
+          url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
+          number: link.number, 
+          groupName 
+        });
+        setIsDialogOpen(true);
+      }
+    }, 150);
   };
 
   return (
