@@ -217,8 +217,7 @@ export const translations = {
       "Feminine": "נשי",
       "Yoga": "יוגה",
       "Horses": "סוסים",
-      "Women": "נשים",
-      "Kids": "ילדים"
+      "Women": "נשיות"
     },
     contact: {
       phone: "מספר טלפון",
