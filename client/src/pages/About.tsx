@@ -21,7 +21,12 @@ export default function About() {
           {/* Portrait Image Section */}
           <div className="mb-12 w-full max-w-[300px] mx-auto">
             <AspectRatio ratio={1}>
-              <div className="relative w-full h-full overflow-hidden rounded-full bg-muted/10">
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8 }}
+                className="relative w-full h-full overflow-hidden rounded-full"
+              >
                 <img
                   src="/assets/IMG_1133.jpg"
                   alt="Profile"
@@ -29,19 +34,18 @@ export default function About() {
                   width={300}
                   height={300}
                   loading="eager"
-                  decoding="sync"
                   fetchPriority="high"
-                  style={{
-                    willChange: 'transform',
-                    backfaceVisibility: 'hidden',
-                    WebkitBackfaceVisibility: 'hidden',
+                  decoding="async"
+                  onLoad={(e) => {
+                    const img = e.currentTarget;
+                    img.style.opacity = '1';
+                  }}
+                  style={{ 
+                    opacity: 0,
+                    transition: 'opacity 0.8s ease-in-out'
                   }}
                 />
-                <div 
-                  className="absolute inset-0 bg-gradient-to-b from-transparent to-background/5 mix-blend-overlay"
-                  aria-hidden="true"
-                />
-              </div>
+              </motion.div>
             </AspectRatio>
           </div>
 
