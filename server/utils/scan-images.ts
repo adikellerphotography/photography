@@ -1,4 +1,3 @@
-
 import path from 'path';
 import fs from 'fs/promises';
 import { db } from "@db";
@@ -14,7 +13,7 @@ export async function scanImages() {
     // Clear existing records
     await db.delete(photos);
     await db.delete(categories);
-    
+
     // Get all subdirectories
     const dirs = await fs.readdir(assetsPath);
     const categories_map: Record<string, string> = {
@@ -40,7 +39,7 @@ export async function scanImages() {
         const displayName = categories_map[dir] || dir.split('_').map(word => 
           word.charAt(0).toUpperCase() + word.slice(1)
         ).join(' ');
-        
+
         await db.insert(categories).values({
           name: displayName,
           displayOrder: index + 1,

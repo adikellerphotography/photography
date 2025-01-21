@@ -7,6 +7,7 @@ import path from "path";
 import express from "express";
 import { scanImages } from "./utils/scan-images";
 import fs from "fs/promises";
+import router from './routes-api';
 
 
 // Helper function to get the correct category path
@@ -44,137 +45,6 @@ const configureStaticFiles = (app: Express) => {
 };
 
 // Route handlers
-const getPhotos = async (req: express.Request, res: express.Response) => {
-  try {
-    const { category } = req.query;
-
-    if (category && typeof category === 'string') {
-      const categoryExists = await db.select({ id: categories.id })
-        .from(categories)
-        .where(eq(categories.name, decodeURIComponent(category)))
-        .limit(1);
-
-      if (categoryExists.length === 0) {
-        return res.status(404).json({ error: "Category not found" });
-      }
-    }
-
-    const query = db.select()
-      .from(photos)
-      .where(category ? eq(photos.category, decodeURIComponent(category as string)) : undefined)
-      .orderBy(photos.displayOrder);
-
-    const results = await query;
-
-    // If no results in database or results are incomplete, scan directory
-    if (category) {
-      const categoryPath = getCategoryPath(category);
-      const dirPath = path.join(process.cwd(), 'attached_assets', categoryPath);
-      try {
-        const files = await fs.readdir(dirPath);
-        const photoFiles = files
-          .filter(f => (f.endsWith('.jpeg') || f.endsWith('.jpg')) && !f.includes('-thumb'))
-          .sort((a, b) => {
-            const numA = parseInt(a.match(/\d+/)?.[0] || '0');
-            const numB = parseInt(b.match(/\d+/)?.[0] || '0');
-            return numA - numB;
-          });
-
-        // Create entries for any missing photos
-        for (let i = 0; i < photoFiles.length; i++) {
-          const fileNum = i + 1;
-          const paddedId = String(fileNum).padStart(3, '0');
-          const exists = results.some(photo => photo.id === fileNum);
-
-          if (!exists) {
-            const newPhoto = {
-              id: fileNum,
-              title: `${category} Portrait Session`,
-              category: category,
-              imageUrl: `/assets/${categoryPath}/${paddedId}.jpeg`,
-              thumbnailUrl: `/assets/${categoryPath}/${paddedId}-thumb.jpeg`,
-              displayOrder: fileNum,
-              likesCount: 0
-            };
-            results.push(newPhoto);
-          }
-        }
-      } catch (err) {
-        console.error('Error reading directory:', err);
-      }
-    }
-
-    // Sort results by ID to ensure correct order
-    results.sort((a, b) => a.id - b.id);
-
-    console.log('Fetched photos for category:', category, 'Count:', results.length);
-
-    const processedPhotos = await Promise.all(results.map(async (photo) => {
-      const paddedId = String(photo.id).padStart(3, '0');
-      const categoryPath = getCategoryPath(photo.category);
-      const imageUrl = `/assets/${categoryPath}/${paddedId}.jpeg`;
-      const thumbnailUrl = `/assets/${categoryPath}/${paddedId}-thumb.jpeg`;
-      return {
-        ...photo,
-        imageUrl,
-        thumbnailUrl,
-        isLiked: false
-      };
-    }));
-
-    console.log('Processed photos:', processedPhotos);
-    res.json(processedPhotos);
-  } catch (error: any) {
-    console.error('Error fetching photos:', error);
-    res.status(500).json({ error: "Failed to fetch photos", details: error.message });
-  }
-};
-
-const getCategories = async (_req: express.Request, res: express.Response) => {
-  try {
-    const validCategories = await db
-      .select()
-      .from(categories)
-      .orderBy(categories.displayOrder);
-
-    const categoriesWithPhotos = await Promise.all(
-      validCategories.map(async (category) => {
-        const categoryPhotos = await db
-          .select()
-          .from(photos)
-          .where(eq(photos.category, category.name))
-          .orderBy(desc(photos.displayOrder))
-          .limit(1);
-
-        const categoryPath = getCategoryPath(category.name);
-
-        if (categoryPhotos[0]) {
-          const baseFileName = categoryPhotos[0].imageUrl.split('/').pop();
-          const thumbFileName = categoryPhotos[0].thumbnailUrl?.split('/').pop();
-
-          if (!baseFileName) {
-            return category;
-          }
-
-          return {
-            ...category,
-            firstPhoto: {
-              imageUrl: `/assets/${categoryPath}/${baseFileName}`,
-              thumbnailUrl: thumbFileName ? `/assets/${categoryPath}/${thumbFileName}` : undefined
-            }
-          };
-        }
-        return category;
-      })
-    );
-
-    res.json(categoriesWithPhotos);
-  } catch (error) {
-    console.error('Error fetching categories:', error);
-    res.status(500).json({ error: "Failed to fetch categories" });
-  }
-};
-
 const getBeforeAfterSets = async (_req: express.Request, res: express.Response) => {
   try {
     const beforeAfterPath = path.join(process.cwd(), 'attached_assets', 'before_and_after');
@@ -282,47 +152,8 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
-  // API Routes
-  app.get("/api/photos", getPhotos);
-  app.get("/api/categories", getCategories);
-  app.get("/api/before-after", async (_req, res) => {
-    try {
-      const beforeAfterPath = path.join(process.cwd(), 'attached_assets', 'before_and_after');
-      const files = await fs.readdir(beforeAfterPath);
+  app.use(router);
 
-      const imageSets = [];
-      const imageMap = new Map();
-
-      files.forEach(file => {
-        if (file.endsWith(' Large.jpeg') || file.endsWith(' Large.jpg')) {
-          const base = file.replace(/-[12] Large\.(jpeg|jpg)$/, '');
-          imageMap.set(base, (imageMap.get(base) || '') + file);
-        }
-      });
-
-      let id = 1;
-      imageMap.forEach((_, key) => {
-        const beforeFile = files.find(f => f.startsWith(key) && f.includes('-1 Large'));
-        const afterFile = files.find(f => f.startsWith(key) && f.includes('-2 Large'));
-
-        if (beforeFile && afterFile) {
-          imageSets.push({
-            id: id++,
-            title: key.replace(/_/g, ' '),
-            beforeImage: `/assets/before_and_after/${encodeURIComponent(beforeFile)}`,
-            afterImage: `/assets/before_and_after/${encodeURIComponent(afterFile)}`
-          });
-        }
-      });
-
-      res.json(imageSets);
-    } catch (error) {
-      console.error('Error fetching before/after images:', error);
-      res.status(500).json({ error: "Failed to fetch before/after images" });
-    }
-  });
-  app.post("/api/photos/scan", scanPhotos);
-  app.post("/api/photos/:id/like", togglePhotoLike);
 
   app.get('/api/photos/:category/:filename', async (req, res) => {
     try {
@@ -341,7 +172,6 @@ export function registerRoutes(app: Express): Server {
         }
       }
 
-
       const exists = await fs.access(imagePath).then(() => true).catch(() => false);
       if (!exists) {
         return res.status(404).send('Image not found');
@@ -359,39 +189,9 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
-  app.get("/api/sessions/:category", async (req, res) => {
-    try {
-      const { category } = req.params;
-      const categoryMappings: Record<string, string> = {
-        'Bat_Mitsva': 'bat_mitsva',
-        'Bar_Mitsva': 'bar_mitsva',
-        'Women': 'feminine',
-        'Kids': 'kids',
-        'Family': 'family',
-        'Big Family': 'big_family',
-        'Horses': 'horses',
-        'Modeling': 'modeling',
-        'Sweet 16': 'sweet_16',
-        'Purim': 'purim',
-        'Pregnancy': 'pregnancy',
-        'Yoga': 'yoga'
-      };
-
-      const folderName = categoryMappings[category] || category.toLowerCase().replace(' ', '_');
-      const dirPath = path.join(process.cwd(), 'attached_assets', 'facebook_posts_image', folderName); // Corrected path
-
-      const files = await fs.readdir(dirPath);
-      const imageFiles = files.filter(file => /\.(jpg|jpeg)$/i.test(file));
-      const images = imageFiles.map(file => ({
-        number: parseInt(file.replace(/\D/g, '')),
-        url: `/attached_assets/facebook_posts_image/${folderName}/${file}` // Corrected path
-      }));
-      res.json(images);
-    } catch (error) {
-      console.error('Error fetching session images:', error);
-      res.status(500).json({ error: "Failed to fetch session images" });
-    }
-  });
+  app.get("/api/before-after", getBeforeAfterSets);
+  app.post("/api/photos/scan", scanPhotos);
+  app.post("/api/photos/:id/like", togglePhotoLike);
 
   return httpServer;
 }
