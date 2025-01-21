@@ -230,8 +230,15 @@ export default function MySessions() {
       event.stopPropagation();
       setIsDialogOpen(false);
       
-      const fbUrl = getFacebookUrl(link.url);
-      window.open(fbUrl, '_blank', 'noopener,noreferrer');
+      // Find the matching link from sessionGroups
+      const group = sessionGroups.find(g => g.name === groupName);
+      if (group) {
+        const fbLink = group.links.find(l => l.number === link.number);
+        if (fbLink) {
+          const fbUrl = getFacebookUrl(fbLink.url);
+          window.open(fbUrl, '_blank', 'noopener,noreferrer');
+        }
+      }
       clickTimer.current = 0;
     } else {
       // Single click - show image
