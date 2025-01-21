@@ -1,3 +1,4 @@
+
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
@@ -52,10 +53,10 @@ const setupErrorHandler = (app: express.Express) => {
       status: err.status || err.statusCode,
       details: err.details || err.errors || 'No additional details'
     });
-
+    
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
-
+    
     res.status(status).json({
       message,
       status,
@@ -68,7 +69,7 @@ const initializeServer = async () => {
   try {
     const app = express();
     setupMiddleware(app);
-
+    
     const server = registerRoutes(app);
     setupErrorHandler(app);
 
@@ -80,8 +81,8 @@ const initializeServer = async () => {
       log("🛠️ Running in development mode");
     }
 
-    const PORT = parseInt(process.env.PORT || "3001", 10);
-
+    const PORT = parseInt(process.env.PORT || "5000", 10);
+    
     server.listen(PORT, "0.0.0.0", () => {
       log(`✨ Server running on port ${PORT}`);
       log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);

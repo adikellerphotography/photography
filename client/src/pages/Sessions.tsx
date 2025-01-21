@@ -17,19 +17,11 @@ interface SessionGroup {
   links: SessionLink[];
 }
 
-const fetchImages = async (category: string): Promise<SessionLink[]> => {
-    try {
-      const response = await fetch(`/api/sessions/${category}`);
-      if (!response.ok) {
-        console.warn(`Failed to fetch ${category} images:`, response.statusText);
-        return [];
-      }
-      return response.json();
-    } catch (error) {
-      console.warn(`Error fetching ${category} images:`, error);
-      return [];
-    }
-  }
+async function fetchImages(category: string): Promise<SessionLink[]> {
+  const response = await fetch(`/api/sessions/${category}`);
+  if (!response.ok) throw new Error('Failed to fetch images');
+  return response.json();
+}
 
 const sessionGroups: SessionGroup[] = [
   {
@@ -180,8 +172,7 @@ const categoryMappings: Record<string, string> = {
   'Sweet 16': 'sweet_16',
   'Purim': 'purim',
   'Pregnancy': 'pregnancy',
-  'Yoga': 'yoga',
-  'Women': 'feminine'
+  'Yoga': 'yoga'
 };
 
 export default function MySessions() {
@@ -190,6 +181,7 @@ export default function MySessions() {
   const [selectedImage, setSelectedImage] = useState<{ url: string; number: number; groupName: string } | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const isMobile = useIsMobile();
+  const clickTimer = useRef<number>(0);
   const [groups, setGroups] = useState<SessionGroup[]>([]);
 
   useEffect(() => {
@@ -214,18 +206,49 @@ export default function MySessions() {
     loadImages();
   }, []);
 
+  const getFacebookUrl = (url: string) => {
+    if (isMobile) {
+      const postId = url.split('pfbid')[1];
+      // For iOS
+      if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+        return `fb://profile/adi.keller.16/posts/pfbid${postId}`;
+      }
+      // For Android
+      if (/Android/.test(navigator.userAgent)) {
+        return `intent://facebook.com/adi.keller.16/posts/pfbid${postId}#Intent;package=com.facebook.katana;scheme=https;end`;
+      }
+    }
+    return url;
+  };
 
   const handleImageClick = (event: React.MouseEvent | React.TouchEvent, link: SessionLink, groupName: string) => {
     event.preventDefault();
-    setSelectedImage({ 
-      url: `/attached_assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
-      number: link.number, 
-      groupName 
-    });
-    setIsDialogOpen(true);
-  }
+    const now = Date.now();
 
-    return (
+    if (clickTimer.current && (now - clickTimer.current) < 300) {
+      // Double click/tap detected
+      clickTimer.current = 0;
+      setIsDialogOpen(false); // Close any open dialog
+      const fbUrl = getFacebookUrl(link.url);
+      window.open(fbUrl, '_blank', 'noopener,noreferrer');
+    } else {
+      // Single click
+      clickTimer.current = now;
+      setTimeout(() => {
+        if (clickTimer.current !== 0) {
+          setSelectedImage({ 
+            url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
+            number: link.number, 
+            groupName 
+          });
+          setIsDialogOpen(true);
+        }
+        clickTimer.current = 0;
+      }, 300);
+    }
+  };
+
+  return (
     <div className="min-h-screen pt-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -247,23 +270,7 @@ export default function MySessions() {
               </div>
               <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {group.links.map((link, idx) => {
-                  const [isInView, setIsInView] = useState(false);
-                  const imageRef = useRef<HTMLImageElement>(null);
-
-                  useEffect(() => {
-                    const observer = new IntersectionObserver(
-                      ([entry]) => setIsInView(entry.isIntersecting),
-                      { rootMargin: '50px' }
-                    );
-
-                    if (imageRef.current) {
-                      observer.observe(imageRef.current);
-                    }
-
-                    return () => observer.disconnect();
-                  }, []);
-
-                  const shouldLoad = isInView || idx < 3;
+                  const shouldLoad = idx < 3 || document.visibilityState === 'visible';
                   return (
                     <div
                       key={link.url}
@@ -277,20 +284,14 @@ export default function MySessions() {
                       {["Bat Mitsva", "Bar Mitsva", "Horses", "Kids", "Family", "Big Family", "Sweet 16", "Purim", "Pregnancy", "Feminine", "Yoga", "Modeling"].includes(group.name) ? (
                         <div className="relative w-full pb-[100%]">
                           <img 
-                            ref={imageRef}
-                            src={shouldLoad ? `/attached_assets/facebook_posts_image/${categoryMappings[group.name]}/${link.number}.jpg` : ''}
+                            src={`/assets/facebook_posts_image/${categoryMappings[group.name]}/${link.number}.jpg`}
                             alt={`${group.name} session ${link.number}`}
-                            className={`absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-in-out 
-                              ${isInView ? 'opacity-100' : 'opacity-0'}`}
+                            className="absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-in-out"
                             loading={idx < 6 ? "eager" : "lazy"}
                             style={{ 
                               backgroundColor: '#f3f4f6',
                               objectFit: 'cover',
                               objectPosition: 'center'
-                            }}
-                            onLoad={(e) => {
-                              const img = e.target as HTMLImageElement;
-                              img.style.opacity = '1';
                             }}
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
@@ -309,8 +310,8 @@ export default function MySessions() {
                       )}
                     </motion.div>
                   </div>
-                  );
-                })}
+                );
+              })}
               </div>
             </div>
           ))}

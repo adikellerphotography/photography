@@ -1,3 +1,4 @@
+
 import path from 'path';
 import fs from 'fs/promises';
 import { db } from "@db";
@@ -6,20 +7,22 @@ import { sql } from 'drizzle-orm';
 
 export async function scanImages() {
   try {
-    const assetsPath = path.join(process.cwd(), 'attached_assets', 'facebook_posts_image');
+    const assetsPath = path.join(process.cwd(), 'attached_assets');
+    const facebookPostsPath = path.join(assetsPath, 'facebook_posts_image');
+    
     console.log('\n=== Starting Image Scan ===');
-    console.log('Assets path:', assetsPath);
+    console.log('Assets path:', facebookPostsPath);
 
     // Clear existing records
     await db.delete(photos);
     await db.delete(categories);
-
-    // Get all subdirectories
-    const dirs = await fs.readdir(assetsPath);
+    
+    // Get all subdirectories in facebook_posts_image
+    const dirs = await fs.readdir(facebookPostsPath);
     const categories_map: Record<string, string> = {
       'bat_mitsva': 'Bat Mitsva',
       'bar_mitsva': 'Bar Mitsva',
-      'feminine': 'Feminine',
+      'feminine': 'Women',
       'kids': 'Kids',
       'family': 'Family',
       'big_family': 'Big Family',
@@ -35,11 +38,11 @@ export async function scanImages() {
 
     // Insert categories first
     for (const [index, dir] of dirs.entries()) {
-      if ((await fs.stat(path.join(assetsPath, dir))).isDirectory()) {
+      if ((await fs.stat(path.join(facebookPostsPath, dir))).isDirectory()) {
         const displayName = categories_map[dir] || dir.split('_').map(word => 
           word.charAt(0).toUpperCase() + word.slice(1)
         ).join(' ');
-
+        
         await db.insert(categories).values({
           name: displayName,
           displayOrder: index + 1,
@@ -74,16 +77,16 @@ export async function scanImages() {
               id,
               title: `${displayName} Portrait Session`,
               category: displayName,
-              imageUrl: `/attached_assets/facebook_posts_image/${categoryName}/${imageFile}`,
-              thumbnailUrl: `/attached_assets/facebook_posts_image/${categoryName}/${imageFile}`,
+              imageUrl: `/assets/facebook_posts_image/${categoryName}/${imageFile}`,
+              thumbnailUrl: `/assets/facebook_posts_image/${categoryName}/${imageFile}`,
               displayOrder: id
             }).onConflictDoUpdate({
               target: [photos.id],
               set: { 
                 title: `${displayName} Portrait Session`,
                 category: displayName,
-                imageUrl: `/attached_assets/facebook_posts_image/${categoryName}/${imageFile}`,
-                thumbnailUrl: `/attached_assets/facebook_posts_image/${categoryName}/${imageFile}`,
+                imageUrl: `/assets/facebook_posts_image/${categoryName}/${imageFile}`,
+                thumbnailUrl: `/assets/facebook_posts_image/${categoryName}/${imageFile}`,
                 displayOrder: id
               }
             });
@@ -97,7 +100,7 @@ export async function scanImages() {
     }
 
     for (const dir of dirs) {
-      const dirPath = path.join(assetsPath, dir);
+      const dirPath = path.join(facebookPostsPath, dir);
       if ((await fs.stat(dirPath)).isDirectory()) {
         console.log(`\nProcessing directory: ${dir}`);
         await processDirectory(dirPath, dir);
