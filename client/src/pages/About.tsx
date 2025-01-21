@@ -21,7 +21,7 @@ export default function About() {
           {/* Portrait Image Section */}
           <div className="mb-12 w-full max-w-[300px] mx-auto">
             <AspectRatio ratio={1}>
-              <div className="relative w-full h-full overflow-hidden rounded-full">
+              <div className="relative w-full h-full overflow-hidden rounded-full bg-muted/10">
                 <img
                   src="/assets/IMG_1133.jpg"
                   alt="Profile"
@@ -29,7 +29,17 @@ export default function About() {
                   width={300}
                   height={300}
                   loading="eager"
+                  decoding="sync"
                   fetchPriority="high"
+                  style={{
+                    willChange: 'transform',
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                  }}
+                />
+                <div 
+                  className="absolute inset-0 bg-gradient-to-b from-transparent to-background/5 mix-blend-overlay"
+                  aria-hidden="true"
                 />
               </div>
             </AspectRatio>
