@@ -117,7 +117,9 @@ export default function Gallery() {
   };
 
   // Define the allowed categories in the correct order
-  const allowedCategories = ["Bat Mitsva", "Family", "Horses", "Modeling", "Women", "Yoga", "Kids"];
+  const allowedCategoriesEn = ["Bat Mitsva", "Family", "Horses", "Modeling", "Women", "Yoga", "Kids"];
+  const allowedCategoriesHe = ["בת מצווה", "משפחה", "סוסים", "דוגמנות", "נשים", "יוגה", "ילדים"];
+  const allowedCategories = language === 'he' ? allowedCategoriesHe : allowedCategoriesEn;
 
   // Filter and sort categories, ensuring uniqueness
   const processedCategories = categories
