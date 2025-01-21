@@ -228,12 +228,15 @@ export default function MySessions() {
     if (clickTimer.current && (now - clickTimer.current) < 300) {
       // Double click/tap detected
       clickTimer.current = 0;
+      setIsDialogOpen(false); // Close any open dialog
       const fbUrl = getFacebookUrl(link.url);
-      if (isMobile) {
-        window.location.href = fbUrl;
-      } else {
-        window.open(fbUrl, '_blank');
-      }
+      setTimeout(() => {
+        if (isMobile) {
+          window.location.href = fbUrl;
+        } else {
+          window.open(fbUrl, '_blank', 'noopener,noreferrer');
+        }
+      }, 50);
     } else {
       // Single click
       clickTimer.current = now;
