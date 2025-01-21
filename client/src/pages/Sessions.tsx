@@ -246,6 +246,11 @@ export default function MySessions() {
         clickTimer.current = 0;
       }, 300);
     }
+
+    // Reset timer after reaching delay
+    setTimeout(() => {
+      clickTimer.current = 0;
+    }, 300);
   };
 
   return (
