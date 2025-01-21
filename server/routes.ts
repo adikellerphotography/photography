@@ -377,6 +377,8 @@ export function registerRoutes(app: Express): Server {
         'Yoga': 'yoga'
       };
 
+      const folderName = categoryMappings[category] || category.toLowerCase().replace(' ', '_');
+      
       const getSessionData = async (category: string) => {
         try {
           const imageFiles = await fs.readdir(path.join(process.cwd(), 'attached_assets/facebook_posts_image', folderName));
@@ -393,8 +395,6 @@ export function registerRoutes(app: Express): Server {
           return [];
         }
       };
-
-      const data = await getSessionData(category);
 
       const folderName = categoryMappings[category] || category.toLowerCase().replace(' ', '_');
       const data = await getSessionData(category);
