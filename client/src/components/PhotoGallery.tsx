@@ -307,25 +307,28 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
           >
             <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
               <div className="relative w-full h-full overflow-hidden bg-muted">
-                <img
-                  key={`${photo.id}-${photo.imageUrl}`}
-                  src={getImagePath(photo)}
-                  alt={photo.title || ""}
-                  className="absolute inset-0 w-full h-full transition-transform duration-500 group-hover:scale-110 object-cover object-center"
-                  loading={index < 12 ? "eager" : "lazy"}
-                  decoding={index < 12 ? "sync" : "async"}
-                  fetchPriority={index < 6 ? "high" : "auto"}
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  onError={(e) => {
-                    const img = e.target as HTMLImageElement;
-                    console.error('Image load error:', img.src);
-                    handleImageError(img.src);
-                  }}
-                  style={{
-                    backgroundColor: '#f3f4f6',
-                    minHeight: '200px'
-                  }}
-                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <img
+                    key={`${photo.id}-${photo.imageUrl}`}
+                    src={getImagePath(photo)}
+                    alt={photo.title || ""}
+                    className="w-full h-full transition-transform duration-500 group-hover:scale-110 object-cover"
+                    loading={index < 12 ? "eager" : "lazy"}
+                    decoding={index < 12 ? "sync" : "async"}
+                    fetchPriority={index < 6 ? "high" : "auto"}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    onError={(e) => {
+                      const img = e.target as HTMLImageElement;
+                      console.error('Image load error:', img.src);
+                      handleImageError(img.src);
+                    }}
+                    style={{
+                      backgroundColor: '#f3f4f6',
+                      minHeight: '200px',
+                      objectPosition: '50% 50%'
+                    }}
+                  />
+                </div>
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
               </div>
