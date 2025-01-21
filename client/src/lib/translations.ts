@@ -9,11 +9,11 @@ export const translations = {
       he: "שם מלא"
     },
     phonePlaceholder: {
-      en: "Your Phone",
+      en: "Phone Number",
       he: "מספר טלפון"
     },
     messagePlaceholder: {
-      en: "Message",
+      en: "Your Message",
       he: "הודעה"
     },
     send: {
