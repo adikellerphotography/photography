@@ -311,7 +311,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   key={`${photo.id}-${photo.imageUrl}`}
                   src={getImagePath(photo)}
                   alt={photo.title || ""}
-                  className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                  className={`object-cover w-full h-full transition-transform duration-500 group-hover:scale-110 ${photo.imageUrl.includes("vertical") ? "object-[50%_50%]" : ""}`}
                   loading={index < 12 ? "eager" : "lazy"}
                   decoding={index < 12 ? "sync" : "async"}
                   fetchPriority={index < 6 ? "high" : "auto"}
