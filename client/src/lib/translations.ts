@@ -158,6 +158,7 @@ export const translations = {
       noPhotos: "לא נמצאו תמונות בקטגוריה זו",
       loading: "טוען תמונות נוספות...",
       photoGalleries: "גלריית תמונות",
+      photoGallery: "גלריית תמונות"
     },
     common: {
       loading: "Loading...",
