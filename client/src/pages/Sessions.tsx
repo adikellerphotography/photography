@@ -224,31 +224,37 @@ export default function MySessions() {
   const handleImageClick = (event: React.MouseEvent | React.TouchEvent, link: SessionLink, groupName: string) => {
     event.preventDefault();
     const now = Date.now();
+    const doubleClickDelay = 250; // Reduced from 300ms for faster response
 
-    if (clickTimer.current && (now - clickTimer.current) < 300) {
-      // Double click - open Facebook post
-      clearTimeout(clickTimer.current);
-      clickTimer.current = 0;
-      setIsDialogOpen(false);
-      
-      // Find matching Facebook post from sessionGroups
+    if (clickTimer.current && (now - clickTimer.current) < doubleClickDelay) {
+      // Double click detected
       const currentGroup = sessionGroups.find(group => group.name === groupName);
       const fbPost = currentGroup?.links.find(l => l.number === link.number);
       
       if (fbPost?.url) {
-        const fbUrl = getFacebookUrl(fbPost.url);
-        window.open(fbUrl, '_blank', 'noopener,noreferrer');
+        setIsDialogOpen(false); // Close the image dialog first
+        setTimeout(() => {
+          const fbUrl = getFacebookUrl(fbPost.url);
+          window.open(fbUrl, '_blank', 'noopener,noreferrer');
+        }, 50);
       }
+      clickTimer.current = 0;
     } else {
-      // First click - start timer and show image
+      // First click
       clickTimer.current = now;
       
+      // Show image preview
       setSelectedImage({ 
         url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
         number: link.number, 
         groupName 
       });
       setIsDialogOpen(true);
+
+      // Reset timer after delay
+      setTimeout(() => {
+        clickTimer.current = 0;
+      }, doubleClickDelay);
     }
   };
 
