@@ -228,7 +228,9 @@ export default function MySessions() {
     if (clickTimer.current && (now - clickTimer.current) < 300) {
       // Double click/tap detected
       if (isMobile) {
-        window.open(link.url, '_blank', 'noopener,noreferrer');
+        // For mobile, try to open in Facebook app
+        const fbUrl = getFacebookUrl(link.url);
+        window.location.href = fbUrl;
       } else {
         window.open(link.url, '_blank', 'noopener,noreferrer');
       }
@@ -240,7 +242,7 @@ export default function MySessions() {
         setTimeout(() => {
           if (clickTimer.current !== 0) {
             setSelectedImage({ 
-              url: `/assets/${categoryMappings[groupName] || groupName.toLowerCase().replace(' ', '_')}/${String(link.number).padStart(3, '0')}.jpeg`,
+              url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
               number: link.number, 
               groupName 
             });
@@ -323,7 +325,7 @@ export default function MySessions() {
       </motion.div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-[90vw] max-h-[90vh] !p-0 border-none bg-transparent shadow-none" onInteractOutside={() => setIsDialogOpen(false)}>
+        <DialogContent className="w-screen h-screen !p-0 border-none bg-black/90 shadow-none" onInteractOutside={() => setIsDialogOpen(false)}>
           {selectedImage && (
             <motion.div
               initial={{ opacity: 0, scale: 0.98 }}
@@ -336,10 +338,9 @@ export default function MySessions() {
               <img
                 src={selectedImage.url}
                 alt={`${selectedImage.groupName} session ${selectedImage.number}`}
-                className="max-w-full max-h-[80vh] object-contain rounded-lg"
+                className="w-full h-full object-contain"
                 loading="eager"
                 decoding="async"
-                fetchPriority="high"
               />
             </motion.div>
           )}
