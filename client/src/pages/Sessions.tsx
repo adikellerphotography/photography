@@ -226,36 +226,34 @@ export default function MySessions() {
     const now = Date.now();
 
     if (clickTimer.current && (now - clickTimer.current) < 300) {
-      // Double click - find and open Facebook post
+      // Double click detected
       event.stopPropagation();
       clickTimer.current = 0;
       setIsDialogOpen(false);
 
+      // Find matching Facebook post URL
       const group = sessionGroups.find(g => g.name === groupName);
       const fbLink = group?.links.find(l => l.number === link.number);
       
       if (fbLink?.url) {
         const fbUrl = getFacebookUrl(fbLink.url);
-        window.open(fbUrl, '_blank', 'noopener,noreferrer');
-      } else {
-        console.warn(`No Facebook URL found for ${groupName} image #${link.number}`);
+        window.open(fbUrl, '_blank'); 
       }
-      return;
+    } else {
+      // First click - start timer and show image
+      clickTimer.current = now;
+      
+      setTimeout(() => {
+        if (clickTimer.current === now) {
+          setSelectedImage({ 
+            url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
+            number: link.number, 
+            groupName 
+          });
+          setIsDialogOpen(true);
+        }
+      }, 250);
     }
-
-    // Single click - show image
-    clickTimer.current = now;
-    
-    setTimeout(() => {
-      if (clickTimer.current === now) {
-        setSelectedImage({ 
-          url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
-          number: link.number, 
-          groupName 
-        });
-        setIsDialogOpen(true);
-      }
-    }, 150);
   };
 
   return (
