@@ -223,23 +223,27 @@ export default function MySessions() {
 
   const handleImageClick = (event: React.MouseEvent | React.TouchEvent, link: SessionLink, groupName: string) => {
     event.preventDefault();
-    const now = Date.now();
+    event.stopPropagation();
     
-    if (clickTimer.current && (now - clickTimer.current) < 300) {
-      // Double click - open Facebook post
-      event.stopPropagation();
+    const now = Date.now();
+    const doubleClickDelay = 250; // Shorter delay for better response
+    
+    if (clickTimer.current && (now - clickTimer.current) < doubleClickDelay) {
+      // Double click detected
       setIsDialogOpen(false);
-      
-      // Find the matching link from sessionGroups
-      const group = sessionGroups.find(g => g.name === groupName);
-      if (group) {
-        const fbLink = group.links.find(l => l.number === link.number);
-        if (fbLink) {
-          const fbUrl = getFacebookUrl(fbLink.url);
-          window.open(fbUrl, '_blank', 'noopener,noreferrer');
-        }
-      }
       clickTimer.current = 0;
+      
+      setTimeout(() => {
+        // Find the exact matching Facebook post
+        const group = sessionGroups.find(g => g.name === groupName);
+        if (group) {
+          const fbLink = group.links.find(l => l.number === link.number);
+          if (fbLink?.url) {
+            const fbUrl = getFacebookUrl(fbLink.url);
+            window.open(fbUrl, '_blank', 'noopener,noreferrer');
+          }
+        }
+      }, 50);
     } else {
       // Single click - show image
       clickTimer.current = now;
