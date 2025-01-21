@@ -161,18 +161,18 @@ const capitalizeWords = (str: string) => {
 };
 
 const categoryMappings: Record<string, string> = {
-  'kids': 'facebook_posts_image/kids',
-  'Bat Mitsva': 'facebook_posts_image/bat_mitsva',
+  'Kids': 'facebook_posts_image/kids',
+  'Bat Mitsva': 'facebook_posts_image/bat_mitsva', 
+  'Bar Mitsva': 'facebook_posts_image/bar_mitsva',
   'Family': 'facebook_posts_image/family',
+  'Big Family': 'facebook_posts_image/big_family',
   'Horses': 'facebook_posts_image/horses',
   'Modeling': 'facebook_posts_image/modeling',
   'Women': 'facebook_posts_image/feminine',
-  'Yoga': 'facebook_posts_image/yoga',
-  'Bar Mitsva': 'facebook_posts_image/bar_mitsva',
-  'Big Family': 'facebook_posts_image/big_family',
   'Sweet 16': 'facebook_posts_image/sweet_16',
   'Purim': 'facebook_posts_image/purim',
-  'Pregnancy': 'facebook_posts_image/pregnancy'
+  'Pregnancy': 'facebook_posts_image/pregnancy',
+  'Yoga': 'facebook_posts_image/yoga'
 };
 
 export default function MySessions() {
