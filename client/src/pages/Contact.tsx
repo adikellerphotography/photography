@@ -51,23 +51,23 @@ export default function Contact() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <Card className="bg-muted/50">
               <CardContent className="pt-6 space-y-4">
-                <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <span className="text-xl font-semibold">Adi Keller</span>
+                <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse justify-start' : ''}`}>
+                  <span className="text-xl font-semibold">{isRTL ? 'עדי קלר' : 'Adi Keller'}</span>
                 </div>
                 
-                <a href="tel:054-5667827" className={`flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <a href="tel:054-5667827" className={`flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors ${isRTL ? 'flex-row-reverse justify-start' : ''}`}>
                   <Phone className="w-5 h-5" />
                   <span>054-5667827</span>
                 </a>
                 
-                <a href="mailto:adi.keller.photography@gmail.com" className={`flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <a href="mailto:adi.keller.photography@gmail.com" className={`flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors ${isRTL ? 'flex-row-reverse justify-start' : ''}`}>
                   <Mail className="w-5 h-5" />
                   <span>adi.keller.photography@gmail.com</span>
                 </a>
                 
-                <div className={`flex items-center gap-3 text-muted-foreground ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className={`flex items-center gap-3 text-muted-foreground ${isRTL ? 'flex-row-reverse justify-start' : ''}`}>
                   <MapPin className="w-5 h-5" />
-                  <span>Netanya, Israel</span>
+                  <span>{isRTL ? 'נתניה, ישראל' : 'Netanya, Israel'}</span>
                   <IL className="w-6 h-6" />
                 </div>
               </CardContent>
@@ -77,26 +77,26 @@ export default function Contact() {
               <CardContent className="pt-6">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <Input
-                    placeholder="Your Name"
+                    placeholder={t("contact.namePlaceholder")}
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
                     required
-                    className={isRTL ? 'text-right' : ''}
+                    className={`${isRTL ? 'text-right placeholder:text-right' : ''}`}
                   />
                   <Input
-                    placeholder="Your Phone"
+                    placeholder={t("contact.phonePlaceholder")}
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
                     required
-                    className={isRTL ? 'text-right' : ''}
+                    className={`${isRTL ? 'text-right placeholder:text-right' : ''}`}
                   />
                   <Textarea
-                    placeholder="Your Message"
+                    placeholder={t("contact.messagePlaceholder")}
                     value={formData.message}
                     onChange={(e) => setFormData({...formData, message: e.target.value})}
                     required
-                    className={`min-h-[120px] ${isRTL ? 'text-right' : ''}`}
+                    className={`min-h-[120px] ${isRTL ? 'text-right placeholder:text-right' : ''}`}
                   />
                   <Button type="submit" className={`w-full bg-gray-100 hover:bg-gray-200 text-gray-800 ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <Send className="w-4 h-4 mx-2" />

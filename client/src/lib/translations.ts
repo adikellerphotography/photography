@@ -2,11 +2,11 @@ export const translations = {
   contact: {
     title: {
       en: "Contact Me",
-      he: "צור קשר"
+      he: "צרו קשר"
     },
     namePlaceholder: {
       en: "Your Name",
-      he: "השם שלך"
+      he: "שם מלא"
     },
     phonePlaceholder: {
       en: "Phone Number",
@@ -14,7 +14,7 @@ export const translations = {
     },
     messagePlaceholder: {
       en: "Your Message",
-      he: "ההודעה שלך"
+      he: "הודעה"
     },
     send: {
       en: "Send Message",
