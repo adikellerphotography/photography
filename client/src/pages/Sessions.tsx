@@ -181,7 +181,7 @@ export default function MySessions() {
   const [selectedImage, setSelectedImage] = useState<{ url: string; number: number; groupName: string } | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const isMobile = useIsMobile();
-  const clickTimer = useRef<number>(0);
+  //const clickTimer = useRef<number>(0); //removed
   const [groups, setGroups] = useState<SessionGroup[]>([]);
 
   useEffect(() => {
@@ -206,48 +206,16 @@ export default function MySessions() {
     loadImages();
   }, []);
 
-  const getFacebookUrl = (url: string) => {
-    if (isMobile) {
-      const postId = url.split('pfbid')[1];
-      if (postId) {
-        // For iOS
-        if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
-          return `fb://post/pfbid${postId}`;
-        }
-        // For Android
-        if (/Android/.test(navigator.userAgent)) {
-          return `intent://facebook.com/adi.keller.16/posts/pfbid${postId}#Intent;package=com.facebook.katana;scheme=https;end`;
-        }
-      }
-    }
-    return url;
-  };
 
   const handleImageClick = (event: React.MouseEvent | React.TouchEvent, link: SessionLink, groupName: string) => {
     event.preventDefault();
-    const now = Date.now();
-    
-    if (clickTimer.current && (now - clickTimer.current) < 300) {
-      // Double click - open Facebook post
-      event.stopPropagation();
-      clickTimer.current = 0;
-      setIsDialogOpen(false);
-      
-      // Get the appropriate URL based on device
-      const fbUrl = getFacebookUrl(link.url);
-      window.open(fbUrl, '_blank', 'noopener,noreferrer');
-      return;
-    }
-
-    // Single click - show image
-    clickTimer.current = now;
-      setSelectedImage({ 
-        url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
-        number: link.number, 
-        groupName 
-      });
-      setIsDialogOpen(true);
-    }
+    setSelectedImage({ 
+      url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
+      number: link.number, 
+      groupName 
+    });
+    setIsDialogOpen(true);
+  }
 
     return (
     <div className="min-h-screen pt-8">
