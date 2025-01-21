@@ -226,24 +226,20 @@ export default function MySessions() {
     event.stopPropagation();
     
     const now = Date.now();
-    const doubleClickDelay = 250; // Shorter delay for better response
     
-    if (clickTimer.current && (now - clickTimer.current) < doubleClickDelay) {
-      // Double click detected
-      setIsDialogOpen(false);
+    if (clickTimer.current && (now - clickTimer.current) < 300) {
+      // Double click - open Facebook post directly
       clickTimer.current = 0;
+      setIsDialogOpen(false);
       
-      setTimeout(() => {
-        // Find the exact matching Facebook post
-        const group = sessionGroups.find(g => g.name === groupName);
-        if (group) {
-          const fbLink = group.links.find(l => l.number === link.number);
-          if (fbLink?.url) {
-            const fbUrl = getFacebookUrl(fbLink.url);
-            window.open(fbUrl, '_blank', 'noopener,noreferrer');
-          }
-        }
-      }, 50);
+      const group = sessionGroups.find(g => g.name === groupName);
+      if (!group) return;
+      
+      const fbLink = group.links.find(l => l.number === link.number);
+      if (!fbLink?.url) return;
+      
+      const fbUrl = getFacebookUrl(fbLink.url);
+      window.open(fbUrl, '_blank', 'noopener,noreferrer');
     } else {
       // Single click - show image
       clickTimer.current = now;
