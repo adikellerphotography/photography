@@ -1,65 +1,29 @@
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
-import { useLanguage } from "@/hooks/use-language";
+import { useState, useRef, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useLanguage } from "@/hooks/use-language";
+import { SiFacebook } from "react-icons/si";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useQuery } from "@tanstack/react-query";
 
-interface FacebookPost {
-  imageId: number;
-  webUrl: string;
-  appUrl: string;
-  category: string;
+interface SessionLink {
+  url: string;
+  number: number;
 }
 
-interface ImageMapping {
-  id: number;
-  imagePath: string;
-  category: string;
-  facebookPost: FacebookPost;
+interface SessionGroup {
+  name: string;
+  links: SessionLink[];
 }
 
-const useImageMapping = () => {
-  const isMobile = useIsMobile();
+async function fetchImages(category: string): Promise<SessionLink[]> {
+  const response = await fetch(`/api/sessions/${category}`);
+  if (!response.ok) throw new Error('Failed to fetch images');
+  return response.json();
+}
 
-  const getImagePath = (category: string, id: number) => {
-    return `/assets/facebook_posts_image/${category}/${id}.jpg`;
-  };
-
-  const getFacebookUrl = (url: string) => {
-    if (isMobile) {
-      // Convert web URL to mobile app URL
-      return url.replace('https://www.facebook.com/', 'fb://');
-    }
-    return url;
-  };
-
-  return { getImagePath, getFacebookUrl };
-};
-
-export default function Sessions() {
-  const { t } = useTranslation();
-  const { language } = useLanguage();
-  const { getImagePath, getFacebookUrl } = useImageMapping();
-  const [selectedImage, setSelectedImage] = useState<ImageMapping | null>(null);
-  const [clickCount, setClickCount] = useState(0);
-  const [lastClickTime, setLastClickTime] = useState(0);
-
-  const handleImageClick = (image: ImageMapping) => {
-    const currentTime = Date.now();
-
-    if (currentTime - lastClickTime < 300) {
-      // Double click detected
-      window.open(getFacebookUrl(image.facebookPost.webUrl), '_blank');
-      setClickCount(0);
-    } else {
-      // Single click
-      setSelectedImage(selectedImage?.id === image.id ? null : image);
-    }
-
-    setLastClickTime(currentTime);
-  };
-
-  const sessionGroups: any[] = [
+const sessionGroups: SessionGroup[] = [
   {
     name: "Bat Mitsva",
     links: [
@@ -90,98 +54,261 @@ export default function Sessions() {
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0fSujz5LcmcmkihsBURYp51o1kqYiCRnkLREdCC86fMnfMVsbTbLTsUTfqqXUacL7l", number: 6 },
     ]
   },
-  // ...rest of sessionGroups
+  {
+    name: "Kids",
+    links: [
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02Nwnu3uaiwq6ex2srEYMB7t5CegtPsWZDR4SqHrfSk6ieBsS98Ck4EbugqR3nAa7fl", number: 1 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0qg93Ny4PfyuBULd6nYLfZGT764V2YDH7ygTdL2JLpfhcLzNosVQuNwiFfYpftW1wl", number: 2 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid027UxY2N4PLSv9rzMZhjoACbHoZ2ZfiPtRSQZDDNkHNvZ4uALrwhX23hq2TJpE4VYfl", number: 3 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02fwxbmzqc8CjW3BBrg5va22MyQ1J8JT73eA4nZo6q4TNA5yWxxiXzAKsaKyGAcggQl", number: 4 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid023t3G9ttdCqMkg9z515ofwKnSXFxjzzTQaHJtRAzhn1VvR7VmzEWSj5fCSwBJiXXSl", number: 5 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid031tpdprkELq9rDTgSHso6CTPYmS2pTtXRyRUNsorBtCzK11aSdqRsrykcc8TLPpnkl", number: 6 },
+    ]
+  },
+  {
+    name: "Family",
+    links: [
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0wd8m6RuYEUTkqFDd96s5iyhoXrpj5ig3e9zRgiAfzVFau1EyaWBpFjuAGuitxnX6l", number: 1 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0piDxpSGtBvrFWGZbPmo71ye9uq25AhyaT2Mwn2MR4riavuRS9UMUswcoYbNPei83l", number: 2 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0ekinYjEey9fzvANpDLsuWZcoa71UCaqpqTNLYQAZQP45kvYYPeGLJ2xReU8Pu4iil", number: 3 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid037orHnCjEWhAm9pPUSrAdGYsh6HS16gvNKKoMUa2wdXR8mjGWTHMPYRdAU1ZzisZAl", number: 4 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0jMrCtTKPmBshGx28yAj28CU5DPT9giv1HfKvNnK8hyWJdaxUrDrq9XRhmbxxjnjAl", number: 5 },
+    ]
+  },
+  {
+    name: "Big Family",
+    links: [
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0stTjcLWgM9Qbkks3rYeWVhcPgWogPGPmSXtGCiXHWoP998EnuSapX2MFTuHDGgRal", number: 1 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid022g32LkTzHEYwrhq13Qv9GY82byWc6UCxyXdJX1RUC2vBvsLHjAmKxkZ63cJs4fPFl", number: 2 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0ytBnTdb6GznsuVir2CagsMMCoQN237uLzt4EtqzEpYWUafpwvi4YtaAU2TU8uT4Wl", number: 3 },
+    ]
+  },
+  {
+    name: "Sweet 16",
+    links: [
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02tm8jm9owgKyvnif7niCSJY9Wmz2JaBV5BK55mwd3TDF9d83en8soatoUgXMAzL5sl", number: 1 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0ZiGmqTzjvDM5qUkm6jzojReM6YU1ipHB9mjTGCJeFvj9eqgzcTwTNBzgPku19Nql", number: 2 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0LH9kU9n1oiqrknNxaRYuzzXx6KaxcVVotgVTdvoAeovxoe3jdNgHMtfu62wY4GjFl", number: 3 },
+    ]
+  },
+  {
+    name: "Purim",
+    links: [
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0hZE4AJHJPA4sXxhZ26NhdLCm2VQS91RT5b5yFzTQvZfeoaZ9CVoSWQxBJbb33Wadl", number: 1 },
+    ]
+  },
+  {
+    name: "Pregnancy",
+    links: [
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02nmjh4TzrXw83g5V4iwrfG7FZCShHrC3UCK7Egb9JbjBB5tC3Pc9rezRptHkgJYf2l", number: 1 },
+    ]
+  },
+  {
+    name: "Feminine",
+    links: [
+      { url: "https://www.facebook.com/dalia.zvikler/posts/pfbid02waJ1fwPEfTadroXp2HYtqgruo4ucaZRQf9YexZDiXy36YGMWujErcx7rqkSpg9EFl", number: 1 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0GJcFw5tgBJxcEwmc1DF7wgoAQRkti5ibTr5eQYGNGEgXjKHxx7khJsmm1Shsy4p2l", number: 2 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0YP9u8uDKNCRjPp77FFHGaKukJrhHteo5VRuKPCMhvFZEc1BkS4U3zpfJssfS1STHl", number: 3 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02Yty5B1MdP1cLDi8FmYc3DjaN6AdUos3mXb6HqUHgNPM3vJ8JQiK6kUgPLoMgySmzl", number: 4 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02jvW4sq5quwNVNiPWu9ZgdqPMtFEXBx6auUiPDYRh8QLnD5RdQ2Ng9cTE6ajK3pETl", number: 5 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0q7A7mm8TJghcmzx5nALMBvqTL5tE9BYwY5W3jLCbw52YNCCTLBYjY7GVRtYHmj66l", number: 6 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0LvW3PTtwJsG5Wn3HuUYjiSTHCHbbFpDLBCWJgocm3fdAEZe6cGwLANEuREujYwb8l", number: 7 },
+    ]
+  },
+  {
+    name: "Yoga",
+    links: [
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0Jz1q6iX56EC2GrS5UdLy4yx78FsMXTNa3zouW6VjqKNKZx8dj76ExhGargh6ZEAWl", number: 1 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0211iJ9ERsJBzKZ65EryzvgVxMqBr1TQe13MjNooMyfs1v9eok7dJnuK51WFDuxjkdl", number: 2 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02jCnQeQmwGzabGgHDPvY1jzAR3hHfcVw7f6YS8aCZbvt9kE8asVZ9n1j59mWnk2cRl", number: 3 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02RPmKG96dzBT6A1JByg5yHh9BrtZBMdDyTyAvmkEFaV2hzAEVnWQSKWZAkQyE1HgFl", number: 4 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02qPsDJnLukcsKha1Buq3tYiyeR8BadaWFDw21XhP3t4bhorZwShmxsk5nf5ENa6Jtl", number: 5 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0WAHZRkdFtfj6ZFiW4rkTGWsX4jkwCiFcrn45YeQKGHfKXpJfTP2SZyJUGUR5tGKal", number: 6 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid027axv5WZzQ2hgVZLQqK1ST4aFKWBs33EGLpcTBmEHggEvHStbshq2ShUCTAY52zSPl", number: 7 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0Me11RF4CFaUKbSQ5W9K5RyAx8gAmBYyFUrZPhKHZ2Erdg2NDcVwP8bVR69PFXotHl", number: 8 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02nHZUJBH11yejgdNQB2VyxCuzjnqYhFfnCjwbQM3YiC68dYBqkSkcFsKS7gKFNPZSl", number: 9 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0YzeWYmW565icpJ3672rfMQSTss6qyVkqg62cDQ1gyyNbVn8fokwKmy4rDCdm5918l", number: 10 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02A7k618aBxw81FCHRZRc2wvsL7VU2LyJuZ61iMpi1F8NKz1ePRCxqmDV4tVZ3QXtBl", number: 11 },
+    ]
+  },
+  {
+    name: "Modeling",
+    links: [
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0wR7zz8tL7QgnyTrvCaLeEV6DC1obhxQECXukNRfPpD3LN4FUXAKhQPUqgBweXYa4l", number: 1 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02FiXxTs9vwENBvpemXFrP3CtrB9uezNBfDwQJ9wf718Np19Q7zNgWNX1a5dv89p9sl", number: 2 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid037PVmR1RVV5NEVAw3fB5uCF5ChRvkebiiZMtEtGMxSnBphV1BcLubqRRkYDEtk9ocl", number: 3 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02FLoTHXxnC1BXDwgmVgq2M51aWruyAYAGmD9DdKSh3KgigsKCCpYtuZsX8dZnRYX6l", number: 4 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0WQbN1Y8qMBDcGwVVErv87ydMq2qBuDMY1QWAcrtzSfZdcVRrx81cr6LrMM4HmQ2zl", number: 5 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0378Rg2GuhDCxdJ2TtaNhmtgsRiH3hZ8obejJsFKs8hVGFGDfMqw4WhCA5yhqQ7TKjl", number: 6 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0aT4qTRuriTmHNfLYceWubeLYYbHwFQkR7P7Q8hrJCrViXeWJCjLNGauFcLdKSGqNl", number: 7 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02QP1XK73tXW2MHiQvncaUgHmPvA9y1P29S87P2eKXwgjPABowUAFtE9atbDTXi8xul", number: 8 },
+    ]
+  },
+  {
+    name: "Bar Mitsva",
+    links: [
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02xdnAC3JMLTsdV5tkycYqmv2fxUbeXHZRhaJgi41QwCTf4FiiLECQ9WknNrvawnSMl", number: 1 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0ADeC9JEBXd6Xrgqk43sC6WxS6AnJmNizZgLgrtNymyhMrbK98eMxao6UpvYYXawfl", number: 2 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0MUVxYr2uKdwKXyqMLqxWaFtQGBztiAdZLKKMSFnmni8ZWzScbL9S4o54aKmTFJfXl", number: 3 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0283Pp9nrYuGhS1WMKGhrVnbM7cwz854rvJi5Vfgf54a3ZBVBxoQkYKfjPUj96qk2pl", number: 4 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0VPHrH231ZjhffkjT31Qx3u3H2db5oRNqgwfF3UtYFLeyiZbffacFTzruYeKP4wC9l", number: 5 },
+    ]
+  }
 ];
 
+const capitalizeWords = (str: string) => {
+  return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+};
 
-  const categoryMappings: Record<string, string> = {
-    'Kids': 'kids',
-    'Bat Mitsva': 'bat_mitsva',
-    'Bar Mitsva': 'bar_mitsva',
-    'Family': 'family',
-    'Big Family': 'big_family',
-    'Horses': 'horses',
-    'Modeling': 'modeling',
-    'Feminine': 'feminine',
-    'Sweet 16': 'sweet_16',
-    'Purim': 'purim',
-    'Pregnancy': 'pregnancy',
-    'Yoga': 'yoga'
-  };
+const categoryMappings: Record<string, string> = {
+  'Kids': 'kids',
+  'Bat Mitsva': 'bat_mitsva', 
+  'Bar Mitsva': 'bar_mitsva',
+  'Family': 'family',
+  'Big Family': 'big_family',
+  'Horses': 'horses',
+  'Modeling': 'modeling',
+  'Feminine': 'feminine',
+  'Sweet 16': 'sweet_16',
+  'Purim': 'purim',
+  'Pregnancy': 'pregnancy',
+  'Yoga': 'yoga'
+};
 
-  const [categoryGroups, setCategoryGroups] = useState({});
+export default function MySessions() {
+  const { t } = useTranslation();
+  const { language } = useLanguage();
+  const [selectedImage, setSelectedImage] = useState<{ url: string; number: number; groupName: string } | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const isMobile = useIsMobile();
+  //const clickTimer = useRef<number>(0); //removed
+  const [groups, setGroups] = useState<SessionGroup[]>([]);
 
   useEffect(() => {
-    const transformedGroups = {};
-    sessionGroups.forEach(group => {
-      const category = categoryMappings[group.name];
-      transformedGroups[category] = group.links.map((link, index) => ({
-        id: link.number,
-        imagePath: getImagePath(category, link.number),
-        category: category,
-        facebookPost: {
-          imageId: link.number,
-          webUrl: link.url,
-          appUrl: '', // Needs implementation based on app URL logic.
-          category: category
-        }
-      }));
-    });
-    setCategoryGroups(transformedGroups);
+    async function loadImages() {
+      const categories = ['Bat_Mitsva', 'Family', 'Horses', 'Kids', 'Modeling', 'Feminine', 'Yoga'];
+      const loadedGroups = await Promise.all(
+        categories.map(async (category) => {
+          try {
+            const images = await fetchImages(category);
+            return {
+              name: category.replace('_', ' '),
+              links: images
+            };
+          } catch (error) {
+            console.error(`Error loading ${category} images:`, error);
+            return null;
+          }
+        })
+      );
+      setGroups(loadedGroups.filter((g): g is SessionGroup => g !== null));
+    }
+    loadImages();
   }, []);
 
-  return (
+
+  const handleImageClick = (event: React.MouseEvent | React.TouchEvent, link: SessionLink, groupName: string) => {
+    event.preventDefault();
+    setSelectedImage({ 
+      url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
+      number: link.number, 
+      groupName 
+    });
+    setIsDialogOpen(true);
+  }
+
+    return (
     <div className="min-h-screen pt-8">
-      <div className={`container mx-auto px-4 py-16 ${language === 'he' ? 'rtl' : 'ltr'}`}>
-        <h1 className="text-3xl font-bold mb-8 text-[#FF9500]">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className={`container mx-auto px-4 py-16 ${language === 'he' ? 'rtl text-right' : 'ltr text-left'}`}
+      >
+        <h1 className="text-3xl font-bold mb-4 text-[#FF9500]">
           {t("sessions.title")}
         </h1>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Gallery Section */}
-          <div className="space-y-8">
-            {Object.entries(categoryGroups).map(([category, images]) => (
-              <div key={category} className="bg-card p-6 rounded-lg">
-                <h2 className="text-2xl font-semibold mb-4">
-                  {t(`sessions.${category.replace('_', ' ')}`)}
-                </h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                  {images.map((image) => (
-                    <motion.div
-                      key={image.id}
-                      whileHover={{ scale: 1.05 }}
-                      className="cursor-pointer"
-                      onClick={() => handleImageClick(image)}
-                    >
-                      <img
-                        src={image.imagePath}
-                        alt={`${category} ${image.id}`}
-                        className="w-full h-full object-cover rounded-lg"
-                        loading="lazy"
-                      />
-                    </motion.div>
-                  ))}
-                </div>
+        <div className={`flex items-center gap-2 mb-8 ${language === 'he' ? 'justify-end' : ''}`}>
+          <SiFacebook className="text-[#1877F2] w-6 h-6 animate-pulse" />
+          <span className="text-foreground font-semibold">{t("sessions.description")}</span>
+        </div>
+        <div className="space-y-8">
+          {groups.map((group) => (
+            <div key={group.name} className={`bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-white/30 ${language === 'he' ? 'rtl' : 'ltr'}`}>
+              <div className="mb-4">
+                <h2 className="text-2xl font-semibold">{language === 'he' ? t(`sessions.${group.name}`) : capitalizeWords(group.name)}</h2>
               </div>
-            ))}
-          </div>
+              <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {group.links.map((link, idx) => {
+                  const shouldLoad = idx < 3 || document.visibilityState === 'visible';
+                  return (
+                    <div
+                      key={link.url}
+                      className="relative cursor-pointer"
+                      onClick={(e) => handleImageClick(e, link, group.name)}
+                    >
+                    <motion.div
+                      className="relative aspect-square w-full overflow-hidden rounded-lg"
+                      transition={{ duration: 0.2 }}
+                    >
+                      {["Bat Mitsva", "Bar Mitsva", "Horses", "Kids", "Family", "Big Family", "Sweet 16", "Purim", "Pregnancy", "Feminine", "Yoga", "Modeling"].includes(group.name) ? (
+                        <div className="relative w-full pb-[100%]">
+                          <img 
+                            src={`/assets/facebook_posts_image/${categoryMappings[group.name]}/${link.number}.jpg`}
+                            alt={`${group.name} session ${link.number}`}
+                            className="absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-in-out"
+                            loading={idx < 6 ? "eager" : "lazy"}
+                            style={{ 
+                              backgroundColor: '#f3f4f6',
+                              objectFit: 'cover',
+                              objectPosition: 'center'
+                            }}
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.style.opacity = '0.3';
+                            }}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-b from-black/[0.075] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        </div>
+                      ) : (
+                        <div 
+                          className="w-full h-full rounded-lg"
+                          style={{
+                            backgroundColor: 'rgba(0, 0, 0, 0.03)'
+                          }}
+                        />
+                      )}
+                    </motion.div>
+                  </div>
+                );
+              })}
+              </div>
+            </div>
+          ))}
+        </div>
+      </motion.div>
 
-          {/* Preview Section */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="w-screen h-screen !p-0 border-none bg-black/90 shadow-none" onInteractOutside={() => setIsDialogOpen(false)}>
           {selectedImage && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="lg:sticky lg:top-8 bg-background p-4 rounded-lg"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15, ease: "easeOut" }}
+              className="relative w-full h-full flex items-center justify-center"
+              onClick={() => setIsDialogOpen(false)}
             >
               <img
-                src={selectedImage.imagePath}
-                alt={`Preview ${selectedImage.id}`}
-                className="w-full h-auto rounded-lg"
+                src={selectedImage.url}
+                alt={`${selectedImage.groupName} session ${selectedImage.number}`}
+                className="w-full h-full object-contain"
+                loading="eager"
+                decoding="async"
               />
             </motion.div>
           )}
-        </div>
-      </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

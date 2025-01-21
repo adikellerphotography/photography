@@ -23,16 +23,3 @@ export interface Category {
 }
 
 export type TranslationKey = keyof typeof translations['en'];
-export interface FacebookPost {
-  imageId: number;
-  webUrl: string;
-  appUrl: string;
-  category: string;
-}
-
-export interface ImageMapping {
-  id: number;
-  imagePath: string;
-  category: string;
-  facebookPost: FacebookPost;
-}
