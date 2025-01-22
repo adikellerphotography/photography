@@ -376,16 +376,16 @@ export function registerRoutes(app: Express): Server {
         'Pregnancy': 'pregnancy',
         'Yoga': 'yoga'
       };
-      
+
       const folderName = categoryMappings[category] || category.toLowerCase().replace(' ', '_');
       const dirPath = path.join(process.cwd(), 'attached_assets', 'facebook_posts_image', folderName);
-      
+
       try {
         const files = await fs.readdir(dirPath);
         const imageFiles = files
           .filter(file => /\.(jpg|jpeg)$/i.test(file))
           .sort((a, b) => parseInt(a) - parseInt(b));
-        
+
         const baseUrl = req.protocol + '://' + req.get('host');
         const images = imageFiles.map(file => ({
           number: parseInt(file.replace(/\D/g, '')),
