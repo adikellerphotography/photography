@@ -22,7 +22,7 @@ export default function Home() {
   const { t } = useTranslation();
 
   const allowedCategories = [
-    "Bat Mitzvah",
+    "Bat Mitsva",
     "Family",
     "Horses",
     "Kids",

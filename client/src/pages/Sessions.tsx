@@ -25,7 +25,7 @@ async function fetchImages(category: string): Promise<SessionLink[]> {
 
 const sessionGroups: SessionGroup[] = [
   {
-    name: "Bat Mitzvah",
+    name: "Bat Mitsva",
     links: [
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0AdZNygWpqm9eNFCZsUjZDvfmJb1v7Pt8dEwd1Qk6rXoD2pAdNyuqrjwHK5zyxxT1l", number: 1 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0Wv5Zw2GtAbd9n9cJJhSKYfnK9RKxkQwF4Nqm23uy4xC4ciwcDXoRkVVrKkrBvfWBl", number: 2 },
