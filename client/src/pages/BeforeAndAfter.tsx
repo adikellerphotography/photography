@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
@@ -24,9 +23,9 @@ const mockData: ComparisonSet[] = Array.from({ length: 28 }, (_, i) => ({
 export default function BeforeAndAfter() {
   const { t } = useTranslation();
   const { language } = useLanguage();
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
   const [visibleItems, setVisibleItems] = useState(6);
-  
+
   const { data: comparisons = mockData, isLoading, error } = useQuery<ComparisonSet[]>({
     queryKey: ["/api/before-after"],
     initialData: mockData,
@@ -97,7 +96,7 @@ export default function BeforeAndAfter() {
             </motion.div>
           ))}
         </div>
-        
+
         {visibleItems < comparisons.length && (
           <div className="flex justify-center mt-8">
             <button
