@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "@/hooks/use-translation";
@@ -14,8 +15,8 @@ interface ComparisonSet {
 
 const mockData: ComparisonSet[] = Array.from({ length: 28 }, (_, i) => ({
   id: i + 1,
-  beforeImage: `/assets/before_and_after/${i}-1 Large.jpeg?v=${Date.now()}`,
-  afterImage: `/assets/before_and_after/${i}-2 Large.jpeg?v=${Date.now()}`,
+  beforeImage: `/assets/before_and_after/${i}-1 Large.jpeg`,
+  afterImage: `/assets/before_and_after/${i}-2 Large.jpeg`,
   title: `Before & After ${i + 1}`
 }));
 
@@ -69,36 +70,38 @@ export default function BeforeAndAfter() {
         </p>
 
         <div className="hidden md:grid grid-cols-2 gap-8 container mx-auto">
-          {comparisons.map((comparison) => (
+          {comparisons.map((comparison, index) => (
             <motion.div
               key={comparison.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-100px" }}
               className="w-full aspect-[3/4]"
             >
               <ImageCompare
                 beforeImage={comparison.beforeImage}
                 afterImage={comparison.afterImage}
+                priority={index === 0}
               />
             </motion.div>
           ))}
         </div>
         <div className="md:hidden portrait:space-y-8 landscape:grid landscape:grid-cols-2 landscape:gap-8 max-w-4xl mx-auto">
-          {comparisons.map((comparison) => (
+          {comparisons.map((comparison, index) => (
             <motion.div
               key={comparison.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, margin: "-100px" }}
               className="w-full h-full"
             >
               <div className="relative h-full">
-              <ImageCompare
-                beforeImage={`${comparison.beforeImage}?noCache=${Date.now()}`}
-                afterImage={`${comparison.afterImage}?noCache=${Date.now()}`}
-                className="!absolute inset-0 w-full h-full object-cover"
-              />
+                <ImageCompare
+                  beforeImage={comparison.beforeImage}
+                  afterImage={comparison.afterImage}
+                  className="!absolute inset-0 w-full h-full object-cover"
+                  priority={index === 0}
+                />
               </div>
             </motion.div>
           ))}

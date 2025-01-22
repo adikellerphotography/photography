@@ -4,9 +4,11 @@ import { motion } from "framer-motion";
 interface ImageCompareProps {
   beforeImage: string;
   afterImage: string;
+  className?: string;
+  priority?: boolean;
 }
 
-export default function ImageCompare({ beforeImage, afterImage }: ImageCompareProps) {
+export default function ImageCompare({ beforeImage, afterImage, className = "", priority = false }: ImageCompareProps) {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
@@ -76,34 +78,24 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
   return (
     <div
       ref={containerRef}
-      className="relative overflow-hidden bg-muted select-none w-full max-w-full"
+      className={`relative overflow-hidden bg-muted select-none w-full max-w-full ${className}`}
       style={{
         aspectRatio: imageSize.width && imageSize.height ? `${imageSize.width}/${imageSize.height}` : undefined
       }}
       onMouseDown={handleMouseDown}
       onTouchStart={handleMouseDown}
     >
-      {/* After image (base layer) */}
       <img
         ref={imageRef}
         src={afterImage}
         alt="After"
         className="absolute inset-0 w-full h-full object-contain"
         onLoad={handleImageLoad}
-        loading="eager"
-        onError={(e) => {
-          const target = e.currentTarget;
-          const retryCount = Number(target.dataset.retryCount || 0);
-          if (retryCount < 3) {
-            target.dataset.retryCount = String(retryCount + 1);
-            setTimeout(() => {
-              target.src = `${target.src.split('?')[0]}?retry=${retryCount + 1}&t=${Date.now()}`;
-            }, Math.min(1000 * Math.pow(2, retryCount), 4000));
-          }
-        }}
+        loading={priority ? "eager" : "lazy"}
+        decoding={priority ? "sync" : "async"}
+        fetchpriority={priority ? "high" : "low"}
       />
 
-      {/* Before image (overlay) with clip effect */}
       <div
         className="absolute inset-0"
         style={{
@@ -114,27 +106,17 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
           src={beforeImage}
           alt="Before"
           className="absolute inset-0 w-full h-full object-contain"
-          loading="eager"
-          onError={(e) => {
-            const target = e.currentTarget;
-            const retryCount = Number(target.dataset.retryCount || 0);
-            if (retryCount < 3) {
-              target.dataset.retryCount = String(retryCount + 1);
-              setTimeout(() => {
-                target.src = `${target.src.split('?')[0]}?retry=${retryCount + 1}&t=${Date.now()}`;
-              }, Math.min(1000 * Math.pow(2, retryCount), 4000));
-            }
-          }}
+          loading={priority ? "eager" : "lazy"}
+          decoding={priority ? "sync" : "async"}
+          fetchpriority={priority ? "high" : "low"}
         />
       </div>
 
-      {/* Slider line */}
       <div
         className="absolute inset-y-0 w-0.5 bg-white shadow-[0_0_10px_rgba(0,0,0,0.3)]"
         style={{ left: `${sliderPosition}%` }}
       />
 
-      {/* Slider handle with bidirectional arrow */}
       <motion.div
         className="absolute top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow-lg cursor-grab active:cursor-grabbing flex items-center justify-center"
         style={{ left: `${sliderPosition}%`, x: "-50%" }}
@@ -149,7 +131,6 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
           xmlns="http://www.w3.org/2000/svg"
           className="text-gray-600"
         >
-          {/* Bidirectional arrow icon */}
           <path
             d="M2 8h12M4 5l-3 3 3 3M12 5l3 3-3 3"
             stroke="currentColor"
