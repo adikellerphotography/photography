@@ -270,7 +270,7 @@ export default function MySessions() {
                             className="absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-in-out"
                             loading={idx < 6 ? "eager" : "lazy"}
                             style={{ 
-                              backgroundColor: '#e5e7eb',
+                              backgroundColor: 'transparent',
                               objectFit: 'cover',
                               objectPosition: 'center'
                             }}
