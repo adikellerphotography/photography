@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 interface ImageCompareProps {
   beforeImage: string;
   afterImage: string;
-  priority?: boolean;
 }
 
 export default function ImageCompare({ beforeImage, afterImage }: ImageCompareProps) {
@@ -91,8 +90,7 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
         alt="After"
         className="absolute inset-0 w-full h-full object-contain"
         onLoad={handleImageLoad}
-        loading={priority ? "eager" : "lazy"}
-        fetchpriority={priority ? "high" : "auto"}
+        loading="eager"
         onError={(e) => {
           const target = e.currentTarget;
           const retryCount = Number(target.dataset.retryCount || 0);
