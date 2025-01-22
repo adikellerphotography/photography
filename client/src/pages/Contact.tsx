@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
@@ -22,7 +21,7 @@ export default function Contact() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const whatsappText = encodeURIComponent(
       `Name: ${formData.name}\nPhone: ${formData.phone}\nMessage: ${formData.message}`
     );
@@ -48,7 +47,7 @@ export default function Contact() {
         <div className="max-w-3xl mx-auto">
           <div className="flex flex-col items-center mb-8">
             <h1 className="text-3xl font-bold mb-6 text-[#FF9500]">{isRTL ? "צרו קשר" : "Contact Me"}</h1>
-            <div className="w-64 bg-muted/50">
+            <div className="w-64 bg-muted/60">
               <img 
                 src="assets/AK_white_line.jpg" 
                 alt="Adi Keller Photography"
@@ -69,24 +68,24 @@ export default function Contact() {
               />
             </div>
           </div>
-          
+
           <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 ${isRTL ? 'text-right' : ''}`}>
             <Card className="bg-muted/50">
               <CardContent className="pt-6 space-y-4">
                 <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
                   <span className="text-xl font-semibold">{isRTL ? 'עדי קלר' : 'Adi Keller'}</span>
                 </div>
-                
+
                 <a href="tel:054-5667827" className={`flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
                   <Phone className="w-5 h-5" />
                   <span>054-5667827</span>
                 </a>
-                
+
                 <a href="mailto:adi.keller.photography@gmail.com" className={`flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
                   <Mail className="w-5 h-5" />
                   <span>adi.keller.photography@gmail.com</span>
                 </a>
-                
+
                 <div className={`flex items-center gap-3 text-muted-foreground ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
                   <MapPin className="w-5 h-5" />
                   <span>{isRTL ? 'נתניה, ישראל' : 'Netanya, Israel'}</span>
