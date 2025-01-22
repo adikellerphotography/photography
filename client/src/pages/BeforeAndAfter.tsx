@@ -76,7 +76,17 @@ export default function BeforeAndAfter() {
     );
   }
 
-  const displayedComparisons = comparisons.slice(0, visibleItems);
+  const sortedComparisons = [...comparisons].sort((a, b) => {
+    const aImg = new Image();
+    const bImg = new Image();
+    aImg.src = a.beforeImage;
+    bImg.src = b.beforeImage;
+    const aIsHorizontal = aImg.naturalWidth > aImg.naturalHeight;
+    const bIsHorizontal = bImg.naturalWidth > bImg.naturalHeight;
+    return aIsHorizontal === bIsHorizontal ? 0 : aIsHorizontal ? 1 : -1;
+  });
+
+  const displayedComparisons = sortedComparisons.slice(0, visibleItems);
 
   return (
     <div className="min-h-screen pt-8">
