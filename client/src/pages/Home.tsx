@@ -114,9 +114,9 @@ export default function Home() {
   useEffect(() => {
     // Preload the first category image
     if (filteredCategories?.[0]?.firstPhoto?.imageUrl) {
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'image';
+      const link = document.createElement("link");
+      link.rel = "preload";
+      link.as = "image";
       link.href = filteredCategories[0].firstPhoto.imageUrl;
       document.head.appendChild(link);
     }
@@ -135,15 +135,15 @@ export default function Home() {
             <div className="relative">
               <motion.div
                 initial={{ scale: 0, opacity: 0 }}
-                animate={{ 
+                animate={{
                   scale: [0, 1.05, 1],
                   opacity: [0, 0.8, 1],
-                  backgroundColor: ["#E67E00", "#E67E00", "#E67E00"]
+                  backgroundColor: ["#E67E00", "#E67E00", "#E67E00"],
                 }}
-                transition={{ 
+                transition={{
                   duration: 0.8,
                   times: [0, 0.4, 1],
-                  ease: [0.34, 1.56, 0.64, 1]
+                  ease: [0.34, 1.56, 0.64, 1],
                 }}
                 whileTap={{
                   scale: 0.9,
@@ -151,12 +151,13 @@ export default function Home() {
                     duration: 0.3,
                     type: "spring",
                     stiffness: 400,
-                    damping: 17
-                  }
+                    damping: 17,
+                  },
                 }}
                 className="absolute inset-0 rounded-full -z-10 shadow-lg"
                 style={{
-                  backgroundImage: "radial-gradient(circle at 30% 30%, rgb(255 255 255 / 0.1), transparent)"
+                  backgroundImage:
+                    "radial-gradient(circle at 30% 30%, rgb(255 255 255 / 0.1), transparent)",
                 }}
               />
               <Link href="/before-and-after">
@@ -168,15 +169,15 @@ export default function Home() {
             <div className="relative">
               <motion.div
                 initial={{ scale: 0, opacity: 0 }}
-                animate={{ 
+                animate={{
                   scale: [0, 1.05, 1],
                   opacity: [0, 0.8, 1],
-                  backgroundColor: ["#E67E00", "#E67E00", "#E67E00"]
+                  backgroundColor: ["#E67E00", "#E67E00", "#E67E00"],
                 }}
-                transition={{ 
+                transition={{
                   duration: 0.8,
                   times: [0, 0.4, 1],
-                  ease: [0.34, 1.56, 0.64, 1]
+                  ease: [0.34, 1.56, 0.64, 1],
                 }}
                 whileTap={{
                   scale: 0.9,
@@ -184,12 +185,13 @@ export default function Home() {
                     duration: 0.3,
                     type: "spring",
                     stiffness: 400,
-                    damping: 17
-                  }
+                    damping: 17,
+                  },
                 }}
                 className="absolute inset-0 rounded-full -z-10 shadow-lg"
                 style={{
-                  backgroundImage: "radial-gradient(circle at 30% 30%, rgb(255 255 255 / 0.1), transparent)"
+                  backgroundImage:
+                    "radial-gradient(circle at 30% 30%, rgb(255 255 255 / 0.1), transparent)",
                 }}
               />
               <Link href="/gallery">
@@ -201,15 +203,15 @@ export default function Home() {
             <div className="relative">
               <motion.div
                 initial={{ scale: 0, opacity: 0 }}
-                animate={{ 
+                animate={{
                   scale: [0, 1.05, 1],
                   opacity: [0, 0.8, 1],
-                  backgroundColor: ["#E67E00", "#E67E00", "#E67E00"]
+                  backgroundColor: ["#E67E00", "#E67E00", "#E67E00"],
                 }}
-                transition={{ 
+                transition={{
                   duration: 0.8,
                   times: [0, 0.4, 1],
-                  ease: [0.34, 1.56, 0.64, 1]
+                  ease: [0.34, 1.56, 0.64, 1],
                 }}
                 whileTap={{
                   scale: 0.9,
@@ -217,12 +219,13 @@ export default function Home() {
                     duration: 0.3,
                     type: "spring",
                     stiffness: 400,
-                    damping: 17
-                  }
+                    damping: 17,
+                  },
                 }}
                 className="absolute inset-0 rounded-full -z-10 shadow-lg"
                 style={{
-                  backgroundImage: "radial-gradient(circle at 30% 30%, rgb(255 255 255 / 0.1), transparent)"
+                  backgroundImage:
+                    "radial-gradient(circle at 30% 30%, rgb(255 255 255 / 0.1), transparent)",
                 }}
               />
               <Link href="/sessions">
@@ -291,8 +294,8 @@ export default function Home() {
                             decoding="async"
                             style={{
                               objectPosition: "center center",
-                              WebkitBackfaceVisibility: 'hidden',
-                              WebkitTransform: 'translate3d(0, 0, 0)'
+                              WebkitBackfaceVisibility: "hidden",
+                              WebkitTransform: "translate3d(0, 0, 0)",
                             }}
                             onLoad={(e) => {
                               const img = e.target as HTMLImageElement;
@@ -302,24 +305,41 @@ export default function Home() {
                             }}
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
-                              const retryCount = Number(target.dataset.retryCount || 0);
+                              const retryCount = Number(
+                                target.dataset.retryCount || 0,
+                              );
                               const maxRetries = 3;
-                              
+
                               if (retryCount < maxRetries) {
-                                console.log(`Retrying category image load (${retryCount + 1}/${maxRetries}):`, target.src);
-                                target.dataset.retryCount = String(retryCount + 1);
+                                console.log(
+                                  `Retrying category image load (${retryCount + 1}/${maxRetries}):`,
+                                  target.src,
+                                );
+                                target.dataset.retryCount = String(
+                                  retryCount + 1,
+                                );
                                 const cacheBuster = `?retry=${retryCount + 1}-${Date.now()}`;
                                 setTimeout(() => {
-                                  target.src = target.src.split('?')[0] + cacheBuster;
+                                  target.src =
+                                    target.src.split("?")[0] + cacheBuster;
                                 }, retryCount * 1000); // Incremental delay between retries
                               } else {
-                                console.error("Failed to load image after retries:", category.firstPhoto?.imageUrl);
+                                console.error(
+                                  "Failed to load image after retries:",
+                                  category.firstPhoto?.imageUrl,
+                                );
                                 target.onerror = null;
                                 target.src = "/assets/placeholder-category.jpg";
-                                target.style.opacity = '0.7';
+                                target.style.opacity = "0.7";
                               }
                             }}
-                            loading={index === 0 ? "eager" : index < 6 ? "eager" : "lazy"}
+                            loading={
+                              index === 0
+                                ? "eager"
+                                : index < 6
+                                  ? "eager"
+                                  : "lazy"
+                            }
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                             fetchpriority={index === 0 ? "high" : "auto"}
                             decoding={index === 0 ? "sync" : "async"}
