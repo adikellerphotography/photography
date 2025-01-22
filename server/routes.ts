@@ -323,6 +323,17 @@ export function registerRoutes(app: Express): Server {
   });
   app.post("/api/photos/scan", scanPhotos);
   app.post("/api/photos/:id/like", togglePhotoLike);
+  
+  app.post("/api/screenshot", async (req, res) => {
+    try {
+      const { captureScreenshot } = require('./utils/screenshot');
+      const screenshotPath = await captureScreenshot();
+      res.json({ success: true, path: screenshotPath });
+    } catch (error) {
+      console.error('Error capturing screenshot:', error);
+      res.status(500).json({ error: "Failed to capture screenshot" });
+    }
+  });
 
   app.get('/api/photos/:category/:filename', async (req, res) => {
     try {
