@@ -13,7 +13,7 @@ import fs from "fs/promises";
 const getCategoryPath = (categoryName: string) => {
   const categoryMappings: Record<string, string> = {
     'Kids': 'kids',
-    'Bat Mitsva': 'Bat_Mitsva',
+    'Bat Mitzvah': 'Bat_Mitzvah',
     'Family': 'Family',
     'Horses': 'Horses',
     'Modeling': 'Modeling',

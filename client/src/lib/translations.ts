@@ -39,7 +39,7 @@ export const translations = {
       galleryTitle: "Photo Galleries",
     },
     categories: {
-      "Bat Mitsva": "Bat Mitsva",
+      "Bat Mitzvah": "Bat Mitsva",
       Family: "Family",
       Events: "Events",
       Portraits: "Portraits",
@@ -220,7 +220,7 @@ export const translations = {
       galleryTitle: "גלריות תמונות",
     },
     categories: {
-      "Bat Mitsva": "בת מצווה",
+      "Bat Mitzvah": "בת מצווה",
       Family: "משפחה",
       Events: "אירועים",
       Portraits: "פורטרטים",
@@ -375,7 +375,7 @@ export const translations = {
     sessions: {
       title: "גלריות צילום",
       description: "לחיצה כפולה לפתיחת פוסט בפייסבוק",
-      "Bat Mitsva": "בת מצווה",
+      "Bat Mitzvah": "בת מצווה",
       "Bar Mitsva": "בר מצווה",
       Horses: "סוסים",
       Kids: "ילדים",
