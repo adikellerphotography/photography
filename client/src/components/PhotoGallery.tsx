@@ -329,8 +329,11 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                     style={{
                       backgroundColor: 'transparent',
                       minHeight: '200px',
-                      objectPosition: '50% 50%'
+                      objectPosition: '50% 50%',
+                      WebkitBackfaceVisibility: 'hidden',
+                      WebkitTransform: 'translate3d(0, 0, 0)'
                     }}
+                    decoding="async"
                   />
                 </div>
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
