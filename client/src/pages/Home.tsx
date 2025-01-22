@@ -298,7 +298,9 @@ export default function Home() {
                                 console.log(`Retrying category image load (${retryCount + 1}/${maxRetries}):`, target.src);
                                 target.dataset.retryCount = String(retryCount + 1);
                                 const cacheBuster = `?retry=${retryCount + 1}-${Date.now()}`;
-                                target.src = target.src.split('?')[0] + cacheBuster;
+                                setTimeout(() => {
+                                  target.src = target.src.split('?')[0] + cacheBuster;
+                                }, retryCount * 1000); // Incremental delay between retries
                               } else {
                                 console.error("Failed to load image after retries:", category.firstPhoto?.imageUrl);
                                 target.onerror = null;
@@ -306,7 +308,7 @@ export default function Home() {
                                 target.style.opacity = '0.7';
                               }
                             }}
-                            loading="lazy"
+                            loading={index < 6 ? "eager" : "lazy"}
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent">

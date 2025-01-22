@@ -331,16 +331,18 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                         img.dataset.retryCount = String(retryCount + 1);
                         // Add cache-busting parameter and retry
                         const cacheBuster = `?retry=${retryCount + 1}-${Date.now()}`;
-                        img.src = img.src.split('?')[0] + cacheBuster;
+                        setTimeout(() => {
+                          img.src = img.src.split('?')[0] + cacheBuster;
+                        }, retryCount * 1000); // Incremental delay between retries
                       } else {
                         console.error('Image load failed after retries:', img.src);
                         handleImageError(img.src);
                         img.style.opacity = '0.3';
                       }
                     }}
-                    loading="lazy"
-                    decoding="async"
-                    fetchpriority={index < 8 ? "high" : "low"}
+                    loading={index < 12 ? "eager" : "lazy"}
+                    decoding={index < 12 ? "sync" : "async"}
+                    fetchpriority={index < 12 ? "high" : "auto"}
                     style={{
                       backgroundColor: 'transparent',
                       minHeight: '200px',
