@@ -246,10 +246,9 @@ export default function Gallery() {
                   <div className="relative overflow-hidden rounded-lg bg-muted/30">
                     <AspectRatio ratio={1.5}>
                       <div
-                        className="absolute inset-0 bg-gradient-to-r from-transparent via-muted/10 to-transparent animate-shimmer"
+                        className="absolute inset-0 bg-muted/30 animate-pulse"
                         style={{
-                          backgroundSize: "200% 100%",
-                          animation: "shimmer 2s infinite linear",
+                          animation: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
                         }}
                       />
                     </AspectRatio>
