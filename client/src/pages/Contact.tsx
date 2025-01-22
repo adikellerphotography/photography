@@ -48,7 +48,7 @@ export default function Contact() {
         <div className="max-w-3xl mx-auto">
           <div className="flex flex-col items-center mb-8">
             <h1 className="text-3xl font-bold mb-6 text-[#FF9500]">{isRTL ? "צרו קשר" : "Contact Me"}</h1>
-            <div className="w-64 bg-muted/50">
+            <div className="w-64 bg-muted/80">
               <img 
                 src="assets/AK_white_line.jpg" 
                 alt="Adi Keller Photography"
