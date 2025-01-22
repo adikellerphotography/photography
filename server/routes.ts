@@ -380,13 +380,22 @@ export function registerRoutes(app: Express): Server {
       const folderName = categoryMappings[category] || category.toLowerCase().replace(' ', '_');
       const dirPath = path.join(process.cwd(), 'attached_assets', 'facebook_posts_image', folderName);
       
-      const files = await fs.readdir(dirPath);
-      const imageFiles = files.filter(file => /\.(jpg|jpeg)$/i.test(file));
-      const images = imageFiles.map(file => ({
-        number: parseInt(file.replace(/\D/g, '')),
-        url: `/assets/facebook_posts_image/${folderName}/${file}`
-      }));
-      res.json(images);
+      try {
+        const files = await fs.readdir(dirPath);
+        const imageFiles = files
+          .filter(file => /\.(jpg|jpeg)$/i.test(file))
+          .sort((a, b) => parseInt(a) - parseInt(b));
+        
+        const baseUrl = req.protocol + '://' + req.get('host');
+        const images = imageFiles.map(file => ({
+          number: parseInt(file.replace(/\D/g, '')),
+          url: `${baseUrl}/assets/facebook_posts_image/${folderName}/${file}`
+        }));
+        res.json(images);
+      } catch (err) {
+        console.error('Error reading directory:', err);
+        res.status(404).json({ error: "Category not found" });
+      }
     } catch (error) {
       console.error('Error fetching session images:', error);
       res.status(500).json({ error: "Failed to fetch session images" });

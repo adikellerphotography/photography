@@ -276,7 +276,13 @@ export default function MySessions() {
                             }}
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
-                              target.style.opacity = '0.3';
+                              const retryCount = Number(target.dataset.retryCount || 0);
+                              if (retryCount < 3) {
+                                target.dataset.retryCount = String(retryCount + 1);
+                                target.src = `${target.src}?retry=${retryCount + 1}`;
+                              } else {
+                                target.style.opacity = '0.3';
+                              }
                             }}
                           />
                           <div className="absolute inset-0 bg-gradient-to-b from-black/[0.075] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
