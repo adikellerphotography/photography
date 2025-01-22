@@ -90,7 +90,17 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
         alt="After"
         className="absolute inset-0 w-full h-full object-contain"
         onLoad={handleImageLoad}
-        loading="lazy"
+        loading="eager"
+        onError={(e) => {
+          const target = e.currentTarget;
+          const retryCount = Number(target.dataset.retryCount || 0);
+          if (retryCount < 3) {
+            target.dataset.retryCount = String(retryCount + 1);
+            setTimeout(() => {
+              target.src = `${target.src.split('?')[0]}?retry=${retryCount + 1}&t=${Date.now()}`;
+            }, Math.min(1000 * Math.pow(2, retryCount), 4000));
+          }
+        }}
       />
 
       {/* Before image (overlay) with clip effect */}
@@ -104,7 +114,17 @@ export default function ImageCompare({ beforeImage, afterImage }: ImageComparePr
           src={beforeImage}
           alt="Before"
           className="absolute inset-0 w-full h-full object-contain"
-          loading="lazy"
+          loading="eager"
+          onError={(e) => {
+            const target = e.currentTarget;
+            const retryCount = Number(target.dataset.retryCount || 0);
+            if (retryCount < 3) {
+              target.dataset.retryCount = String(retryCount + 1);
+              setTimeout(() => {
+                target.src = `${target.src.split('?')[0]}?retry=${retryCount + 1}&t=${Date.now()}`;
+              }, Math.min(1000 * Math.pow(2, retryCount), 4000));
+            }
+          }}
         />
       </div>
 

@@ -14,8 +14,8 @@ interface ComparisonSet {
 
 const mockData: ComparisonSet[] = Array.from({ length: 28 }, (_, i) => ({
   id: i + 1,
-  beforeImage: `/assets/before_and_after/${i}-1 Large.jpeg`,
-  afterImage: `/assets/before_and_after/${i}-2 Large.jpeg`,
+  beforeImage: `/assets/before_and_after/${i}-1 Large.jpeg?v=${Date.now()}`,
+  afterImage: `/assets/before_and_after/${i}-2 Large.jpeg?v=${Date.now()}`,
   title: `Before & After ${i + 1}`
 }));
 
