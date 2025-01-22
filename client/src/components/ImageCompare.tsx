@@ -88,10 +88,7 @@ export default function ImageCompare({
   return (
     <div
       ref={containerRef}
-      className={`relative overflow-hidden bg-muted select-none w-full max-w-full ${className} ${!isLoaded ? 'animate-pulse' : ''}`}
-      style={{
-        aspectRatio: imageSize.width && imageSize.height ? `${imageSize.width}/${imageSize.height}` : undefined
-      }}
+      className={`relative overflow-hidden bg-muted select-none w-full h-full ${className} ${!isLoaded ? 'animate-pulse' : ''}`}
       onMouseDown={handleMouseDown}
       onTouchStart={handleMouseDown}
     >
