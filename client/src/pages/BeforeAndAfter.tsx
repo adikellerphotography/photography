@@ -92,14 +92,14 @@ export default function BeforeAndAfter() {
           {t("beforeAfter.description")}
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 container mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 container mx-auto">
           {displayedComparisons.map((comparison, index) => (
             <motion.div
               key={comparison.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              className="w-full h-[450px]"
+              className="w-full aspect-[4/3]"
             >
               <ImageCompare
                 beforeImage={comparison.beforeImage}
