@@ -49,9 +49,13 @@ export default function Contact() {
           <div className="flex flex-col items-center mb-8">
             <div className="w-48 relative">
               <img 
-                src="/attached_assets/AK_white_line.jpg" 
+                src="assets/AK_white_line.jpg" 
                 alt="Adi Keller Photography"
                 className="transition-opacity duration-300 ease-in-out opacity-100"
+                onError={(e) => {
+                  const img = e.target as HTMLImageElement;
+                  img.src = 'assets/my_logo.png';
+                }}
                 style={{
                   WebkitBackfaceVisibility: 'hidden',
                   WebkitTransform: 'translate3d(0, 0, 0)'
