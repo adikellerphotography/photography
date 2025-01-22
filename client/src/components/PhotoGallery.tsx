@@ -327,7 +327,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                       handleImageError(img.src);
                     }}
                     style={{
-                      backgroundColor: '#f3f4f6',
+                      backgroundColor: '#e5e7eb',
                       minHeight: '200px',
                       objectPosition: '50% 50%'
                     }}
