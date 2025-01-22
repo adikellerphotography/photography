@@ -323,9 +323,24 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     onError={(e) => {
                       const img = e.target as HTMLImageElement;
-                      console.error('Image load error:', img.src);
-                      handleImageError(img.src);
+                      const retryCount = Number(img.dataset.retryCount || 0);
+                      const maxRetries = 3;
+                      
+                      if (retryCount < maxRetries) {
+                        console.log(`Retrying image load (${retryCount + 1}/${maxRetries}):`, img.src);
+                        img.dataset.retryCount = String(retryCount + 1);
+                        // Add cache-busting parameter and retry
+                        const cacheBuster = `?retry=${retryCount + 1}-${Date.now()}`;
+                        img.src = img.src.split('?')[0] + cacheBuster;
+                      } else {
+                        console.error('Image load failed after retries:', img.src);
+                        handleImageError(img.src);
+                        img.style.opacity = '0.3';
+                      }
                     }}
+                    loading="lazy"
+                    decoding="async"
+                    fetchpriority={index < 8 ? "high" : "low"}
                     style={{
                       backgroundColor: 'transparent',
                       minHeight: '200px',

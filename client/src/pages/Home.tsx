@@ -290,13 +290,21 @@ export default function Home() {
                               }
                             }}
                             onError={(e) => {
-                              console.error(
-                                "Failed to load image:",
-                                category.firstPhoto?.imageUrl,
-                              );
                               const target = e.target as HTMLImageElement;
-                              target.onerror = null;
-                              target.src = "/assets/placeholder-category.jpg";
+                              const retryCount = Number(target.dataset.retryCount || 0);
+                              const maxRetries = 3;
+                              
+                              if (retryCount < maxRetries) {
+                                console.log(`Retrying category image load (${retryCount + 1}/${maxRetries}):`, target.src);
+                                target.dataset.retryCount = String(retryCount + 1);
+                                const cacheBuster = `?retry=${retryCount + 1}-${Date.now()}`;
+                                target.src = target.src.split('?')[0] + cacheBuster;
+                              } else {
+                                console.error("Failed to load image after retries:", category.firstPhoto?.imageUrl);
+                                target.onerror = null;
+                                target.src = "/assets/placeholder-category.jpg";
+                                target.style.opacity = '0.7';
+                              }
                             }}
                             loading="lazy"
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
