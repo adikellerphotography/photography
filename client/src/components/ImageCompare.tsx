@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 
@@ -6,12 +7,20 @@ interface ImageCompareProps {
   afterImage: string;
   className?: string;
   priority?: boolean;
+  isMobile?: boolean;
 }
 
-export default function ImageCompare({ beforeImage, afterImage, className = "", priority = false }: ImageCompareProps) {
+export default function ImageCompare({ 
+  beforeImage, 
+  afterImage, 
+  className = "", 
+  priority = false,
+  isMobile = false 
+}: ImageCompareProps) {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
+  const [isLoaded, setIsLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -19,6 +28,7 @@ export default function ImageCompare({ beforeImage, afterImage, className = "", 
     if (imageRef.current) {
       const { naturalWidth, naturalHeight } = imageRef.current;
       setImageSize({ width: naturalWidth, height: naturalHeight });
+      setIsLoaded(true);
     }
   };
 
@@ -78,7 +88,7 @@ export default function ImageCompare({ beforeImage, afterImage, className = "", 
   return (
     <div
       ref={containerRef}
-      className={`relative overflow-hidden bg-muted select-none w-full max-w-full ${className}`}
+      className={`relative overflow-hidden bg-muted select-none w-full max-w-full ${className} ${!isLoaded ? 'animate-pulse' : ''}`}
       style={{
         aspectRatio: imageSize.width && imageSize.height ? `${imageSize.width}/${imageSize.height}` : undefined
       }}
@@ -91,9 +101,9 @@ export default function ImageCompare({ beforeImage, afterImage, className = "", 
         alt="After"
         className="absolute inset-0 w-full h-full object-contain"
         onLoad={handleImageLoad}
-        loading={priority ? "eager" : "lazy"}
-        decoding={priority ? "sync" : "async"}
-        fetchpriority={priority ? "high" : "low"}
+        loading={priority || isMobile ? "eager" : "lazy"}
+        decoding={priority || isMobile ? "sync" : "async"}
+        fetchpriority={priority || isMobile ? "high" : "low"}
       />
 
       <div
@@ -106,9 +116,9 @@ export default function ImageCompare({ beforeImage, afterImage, className = "", 
           src={beforeImage}
           alt="Before"
           className="absolute inset-0 w-full h-full object-contain"
-          loading={priority ? "eager" : "lazy"}
-          decoding={priority ? "sync" : "async"}
-          fetchpriority={priority ? "high" : "low"}
+          loading={priority || isMobile ? "eager" : "lazy"}
+          decoding={priority || isMobile ? "sync" : "async"}
+          fetchpriority={priority || isMobile ? "high" : "low"}
         />
       </div>
 

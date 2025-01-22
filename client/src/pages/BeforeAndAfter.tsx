@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
+import { useMobile } from "@/hooks/use-mobile";
 import ImageCompare from "../components/ImageCompare";
 
 interface ComparisonSet {
@@ -23,11 +24,18 @@ const mockData: ComparisonSet[] = Array.from({ length: 28 }, (_, i) => ({
 export default function BeforeAndAfter() {
   const { t } = useTranslation();
   const { language } = useLanguage();
+  const isMobile = useMobile();
+  const [visibleItems, setVisibleItems] = useState(6);
+  
   const { data: comparisons = mockData, isLoading, error } = useQuery<ComparisonSet[]>({
     queryKey: ["/api/before-after"],
     initialData: mockData,
     retry: false
   });
+
+  const loadMore = () => {
+    setVisibleItems(prev => Math.min(prev + 6, comparisons.length));
+  };
 
   if (isLoading) {
     return (
@@ -55,6 +63,8 @@ export default function BeforeAndAfter() {
     );
   }
 
+  const displayedComparisons = comparisons.slice(0, visibleItems);
+
   return (
     <div className="min-h-screen pt-8">
       <motion.div
@@ -69,43 +79,35 @@ export default function BeforeAndAfter() {
           {t("beforeAfter.description")}
         </p>
 
-        <div className="hidden md:grid grid-cols-2 gap-8 container mx-auto">
-          {comparisons.map((comparison, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 container mx-auto">
+          {displayedComparisons.map((comparison, index) => (
             <motion.div
               key={comparison.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true, margin: "-50px" }}
               className="w-full aspect-[3/4]"
             >
               <ImageCompare
                 beforeImage={comparison.beforeImage}
                 afterImage={comparison.afterImage}
                 priority={index === 0}
+                isMobile={isMobile}
               />
             </motion.div>
           ))}
         </div>
-        <div className="md:hidden portrait:space-y-8 landscape:grid landscape:grid-cols-2 landscape:gap-8 max-w-4xl mx-auto">
-          {comparisons.map((comparison, index) => (
-            <motion.div
-              key={comparison.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              className="w-full h-full"
+        
+        {visibleItems < comparisons.length && (
+          <div className="flex justify-center mt-8">
+            <button
+              onClick={loadMore}
+              className="px-6 py-2 bg-[#FF9500] text-white rounded-lg hover:bg-[#FF9500]/90 transition-colors"
             >
-              <div className="relative h-full">
-                <ImageCompare
-                  beforeImage={comparison.beforeImage}
-                  afterImage={comparison.afterImage}
-                  className="!absolute inset-0 w-full h-full object-cover"
-                  priority={index === 0}
-                />
-              </div>
-            </motion.div>
-          ))}
-        </div>
+              {t("common.loadMore")}
+            </button>
+          </div>
+        )}
       </motion.div>
     </div>
   );
