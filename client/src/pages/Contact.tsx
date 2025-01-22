@@ -46,7 +46,27 @@ export default function Contact() {
         className="container mx-auto px-4 py-16"
       >
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl font-bold mb-8 text-[#FF9500]">{isRTL ? "צרו קשר" : "Contact Me"}</h1>
+          <div className="flex flex-col items-center mb-8">
+            <div className="w-48 relative">
+              <img 
+                src="/attached_assets/AK_white_line.jpg" 
+                alt="Adi Keller Photography"
+                className="transition-opacity duration-300 ease-in-out"
+                onLoad={(e) => {
+                  const img = e.target as HTMLImageElement;
+                  img.classList.remove('opacity-0');
+                  img.classList.add('opacity-100');
+                }}
+                style={{
+                  opacity: 0,
+                  WebkitBackfaceVisibility: 'hidden',
+                  WebkitTransform: 'translate3d(0, 0, 0)'
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
+            </div>
+            <h1 className="text-3xl font-bold mt-6 text-[#FF9500]">{isRTL ? "צרו קשר" : "Contact Me"}</h1>
+          </div>
           
           <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 ${isRTL ? 'text-right' : ''}`}>
             <Card className="bg-muted/50">
