@@ -114,7 +114,7 @@ export default function BeforeAndAfter() {
               <ImageCompare
                 beforeImage={comparison.beforeImage}
                 afterImage={comparison.afterImage}
-                priority={index === 0}
+                priority={index < (isMobile ? 2 : 6)}
                 isMobile={isMobile}
               />
             </motion.div>
