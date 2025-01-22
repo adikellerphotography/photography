@@ -25,6 +25,7 @@ export default function BeforeAndAfter() {
   const { language } = useLanguage();
   const isMobile = useIsMobile();
   const [visibleItems, setVisibleItems] = useState(6);
+  const observerTarget = useRef<HTMLDivElement>(null);
 
   const { data: comparisons = mockData, isLoading, error } = useQuery<ComparisonSet[]>({
     queryKey: ["/api/before-after"],
@@ -32,9 +33,22 @@ export default function BeforeAndAfter() {
     retry: false
   });
 
-  const loadMore = () => {
-    setVisibleItems(prev => Math.min(prev + 6, comparisons.length));
-  };
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && visibleItems < comparisons.length) {
+          setVisibleItems(prev => Math.min(prev + 6, comparisons.length));
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
+
+    return () => observer.disconnect();
+  }, [visibleItems, comparisons.length]);
 
   if (isLoading) {
     return (
@@ -96,17 +110,7 @@ export default function BeforeAndAfter() {
             </motion.div>
           ))}
         </div>
-
-        {visibleItems < comparisons.length && (
-          <div className="flex justify-center mt-8">
-            <button
-              onClick={loadMore}
-              className="px-6 py-2 bg-[#FF9500] text-white rounded-lg hover:bg-[#FF9500]/90 transition-colors"
-            >
-              {t("common.loadMore")}
-            </button>
-          </div>
-        )}
+        <div ref={observerTarget} className="h-10 w-full" />
       </motion.div>
     </div>
   );
