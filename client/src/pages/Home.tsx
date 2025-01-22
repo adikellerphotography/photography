@@ -223,7 +223,7 @@ export default function Home() {
           </div>
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <h1
-              className={`font-bold font-cormorant shine-effect ${language === "he" ? "text-3xl md:text-5xl" : "text-4xl md:text-6xl"}`}
+              className={`font-bold font-cormorant ${language === "he" ? "text-3xl md:text-5xl" : "text-4xl md:text-6xl"}`}
             >
               {t("home.title")}
             </h1>

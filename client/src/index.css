@@ -23,28 +23,6 @@
   animation: fadeIn 0.5s ease-in;
 }
 
-.shine-effect {
-  position: relative;
-  color: transparent;
-  background: linear-gradient(
-    to right,
-    #333 20%,
-    #444 40%,
-    #666 60%,
-    #444 80%,
-    #333 100%
-  );
-  background-size: 200% auto;
-  background-clip: text;
-  -webkit-background-clip: text;
-  animation: shine 3s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
-}
-
-@keyframes shine {
-  0% { background-position: 200% center; }
-  100% { background-position: -200% center; }
-}
-
 .break-inside-avoid {
   break-inside: avoid;
 }
