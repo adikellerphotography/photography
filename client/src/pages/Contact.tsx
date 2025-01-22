@@ -49,11 +49,12 @@ export default function Contact() {
           <div className="flex flex-col items-center mb-8">
             <h1 className="text-3xl font-bold mb-6 text-[#FF9500]">{isRTL ? "צרו קשר" : "Contact Me"}</h1>
             <div className="w-64">
-              <div className="relative overflow-hidden rounded-sm">
+              <div className="relative overflow-hidden rounded">
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-200 to-gray-300 animate-pulse" />
                 <img 
                   src="assets/AK_white_line.jpg" 
                   alt="Adi Keller Photography"
-                  className="transition-all duration-700 ease-in-out opacity-0 hover:scale-105"
+                  className="relative transition-opacity duration-500 ease-in-out opacity-0 rounded hover:scale-105"
                   onLoad={(e) => {
                     const img = e.target as HTMLImageElement;
                     img.classList.remove('opacity-0');
@@ -67,12 +68,6 @@ export default function Contact() {
                     WebkitBackfaceVisibility: 'hidden',
                     WebkitTransform: 'translate3d(0, 0, 0)'
                   }}
-                />
-                <div 
-                  className="absolute inset-0 bg-gradient-to-b from-transparent to-background/5"
-                  style={{ 
-                    transition: 'opacity 0.5s ease-in-out'
-                  }} 
                 />
               </div>
             </div>
