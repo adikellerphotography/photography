@@ -51,14 +51,8 @@ export default function Contact() {
               <img 
                 src="/attached_assets/AK_white_line.jpg" 
                 alt="Adi Keller Photography"
-                className="transition-opacity duration-300 ease-in-out"
-                onLoad={(e) => {
-                  const img = e.target as HTMLImageElement;
-                  img.classList.remove('opacity-0');
-                  img.classList.add('opacity-100');
-                }}
+                className="transition-opacity duration-300 ease-in-out opacity-100"
                 style={{
-                  opacity: 0,
                   WebkitBackfaceVisibility: 'hidden',
                   WebkitTransform: 'translate3d(0, 0, 0)'
                 }}
