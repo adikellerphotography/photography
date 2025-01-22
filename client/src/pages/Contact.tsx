@@ -46,7 +46,14 @@ export default function Contact() {
         className="container mx-auto px-4 py-16"
       >
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-3xl font-bold mb-8 text-[#FF9500]">{isRTL ? "צרו קשר" : "Contact Me"}</h1>
+          <div className="flex flex-col items-center mb-8">
+            <img 
+              src="/attached_assets/ak_logo_contact.jpg" 
+              alt="Adi Keller Photography" 
+              className="w-48 mb-6"
+            />
+            <h1 className="text-3xl font-bold text-[#FF9500]">{isRTL ? "צרו קשר" : "Contact Me"}</h1>
+          </div>
           
           <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 ${isRTL ? 'text-right' : ''}`}>
             <Card className="bg-muted/50">
