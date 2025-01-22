@@ -13,7 +13,9 @@ import { Button } from "@/components/ui/button";
 
 export default function Gallery() {
   const { language } = useLanguage();
-  const { data: categories, isLoading: categoriesLoading } = useQuery<Category[]>({
+  const { data: categories, isLoading: categoriesLoading } = useQuery<
+    Category[]
+  >({
     queryKey: ["/api/categories"],
   });
 
@@ -29,8 +31,12 @@ export default function Gallery() {
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [touchStartY, setTouchStartY] = useState<number | null>(null);
   const [currentX, setCurrentX] = useState<number | null>(null);
-  const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(null);
-  const [isHorizontalSwipe, setIsHorizontalSwipe] = useState<boolean | null>(null);
+  const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(
+    null,
+  );
+  const [isHorizontalSwipe, setIsHorizontalSwipe] = useState<boolean | null>(
+    null,
+  );
 
   const handleTouchStart = (e: React.TouchEvent) => {
     const x = e.touches[0].clientX;
@@ -55,13 +61,18 @@ export default function Gallery() {
     setSwipeDirection(diffX > 0 ? "left" : "right");
 
     // Determine swipe direction on first significant movement
-    if (isHorizontalSwipe === null && (Math.abs(diffX) > 10 || Math.abs(diffY) > 10)) {
+    if (
+      isHorizontalSwipe === null &&
+      (Math.abs(diffX) > 10 || Math.abs(diffY) > 10)
+    ) {
       setIsHorizontalSwipe(Math.abs(diffX) > Math.abs(diffY));
     }
 
     // Only handle horizontal swipes
     if (isHorizontalSwipe && Math.abs(diffX) > 50) {
-      const currentIndex = processedCategories.findIndex(c => c.name === activeCategory);
+      const currentIndex = processedCategories.findIndex(
+        (c) => c.name === activeCategory,
+      );
       let newIndex = diffX > 0 ? currentIndex + 1 : currentIndex - 1;
 
       if (newIndex < 0) {
@@ -75,7 +86,9 @@ export default function Gallery() {
 
       // Ensure tab visibility and synchronization
       if (tabsListRef.current) {
-        const tabTrigger = tabsListRef.current.querySelector(`[value="${newCategory}"]`) as HTMLButtonElement;
+        const tabTrigger = tabsListRef.current.querySelector(
+          `[value="${newCategory}"]`,
+        ) as HTMLButtonElement;
         if (tabTrigger) {
           // Force tab activation
           tabTrigger.click();
@@ -87,20 +100,19 @@ export default function Gallery() {
           // Smooth scroll with animation matching the swipe
           container.scrollTo({
             left: scrollLeft,
-            behavior: 'smooth'
+            behavior: "smooth",
           });
 
           // Update active state visually
           const allTriggers = container.querySelectorAll('[role="tab"]');
-          allTriggers.forEach(trigger => {
-            trigger.setAttribute('aria-selected', 'false');
-            trigger.classList.remove('bg-gray-100/10');
+          allTriggers.forEach((trigger) => {
+            trigger.setAttribute("aria-selected", "false");
+            trigger.classList.remove("bg-gray-100/10");
           });
-          tabTrigger.setAttribute('aria-selected', 'true');
-          tabTrigger.classList.add('bg-gray-100/10');
+          tabTrigger.setAttribute("aria-selected", "true");
+          tabTrigger.classList.add("bg-gray-100/10");
         }
       }
-
 
       const newUrl = `/gallery?category=${encodeURIComponent(newCategory)}`;
       window.history.pushState({ category: newCategory }, "", newUrl);
@@ -117,25 +129,46 @@ export default function Gallery() {
   };
 
   // Define the allowed categories in the correct order
-  const allowedCategories = ["Bat Mitsva", "Family", "Horses", "Modeling", "Women", "Yoga", "Kids"];
+  const allowedCategories = [
+    "Bat Mitsva",
+    "Family",
+    "Horses",
+    "Modeling",
+    "Women",
+    "Yoga",
+    "Kids",
+  ];
 
   // Filter and sort categories, ensuring uniqueness
-  const processedCategories = categories
-    ?.filter((category, index, self) => 
-      // Only include if it's in allowedCategories and it's the first occurrence
-      allowedCategories.some(allowed => allowed.toLowerCase() === category.name.toLowerCase()) &&
-      self.findIndex(c => c.name.toLowerCase() === category.name.toLowerCase()) === index
-    )
-    .sort((a, b) => {
-      const aIndex = allowedCategories.findIndex(c => c.toLowerCase() === a.name.toLowerCase());
-      const bIndex = allowedCategories.findIndex(c => c.toLowerCase() === b.name.toLowerCase());
-      return aIndex - bIndex;
-    }) || [];
+  const processedCategories =
+    categories
+      ?.filter(
+        (category, index, self) =>
+          // Only include if it's in allowedCategories and it's the first occurrence
+          allowedCategories.some(
+            (allowed) => allowed.toLowerCase() === category.name.toLowerCase(),
+          ) &&
+          self.findIndex(
+            (c) => c.name.toLowerCase() === category.name.toLowerCase(),
+          ) === index,
+      )
+      .sort((a, b) => {
+        const aIndex = allowedCategories.findIndex(
+          (c) => c.toLowerCase() === a.name.toLowerCase(),
+        );
+        const bIndex = allowedCategories.findIndex(
+          (c) => c.toLowerCase() === b.name.toLowerCase(),
+        );
+        return aIndex - bIndex;
+      }) || [];
 
   // Update active category when categories load or URL changes
   useEffect(() => {
     if (processedCategories.length > 0) {
-      if (categoryFromUrl && processedCategories.some(c => c.name === categoryFromUrl)) {
+      if (
+        categoryFromUrl &&
+        processedCategories.some((c) => c.name === categoryFromUrl)
+      ) {
         setActiveCategory(categoryFromUrl);
       } else if (!activeCategory) {
         setActiveCategory(processedCategories[0].name);
@@ -207,16 +240,17 @@ export default function Gallery() {
                   transition={{
                     duration: 0.3,
                     delay: i * 0.1,
-                    ease: [0.34, 1.56, 0.64, 1]
+                    ease: [0.34, 1.56, 0.64, 1],
                   }}
                 >
                   <div className="relative overflow-hidden rounded-lg bg-muted/30">
                     <AspectRatio ratio={1.5}>
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-muted/10 to-transparent animate-shimmer" 
-                           style={{
-                             backgroundSize: "200% 100%",
-                             animation: "shimmer 2s infinite linear"
-                           }}
+                      <div
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-muted/10 to-transparent animate-shimmer"
+                        style={{
+                          backgroundSize: "200% 100%",
+                          animation: "shimmer 2s infinite linear",
+                        }}
                       />
                     </AspectRatio>
                   </div>
@@ -230,7 +264,7 @@ export default function Gallery() {
   }
 
   return (
-    <div 
+    <div
       className="min-h-screen pt-16 overflow-x-hidden"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
@@ -243,11 +277,11 @@ export default function Gallery() {
         className="container mx-auto px-4 py-8"
       >
         <div className="flex justify-between items-center mb-8">
-          <motion.h1 
-            variants={itemVariants} 
-            className={`text-3xl font-bold text-[#FF9500] w-full ${language === 'he' ? 'text-right' : 'text-left'}`}
+          <motion.h1
+            variants={itemVariants}
+            className={`text-3xl font-bold text-[#FF9500] w-full ${language === "he" ? "text-right" : "text-left"}`}
           >
-            {language === 'he' ? 'גלריית תמונות' : 'Photo Gallery'}
+            {language === "he" ? "גלריית תמונות" : "Photo Gallery"}
           </motion.h1>
         </div>
 
@@ -304,20 +338,26 @@ export default function Gallery() {
 
           <motion.div variants={itemVariants}>
             {processedCategories.map((category) => (
-              <TabsContent 
-                key={category.id} 
+              <TabsContent
+                key={category.id}
                 value={category.name}
                 className="relative"
               >
                 <motion.div
-                  initial={{ opacity: 0, x: swipeDirection === "left" ? 300 : -300 }}
+                  initial={{
+                    opacity: 0,
+                    x: swipeDirection === "left" ? 300 : -300,
+                  }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ 
-                    opacity: 0, 
-                    x: touchStartX && touchStartX - (currentX || 0) > 0 ? -300 : 300,
+                  exit={{
+                    opacity: 0,
+                    x:
+                      touchStartX && touchStartX - (currentX || 0) > 0
+                        ? -300
+                        : 300,
                     transition: {
-                      duration: 0.2
-                    }
+                      duration: 0.2,
+                    },
                   }}
                   transition={{
                     type: "spring",
