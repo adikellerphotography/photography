@@ -259,32 +259,53 @@ export default function MySessions() {
                       onClick={(e) => handleImageClick(e, link, group.name)}
                     >
                     <motion.div
-                      className="relative aspect-square w-full overflow-hidden rounded-lg"
+                      className="relative aspect-square w-full overflow-hidden rounded-lg bg-muted"
                       transition={{ duration: 0.2 }}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
                     >
+                      <div className="absolute inset-0 animate-pulse bg-gradient-to-b from-background/20 to-background/10" />
                       {["Bat Mitsva", "Bar Mitsva", "Horses", "Kids", "Family", "Big Family", "Sweet 16", "Purim", "Pregnancy", "Feminine", "Yoga", "Modeling"].includes(group.name) ? (
                         <div className="relative w-full pb-[100%]">
                           <img 
                             src={`/assets/facebook_posts_image/${categoryMappings[group.name]}/${link.number}.jpg`}
                             alt={`${group.name} session ${link.number}`}
-                            className="absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-in-out"
+                            className="absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-in-out bg-muted"
                             loading={idx < 6 ? "eager" : "lazy"}
                             decoding="async"
+                            fetchpriority={idx < 6 ? "high" : "auto"}
+                            sizes="(max-width: 640px) 33vw, (max-width: 1024px) 25vw, 16vw"
                             style={{ 
                               backgroundColor: 'transparent',
                               objectFit: 'cover',
                               objectPosition: 'center',
                               WebkitBackfaceVisibility: 'hidden',
-                              WebkitTransform: 'translate3d(0, 0, 0)'
+                              WebkitTransform: 'translate3d(0, 0, 0)',
+                              WebkitPerspective: '1000px',
+                              WebkitTransformStyle: 'preserve-3d'
                             }}
                             onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              const retryCount = Number(target.dataset.retryCount || 0);
-                              if (retryCount < 3) {
-                                target.dataset.retryCount = String(retryCount + 1);
-                                target.src = `${target.src}?retry=${retryCount + 1}`;
+                              const img = e.target as HTMLImageElement;
+                              const retryCount = Number(img.dataset.retryCount || 0);
+                              const maxRetries = 3;
+                              
+                              if (retryCount < maxRetries) {
+                                console.log(`Retrying image load (${retryCount + 1}/${maxRetries}):`, img.src);
+                                img.dataset.retryCount = String(retryCount + 1);
+                                // Add cache-busting parameter and retry
+                                const timestamp = Date.now();
+                                const cacheBuster = `?retry=${retryCount + 1}&t=${timestamp}`;
+                                setTimeout(() => {
+                                  img.src = img.src.split('?')[0] + cacheBuster;
+                                }, retryCount * 1000); // Incremental delay between retries
                               } else {
-                                target.style.opacity = '0.3';
+                                console.error('Failed to load image after retries:', img.src);
+                                img.style.opacity = '0.3';
+                                img.style.backgroundColor = 'rgba(0,0,0,0.1)';
+                                // Try loading a lower quality version as fallback
+                                const fallbackSrc = `/assets/facebook_posts_image/${categoryMappings[group.name]}/thumbnails/${link.number}.jpg`;
+                                img.src = fallbackSrc;
                               }
                             }}
                           />
