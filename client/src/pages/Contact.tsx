@@ -48,11 +48,16 @@ export default function Contact() {
         <div className="max-w-3xl mx-auto">
           <div className="flex flex-col items-center mb-8">
             <h1 className="text-3xl font-bold mb-6 text-[#FF9500]">{isRTL ? "צרו קשר" : "Contact Me"}</h1>
-            <div className="w-64 relative">
+            <div className="w-64">
               <img 
                 src="assets/AK_white_line.jpg" 
                 alt="Adi Keller Photography"
-                className="transition-opacity duration-300 ease-in-out opacity-100"
+                className="transition-opacity duration-700 ease-in-out opacity-0"
+                onLoad={(e) => {
+                  const img = e.target as HTMLImageElement;
+                  img.classList.remove('opacity-0');
+                  img.classList.add('opacity-100');
+                }}
                 onError={(e) => {
                   const img = e.target as HTMLImageElement;
                   img.src = 'assets/my_logo.png';
@@ -62,7 +67,6 @@ export default function Contact() {
                   WebkitTransform: 'translate3d(0, 0, 0)'
                 }}
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
             </div>
           </div>
           
