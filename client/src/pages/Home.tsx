@@ -277,8 +277,11 @@ export default function Home() {
                             }
                             alt={category.name}
                             className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
+                            decoding="async"
                             style={{
                               objectPosition: "center center",
+                              WebkitBackfaceVisibility: 'hidden',
+                              WebkitTransform: 'translate3d(0, 0, 0)'
                             }}
                             onLoad={(e) => {
                               const img = e.target as HTMLImageElement;
