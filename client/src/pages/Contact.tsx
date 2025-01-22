@@ -50,7 +50,7 @@ export default function Contact() {
           
           <div className="flex justify-center mb-8">
             <img 
-              src="/assets/my_logo.png" 
+              src="/assets/AK.jpg" 
               alt="Adi Keller Photography"
               className="w-64 h-auto"
               loading="eager"
