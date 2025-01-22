@@ -28,6 +28,7 @@ const getCategoryPath = (categoryName: string) => {
 // Configure static file serving
 const configureStaticFiles = (app: Express) => {
   const assetsPath = path.join(process.cwd(), 'attached_assets');
+  app.use('/attached_assets', express.static(assetsPath, {
   app.use('/assets', express.static(assetsPath, {
     setHeaders: (res, filePath) => {
       if (filePath.toLowerCase().endsWith('.jpg') || filePath.toLowerCase().endsWith('.jpeg')) {
