@@ -111,6 +111,17 @@ export default function Home() {
       allowedCategories.includes(category.name),
     ) || [];
 
+  useEffect(() => {
+    // Preload the first category image
+    if (filteredCategories?.[0]?.firstPhoto?.imageUrl) {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = filteredCategories[0].firstPhoto.imageUrl;
+      document.head.appendChild(link);
+    }
+  }, [filteredCategories]);
+
   return (
     <div className="min-h-screen pt-16">
       {/* Hero Section */}
@@ -308,8 +319,10 @@ export default function Home() {
                                 target.style.opacity = '0.7';
                               }
                             }}
-                            loading={index < 6 ? "eager" : "lazy"}
+                            loading={index === 0 ? "eager" : index < 6 ? "eager" : "lazy"}
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            fetchpriority={index === 0 ? "high" : "auto"}
+                            decoding={index === 0 ? "sync" : "async"}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent">
                             <div className="absolute bottom-0 left-0 right-0 p-4">
