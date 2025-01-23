@@ -335,8 +335,7 @@ export default function MySessions() {
                           <div className="absolute inset-0 bg-gradient-to-b from-black/[0.075] to-transparent opacity-0 group-hover:opacity100 transition-opacity duration-300" />
                         </div>
                       ) : (
-                        <div 
-                          className="w-full h-full rounded-lg"
+                        <div className="w-full h-full rounded-lg"
                           style={{
                             backgroundColor: 'rgba(0, 0, 0, 0.03)'
                           }}
@@ -353,20 +352,23 @@ export default function MySessions() {
       </motion.div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-[95vw] max-h-[95vh] w-auto h-auto p-4 bg-black/95 border-none" onInteractOutside={() => setIsDialogOpen(false)}>
+        <DialogContent 
+          className="w-screen h-screen p-0 m-0 bg-black border-0 shadow-none" 
+          onInteractOutside={() => setIsDialogOpen(false)}
+        >
           {selectedImage && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.15, ease: "easeOut" }}
-              className="relative flex items-center justify-center bg-black/95"
+              transition={{ duration: 0.15 }}
+              className="relative w-full h-full flex items-center justify-center bg-black"
               onClick={() => setIsDialogOpen(false)}
             >
               <img
                 src={selectedImage.url}
                 alt={`${selectedImage.groupName} session ${selectedImage.number}`}
-                className="max-w-full max-h-[85vh] object-contain"
+                className="w-full h-full object-contain"
                 loading="eager"
                 decoding="sync"
                 fetchpriority="high"
