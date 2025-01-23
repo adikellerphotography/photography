@@ -241,21 +241,22 @@ export default function MySessions() {
         </h1>
         <div className={`flex items-center gap-4 mb-8 ${language === 'he' ? 'justify-end' : ''} text-muted-foreground`}>
           <div className="flex items-center gap-2">
-            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="4" y="4" width="16" height="16" rx="2" />
-              <path d="M12 8v8" />
-              <path d="M8 12h8" />
-            </svg>
+            <div className="relative">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <text x="8" y="16" fontSize="12" fill="currentColor" className="font-bold">1</text>
+              </svg>
+            </div>
             <span className="text-sm">View Image</span>
           </div>
           <div className="flex items-center gap-2">
-            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="4" y="4" width="16" height="16" rx="2" />
-              <path d="M8 8h8" />
-              <path d="M8 12h8" />
-              <path d="M8 16h8" />
-            </svg>
-            <span className="text-sm">Open Post</span>
+            <div className="relative">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <text x="8" y="16" fontSize="12" fill="currentColor" className="font-bold">2</text>
+              </svg>
+            </div>
+            <span className="text-sm">Open Facebook Post</span>
           </div>
         </div>
         <div className="space-y-8">
