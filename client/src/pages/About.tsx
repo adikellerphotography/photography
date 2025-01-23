@@ -33,6 +33,15 @@ export default function About() {
                   className="object-cover w-full h-full"
                   width={300}
                   height={300}
+                  loading="eager"
+                  decoding="sync"
+                  fetchpriority="high"
+                  style={{
+                    WebkitBackfaceVisibility: 'hidden',
+                    WebkitTransform: 'translate3d(0, 0, 0)',
+                    WebkitPerspective: '1000px',
+                    WebkitTransformStyle: 'preserve-3d'
+                  }}
                 />
               </motion.div>
             </AspectRatio>
