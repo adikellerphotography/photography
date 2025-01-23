@@ -366,7 +366,7 @@ export default function MySessions() {
               <img
                 src={selectedImage.url}
                 alt={`${selectedImage.groupName} session ${selectedImage.number}`}
-                className="max-w-full max-h-full w-auto h-auto object-contain"
+                className="max-w-[95%] max-h-[95vh] w-auto h-auto object-contain mx-auto"
                 loading="eager"
                 decoding="async"
               />
