@@ -242,20 +242,20 @@ export default function MySessions() {
         <div className={`flex items-center gap-4 mb-8 ${language === 'he' ? 'justify-end' : ''} text-muted-foreground`}>
           <div className="flex items-center gap-2">
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="4" y="4" width="16" height="16" rx="2" />
-              <path d="M12 8v8" />
-              <path d="M8 12h8" />
+              <path d="M7 14.5C7 14.5 7 13 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12C17 13 17 14.5 17 14.5" />
+              <circle cx="12" cy="12" r="1" fill="currentColor" />
+              <path d="M12 16L12 14" />
             </svg>
-            <span className="text-sm">View Image</span>
+            <span className="text-sm">One Click</span>
           </div>
           <div className="flex items-center gap-2">
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="4" y="4" width="16" height="16" rx="2" />
-              <path d="M8 8h8" />
-              <path d="M8 12h8" />
-              <path d="M8 16h8" />
+              <path d="M7 14.5C7 14.5 7 13 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12C17 13 17 14.5 17 14.5" />
+              <circle cx="12" cy="12" r="1" fill="currentColor" />
+              <path d="M12 16L12 14" />
+              <path d="M9 12H15" strokeDasharray="2 1" />
             </svg>
-            <span className="text-sm">Open Post</span>
+            <span className="text-sm">Two Clicks</span>
           </div>
         </div>
         <div className="space-y-8">
