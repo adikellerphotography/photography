@@ -47,7 +47,7 @@ export default function Contact() {
       >
         <div className="max-w-3xl mx-auto">
           <div className="flex flex-col items-center mb-8">
-            <Link to="/" className="w-64 bg-muted/70">
+            <div className="w-64 bg-muted/70">
               <img 
                 src="assets/AK_white_line.jpg" 
                 alt="Adi Keller Photography"
@@ -66,7 +66,7 @@ export default function Contact() {
                   WebkitTransform: 'translate3d(0, 0, 0)'
                 }}
               />
-            </Link>
+            </div>
           </div>
 
           <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 ${isRTL ? 'text-right' : ''}`}>
