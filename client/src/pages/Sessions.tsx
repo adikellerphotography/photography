@@ -239,9 +239,24 @@ export default function MySessions() {
         <h1 className="text-3xl font-bold mb-4 text-[#FF9500]">
           {t("sessions.title")}
         </h1>
-        <div className={`flex items-center gap-2 mb-8 ${language === 'he' ? 'justify-end' : ''}`}>
-          <SiFacebook className="text-[#1877F2] w-6 h-6 animate-pulse" />
-          <span className="text-foreground font-semibold">{t("sessions.description")}</span>
+        <div className={`flex items-center gap-4 mb-8 ${language === 'he' ? 'justify-end' : ''} text-muted-foreground`}>
+          <div className="flex items-center gap-2">
+            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="4" y="4" width="16" height="16" rx="2" />
+              <path d="M12 8v8" />
+              <path d="M8 12h8" />
+            </svg>
+            <span className="text-sm">View Image</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="4" y="4" width="16" height="16" rx="2" />
+              <path d="M8 8h8" />
+              <path d="M8 12h8" />
+              <path d="M8 16h8" />
+            </svg>
+            <span className="text-sm">Open Post</span>
+          </div>
         </div>
         <div className="space-y-8">
           {groups.map((group) => (
