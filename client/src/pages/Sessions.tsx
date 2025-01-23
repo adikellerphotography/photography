@@ -292,7 +292,8 @@ export default function MySessions() {
                       {["Bat Mitsva", "Bar Mitsva", "Horses", "Kids", "Family", "Big Family", "Sweet 16", "Purim", "Pregnancy", "Feminine", "Yoga", "Modeling"].includes(group.name) ? (
                         <div className="relative w-full pb-[100%]">
                           <img 
-                            src={`/assets/facebook_posts_image/${categoryMappings[group.name]}/${link.number}.jpg`}
+                            key={`${group.name}-${link.number}`}
+                            src={`/assets/facebook_posts_image/${categoryMappings[group.name]}/${String(link.number).padStart(3, '0')}.jpg`}
                             alt={`${group.name} session ${link.number}`}
                             className="absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-in-out bg-muted"
                             loading={idx < 6 ? "eager" : "lazy"}
@@ -300,35 +301,32 @@ export default function MySessions() {
                             fetchpriority={idx < 6 ? "high" : "auto"}
                             sizes="(max-width: 640px) 33vw, (max-width: 1024px) 25vw, 16vw"
                             style={{ 
-                              backgroundColor: 'transparent',
+                              backgroundColor: '#f3f4f6',
                               objectFit: 'cover',
-                              objectPosition: 'center',
-                              WebkitBackfaceVisibility: 'hidden',
-                              WebkitTransform: 'translate3d(0, 0, 0)',
-                              WebkitPerspective: '1000px',
-                              WebkitTransformStyle: 'preserve-3d'
+                              objectPosition: 'center'
+                            }}
+                            onLoad={(e) => {
+                              const img = e.target as HTMLImageElement;
+                              img.style.backgroundColor = 'transparent';
                             }}
                             onError={(e) => {
                               const img = e.target as HTMLImageElement;
                               const retryCount = Number(img.dataset.retryCount || 0);
-                              const maxRetries = 3;
+                              const maxRetries = 2;
 
                               if (retryCount < maxRetries) {
-                                console.log(`Retrying image load (${retryCount + 1}/${maxRetries}):`, img.src);
                                 img.dataset.retryCount = String(retryCount + 1);
-                                // Add cache-busting parameter and retry
-                                const timestamp = Date.now();
-                                const cacheBuster = `?retry=${retryCount + 1}&t=${timestamp}`;
+                                const newSrc = `/assets/facebook_posts_image/${categoryMappings[group.name]}/${String(link.number).padStart(3, '0')}.jpg?v=${retryCount + 1}`;
                                 setTimeout(() => {
-                                  img.src = img.src.split('?')[0] + cacheBuster;
-                                }, retryCount * 1000); // Incremental delay between retries
+                                  img.src = newSrc;
+                                }, retryCount * 1000);
                               } else {
-                                console.error('Failed to load image after retries:', img.src);
-                                img.style.opacity = '0.3';
-                                img.style.backgroundColor = 'rgba(0,0,0,0.1)';
-                                // Try loading a lower quality version as fallback
-                                const fallbackSrc = `/assets/facebook_posts_image/${categoryMappings[group.name]}/thumbnails/${link.number}.jpg`;
-                                img.src = fallbackSrc;
+                                img.style.opacity = '0.5';
+                                img.style.backgroundColor = '#f3f4f6';
+                                const fallbackContent = document.createElement('div');
+                                fallbackContent.className = 'absolute inset-0 flex items-center justify-center text-gray-500';
+                                fallbackContent.innerHTML = `<span>${link.number}</span>`;
+                                img.parentElement?.appendChild(fallbackContent);
                               }
                             }}
                           />
