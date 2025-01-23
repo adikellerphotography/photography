@@ -211,13 +211,15 @@ export default function MySessions() {
     if (clickTimer.current && (now - clickTimer.current) < 300) {
       // Double click/tap detected
       clickTimer.current = 0;
-      setIsDialogOpen(false); // Close any open dialog
+      setIsDialogOpen(false);
       window.open(link.url, '_blank', 'noopener,noreferrer');
     } else {
       // Single click
       clickTimer.current = now;
       setTimeout(() => {
         if (clickTimer.current !== 0) {
+          // Push state before opening dialog
+          window.history.pushState({ isGalleryView: true }, '', window.location.pathname);
           setSelectedImage({ 
             url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
             number: link.number, 
@@ -229,6 +231,16 @@ export default function MySessions() {
       }, 300);
     }
   };
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setIsDialogOpen(false);
+      setSelectedImage(null);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   return (
     <div className="min-h-screen pt-8">
