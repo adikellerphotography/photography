@@ -242,20 +242,13 @@ export default function MySessions() {
         </h1>
         <div className={`flex items-center gap-4 mb-8 ${language === 'he' ? 'justify-end' : ''} text-muted-foreground`}>
           <div className="flex items-center gap-2">
-            <div className="relative">
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                <text x="8" y="16" fontSize="12" fill="currentColor" className="font-bold">1</text>
-              </svg>
-            </div>
+            <MousePointerClick className="w-5 h-5" />
             <span className="text-sm">View Image</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="relative">
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                <text x="8" y="16" fontSize="12" fill="currentColor" className="font-bold">2</text>
-              </svg>
+            <div className="relative flex">
+              <MousePointerClick className="w-5 h-5" />
+              <MousePointerClick className="w-5 h-5 -ml-3" />
             </div>
             <span className="text-sm">Open Facebook Post</span>
           </div>
