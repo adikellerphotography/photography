@@ -47,7 +47,7 @@ export default function Contact() {
       >
         <div className="max-w-3xl mx-auto">
           <div className="flex flex-col items-center mb-8">
-            <Link to="/" className="w-64 bg-muted/70 transition-all duration-150 transform hover:scale-[1.02] active:scale-75 active:brightness-150 relative after:absolute after:inset-0 after:z-[-1] after:bg-white/30 after:scale-0 after:origin-center active:after:scale-150 after:rounded-full after:transition-transform">
+            <Link to="/" className="w-64 bg-muted/70 transition-all duration-150 transform hover:scale-[1.02] active:scale-50 active:brightness-200 active:rotate-3 relative after:absolute after:inset-0 after:z-[-1] after:bg-white/50 after:scale-0 after:origin-center active:after:scale-[3] after:rounded-full after:transition-all after:duration-300 active:after:opacity-0">
               <img 
                 src="assets/AK_white_line.jpg" 
                 alt="Adi Keller Photography"
