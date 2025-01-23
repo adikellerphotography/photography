@@ -353,22 +353,28 @@ export default function MySessions() {
       </motion.div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="w-screen h-screen !p-0 border-none bg-black/90 shadow-none" onInteractOutside={() => setIsDialogOpen(false)}>
+        <DialogContent className="max-w-[95vw] max-h-[95vh] w-auto h-auto p-4 bg-black/95 border-none" onInteractOutside={() => setIsDialogOpen(false)}>
           {selectedImage && (
             <motion.div
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15, ease: "easeOut" }}
-              className="relative w-full h-full flex items-center justify-center"
+              className="relative flex items-center justify-center bg-black/95"
               onClick={() => setIsDialogOpen(false)}
             >
               <img
                 src={selectedImage.url}
                 alt={`${selectedImage.groupName} session ${selectedImage.number}`}
-                className="w-full h-full object-contain"
+                className="max-w-full max-h-[85vh] object-contain"
                 loading="eager"
-                decoding="async"
+                decoding="sync"
+                fetchpriority="high"
+                style={{
+                  backgroundColor: 'transparent',
+                  WebkitBackfaceVisibility: 'hidden',
+                  WebkitTransform: 'translate3d(0, 0, 0)'
+                }}
               />
             </motion.div>
           )}
