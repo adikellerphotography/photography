@@ -221,12 +221,34 @@ export default function MySessions() {
         if (clickTimer.current !== 0) {
           // Push state before opening dialog
           window.history.pushState({ isGalleryView: true }, '', window.location.pathname);
-          setSelectedImage({ 
-            url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
-            number: link.number, 
-            groupName 
-          });
-          setIsDialogOpen(true);
+          const imageUrl = `/attached_assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`;
+          
+          // Preload the image before showing dialog
+          const img = new Image();
+          img.onload = () => {
+            setSelectedImage({ 
+              url: imageUrl,
+              number: link.number, 
+              groupName 
+            });
+            setIsDialogOpen(true);
+          };
+          img.onerror = () => {
+            console.error('Failed to load image:', imageUrl);
+            // Try loading from backup path
+            const backupUrl = `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`;
+            const backupImg = new Image();
+            backupImg.onload = () => {
+              setSelectedImage({
+                url: backupUrl,
+                number: link.number,
+                groupName
+              });
+              setIsDialogOpen(true);
+            };
+            backupImg.src = backupUrl;
+          };
+          img.src = imageUrl;
         }
         clickTimer.current = 0;
       }, 300);
@@ -372,6 +394,21 @@ export default function MySessions() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
+                onError={(e) => {
+                  const img = e.target as HTMLImageElement;
+                  const retryCount = +(img.dataset.retryCount || 0);
+                  if (retryCount < 3) {
+                    img.dataset.retryCount = String(retryCount + 1);
+                    setTimeout(() => {
+                      img.src = img.src + '?retry=' + Date.now();
+                    }, retryCount * 1000);
+                  }
+                }}
+                style={{
+                  WebkitBackfaceVisibility: 'hidden',
+                  WebkitTransform: 'translate3d(0, 0, 0)',
+                  WebkitPerspective: '1000px'
+                }}
               />
               <button 
                 className="absolute top-4 right-4 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
