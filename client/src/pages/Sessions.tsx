@@ -221,10 +221,8 @@ export default function MySessions() {
         if (clickTimer.current !== 0) {
           // Push state before opening dialog
           window.history.pushState({ isGalleryView: true }, '', window.location.pathname);
-          const paddedNumber = String(link.number).padStart(3, '0');
-          const imageUrl = `/assets/facebook_posts_image/${categoryMappings[groupName]}/${paddedNumber}.jpg`;
           setSelectedImage({ 
-            url: imageUrl,
+            url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
             number: link.number, 
             groupName 
           });
@@ -294,24 +292,11 @@ export default function MySessions() {
                       {["Bat Mitsva", "Bar Mitsva", "Horses", "Kids", "Family", "Big Family", "Sweet 16", "Purim", "Pregnancy", "Feminine", "Yoga", "Modeling"].includes(group.name) ? (
                         <div className="relative w-full pb-[100%]">
                           <img 
-                            src={`/assets/facebook_posts_image/${categoryMappings[group.name]}/${String(link.number).padStart(3, '0')}.jpg`}
+                            src={`/assets/facebook_posts_image/${categoryMappings[group.name]}/${link.number}.jpg`}
                             alt={`${group.name} session ${link.number}`}
                             className="absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-in-out bg-muted"
                             loading={idx < 6 ? "eager" : "lazy"}
                             decoding="async"
-                            onError={(e) => {
-                              const img = e.target as HTMLImageElement;
-                              const retryCount = Number(img.dataset.retryCount || 0);
-                              if (retryCount < 3) {
-                                img.dataset.retryCount = String(retryCount + 1);
-                                setTimeout(() => {
-                                  img.src = img.src + '?retry=' + Date.now();
-                                }, retryCount * 1000);
-                              } else {
-                                img.style.opacity = '0.5';
-                                img.src = '/assets/placeholder-category.jpg';
-                              }
-                            }}
                             fetchpriority={idx < 6 ? "high" : "auto"}
                             sizes="(max-width: 640px) 33vw, (max-width: 1024px) 25vw, 16vw"
                             style={{ 
