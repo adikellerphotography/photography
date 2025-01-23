@@ -221,34 +221,12 @@ export default function MySessions() {
         if (clickTimer.current !== 0) {
           // Push state before opening dialog
           window.history.pushState({ isGalleryView: true }, '', window.location.pathname);
-          const imageUrl = `/attached_assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`;
-          
-          // Preload the image before showing dialog
-          const img = new Image();
-          img.onload = () => {
-            setSelectedImage({ 
-              url: imageUrl,
-              number: link.number, 
-              groupName 
-            });
-            setIsDialogOpen(true);
-          };
-          img.onerror = () => {
-            console.error('Failed to load image:', imageUrl);
-            // Try loading from backup path
-            const backupUrl = `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`;
-            const backupImg = new Image();
-            backupImg.onload = () => {
-              setSelectedImage({
-                url: backupUrl,
-                number: link.number,
-                groupName
-              });
-              setIsDialogOpen(true);
-            };
-            backupImg.src = backupUrl;
-          };
-          img.src = imageUrl;
+          setSelectedImage({ 
+            url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
+            number: link.number, 
+            groupName 
+          });
+          setIsDialogOpen(true);
         }
         clickTimer.current = 0;
       }, 300);
