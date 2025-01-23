@@ -47,20 +47,7 @@ export default function Contact() {
       >
         <div className="max-w-3xl mx-auto">
           <div className="flex flex-col items-center mb-8">
-            <div className="w-64 bg-muted/70 relative group cursor-pointer" onClick={(e) => {
-              const rect = e.currentTarget.getBoundingClientRect();
-              const x = e.clientX - rect.left;
-              const y = e.clientY - rect.top;
-              
-              const smoke = document.createElement('div');
-              smoke.className = 'absolute w-20 h-20 -translate-x-1/2 -translate-y-1/2 pointer-events-none ' +
-                              'bg-white/30 rounded-full blur-xl animate-smoke';
-              smoke.style.left = `${x}px`;
-              smoke.style.top = `${y}px`;
-              
-              e.currentTarget.appendChild(smoke);
-              setTimeout(() => smoke.remove(), 1000);
-            }}>
+            <div className="w-64 bg-muted/70">
               <img 
                 src="assets/AK_white_line.jpg" 
                 alt="Adi Keller Photography"
