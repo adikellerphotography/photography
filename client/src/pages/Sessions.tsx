@@ -353,23 +353,38 @@ export default function MySessions() {
       </motion.div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="w-screen h-screen !p-0 border-none bg-transparent shadow-none" onInteractOutside={() => setIsDialogOpen(false)}>
+        <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 border-none bg-black/80 shadow-xl backdrop-blur-sm" onInteractOutside={() => setIsDialogOpen(false)}>
           {selectedImage && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-              className="relative w-screen h-screen flex items-center justify-center"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className="relative w-full h-full flex items-center justify-center p-4"
               onClick={() => setIsDialogOpen(false)}
             >
-              <img
+              <motion.img
                 src={selectedImage.url}
                 alt={`${selectedImage.groupName} session ${selectedImage.number}`}
-                className="max-w-full max-h-full w-auto h-auto object-contain"
+                className="max-w-full max-h-[85vh] w-auto h-auto object-contain rounded-lg shadow-2xl"
                 loading="eager"
                 decoding="async"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
               />
+              <button 
+                className="absolute top-4 right-4 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsDialogOpen(false);
+                }}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
             </motion.div>
           )}
         </DialogContent>
