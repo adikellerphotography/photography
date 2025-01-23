@@ -243,14 +243,14 @@ export default function MySessions() {
         <div className={`flex items-center gap-4 mb-8 ${language === 'he' ? 'justify-end' : ''} text-muted-foreground`}>
           <div className="flex items-center gap-2">
             <MousePointerClick className="w-5 h-5" />
-            <span className="text-sm">View Image</span>
+            <span className="text-sm">{language === 'he' ? 'צפייה בתמונה' : 'View Image'}</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="relative flex">
               <MousePointerClick className="w-5 h-5" />
               <MousePointerClick className="w-5 h-5 -ml-3" />
             </div>
-            <span className="text-sm">Open Facebook Post</span>
+            <span className="text-sm">{language === 'he' ? 'פתיחת פוסט בפייסבוק' : 'Open Facebook Post'}</span>
           </div>
         </div>
         <div className="space-y-8">
