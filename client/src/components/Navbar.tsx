@@ -30,11 +30,14 @@ export default function Navbar() {
       <NavigationMenu className="w-full">
         <div className="w-full flex items-center h-14">
           <div className="flex items-center">
-            <div className={cn(
-              "h-14 px-4 py-2 flex items-center gap-2"
-            )}>
-              <Home className="h-4 w-4" />
-            </div>
+            <Link href="/">
+              <NavigationMenuLink className={cn(
+                "h-14 px-4 py-2 transition-colors hover:bg-accent focus:outline-none cursor-pointer flex items-center gap-2",
+                location.pathname === "/" ? "bg-accent/60" : ""
+              )}>
+                <Home className="h-4 w-4" />
+              </NavigationMenuLink>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
