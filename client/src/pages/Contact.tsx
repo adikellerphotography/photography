@@ -47,7 +47,7 @@ export default function Contact() {
       >
         <div className="max-w-3xl mx-auto">
           <div className="flex flex-col items-center mb-8">
-            <Link to="/" className="w-64 bg-muted/70 transition-transform active:scale-95">
+            <Link to="/" className="w-64 bg-muted/70">
               <img 
                 src="assets/AK_white_line.jpg" 
                 alt="Adi Keller Photography"
