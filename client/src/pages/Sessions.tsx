@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useLanguage } from "@/hooks/use-language";
 import { SiFacebook } from "react-icons/si";
+import { HandClick, MousePointerClick } from 'lucide-react';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useQuery } from "@tanstack/react-query";
 
@@ -305,7 +306,7 @@ export default function MySessions() {
                               const img = e.target as HTMLImageElement;
                               const retryCount = Number(img.dataset.retryCount || 0);
                               const maxRetries = 3;
-                              
+
                               if (retryCount < maxRetries) {
                                 console.log(`Retrying image load (${retryCount + 1}/${maxRetries}):`, img.src);
                                 img.dataset.retryCount = String(retryCount + 1);
@@ -325,7 +326,7 @@ export default function MySessions() {
                               }
                             }}
                           />
-                          <div className="absolute inset-0 bg-gradient-to-b from-black/[0.075] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          <div className="absolute inset-0 bg-gradient-to-b from-black/[0.075] to-transparent opacity-0 group-hover:opacity100 transition-opacity duration-300" />
                         </div>
                       ) : (
                         <div 
