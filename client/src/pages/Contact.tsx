@@ -47,7 +47,12 @@ export default function Contact() {
       >
         <div className="max-w-3xl mx-auto">
           <div className="flex flex-col items-center mb-8">
-            <div className="w-64 bg-muted/70">
+            <div className="w-64 bg-muted/70 relative overflow-hidden shine-container" onClick={(e) => {
+              const el = e.currentTarget;
+              el.classList.add('shine-effect');
+              setTimeout(() => el.classList.remove('shine-effect'), 1000);
+            }}>
+              <div className="shine-overlay"></div>
               <img 
                 src="assets/AK_white_line.jpg" 
                 alt="Adi Keller Photography"
