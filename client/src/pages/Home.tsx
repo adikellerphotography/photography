@@ -287,7 +287,7 @@ export default function Home() {
                           <img
                             src={
                               category.firstPhoto?.imageUrl ||
-                              `/assets/${category.name}/${category.name.toLowerCase()}-1.jpg`
+                              `/assets/${category.name.replace(' ', '_')}/${String(1).padStart(3, '0')}.jpeg`
                             }
                             alt={category.name}
                             className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"

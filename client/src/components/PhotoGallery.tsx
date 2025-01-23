@@ -243,7 +243,12 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     // Handle special cases for category paths
     const categoryMappings: Record<string, string> = {
       'Bat Mitsva': 'Bat_Mitsva',
-      'Kids': 'kids'
+      'Kids': 'kids',
+      'Family': 'Family',
+      'Horses': 'Horses',
+      'Modeling': 'Modeling',
+      'Women': 'Women',
+      'Yoga': 'Yoga'
     };
     const categoryPath = categoryMappings[photo.category] || photo.category;
     return `/assets/${categoryPath}/${String(photo.id).padStart(3, '0')}.jpeg`;
@@ -326,7 +331,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                       const img = e.target as HTMLImageElement;
                       const retryCount = Number(img.dataset.retryCount || 0);
                       const maxRetries = 3;
-                      
+
                       if (retryCount < maxRetries) {
                         console.log(`Retrying image load (${retryCount + 1}/${maxRetries}):`, img.src);
                         img.dataset.retryCount = String(retryCount + 1);

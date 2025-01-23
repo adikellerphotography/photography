@@ -173,7 +173,8 @@ const categoryMappings: Record<string, string> = {
   'Sweet 16': 'sweet_16',
   'Purim': 'purim',
   'Pregnancy': 'pregnancy',
-  'Yoga': 'yoga'
+  'Yoga': 'yoga',
+  'Women': 'Women'
 };
 
 export default function MySessions() {
