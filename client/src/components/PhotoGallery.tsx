@@ -107,17 +107,28 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   useEffect(() => {
     if (selectedPhoto) {
-      const state = { photo: selectedPhoto, index: selectedIndex };
-      window.history.pushState(state, '', window.location.pathname + window.location.search);
+      // Push the gallery state first
+      window.history.pushState({ isGalleryView: true }, '', window.location.pathname + window.location.search);
+      // Then push the photo state
+      window.history.pushState(
+        { photo: selectedPhoto, index: selectedIndex, isPhotoView: true },
+        '',
+        window.location.pathname + window.location.search
+      );
     }
-  }, [selectedPhoto, selectedIndex]);
+  }, [selectedPhoto]);
 
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
-      if (event.state?.photo && !event.state?.isGalleryView) {
-        setSelectedPhoto(event.state.photo);
-        setSelectedIndex(event.state.index);
-      } else {
+      if (!event.state || event.state.isGalleryView) {
+        const imageElement = document.querySelector(`[data-photo-id="${selectedPhoto?.id}"]`);
+        if (imageElement) {
+          imageElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          imageElement.classList.add('highlight-viewed');
+          setTimeout(() => {
+            imageElement.classList.remove('highlight-viewed');
+          }, 1000);
+        }
         setSelectedPhoto(null);
         setSelectedIndex(0);
       }
@@ -125,17 +136,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
-
-  // Handle initial photo selection
-  useEffect(() => {
-    if (selectedPhoto) {
-      const state = { photo: selectedPhoto, index: selectedIndex, isGalleryView: false };
-      window.history.pushState(state, '', window.location.pathname + window.location.search);
-      // Add gallery view state
-      window.history.pushState({ isGalleryView: true }, '', window.location.pathname + window.location.search);
-    }
-  }, [selectedPhoto !== null]);
+  }, [selectedPhoto]);
 
   useEffect(() => {
     setIsFullImageLoaded(false);
