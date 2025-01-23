@@ -221,21 +221,11 @@ export default function MySessions() {
         if (clickTimer.current !== 0) {
           // Push state before opening dialog
           window.history.pushState({ isGalleryView: true }, '', window.location.pathname);
-          const imageUrl = `/attached_assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`;
-          // Preload image before showing dialog
-          const img = new Image();
-          img.src = imageUrl;
-          img.onload = () => {
-            setSelectedImage({ 
-              url: imageUrl,
-              number: link.number, 
-              groupName 
-            });
-            setIsDialogOpen(true);
-          };
-          img.onerror = () => {
-            console.error('Failed to load image:', imageUrl);
-          };
+          setSelectedImage({ 
+            url: `/assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
+            number: link.number, 
+            groupName 
+          });
           setIsDialogOpen(true);
         }
         clickTimer.current = 0;
@@ -302,7 +292,7 @@ export default function MySessions() {
                       {["Bat Mitsva", "Bar Mitsva", "Horses", "Kids", "Family", "Big Family", "Sweet 16", "Purim", "Pregnancy", "Feminine", "Yoga", "Modeling"].includes(group.name) ? (
                         <div className="relative w-full pb-[100%]">
                           <img 
-                            src={`/attached_assets/facebook_posts_image/${categoryMappings[group.name]}/${link.number}.jpg`}
+                            src={`/assets/facebook_posts_image/${categoryMappings[group.name]}/${link.number}.jpg`}
                             alt={`${group.name} session ${link.number}`}
                             className="absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-in-out bg-muted"
                             loading={idx < 6 ? "eager" : "lazy"}
