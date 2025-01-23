@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
 import { Button } from "@/components/ui/button";
@@ -46,7 +47,7 @@ export default function Contact() {
       >
         <div className="max-w-3xl mx-auto">
           <div className="flex flex-col items-center mb-8">
-            <div className="w-64 bg-muted/70">
+            <Link to="/" className="w-64 bg-muted/70">
               <img 
                 src="assets/AK_white_line.jpg" 
                 alt="Adi Keller Photography"
@@ -65,7 +66,7 @@ export default function Contact() {
                   WebkitTransform: 'translate3d(0, 0, 0)'
                 }}
               />
-            </div>
+            </Link>
           </div>
 
           <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 ${isRTL ? 'text-right' : ''}`}>
