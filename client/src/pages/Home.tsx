@@ -341,7 +341,7 @@ export default function Home() {
                                   : "lazy"
                             }
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                            fetchpriority={index === 0 ? "high" : "auto"}
+                            fetchPriority={index === 0 ? "high" : "auto"}
                             decoding={index === 0 ? "sync" : "async"}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent">
