@@ -79,18 +79,18 @@ export default function ReflectionProject() {
             >
               <div className="mb-1 flex items-center justify-between px-6 py-2.5 bg-background/30 backdrop-blur-sm">
                 <div className="flex items-center gap-1.5">
-                  <div className="relative w-8 h-8">
-                    <circle r="14" cx="16" cy="16" className="absolute text-muted-foreground" fill="none" stroke="currentColor" strokeWidth="1.5"/>
-                    <text x="4" y="19" className="text-[8px] fill-muted-foreground font-medium">AGE</text>
-                  </div>
+                  <svg width="24" height="24" viewBox="0 0 32 32" className="text-muted-foreground">
+                    <circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+                    <text x="6" y="19" className="text-[9px] fill-current font-medium">AGE</text>
+                  </svg>
                   <div className="text-xl text-muted-foreground font-medium tracking-wide">{comparison.oldAge}</div>
                 </div>
                 <h3 className="text-lg tracking-wide text-center">{comparison.name}</h3>
                 <div className="flex items-center gap-1.5">
-                  <div className="relative w-8 h-8">
-                    <circle r="8" cx="16" cy="16" className="absolute text-muted-foreground" fill="none" stroke="currentColor" strokeWidth="1.5"/>
-                    <text x="8" y="19" className="text-[8px] fill-muted-foreground font-medium">AGE</text>
-                  </div>
+                  <svg width="24" height="24" viewBox="0 0 32 32" className="text-muted-foreground">
+                    <circle cx="16" cy="16" r="10" fill="none" stroke="currentColor" strokeWidth="1.5"/>
+                    <text x="6" y="19" className="text-[9px] fill-current font-medium">AGE</text>
+                  </svg>
                   <div className="text-xl text-muted-foreground font-medium tracking-wide">{comparison.youngAge}</div>
                 </div>
               </div>
