@@ -12,16 +12,12 @@ export default function About() {
 
   return (
     <div className="min-h-screen pt-8">
-      <div
-        className="container mx-auto px-4 py-16"
-      >
+      <div className="container mx-auto px-4 py-16">
         <div className="max-w-3xl mx-auto">
           {/* Portrait Image Section */}
           <div className="mb-12 w-full max-w-[300px] mx-auto">
             <AspectRatio ratio={1}>
-              <div 
-                className="relative w-full h-full overflow-hidden rounded-full"
-              >
+              <div className="relative w-full h-full overflow-hidden rounded-full">
                 <img
                   src="/assets/IMG_1133.jpg"
                   alt="Profile"
@@ -31,12 +27,6 @@ export default function About() {
                   loading="eager"
                   decoding="sync"
                   fetchpriority="high"
-                  style={{
-                    WebkitBackfaceVisibility: 'hidden',
-                    WebkitTransform: 'translate3d(0, 0, 0)',
-                    WebkitPerspective: '1000px',
-                    WebkitTransformStyle: 'preserve-3d'
-                  }}
                 />
               </div>
             </AspectRatio>
