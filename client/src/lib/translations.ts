@@ -141,9 +141,9 @@ export const translations = {
         price: "450₪",
         description: "Capture the Purim celebration",
         features: [
-          "1.5 hours session (before sunset)",
+          "0.5 hour session (before sunset)",
           "1 location",
-          "25 edited photos",
+          "12 edited photos",
           "All raw material included",
         ],
       },
@@ -322,9 +322,9 @@ export const translations = {
         price: "450₪",
         description: "סשן צילומי פורים",
         features: [
-          "צילום שעה וחצי (לפני השקיעה)",
+          "צילום חצי שעה (לפני השקיעה)",
           "לוקיישן אחד",
-          "25 תמונות ערוכות",
+          "12 תמונות ערוכות",
           "כולל את כל חומר הגלם",
         ],
       },
