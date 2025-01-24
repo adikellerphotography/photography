@@ -251,7 +251,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       'Yoga': 'Yoga'
     };
     const categoryPath = categoryMappings[photo.category] || photo.category;
-    return `/attached_assets/${categoryPath}/${String(photo.id).padStart(3, '0')}.jpeg`;
+    return `/assets/${categoryPath}/${String(photo.id).padStart(3, '0')}.jpeg`;
   };
 
   if (isLoading) {
