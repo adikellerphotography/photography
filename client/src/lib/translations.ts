@@ -1,4 +1,14 @@
 export const translations = {
+  reflection: {
+    title: {
+      en: "Reflection Project",
+      he: "פרויקט השתקפות"
+    },
+    description: {
+      en: "This photography project captures the essence of aging by juxtaposing elderly individuals with their younger selves in identical poses. Through mirror reflections, we explore the profound journey of time and personal identity.",
+      he: "פרויקט צילום זה לוכד את מהות ההזדקנות על ידי הצבת מבוגרים מול עצמם הצעירים בתנוחות זהות. דרך השתקפויות במראה, אנו חוקרים את המסע העמוק של הזמן והזהות האישית."
+    }
+  },
   contact: {
     title: {
       en: "Contact Me",
