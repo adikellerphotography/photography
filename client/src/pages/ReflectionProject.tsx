@@ -68,7 +68,7 @@ export default function ReflectionProject() {
           {language === 'he' ? translations.reflection.description.he : translations.reflection.description.en}
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 container mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 container mx-auto">
           {mockData.map((comparison, index) => (
             <motion.div
               key={comparison.id}
@@ -77,10 +77,10 @@ export default function ReflectionProject() {
               viewport={{ once: true, margin: "-50px" }}
               className="w-full"
             >
-              <div className="mb-4 flex items-center justify-between px-4 py-2 bg-background/80 rounded-lg shadow">
-                <div className="text-2xl font-bold text-[#FF9500]">{comparison.oldAge}</div>
-                <h3 className="text-xl font-semibold text-center">{comparison.name}</h3>
-                <div className="text-2xl font-bold text-[#FF9500]">{comparison.youngAge}</div>
+              <div className="mb-1 flex items-center justify-between px-6 py-2.5 bg-background/95 border-b border-border/40">
+                <div className="text-xl font-light tracking-wider text-[#FF9500]">{comparison.oldAge}</div>
+                <h3 className="text-lg font-medium tracking-wide text-center">{comparison.name}</h3>
+                <div className="text-xl font-light tracking-wider text-[#FF9500]">{comparison.youngAge}</div>
               </div>
               <ImageCompare
                 beforeImage={comparison.beforeImage}
