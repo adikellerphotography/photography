@@ -77,10 +77,21 @@ export default function ReflectionProject() {
               viewport={{ once: true, margin: "-50px" }}
               className="w-full"
             >
-              <div className="mb-1 flex items-center justify-between px-6 py-2.5 bg-background/95 border-b border-border/40">
-                <div className="text-xl font-light tracking-wider text-[#FF9500]">{comparison.oldAge}</div>
+              <div className="mb-1 flex items-center justify-between px-6 py-2.5 bg-background/30 backdrop-blur-sm">
+                <div className="flex items-center gap-1.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#FF9500]">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                  </svg>
+                  <div className="text-xl font-light tracking-wider text-[#FF9500]">{comparison.oldAge}</div>
+                </div>
                 <h3 className="text-lg font-medium tracking-wide text-center">{comparison.name}</h3>
-                <div className="text-xl font-light tracking-wider text-[#FF9500]">{comparison.youngAge}</div>
+                <div className="flex items-center gap-1.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#FF9500]">
+                    <path d="M3 12c0-2.1 1.7-3.8 3.8-3.8h.2c2 0 3.7-1.4 4-3.4.3-2 2-3.6 4-3.8h.2c2.2 0 4 1.8 4 4 0-.5-.7.9-.8 1-.2.2-.3.4-.3.7v.2c0 .3.1.5.3.7l.8 1c0 2.2-1.8 4-4 4h-.2c-2 0-3.7 1.4-4 3.4-.3 2-2 3.6-4 3.8h-.2c-2.1 0-3.8-1.7-3.8-3.8"/>
+                  </svg>
+                  <div className="text-xl font-light tracking-wider text-[#FF9500]">{comparison.youngAge}</div>
+                </div>
               </div>
               <ImageCompare
                 beforeImage={comparison.beforeImage}
