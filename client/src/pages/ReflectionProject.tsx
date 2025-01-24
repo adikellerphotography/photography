@@ -80,16 +80,25 @@ export default function ReflectionProject() {
               <div className="mb-1 flex items-center justify-between px-6 py-2.5 bg-background/30 backdrop-blur-sm">
                 <div className="flex items-center gap-1.5">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground">
-                    <path d="M17 3c.3 0 .6.2.8.5L20 8h-6l2.2-4.5c.2-.3.5-.5.8-.5z"/>
-                    <path d="M12 8v4M12 18v4M8 12h8M10 16c0-1.1.9-2 2-2s2 .9 2 2M18 12v4M6 12v4M10 8H4l2.2-4.5C6.4 3.2 6.7 3 7 3s.6.2.8.5L10 8z"/>
+                    <circle cx="12" cy="8" r="4" />
+                    <path d="M9 17h6" />
+                    <path d="M8 14h8" />
+                    <path d="M11 3c.8 2 2.2 2 3 0" />
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <path d="M8 12h.01" />
+                    <path d="M16 12h.01" />
                   </svg>
                   <div className="text-xl text-muted-foreground font-medium tracking-wide">{comparison.oldAge}</div>
                 </div>
                 <h3 className="text-lg tracking-wide text-center">{comparison.name}</h3>
                 <div className="flex items-center gap-1.5">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground">
-                    <circle cx="12" cy="8" r="5"/>
-                    <path d="M20 21v-2a5 5 0 0 0-5-5h-6a5 5 0 0 0-5 5v2"/>
+                    <circle cx="12" cy="8" r="4" />
+                    <path d="M12 2v2" />
+                    <path d="M12 14v2" />
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <path d="M8 12h.01" />
+                    <path d="M16 12h.01" />
                   </svg>
                   <div className="text-xl text-muted-foreground font-medium tracking-wide">{comparison.youngAge}</div>
                 </div>
