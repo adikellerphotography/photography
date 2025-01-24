@@ -12,19 +12,14 @@ export default function About() {
 
   return (
     <div className="min-h-screen pt-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+      <div
         className="container mx-auto px-4 py-16"
       >
         <div className="max-w-3xl mx-auto">
           {/* Portrait Image Section */}
           <div className="mb-12 w-full max-w-[300px] mx-auto">
             <AspectRatio ratio={1}>
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8 }}
+              <div 
                 className="relative w-full h-full overflow-hidden rounded-full"
               >
                 <img
@@ -43,7 +38,7 @@ export default function About() {
                     WebkitTransformStyle: 'preserve-3d'
                   }}
                 />
-              </motion.div>
+              </div>
             </AspectRatio>
           </div>
 
@@ -88,7 +83,7 @@ export default function About() {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
