@@ -333,56 +333,54 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
                     {/* Main image */}
                     <img
-                      key={`${photo.id}-${photo.imageUrl}`}
-                      src={getImagePath(photo)}
-                      alt={photo.title || ""}
-                      className="relative w-full h-full transition-all duration-500 group-hover:scale-110 object-cover"
-                      loading={index < 12 ? "eager" : "lazy"}
-                      decoding="async"
-                      fetchpriority={index < 8 ? "high" : "auto"}
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      onLoad={(e) => {
-                        const img = e.target as HTMLImageElement;
-                        img.style.opacity = '1';
-                      }}
-                      onError={(e) => {
-                        const img = e.target as HTMLImageElement;
-                        const retryCount = Number(img.dataset.retryCount || 0);
-                        const maxRetries = 3;
-
-                        if (retryCount < maxRetries) {
-                          img.dataset.retryCount = String(retryCount + 1);
+                        key={`${photo.id}-${photo.imageUrl}`}
+                        src={getImagePath(photo)}
+                        alt={photo.title || ""}
+                        className="relative w-full h-full transition-all duration-500 group-hover:scale-110 object-cover"
+                        loading={index < 12 ? "eager" : "lazy"}
+                        decoding="async"
+                        fetchpriority={index < 8 ? "high" : "auto"}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        onLoad={(e) => {
+                          const img = e.target as HTMLImageElement;
+                          img.style.opacity = '1';
+                          img.style.backgroundColor = 'transparent';
+                        }}
+                        onError={(e) => {
+                          const img = e.target as HTMLImageElement;
                           const timestamp = Date.now();
-                          
-                          // First try thumbnail version
-                          if (retryCount === 1) {
-                            img.src = img.src.replace('.jpeg', '-thumb.jpeg');
-                          } 
-                          // Then try with cache buster
-                          else {
-                            setTimeout(() => {
-                              img.src = img.src.split('?')[0] + `?t=${timestamp}`;
-                            }, retryCount * 1000);
+                          const retryAttempt = parseInt(img.dataset.retryAttempt || '0');
+
+                          if (retryAttempt < 3) {
+                            img.dataset.retryAttempt = (retryAttempt + 1).toString();
+
+                            // First try thumbnail
+                            if (retryAttempt === 0) {
+                              img.src = getImagePath(photo).replace('.jpeg', '-thumb.jpeg');
+                            } else {
+                              // Then try with cache buster
+                              setTimeout(() => {
+                                img.src = getImagePath(photo) + `?t=${timestamp}`;
+                              }, retryAttempt * 1000);
+                            }
+                          } else {
+                            console.error('Failed to load image:', img.src);
+                            img.style.opacity = '0.5';
+                            img.style.backgroundColor = 'rgba(0,0,0,0.1)';
                           }
-                        } else {
-                          console.error('Failed to load image:', img.src);
-                          // Try one last time with a lower quality version
-                          img.src = img.src.split('?')[0] + '?q=25';
-                          img.style.opacity = '0.7';
-                        }
-                      }}
-                      style={{
-                        opacity: '0',
-                        backgroundColor: 'transparent',
-                        objectFit: 'cover',
-                        objectPosition: 'center',
-                        WebkitBackfaceVisibility: 'hidden',
-                        WebkitTransform: 'translate3d(0, 0, 0)',
-                        WebkitPerspective: '1000',
-                        WebkitTransformStyle: 'preserve-3d',
-                        transition: 'opacity 0.5s ease-in-out'
-                      }}
-                    />
+                        }}
+                        style={{
+                          opacity: '0',
+                          backgroundColor: 'transparent',
+                          objectFit: 'cover',
+                          objectPosition: 'center',
+                          WebkitBackfaceVisibility: 'hidden',
+                          WebkitTransform: 'translate3d(0, 0, 0)',
+                          WebkitPerspective: '1000',
+                          WebkitTransformStyle: 'preserve-3d',
+                          transition: 'opacity 0.5s ease-in-out'
+                        }}
+                      />
                   </div>
                 </div>
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

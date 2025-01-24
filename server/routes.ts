@@ -35,11 +35,14 @@ const configureStaticFiles = (app: Express) => {
       } else if (filePath.toLowerCase().endsWith('.png')) {
         res.setHeader('Content-Type', 'image/png');
       }
-      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable'); // Added immutable caching
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      res.setHeader('Accept-Ranges', 'bytes');
+      res.setHeader('Vary', 'Accept-Encoding');
+      res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
     },
-    dotfiles: 'ignore',
-    fallthrough: true,
-    index: false
+    maxAge: 31536000000,
+    lastModified: true,
+    etag: true,
   }));
 };
 
