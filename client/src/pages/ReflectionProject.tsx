@@ -35,10 +35,10 @@ export default function ReflectionProject() {
         className="container mx-auto px-4 py-16"
       >
         <h1 className={`text-3xl font-bold mb-8 text-[#FF9500] ${language === 'he' ? 'text-right' : ''}`}>
-          {t("reflection.title")}
+          {language === 'he' ? translations.reflection.title.he : translations.reflection.title.en}
         </h1>
         <p className={`text-lg text-muted-foreground mb-12 ${language === 'he' ? 'text-right' : ''}`}>
-          {t("reflection.description")}
+          {language === 'he' ? translations.reflection.description.he : translations.reflection.description.en}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 container mx-auto">
