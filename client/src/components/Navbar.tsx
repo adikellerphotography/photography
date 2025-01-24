@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu, Home, Image, User, CreditCard, Info as InfoIcon, SplitSquareVertical, Mail, FileText, Aperture, Banknote, GraduationCap } from "lucide-react";
+import { Menu, Home, Image, User, CreditCard, Info as InfoIcon, SplitSquareVertical, Mail, FileText, Aperture, Banknote, GraduationCap, FlipHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "./ThemeToggle";
 import LanguageToggle from "./LanguageToggle";
@@ -18,7 +18,7 @@ export default function Navbar() {
     { href: "/gallery", label: language === "en" ? "Gallery" : "גלריה", icon: Image },
     { href: "/before-and-after", label: language === "en" ? "Before & After" : "לפני ואחרי", icon: SplitSquareVertical },
     { href: "/sessions", label: language === "en" ? "My Sessions" : "גלריות", icon: Aperture },
-{ href: "/reflection", label: language === "en" ? "Reflection Project" : "פרויקט השתקפות", icon: FileText },
+{ href: "/reflection", label: language === "en" ? "Reflection Project" : "פרויקט השתקפות", icon: FlipHorizontal },
     { href: "/info", label: language === "en" ? "Guidelines" : "מידע על הצילומים", icon: FileText },
     { href: "/pricing", label: language === "en" ? "Pricing" : "מחירים", icon: Banknote },
     { href: "/workshop", label: language === "en" ? "Workshop" : "סדנאות", icon: GraduationCap },
