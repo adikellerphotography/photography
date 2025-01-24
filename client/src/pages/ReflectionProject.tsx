@@ -80,20 +80,18 @@ export default function ReflectionProject() {
               <div className="mb-1 flex items-center justify-between px-6 py-2.5 bg-background/30 backdrop-blur-sm">
                 <div className="flex items-center gap-1.5">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground">
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                    <circle cx="9" cy="7" r="4" />
-                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    <path d="M17 3c.3 0 .6.2.8.5L20 8h-6l2.2-4.5c.2-.3.5-.5.8-.5z"/>
+                    <path d="M12 8v4M12 18v4M8 12h8M10 16c0-1.1.9-2 2-2s2 .9 2 2M18 12v4M6 12v4M10 8H4l2.2-4.5C6.4 3.2 6.7 3 7 3s.6.2.8.5L10 8z"/>
                   </svg>
-                  <div className="text-xl font-serif font-bold text-muted-foreground">{comparison.oldAge}</div>
+                  <div className="text-xl text-muted-foreground font-medium tracking-wide">{comparison.oldAge}</div>
                 </div>
-                <h3 className="text-lg font-serif tracking-wide text-center">{comparison.name}</h3>
+                <h3 className="text-lg tracking-wide text-center">{comparison.name}</h3>
                 <div className="flex items-center gap-1.5">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground">
-                    <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0-8 0" />
-                    <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" />
+                    <circle cx="12" cy="8" r="5"/>
+                    <path d="M20 21v-2a5 5 0 0 0-5-5h-6a5 5 0 0 0-5 5v2"/>
                   </svg>
-                  <div className="text-xl font-serif font-bold text-muted-foreground">{comparison.youngAge}</div>
+                  <div className="text-xl text-muted-foreground font-medium tracking-wide">{comparison.youngAge}</div>
                 </div>
               </div>
               <ImageCompare
