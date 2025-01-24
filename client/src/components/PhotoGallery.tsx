@@ -318,46 +318,65 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
             <AspectRatio ratio={photo.imageUrl.includes("vertical") ? 2/3 : 4/3}>
               <div className="relative w-full h-full overflow-hidden bg-background/50 backdrop-blur-sm">
                 <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-background/80 to-background/40">
-                  <img
-                    key={`${photo.id}-${photo.imageUrl}`}
-                    src={getImagePath(photo)}
-                    alt={photo.title || ""}
-                    className="w-full h-full transition-transform duration-500 group-hover:scale-110 object-cover"
-                    loading={index < 12 ? "eager" : "lazy"}
-                    decoding={index < 12 ? "sync" : "async"}
-                    fetchPriority={index < 6 ? "high" : "auto"}
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    onError={(e) => {
-                      const img = e.target as HTMLImageElement;
-                      const retryCount = Number(img.dataset.retryCount || 0);
-                      const maxRetries = 3;
+                  <div className="relative w-full h-full">
+                    {/* Shimmer loading effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-background/5 via-background/10 to-background/5 animate-shimmer" />
 
-                      if (retryCount < maxRetries) {
-                        console.log(`Retrying image load (${retryCount + 1}/${maxRetries}):`, img.src);
-                        img.dataset.retryCount = String(retryCount + 1);
-                        // Add cache-busting parameter and retry
-                        const cacheBuster = `?retry=${retryCount + 1}-${Date.now()}`;
-                        setTimeout(() => {
-                          img.src = img.src.split('?')[0] + cacheBuster;
-                        }, retryCount * 1000); // Incremental delay between retries
-                      } else {
-                        console.error('Image load failed after retries:', img.src);
-                        handleImageError(img.src);
-                        img.style.opacity = '0.3';
-                      }
-                    }}
-                    loading={index < 12 ? "eager" : "lazy"}
-                    decoding={index < 12 ? "sync" : "async"}
-                    fetchpriority={index < 12 ? "high" : "auto"}
-                    style={{
-                      backgroundColor: 'transparent',
-                      minHeight: '200px',
-                      objectPosition: '50% 50%',
-                      WebkitBackfaceVisibility: 'hidden',
-                      WebkitTransform: 'translate3d(0, 0, 0)'
-                    }}
-                    decoding="async"
-                  />
+                    {/* Low quality image placeholder */}
+                    <img
+                      src={`${getImagePath(photo).replace('.jpeg', '-thumb.jpeg')}`}
+                      alt=""
+                      className="absolute inset-0 w-full h-full object-cover blur-sm scale-105"
+                      loading="eager"
+                      decoding="async"
+                    />
+
+                    {/* Main image */}
+                    <img
+                      key={`${photo.id}-${photo.imageUrl}`}
+                      src={getImagePath(photo)}
+                      alt={photo.title || ""}
+                      className="relative w-full h-full transition-all duration-500 group-hover:scale-110 object-cover"
+                      loading={index < 6 ? "eager" : "lazy"}
+                      decoding={index < 6 ? "sync" : "async"}
+                      fetchpriority={index < 6 ? "high" : "auto"}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      onLoad={(e) => {
+                        const img = e.target as HTMLImageElement;
+                        img.style.opacity = '1';
+                      }}
+                      onError={(e) => {
+                        const img = e.target as HTMLImageElement;
+                        const retryCount = Number(img.dataset.retryCount || 0);
+                        const maxRetries = 3;
+
+                        if (retryCount < maxRetries) {
+                          img.dataset.retryCount = String(retryCount + 1);
+                          const timestamp = Date.now();
+                          setTimeout(() => {
+                            // Try loading a lower quality version on subsequent retries
+                            const quality = retryCount === 2 ? '?q=50' : '';
+                            img.src = img.src.split('?')[0] + quality + `&t=${timestamp}`;
+                          }, Math.min(1000 * Math.pow(2, retryCount), 4000));
+                        } else {
+                          console.error('Failed to load image:', img.src);
+                          img.style.opacity = '0.5';
+                          img.style.filter = 'grayscale(1)';
+                        }
+                      }}
+                      style={{
+                        opacity: '0',
+                        backgroundColor: 'transparent',
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                        WebkitBackfaceVisibility: 'hidden',
+                        WebkitTransform: 'translate3d(0, 0, 0)',
+                        WebkitPerspective: '1000',
+                        WebkitTransformStyle: 'preserve-3d',
+                        transition: 'opacity 0.5s ease-in-out'
+                      }}
+                    />
+                  </div>
                 </div>
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
