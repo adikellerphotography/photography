@@ -337,9 +337,9 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                       src={getImagePath(photo)}
                       alt={photo.title || ""}
                       className="relative w-full h-full transition-all duration-500 group-hover:scale-110 object-cover"
-                      loading={index < 6 ? "eager" : "lazy"}
-                      decoding={index < 6 ? "sync" : "async"}
-                      fetchpriority={index < 6 ? "high" : "auto"}
+                      loading={index < 12 ? "eager" : "lazy"}
+                      decoding="async"
+                      fetchpriority={index < 8 ? "high" : "auto"}
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                       onLoad={(e) => {
                         const img = e.target as HTMLImageElement;
@@ -353,15 +353,22 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                         if (retryCount < maxRetries) {
                           img.dataset.retryCount = String(retryCount + 1);
                           const timestamp = Date.now();
-                          setTimeout(() => {
-                            // Try loading a lower quality version on subsequent retries
-                            const quality = retryCount === 2 ? '?q=50' : '';
-                            img.src = img.src.split('?')[0] + quality + `&t=${timestamp}`;
-                          }, Math.min(1000 * Math.pow(2, retryCount), 4000));
+                          
+                          // First try thumbnail version
+                          if (retryCount === 1) {
+                            img.src = img.src.replace('.jpeg', '-thumb.jpeg');
+                          } 
+                          // Then try with cache buster
+                          else {
+                            setTimeout(() => {
+                              img.src = img.src.split('?')[0] + `?t=${timestamp}`;
+                            }, retryCount * 1000);
+                          }
                         } else {
                           console.error('Failed to load image:', img.src);
-                          img.style.opacity = '0.5';
-                          img.style.filter = 'grayscale(1)';
+                          // Try one last time with a lower quality version
+                          img.src = img.src.split('?')[0] + '?q=25';
+                          img.style.opacity = '0.7';
                         }
                       }}
                       style={{
