@@ -88,7 +88,7 @@ export default function ReflectionProject() {
                     </div>
                   </div>
                 </div>
-                <h3 className="text-lg font-serif tracking-wide text-center">{comparison.name}</h3>
+                <h3 className="text-lg tracking-wide text-center">{comparison.name}</h3>
                 <div className="flex items-center gap-1.5">
                   <div className="relative w-8 h-8">
                     <svg width="32" height="32" viewBox="0 0 32 32" className="text-muted-foreground">
