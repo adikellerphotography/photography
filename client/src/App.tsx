@@ -17,6 +17,7 @@ import React, { useEffect } from 'react';
 import Sessions from "./pages/Sessions";
 import Contact from "@/pages/Contact";
 import GuidingAndMentoring from "./pages/GuidingAndMentoring";
+import ReflectionProject from "@/pages/ReflectionProject";
 
 
 function Layout({ children }: { children: React.ReactNode }) {
