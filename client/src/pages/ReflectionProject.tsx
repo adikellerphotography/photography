@@ -79,21 +79,25 @@ export default function ReflectionProject() {
             >
               <div className="mb-1 flex items-center justify-between px-6 py-2.5 bg-background/30 backdrop-blur-sm">
                 <div className="flex items-center gap-1.5">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground">
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                    <circle cx="9" cy="7" r="4" />
-                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                  </svg>
-                  <div className="text-xl font-serif font-bold text-muted-foreground">{comparison.oldAge}</div>
+                  <div className="relative w-8 h-8">
+                    <svg width="32" height="32" viewBox="0 0 32 32" className="text-muted-foreground">
+                      <circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" strokeWidth="2.5"/>
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center text-lg font-bold text-muted-foreground">
+                      {comparison.oldAge}
+                    </div>
+                  </div>
                 </div>
                 <h3 className="text-lg font-serif tracking-wide text-center">{comparison.name}</h3>
                 <div className="flex items-center gap-1.5">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground">
-                    <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0-8 0" />
-                    <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" />
-                  </svg>
-                  <div className="text-xl font-serif font-bold text-muted-foreground">{comparison.youngAge}</div>
+                  <div className="relative w-8 h-8">
+                    <svg width="32" height="32" viewBox="0 0 32 32" className="text-muted-foreground">
+                      <circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" strokeWidth="2.5"/>
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center text-lg font-bold text-muted-foreground">
+                      {comparison.youngAge}
+                    </div>
+                  </div>
                 </div>
               </div>
               <ImageCompare
