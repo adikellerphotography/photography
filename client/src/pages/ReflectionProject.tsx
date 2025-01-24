@@ -15,8 +15,8 @@ interface ComparisonSet {
 
 const mockData: ComparisonSet[] = Array.from({ length: 3 }, (_, i) => ({
   id: i + 1,
-  beforeImage: `/assets/reflection/${i + 1}-2.jpg`,
-  afterImage: `/assets/reflection/${i + 1}-1.jpg`,
+  beforeImage: `/assets/${i + 1}-2.jpg`,
+  afterImage: `/assets/${i + 1}-1.jpg`,
   title: `Reflection ${i + 1}`
 }));
 
