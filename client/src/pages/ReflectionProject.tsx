@@ -80,16 +80,20 @@ export default function ReflectionProject() {
               <div className="mb-1 flex items-center justify-between px-6 py-2.5 bg-background/30 backdrop-blur-sm">
                 <div className="flex items-center gap-1.5">
                   <svg width="24" height="24" viewBox="0 0 32 32" className="text-muted-foreground">
-                    <circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" strokeWidth="1.5"/>
-                    <text x="6" y="19" className="text-[9px] fill-current font-medium">AGE</text>
+                    <circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M16 1 A15 15 0 1 1 16 31 A15 15 0 0 1 16 1" fill="currentColor" fillOpacity="0.2"/>
+                    <path d="M16 1 A15 15 0 1 1 31 16" fill="none" stroke="currentColor" strokeWidth="2"/>
+                    <text x="7" y="19" className="text-[10px] fill-current font-bold">AGE</text>
                   </svg>
                   <div className="text-xl text-muted-foreground font-medium tracking-wide">{comparison.oldAge}</div>
                 </div>
                 <h3 className="text-lg tracking-wide text-center">{comparison.name}</h3>
                 <div className="flex items-center gap-1.5">
                   <svg width="24" height="24" viewBox="0 0 32 32" className="text-muted-foreground">
-                    <circle cx="16" cy="16" r="10" fill="none" stroke="currentColor" strokeWidth="1.5"/>
-                    <text x="6" y="19" className="text-[9px] fill-current font-medium">AGE</text>
+                    <circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M16 1 A15 15 0 0 1 31 16" fill="none" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M16 1 A15 15 0 0 1 16 31 A15 15 0 0 1 16 1" fill="currentColor" fillOpacity="0.1"/>
+                    <text x="7" y="19" className="text-[10px] fill-current font-bold">AGE</text>
                   </svg>
                   <div className="text-xl text-muted-foreground font-medium tracking-wide">{comparison.youngAge}</div>
                 </div>
