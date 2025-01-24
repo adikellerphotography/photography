@@ -83,7 +83,7 @@ export default function ReflectionProject() {
                     <svg width="32" height="32" viewBox="0 0 32 32" className="text-muted-foreground">
                       <circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" strokeWidth="2.5"/>
                     </svg>
-                    <div className="absolute inset-0 flex items-center justify-center text-lg font-bold text-muted-foreground">
+                    <div className="absolute inset-0 flex items-center justify-center text-base font-extrabold text-muted-foreground">
                       {comparison.oldAge}
                     </div>
                   </div>
@@ -94,7 +94,7 @@ export default function ReflectionProject() {
                     <svg width="32" height="32" viewBox="0 0 32 32" className="text-muted-foreground">
                       <circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" strokeWidth="2.5"/>
                     </svg>
-                    <div className="absolute inset-0 flex items-center justify-center text-lg font-bold text-muted-foreground">
+                    <div className="absolute inset-0 flex items-center justify-center text-base font-extrabold text-muted-foreground">
                       {comparison.youngAge}
                     </div>
                   </div>
