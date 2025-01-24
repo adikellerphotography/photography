@@ -64,9 +64,19 @@ export default function ReflectionProject() {
         <h1 className={`text-3xl font-bold mb-8 text-[#FF9500] ${language === 'he' ? 'text-right' : ''}`}>
           {language === 'he' ? translations.reflection.title.he : translations.reflection.title.en}
         </h1>
-        <p className={`text-lg text-muted-foreground mb-12 ${language === 'he' ? 'text-right' : ''}`}>
-          {language === 'he' ? translations.reflection.description.he : translations.reflection.description.en}
-        </p>
+        <div className={`text-lg text-muted-foreground mb-12 ${language === 'he' ? 'text-right' : ''}`}>
+          <p className="mb-2">
+            {language === 'he' ? translations.reflection.description.he : translations.reflection.description.en}
+          </p>
+          <a
+            href={`https://www.facebook.com/hashtag/${translations.reflection.hashtag[language === 'he' ? 'he' : 'en'].replace('#', '')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:underline"
+          >
+            {translations.reflection.hashtag[language === 'he' ? 'he' : 'en']}
+          </a>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 container mx-auto">
           {mockData.map((comparison, index) => (
