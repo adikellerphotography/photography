@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { translations } from "@/lib/translations";
 import ImageCompare from "../components/ImageCompare";
 
 interface ComparisonSet {
