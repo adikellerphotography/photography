@@ -9,17 +9,43 @@ import ImageCompare from "../components/ImageCompare";
 
 interface ComparisonSet {
   id: number;
+  name: string;
+  oldAge: number;
+  youngAge: number;
   beforeImage: string;
   afterImage: string;
   title: string;
 }
 
-const mockData: ComparisonSet[] = Array.from({ length: 3 }, (_, i) => ({
-  id: i + 1,
-  beforeImage: `/assets/${i + 1}-2.jpg`,
-  afterImage: `/assets/${i + 1}-1.jpg`,
-  title: `Reflection ${i + 1}`
-}));
+const mockData: ComparisonSet[] = [
+  {
+    id: 1,
+    name: "Effi",
+    oldAge: 75,
+    youngAge: 25,
+    beforeImage: `/assets/1-2.jpg`,
+    afterImage: `/assets/1-1.jpg`,
+    title: "Effi's Reflection"
+  },
+  {
+    id: 2,
+    name: "George",
+    oldAge: 75,
+    youngAge: 21,
+    beforeImage: `/assets/2-2.jpg`,
+    afterImage: `/assets/2-1.jpg`,
+    title: "George's Reflection"
+  },
+  {
+    id: 3,
+    name: "Shmarya",
+    oldAge: 80,
+    youngAge: 20,
+    beforeImage: `/assets/3-2.jpg`,
+    afterImage: `/assets/3-1.jpg`,
+    title: "Shmarya's Reflection"
+  }
+];
 
 export default function ReflectionProject() {
   const { t } = useTranslation();
@@ -49,8 +75,13 @@ export default function ReflectionProject() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              className="w-full aspect-[4/3]"
+              className="w-full"
             >
+              <div className="mb-4 flex items-center justify-between px-4 py-2 bg-background/80 rounded-lg shadow">
+                <div className="text-2xl font-bold text-[#FF9500]">{comparison.oldAge}</div>
+                <h3 className="text-xl font-semibold text-center">{comparison.name}</h3>
+                <div className="text-2xl font-bold text-[#FF9500]">{comparison.youngAge}</div>
+              </div>
               <ImageCompare
                 beforeImage={comparison.beforeImage}
                 afterImage={comparison.afterImage}
