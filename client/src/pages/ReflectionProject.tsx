@@ -65,17 +65,9 @@ export default function ReflectionProject() {
           {language === 'he' ? translations.reflection.title.he : translations.reflection.title.en}
         </h1>
         <div className={`text-lg text-muted-foreground mb-12 ${language === 'he' ? 'text-right' : ''}`}>
-          <p className="mb-2">
+          <p>
             {language === 'he' ? translations.reflection.description.he : translations.reflection.description.en}
           </p>
-          <a
-            href={`https://www.facebook.com/hashtag/${translations.reflection.hashtag[language === 'he' ? 'he' : 'en'].replace('#', '')}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary hover:underline"
-          >
-            {translations.reflection.hashtag[language === 'he' ? 'he' : 'en']}
-          </a>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 container mx-auto">
@@ -98,7 +90,7 @@ export default function ReflectionProject() {
                     </div>
                   </div>
                 </div>
-                <h3 className="text-lg tracking-wide text-center">{comparison.name}</h3>
+                <h3 className="text-lg tracking-wide text-center text-[#FF9500]">{comparison.name}</h3>
                 <div className="flex items-center gap-1.5">
                   <div className="relative w-8 h-8">
                     <svg width="32" height="32" viewBox="0 0 32 32" className="text-muted-foreground">
