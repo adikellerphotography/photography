@@ -1,3 +1,4 @@
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import themePlugin from "@replit/vite-plugin-shadcn-theme-json";
@@ -8,8 +9,13 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Dynamically fetch the allowed host from the environment variable
-const allowedHost = process.env.REPLIT_HOST || "localhost";
+const allowedHosts = [
+  'localhost',
+  '*.repl.co',
+  '*.repl.dev',
+  '*.replit.dev',
+  process.env.REPLIT_HOST || '',
+].filter(Boolean);
 
 export default defineConfig({
   plugins: [react(), runtimeErrorOverlay(), themePlugin()],
@@ -25,7 +31,10 @@ export default defineConfig({
     emptyOutDir: true,
   },
   server: {
-    host: "0.0.0.0", // Ensure access from all network interfaces
-    allowedHosts: [allowedHost], // Dynamically allow the Replit-assigned host
+    host: "0.0.0.0",
+    hmr: {
+      clientPort: 443,
+    },
+    allowedHosts: allowedHosts,
   },
 });
