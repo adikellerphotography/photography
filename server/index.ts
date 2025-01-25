@@ -2,10 +2,12 @@ import express, { type Request, Response, NextFunction } from "express";
 import path from "path";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import path from "path";
 
 const setupMiddleware = (app: express.Express) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
+  app.use('/assets', express.static(path.join(process.cwd(), 'attached_assets')));
   
   // Serve static files
   app.use('/assets', express.static(path.join(process.cwd(), 'attached_assets')));
