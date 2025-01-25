@@ -4,6 +4,7 @@ import fs from 'fs/promises';
 import { db } from "@db";
 import { photos, categories } from "@db/schema";
 import { sql } from 'drizzle-orm';
+import { generateThumbnail } from './generate-thumbnails';
 
 export async function scanImages() {
   try {
@@ -26,7 +27,7 @@ export async function scanImages() {
         return { dir, isDirectory: stats.isDirectory() };
       })
     )).filter(({ dir, isDirectory }) => 
-      isDirectory && !excludedDirs.includes(dir)
+      isDirectory && !excludedDirs.includes(dir.toLowerCase())
     ).map(({ dir }) => dir);
 
     console.log('Found valid directories:', categoryDirs);
@@ -57,7 +58,7 @@ export async function scanImages() {
           return numA - numB;
         });
 
-      console.log(`Found ${imageFiles.length} images in ${dir}`);
+      console.log(`Processing ${imageFiles.length} images in ${dir}`);
 
       const displayName = dir === 'Women' ? 'Femininity' : 
         dir.split('_').map(word => 
@@ -67,13 +68,23 @@ export async function scanImages() {
       for (const imageFile of imageFiles) {
         try {
           const id = parseInt(imageFile.match(/\d+/)?.[0] || '0');
+          const imagePath = path.join(dirPath, imageFile);
+          const thumbFile = imageFile.replace('.jpeg', '-thumb.jpeg');
+          const thumbPath = path.join(dirPath, thumbFile);
+
+          // Generate thumbnail if it doesn't exist
+          try {
+            await fs.access(thumbPath);
+          } catch {
+            await generateThumbnail(imagePath, thumbPath);
+          }
           
           await db.insert(photos).values({
             id,
             title: `${displayName} Portrait Session`,
             category: displayName,
             imageUrl: `/assets/${dir}/${imageFile}`,
-            thumbnailUrl: `/assets/${dir}/${imageFile.replace('.jpeg', '-thumb.jpeg')}`,
+            thumbnailUrl: `/assets/${dir}/${thumbFile}`,
             displayOrder: id
           }).onConflictDoUpdate({
             target: [photos.id],
@@ -81,7 +92,7 @@ export async function scanImages() {
               title: `${displayName} Portrait Session`,
               category: displayName,
               imageUrl: `/assets/${dir}/${imageFile}`,
-              thumbnailUrl: `/assets/${dir}/${imageFile.replace('.jpeg', '-thumb.jpeg')}`,
+              thumbnailUrl: `/assets/${dir}/${thumbFile}`,
               displayOrder: id
             }
           });
