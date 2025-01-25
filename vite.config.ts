@@ -7,6 +7,10 @@ import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+// Dynamically fetch the allowed host from the environment variable
+const allowedHost = process.env.REPLIT_HOST || "localhost";
+
 export default defineConfig({
   plugins: [react(), runtimeErrorOverlay(), themePlugin()],
   resolve: {
@@ -19,5 +23,9 @@ export default defineConfig({
   build: {
     outDir: path.resolve(__dirname, "dist/public"),
     emptyOutDir: true,
+  },
+  server: {
+    host: "0.0.0.0", // Ensure access from all network interfaces
+    allowedHosts: [allowedHost], // Dynamically allow the Replit-assigned host
   },
 });
