@@ -270,20 +270,48 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   const handleImageError = (photo: Photo, img: HTMLImageElement) => {
     const retryCount = Number(img.dataset.retryCount || '0');
-    const maxRetries = strategies.length * 2; // Try each strategy twice
+    const maxRetries = imageStrategies.length;
 
     if (retryCount < maxRetries) {
       console.log(`Retrying image load (${retryCount + 1}/${maxRetries}):`, img.src);
       img.dataset.retryCount = String(retryCount + 1);
+
+      // Progressive delay with each retry
       setTimeout(() => {
-        img.src = getImagePath(photo, retryCount + 1);
-      }, retryCount * 1000);
+        const nextPath = getImagePath(photo, retryCount + 1);
+        if (nextPath !== img.src) {
+          img.src = nextPath;
+        } else {
+          // Skip duplicate path attempts
+          handleImageError(photo, img);
+        }
+      }, Math.min(retryCount * 500, 2000));
     } else {
       console.error('Failed to load image after all retries:', img.src);
-      img.style.opacity = '0.5';
+      img.style.opacity = '0.3';
       img.style.backgroundColor = 'rgba(0,0,0,0.1)';
-      // Try loading thumbnail as last resort
-      img.src = photo.thumbnailUrl || getImagePath(photo).replace('.jpeg', '-thumb.jpeg');
+
+      // Final fallback to thumbnails
+      const thumbPaths = [
+        photo.thumbnailUrl,
+        img.src.replace('.jpeg', '-thumb.jpeg'),
+        img.src.replace('.jpg', '-thumb.jpg'),
+        `/assets/facebook_posts_image/${photo.category.toLowerCase()}/${photo.id}.jpg`
+      ];
+
+      // Try each thumbnail path
+      const tryNextThumb = (index = 0) => {
+        if (index >= thumbPaths.length) return;
+        const thumbPath = thumbPaths[index];
+        if (!thumbPath) {
+          tryNextThumb(index + 1);
+          return;
+        }
+        img.src = thumbPath;
+        img.onerror = () => tryNextThumb(index + 1);
+      };
+
+      tryNextThumb();
     }
   };
 
