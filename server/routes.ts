@@ -11,24 +11,9 @@ import fs from "fs/promises";
 
 // Helper function to get the correct category path
 const getCategoryPath = (categoryName: string) => {
-  const normalized = categoryName.split(' ')
+  return categoryName.split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join('_');
-  
-  // Check both original and normalized paths
-  const paths = [
-    normalized,
-    categoryName.replace(/\s+/g, '_'),
-    categoryName
-  ];
-  
-  return paths.find(p => {
-    try {
-      return fs.existsSync(path.join(process.cwd(), 'attached_assets', 'galleries', p));
-    } catch {
-      return false;
-    }
-  }) || normalized;
 };
 
 // Configure static file serving
@@ -57,20 +42,25 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
   try {
     const { category } = req.query;
 
-    if (category && typeof category === 'string') {
-      const categoryExists = await db.select({ id: categories.id })
-        .from(categories)
-        .where(eq(categories.name, decodeURIComponent(category)))
-        .limit(1);
+    if (!category || typeof category !== 'string') {
+      return res.status(400).json({ error: "Category parameter is required" });
+    }
 
-      if (categoryExists.length === 0) {
-        return res.status(404).json({ error: "Category not found" });
-      }
+    const decodedCategory = decodeURIComponent(category);
+    console.log('Fetching photos for category:', decodedCategory);
+
+    const categoryExists = await db.select({ id: categories.id })
+      .from(categories)
+      .where(eq(categories.name, decodedCategory))
+      .limit(1);
+
+    if (categoryExists.length === 0) {
+      return res.status(404).json({ error: "Category not found" });
     }
 
     const query = db.select()
       .from(photos)
-      .where(category ? eq(photos.category, decodeURIComponent(category as string)) : undefined)
+      .where(eq(photos.category, decodedCategory))
       .orderBy(photos.displayOrder);
 
     const results = await query;
@@ -78,7 +68,7 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
     // If no results in database or results are incomplete, scan directory
     if (category) {
       const categoryPath = getCategoryPath(category);
-      const dirPath = path.join(process.cwd(), 'attached_assets', categoryPath);
+      const dirPath = path.join(process.cwd(), 'attached_assets', 'galleries', categoryPath);
       try {
         const files = await fs.readdir(dirPath);
         const photoFiles = files
@@ -132,10 +122,7 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
     }));
 
     console.log('Processed photos:', processedPhotos);
-    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-  res.set('Pragma', 'no-cache');
-  res.set('Expires', '0');
-  res.json(processedPhotos);
+    res.json(processedPhotos);
   } catch (error: any) {
     console.error('Error fetching photos:', error);
     res.status(500).json({ error: "Failed to fetch photos", details: error.message });

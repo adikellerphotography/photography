@@ -1,26 +1,16 @@
 import express, { type Request, Response, NextFunction } from "express";
-import path from "path";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
-import path from "path";
 
 const setupMiddleware = (app: express.Express) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
-  app.use('/assets', express.static(path.join(process.cwd(), 'attached_assets')));
-  
-  // Serve static files
-  app.use('/assets', express.static(path.join(process.cwd(), 'attached_assets')));
-  
-  // CORS and proxy headers for development
+
+  // CORS headers for development
   app.use((_req, res, next) => {
-    const origin = _req.headers.origin || '*';
-    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('X-Forwarded-Host', _req.headers.host || '');
-    res.setHeader('X-Forwarded-Proto', 'https');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     next();
   });
 
