@@ -295,7 +295,6 @@ export default function Home() {
                             }
                             alt={category.name}
                             className="object-cover w-full h-full transition-transform duration-300 hover:scale-105 bg-muted"
-                            loading={index < 4 ? "eager" : "lazy"}
                             style={{
                               objectPosition: "center center",
                               WebkitBackfaceVisibility: "hidden",
