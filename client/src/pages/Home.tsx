@@ -305,41 +305,44 @@ export default function Home() {
                             }}
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
-                              const retryCount = Number(target.dataset.retryCount || 0);
+                              const retryCount = Number(
+                                target.dataset.retryCount || 0,
+                              );
                               const maxRetries = 3;
 
                               if (retryCount < maxRetries) {
-                                console.log(`Retrying category image load (${retryCount + 1}/${maxRetries}):`, target.src);
-                                target.dataset.retryCount = String(retryCount + 1);
-
-                                // First try thumbnail version
-                                if (retryCount === 0 && target.src.includes('.jpeg')) {
-                                  target.src = target.src.replace('.jpeg', '-thumb.jpeg');
-                                } else if (retryCount === 1) {
-                                  // Try alternative path format
-                                  const categoryPath = category.name.replace(/\s+/g, '_');
-                                  target.src = `/assets/${categoryPath}/001.jpeg`;
-                                } else {
-                                  // Add cache buster as last resort
-                                  const timestamp = Date.now();
-                                  setTimeout(() => {
-                                    target.src = `${target.src.split('?')[0]}?retry=${retryCount}&t=${timestamp}`;
-                                  }, retryCount * 1000);
-                                }
+                                console.log(
+                                  `Retrying category image load (${retryCount + 1}/${maxRetries}):`,
+                                  target.src,
+                                );
+                                target.dataset.retryCount = String(
+                                  retryCount + 1,
+                                );
+                                const cacheBuster = `?retry=${retryCount + 1}-${Date.now()}`;
+                                setTimeout(() => {
+                                  target.src =
+                                    target.src.split("?")[0] + cacheBuster;
+                                }, retryCount * 1000); // Incremental delay between retries
                               } else {
-                                console.error("Failed to load image after retries:", category.firstPhoto?.imageUrl);
+                                console.error(
+                                  "Failed to load image after retries:",
+                                  category.firstPhoto?.imageUrl,
+                                );
                                 target.onerror = null;
-                                // Try to find any working image from the category
-                                target.src = `/assets/${category.name.replace(/\s+/g, '_')}/001-thumb.jpeg`;
-                                target.style.opacity = "0.8";
+                                target.src = "/assets/placeholder-category.jpg";
+                                target.style.opacity = "0.7";
                               }
                             }}
-                            loading={index < 6 ? "eager" : "lazy"}
-                            decoding={index < 6 ? "sync" : "async"}
-                            fetchPriority={index < 3 ? "high" : "auto"}
+                            loading={
+                              index === 0
+                                ? "eager"
+                                : index < 6
+                                  ? "eager"
+                                  : "lazy"
+                            }
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                            importance={index < 3 ? "high" : "auto"}
-                            crossOrigin="anonymous"
+                            fetchPriority={index === 0 ? "high" : "auto"}
+                            decoding={index === 0 ? "sync" : "async"}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent">
                             <div className="absolute bottom-0 left-0 right-0 p-4">

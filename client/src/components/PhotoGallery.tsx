@@ -234,32 +234,9 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [transitionDirection, setTransitionDirection] = useState<"next" | "prev" | null>(null);
   const [isNextImageLoaded, setIsNextImageLoaded] = useState(false);
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>, photo: Photo) => {
-    const img = e.target as HTMLImageElement;
-    const retryCount = Number(img.dataset.retryCount || 0);
-    const maxRetries = 3;
-    const timestamp = Date.now();
-
-    if (retryCount < maxRetries) {
-      console.log(`Retrying image load (${retryCount + 1}/${maxRetries}):`, img.src);
-      img.dataset.retryCount = String(retryCount + 1);
-      
-      // First try thumbnail if available
-      if (retryCount === 0 && img.src.includes('.jpeg')) {
-        img.src = img.src.replace('.jpeg', '-thumb.jpeg');
-      } else {
-        // Add cache buster and retry
-        setTimeout(() => {
-          img.src = `${img.src.split('?')[0]}?retry=${retryCount + 1}&t=${timestamp}`;
-        }, retryCount * 1000);
-      }
-    } else {
-      setFailedImages(prev => new Set(prev).add(photo.imageUrl));
-      console.error(`Failed to load image after retries:`, photo.imageUrl);
-      // Set a placeholder or fallback image
-      img.src = `/assets/${photo.category}/001-thumb.jpeg`;
-      img.style.opacity = '0.7';
-    }
+  const handleImageError = (imageUrl: string) => {
+    setFailedImages(prev => new Set(prev).add(imageUrl));
+    console.error(`Failed to load image after retries:`, imageUrl);
   };
 
   const getImagePath = (photo: Photo) => {
@@ -360,12 +337,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                         src={getImagePath(photo)}
                         alt={photo.title || ""}
                         className="relative w-full h-full transition-all duration-500 group-hover:scale-110 object-cover"
-                        loading={index < 8 ? "eager" : "lazy"}
-                        decoding={index < 8 ? "sync" : "async"}
-                        fetchpriority={index < 4 ? "high" : "auto"}
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        importance={index < 4 ? "high" : "auto"}
-                        crossOrigin="anonymous"
+                        loading={index < 12 ? "eager" : "lazy"}
+                        decoding="async"
+                        fetchpriority={index < 8 ? "high" : "auto"}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                         onLoad={(e) => {
                           const img = e.target as HTMLImageElement;
                           img.style.opacity = '1';
