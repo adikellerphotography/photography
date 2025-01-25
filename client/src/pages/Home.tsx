@@ -33,8 +33,8 @@ export default function Home() {
         ...category,
         firstPhoto: {
           ...category.firstPhoto,
-          imageUrl: "/assets/Family/001.jpeg",
-          thumbnailUrl: "/assets/Family/001-thumb.jpeg",
+          imageUrl: "/assets/galleries/Family/001.jpeg",
+          thumbnailUrl: "/assets/galleries/Family/001-thumb.jpeg",
         },
       };
     }
@@ -43,8 +43,8 @@ export default function Home() {
         ...category,
         firstPhoto: {
           ...category.firstPhoto,
-          imageUrl: "/assets/kids/011.jpeg",
-          thumbnailUrl: "/assets/kids/011-thumb.jpeg",
+          imageUrl: "/assets/galleries/Kids/011.jpeg",
+          thumbnailUrl: "/assets/galleries/Kids/011-thumb.jpeg",
         },
       };
     }
@@ -63,8 +63,8 @@ export default function Home() {
         ...category,
         firstPhoto: {
           ...category.firstPhoto,
-          imageUrl: "/assets/Yoga/001.jpeg",
-          thumbnailUrl: "/assets/Yoga/001-thumb.jpeg",
+          imageUrl: "/assets/galleries/Yoga/001.jpeg",
+          thumbnailUrl: "/assets/galleries/Yoga/001-thumb.jpeg",
         },
       };
     }
@@ -73,8 +73,8 @@ export default function Home() {
         ...category,
         firstPhoto: {
           ...category.firstPhoto,
-          imageUrl: "/assets/Bat_Mitsva/001.jpeg",
-          thumbnailUrl: "/assets/Bat_Mitsva/001-thumb.jpeg",
+          imageUrl: "/assets/galleries/Bat_Mitsva/001.jpeg",
+          thumbnailUrl: "/assets/galleries/Bat_Mitsva/001-thumb.jpeg",
         },
       };
     }
