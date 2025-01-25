@@ -129,16 +129,20 @@ export default function Gallery() {
   };
 
   const excludedCategories = ["before_and_after", "facebook_posts_image"];
-  const processedCategories =
-    categories
-      ?.filter(
-        (category, index, self) =>
-          !excludedCategories.includes(category.name.toLowerCase()) &&
-          self.findIndex(
-            (c) => c.name.toLowerCase() === category.name.toLowerCase(),
-          ) === index,
-      )
-      .sort((a, b) => a.name.localeCompare(b.name)) || [];
+  const allowedCategories = [
+    "Artful Nude",
+    "Bat Mitsva",
+    "Family", 
+    "Femininity",
+    "Horses",
+    "Kids",
+    "Modeling",
+    "Yoga"
+  ];
+
+  const processedCategories = categories
+    ?.filter(category => allowedCategories.includes(category.name))
+    .sort((a, b) => a.name.localeCompare(b.name)) || [];
 
   // Update active category when categories load or URL changes
   useEffect(() => {
