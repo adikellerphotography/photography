@@ -297,10 +297,16 @@ export default function Home() {
                             className="object-cover w-full h-full transition-transform duration-300 hover:scale-105 bg-muted"
                             style={{
                               objectPosition: "center center",
+                              objectFit: "cover",
+                              backgroundColor: "#1a1a1a",
                               WebkitBackfaceVisibility: "hidden",
+                              MozBackfaceVisibility: "hidden",
+                              backfaceVisibility: "hidden",
                               WebkitTransform: "translate3d(0, 0, 0)",
+                              transform: "translateZ(0)",
                               opacity: 0,
                               transition: "opacity 0.3s ease-in-out",
+                              willChange: "transform"
                             }}
                             onLoad={(e) => {
                               const img = e.target as HTMLImageElement;
@@ -344,15 +350,6 @@ export default function Home() {
                                 target.style.opacity = "0.5";
                                 target.style.backgroundColor = "rgba(0,0,0,0.1)";
                               }
-                            }}
-                            style={{
-                              objectFit: "cover",
-                              backgroundColor: "#1a1a1a",
-                              WebkitBackfaceVisibility: "hidden",
-                              MozBackfaceVisibility: "hidden",
-                              backfaceVisibility: "hidden",
-                              transform: "translateZ(0)",
-                              willChange: "transform"
                             }}
                             loading={
                               index === 0
