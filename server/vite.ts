@@ -36,6 +36,16 @@ export async function setupVite(app: Express, server: Server) {
     server: {
       middlewareMode: true,
       hmr: { server },
+      cors: true,
+      host: true,
+      strictPort: true,
+      proxy: {
+        '/api': {
+          target: `http://0.0.0.0:${process.env.PORT || 3000}`,
+          changeOrigin: true,
+          secure: false,
+        }
+      }
     },
     appType: "custom",
   });
