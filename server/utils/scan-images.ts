@@ -22,21 +22,20 @@ export async function scanImages() {
     const categoryDirs = (await Promise.all(
       dirs.map(async dir => {
         const fullPath = path.join(assetsPath, dir);
-        const stats = await fs.stat(fullPath);
-        return { dir, isDirectory: stats.isDirectory() };
+        const stats = await fs.stat(fullPath).catch(() => null);
+        return { dir, isDirectory: stats?.isDirectory() || false };
       })
     )).filter(({ dir, isDirectory }) => 
-      isDirectory && !excludedDirs.includes(dir)
+      isDirectory && !excludedDirs.includes(dir.toLowerCase())
     ).map(({ dir }) => dir);
 
     console.log('Found valid directories:', categoryDirs);
 
     // Insert categories
     for (const [index, dir] of categoryDirs.entries()) {
-      const displayName = dir === 'Women' ? 'Femininity' : 
-        dir.split('_').map(word => 
-          word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-        ).join(' ');
+      const displayName = dir.split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
 
       await db.insert(categories).values({
         name: displayName,
@@ -59,21 +58,24 @@ export async function scanImages() {
 
       console.log(`Found ${imageFiles.length} images in ${dir}`);
 
-      const displayName = dir === 'Women' ? 'Femininity' : 
-        dir.split('_').map(word => 
-          word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-        ).join(' ');
+      const displayName = dir.split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
 
       for (const imageFile of imageFiles) {
         try {
           const id = parseInt(imageFile.match(/\d+/)?.[0] || '0');
+          const imagePath = path.join(dirPath, imageFile);
+          
+          // Verify file exists and is readable
+          await fs.access(imagePath, fs.constants.R_OK);
           
           await db.insert(photos).values({
             id,
             title: `${displayName} Portrait Session`,
             category: displayName,
             imageUrl: `/assets/${dir}/${imageFile}`,
-            thumbnailUrl: `/assets/${dir}/${imageFile.replace('.jpeg', '-thumb.jpeg')}`,
+            thumbnailUrl: `/assets/${dir}/${imageFile.replace(/\.(jpg|jpeg)$/i, '-thumb.jpeg')}`,
             displayOrder: id
           }).onConflictDoUpdate({
             target: [photos.id],
@@ -81,7 +83,7 @@ export async function scanImages() {
               title: `${displayName} Portrait Session`,
               category: displayName,
               imageUrl: `/assets/${dir}/${imageFile}`,
-              thumbnailUrl: `/assets/${dir}/${imageFile.replace('.jpeg', '-thumb.jpeg')}`,
+              thumbnailUrl: `/assets/${dir}/${imageFile.replace(/\.(jpg|jpeg)$/i, '-thumb.jpeg')}`,
               displayOrder: id
             }
           });
