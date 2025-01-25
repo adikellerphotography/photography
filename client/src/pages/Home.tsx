@@ -287,11 +287,13 @@ export default function Home() {
                           <img
                             src={
                               category.firstPhoto?.imageUrl ||
-                              `/assets/${category.name.replace(' ', '_')}/${String(1).padStart(3, '0')}.jpeg`
+                              `/assets/${category.name.replace(/\s+/g, '_')}/${String(1).padStart(3, '0')}.jpeg`
                             }
                             alt={category.name}
                             className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
-                            decoding="async"
+                            decoding={index < 3 ? "sync" : "async"}
+                            loading={index < 3 ? "eager" : "lazy"}
+                            fetchpriority={index < 3 ? "high" : "auto"}
                             style={{
                               objectPosition: "center center",
                               WebkitBackfaceVisibility: "hidden",

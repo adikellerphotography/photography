@@ -240,7 +240,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   };
 
   const getImagePath = (photo: Photo) => {
-    // Handle special cases for category paths
+    // Handle special cases for category paths with better error handling
     const categoryMappings: Record<string, string> = {
       'Bat Mitsva': 'Bat_Mitsva',
       'Kids': 'kids',
@@ -250,8 +250,19 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       'Women': 'Women',
       'Yoga': 'Yoga'
     };
-    const categoryPath = categoryMappings[photo.category] || photo.category;
-    return `/assets/${categoryPath}/${String(photo.id).padStart(3, '0')}.jpeg`;
+    try {
+      const categoryPath = categoryMappings[photo.category] || photo.category;
+      const paddedId = String(photo.id).padStart(3, '0');
+      const path = `/assets/${categoryPath}/${paddedId}.jpeg`;
+      // Validate path format
+      if (!/^\/assets\/[\w_-]+\/\d{3}\.jpeg$/.test(path)) {
+        throw new Error('Invalid image path format');
+      }
+      return path;
+    } catch (error) {
+      console.error('Error generating image path:', error);
+      return `/assets/${photo.category}/001.jpeg`; // Fallback to first image
+    }
   };
 
   if (isLoading) {
@@ -332,14 +343,13 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                     />
 
                     {/* Main image */}
-                    <img
+                    <ImageErrorBoundary
                         key={`${photo.id}-${photo.imageUrl}`}
                         src={getImagePath(photo)}
                         alt={photo.title || ""}
                         className="relative w-full h-full transition-all duration-500 group-hover:scale-110 object-cover"
-                        loading={index < 12 ? "eager" : "lazy"}
-                        decoding="async"
-                        fetchpriority={index < 8 ? "high" : "auto"}
+                        onError={() => console.error(`Failed to load image: ${photo.id}`)}
+                        maxRetries={3}
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                         onLoad={(e) => {
                           const img = e.target as HTMLImageElement;
