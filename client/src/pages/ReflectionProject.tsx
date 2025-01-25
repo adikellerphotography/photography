@@ -19,15 +19,6 @@ interface ComparisonSet {
 
 const mockData: ComparisonSet[] = [
   {
-    id: 1,
-    name: "Effi",
-    oldAge: 75,
-    youngAge: 25,
-    beforeImage: `/assets/1-2.jpg`,
-    afterImage: `/assets/1-1.jpg`,
-    title: "Effi's Reflection"
-  },
-  {
     id: 2,
     name: "George",
     oldAge: 75,
@@ -35,6 +26,15 @@ const mockData: ComparisonSet[] = [
     beforeImage: `/assets/2-2.jpg`,
     afterImage: `/assets/2-1.jpg`,
     title: "George's Reflection"
+  },
+  {
+    id: 1,
+    name: "Effi",
+    oldAge: 75,
+    youngAge: 25,
+    beforeImage: `/assets/1-2.jpg`,
+    afterImage: `/assets/1-1.jpg`,
+    title: "Effi's Reflection"
   },
   {
     id: 3,
