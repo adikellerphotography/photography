@@ -21,19 +21,15 @@ export default function Home() {
 
   const { t } = useTranslation();
 
-  // Include all categories except specific ones
-  const excludedCategories = ["Before And After"];
   const allowedCategories = [
     "Artful Nude",
     "Bat Mitsva",
     "Family",
-    "Femininity", 
+    "Femininity",
     "Horses",
     "Kids",
     "Modeling",
-    "Yoga",
-    "Artful Nude",
-    "Femininity"
+    "Yoga"
   ];
 
   // Override the firstPhoto for specific categories
@@ -58,13 +54,13 @@ export default function Home() {
         },
       };
     }
-    if (category.name === "Femininity") {
+    if (category.name === "Women") {
       return {
         ...category,
         firstPhoto: {
           ...category.firstPhoto,
-          imageUrl: "/assets/Femininity/006.jpeg",
-          thumbnailUrl: "/assets/Femininity/006-thumb.jpeg",
+          imageUrl: "/assets/Women/006.jpeg",
+          thumbnailUrl: "/assets/Women/006-thumb.jpeg",
         },
       };
     }

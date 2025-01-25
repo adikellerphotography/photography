@@ -128,19 +128,16 @@ export default function Gallery() {
     setIsHorizontalSwipe(null);
   };
 
-  // Include all categories except specific ones
-  const excludedCategories = ["Before And After"];
+  // Define the allowed categories in the correct order
   const allowedCategories = [
     "Artful Nude",
     "Bat Mitsva",
     "Family",
-    "Femininity",
+    "Femininity", 
     "Horses",
     "Kids",
     "Modeling",
-    "Yoga",
-    "Artful Nude",
-    "Femininity"
+    "Yoga"
   ];
 
   // Filter and sort categories, ensuring uniqueness
