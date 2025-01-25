@@ -348,23 +348,18 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                         }}
                         onError={(e) => {
                           const img = e.target as HTMLImageElement;
-                          const timestamp = Date.now();
-                          const retryAttempt = parseInt(img.dataset.retryAttempt || '0');
+                          const retryCount = Number(img.dataset.retryCount || '0');
+                          const maxRetries = 3;
 
-                          if (retryAttempt < 3) {
-                            img.dataset.retryAttempt = (retryAttempt + 1).toString();
-
-                            // First try thumbnail
-                            if (retryAttempt === 0) {
-                              img.src = getImagePath(photo).replace('.jpeg', '-thumb.jpeg');
-                            } else {
-                              // Then try with cache buster
-                              setTimeout(() => {
-                                img.src = getImagePath(photo) + `?t=${timestamp}`;
-                              }, retryAttempt * 1000);
-                            }
+                          if (retryCount < maxRetries) {
+                            console.log(`Retrying image load (${retryCount + 1}/${maxRetries}):`, img.src);
+                            img.dataset.retryCount = String(retryCount + 1);
+                            setTimeout(() => {
+                              const timestamp = Date.now();
+                              img.src = `${getImagePath(photo)}?retry=${retryCount + 1}&t=${timestamp}`;
+                            }, retryCount * 1000);
                           } else {
-                            console.error('Failed to load image:', img.src);
+                            console.error('Failed to load image after retries:', img.src);
                             img.style.opacity = '0.5';
                             img.style.backgroundColor = 'rgba(0,0,0,0.1)';
                           }
@@ -525,6 +520,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                       setIsFullImageLoaded(true);
                       setTransitionDirection(null);
                     }}
+                    onError={(e) => handleImageError(getImagePath(selectedPhoto))}
                   />
                 </motion.div>
               </div>

@@ -305,33 +305,47 @@ export default function Home() {
                             }}
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
-                              const retryCount = Number(
-                                target.dataset.retryCount || 0,
-                              );
+                              const retryCount = Number(target.dataset.retryCount || '0');
                               const maxRetries = 3;
 
                               if (retryCount < maxRetries) {
-                                console.log(
-                                  `Retrying category image load (${retryCount + 1}/${maxRetries}):`,
-                                  target.src,
-                                );
-                                target.dataset.retryCount = String(
-                                  retryCount + 1,
-                                );
-                                const cacheBuster = `?retry=${retryCount + 1}-${Date.now()}`;
+                                console.log(`Retrying category image load (${retryCount + 1}/${maxRetries}):`, target.src);
+                                target.dataset.retryCount = String(retryCount + 1);
+                                
+                                // Try thumbnail first on initial error
+                                if (retryCount === 0 && target.src.includes('.jpeg')) {
+                                  target.src = target.src.replace('.jpeg', '-thumb.jpeg');
+                                  return;
+                                }
+                                
+                                // Progressive delay for retries
                                 setTimeout(() => {
-                                  target.src =
-                                    target.src.split("?")[0] + cacheBuster;
-                                }, retryCount * 1000); // Incremental delay between retries
+                                  const timestamp = Date.now();
+                                  const baseUrl = target.src.split('?')[0];
+                                  target.src = `${baseUrl}?retry=${retryCount + 1}&t=${timestamp}`;
+                                }, retryCount * 1500);
                               } else {
-                                console.error(
-                                  "Failed to load image after retries:",
-                                  category.firstPhoto?.imageUrl,
-                                );
+                                console.error("Failed to load image after retries:", target.src);
                                 target.onerror = null;
-                                target.src = "/assets/placeholder-category.jpg";
-                                target.style.opacity = "0.7";
+                                // Try alternative path format
+                                const altPath = `/assets/${category.name.replace(' ', '_')}/${String(1).padStart(3, '0')}.jpeg`;
+                                if (target.src !== altPath) {
+                                  target.src = altPath;
+                                } else {
+                                  target.style.opacity = "0.7";
+                                  target.style.background = "rgba(0,0,0,0.1)";
+                                }
                               }
+                            }}
+                            style={{
+                              opacity: '0',
+                              background: 'rgba(0,0,0,0.05)',
+                              transition: 'opacity 0.3s ease-in-out'
+                            }}
+                            onLoad={(e) => {
+                              const img = e.target as HTMLImageElement;
+                              img.style.opacity = '1';
+                              img.style.background = 'transparent';
                             }}
                             loading={
                               index === 0
