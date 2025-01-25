@@ -22,14 +22,14 @@ export default function Home() {
   const { t } = useTranslation();
 
   const allowedCategories = [
-    "Artful Nude",
     "Bat Mitsva",
-    "Family",
-    "Femininity",
+    "Family", 
     "Horses",
     "Kids",
     "Modeling",
-    "Yoga"
+    "Femininity",
+    "Artful Nude",
+    "Yoga",
   ];
 
   // Override the firstPhoto for specific categories

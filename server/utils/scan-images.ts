@@ -1,3 +1,4 @@
+
 import path from 'path';
 import fs from 'fs/promises';
 import { db } from "@db";
@@ -8,25 +9,30 @@ export async function scanImages() {
   try {
     const assetsPath = path.join(process.cwd(), 'attached_assets');
     const facebookPostsPath = path.join(assetsPath, 'facebook_posts_image');
-
+    
     console.log('\n=== Starting Image Scan ===');
     console.log('Assets path:', facebookPostsPath);
 
     // Clear existing records
     await db.delete(photos);
     await db.delete(categories);
-
+    
     // Get all subdirectories in facebook_posts_image
     const dirs = await fs.readdir(facebookPostsPath);
     const categories_map: Record<string, string> = {
-      'Artful_Nude': 'Artful Nude',
-      'Bat_Mitsva': 'Bat Mitsva',
-      'Family': 'Family', 
-      'Femininity': 'Femininity',
-      'Horses': 'Horses',
-      'Modeling': 'Modeling',
-      'Yoga': 'Yoga',
-      'kids': 'Kids'
+      'bat_mitsva': 'Bat Mitsva',
+      'bar_mitsva': 'Bar Mitsva',
+      'feminine': 'Femininity',
+      'kids': 'Kids',
+      'family': 'Family',
+      'big_family': 'Big Family',
+      'horses': 'Horses',
+      'modeling': 'Modeling',
+      'sweet_16': 'Sweet 16',
+      'purim': 'Purim',
+      'pregnancy': 'Pregnancy',
+      'yoga': 'Yoga',
+      'artful_nude': 'Artful Nude'
     };
 
     console.log('Found directories:', dirs);
@@ -37,7 +43,7 @@ export async function scanImages() {
         const displayName = categories_map[dir] || dir.split('_').map(word => 
           word.charAt(0).toUpperCase() + word.slice(1)
         ).join(' ');
-
+        
         await db.insert(categories).values({
           name: displayName,
           displayOrder: index + 1,
