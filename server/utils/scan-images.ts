@@ -4,6 +4,7 @@ import fs from 'fs/promises';
 import { db } from "@db";
 import { photos, categories } from "@db/schema";
 import { sql } from 'drizzle-orm';
+import { clearDatabase } from './clear-db';
 
 async function validateImage(filePath: string): Promise<boolean> {
   try {
