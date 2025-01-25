@@ -387,7 +387,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                           objectPosition: 'center',
                           WebkitBackfaceVisibility: 'hidden',
                           WebkitTransform: 'translate3d(0, 0, 0)',
-                          WebkitPerspective: '1000',
+                          WebkitPerspective: '1000px',
                           WebkitTransformStyle: 'preserve-3d',
                           transition: 'opacity 0.5s ease-in-out'
                         }}
