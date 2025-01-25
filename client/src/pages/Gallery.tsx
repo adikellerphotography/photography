@@ -130,14 +130,14 @@ export default function Gallery() {
 
   // Define the allowed categories in the correct order
   const allowedCategories = [
+    "Artful Nude",
     "Bat Mitsva",
     "Family",
-    "Horses", 
-    "Modeling",
-    "Femininity",
-    "Artful Nude",
-    "Yoga",
+    "Femininity", 
+    "Horses",
     "Kids",
+    "Modeling",
+    "Yoga"
   ];
 
   // Filter and sort categories, ensuring uniqueness
