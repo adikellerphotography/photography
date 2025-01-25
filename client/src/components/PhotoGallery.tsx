@@ -248,7 +248,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   const imageStrategies = [
     (p: Photo) => `/assets/${categoryMappings[p.category] || p.category}/${String(p.id).padStart(3, '0')}.jpeg`,
-    (p: Photo) => `/assets/facebook_posts_image/${(categoryMappings[p.category] || p.category).toLowerCase()}/${p.id}.jpg`,
     (p: Photo) => `/assets/${categoryMappings[p.category] || p.category}/${p.id}.jpeg`,
     (p: Photo) => `/assets/${p.category.replace(/\s+/g, '_')}/${String(p.id).padStart(3, '0')}.jpeg`
   ];
@@ -295,8 +294,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       const thumbPaths = [
         photo.thumbnailUrl,
         img.src.replace('.jpeg', '-thumb.jpeg'),
-        img.src.replace('.jpg', '-thumb.jpg'),
-        `/assets/facebook_posts_image/${photo.category.toLowerCase()}/${photo.id}.jpg`
+        img.src.replace('.jpg', '-thumb.jpg')
       ];
 
       // Try each thumbnail path
