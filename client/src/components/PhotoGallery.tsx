@@ -239,8 +239,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     console.error(`Failed to load image after retries:`, imageUrl);
   };
 
-  const getImagePath = (photo: Photo) => {
-    // Handle special cases for category paths
+  const getImagePath = (photo: Photo, attempt = 0) => {
     const categoryMappings: Record<string, string> = {
       'Bat Mitsva': 'Bat_Mitsva',
       'Kids': 'kids',
@@ -248,10 +247,39 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       'Horses': 'Horses',
       'Modeling': 'Modeling',
       'Women': 'Women',
-      'Yoga': 'Yoga'
+      'Yoga': 'Yoga',
+      'Artful Nude': 'Artful_Nude',
+      'Femininity': 'Femininity'
     };
-    const categoryPath = categoryMappings[photo.category] || photo.category;
-    return `/assets/${categoryPath}/${String(photo.id).padStart(3, '0')}.jpeg`;
+
+    // Multiple path strategies based on attempt number
+    const strategies = [
+      () => `/assets/${categoryMappings[photo.category] || photo.category}/${String(photo.id).padStart(3, '0')}.jpeg`,
+      () => `/assets/facebook_posts_image/${(categoryMappings[photo.category] || photo.category).toLowerCase()}/${photo.id}.jpg`,
+      () => `/assets/${categoryMappings[photo.category] || photo.category}/${photo.id}.jpeg`,
+      () => `/assets/${photo.category.replace(/\s+/g, '_')}/${String(photo.id).padStart(3, '0')}.jpeg`
+    ];
+
+    return strategies[attempt % strategies.length]();
+  };
+
+  const handleImageError = (photo: Photo, img: HTMLImageElement) => {
+    const retryCount = Number(img.dataset.retryCount || '0');
+    const maxRetries = strategies.length * 2; // Try each strategy twice
+
+    if (retryCount < maxRetries) {
+      console.log(`Retrying image load (${retryCount + 1}/${maxRetries}):`, img.src);
+      img.dataset.retryCount = String(retryCount + 1);
+      setTimeout(() => {
+        img.src = getImagePath(photo, retryCount + 1);
+      }, retryCount * 1000);
+    } else {
+      console.error('Failed to load image after all retries:', img.src);
+      img.style.opacity = '0.5';
+      img.style.backgroundColor = 'rgba(0,0,0,0.1)';
+      // Try loading thumbnail as last resort
+      img.src = photo.thumbnailUrl || getImagePath(photo).replace('.jpeg', '-thumb.jpeg');
+    }
   };
 
   if (isLoading) {
@@ -346,24 +374,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                           img.style.opacity = '1';
                           img.style.backgroundColor = 'transparent';
                         }}
-                        onError={(e) => {
-                          const img = e.target as HTMLImageElement;
-                          const retryCount = Number(img.dataset.retryCount || '0');
-                          const maxRetries = 3;
-
-                          if (retryCount < maxRetries) {
-                            console.log(`Retrying image load (${retryCount + 1}/${maxRetries}):`, img.src);
-                            img.dataset.retryCount = String(retryCount + 1);
-                            setTimeout(() => {
-                              const timestamp = Date.now();
-                              img.src = `${getImagePath(photo)}?retry=${retryCount + 1}&t=${timestamp}`;
-                            }, retryCount * 1000);
-                          } else {
-                            console.error('Failed to load image after retries:', img.src);
-                            img.style.opacity = '0.5';
-                            img.style.backgroundColor = 'rgba(0,0,0,0.1)';
-                          }
-                        }}
+                        onError={(e) => handleImageError(photo, e.target as HTMLImageElement)}
                         style={{
                           opacity: '0',
                           backgroundColor: 'transparent',

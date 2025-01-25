@@ -334,13 +334,36 @@ export function registerRoutes(app: Express): Server {
       const { category, filename } = req.params;
       const noWatermark = req.query.no_watermark === 'true';
 
-      // Try multiple possible paths
-      const possiblePaths = [
-        path.join(process.cwd(), 'attached_assets', category, filename),
-        path.join(process.cwd(), 'attached_assets', category.replace(/\s+/g, '_'), filename),
-        path.join(process.cwd(), 'attached_assets', category.toLowerCase(), filename),
-        path.join(process.cwd(), 'attached_assets', category.replace(/\s+/g, '_').toLowerCase(), filename)
+      // Enhanced path resolution with multiple fallbacks
+      const categoryVariations = [
+        category,
+        category.replace(/\s+/g, '_'),
+        category.toLowerCase(),
+        category.replace(/\s+/g, '_').toLowerCase(),
+        `${category}_`,
+        category.replace(/\s+/g, '')
       ];
+
+      const baseDirectories = [
+        'attached_assets',
+        'attached_assets/facebook_posts_image'
+      ];
+
+      const fileVariations = [
+        filename,
+        filename.toLowerCase(),
+        filename.replace('.jpeg', '.jpg'),
+        filename.replace(/\d+\.jpeg$/, (match) => match.padStart(7, '0'))
+      ];
+
+      const possiblePaths = [];
+      for (const baseDir of baseDirectories) {
+        for (const cat of categoryVariations) {
+          for (const file of fileVariations) {
+            possiblePaths.push(path.join(process.cwd(), baseDir, cat, file));
+          }
+        }
+      }
 
       let imagePath;
       for (const p of possiblePaths) {
