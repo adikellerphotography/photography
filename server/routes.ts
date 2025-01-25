@@ -42,20 +42,25 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
   try {
     const { category } = req.query;
 
-    if (category && typeof category === 'string') {
-      const categoryExists = await db.select({ id: categories.id })
-        .from(categories)
-        .where(eq(categories.name, decodeURIComponent(category)))
-        .limit(1);
+    if (!category || typeof category !== 'string') {
+      return res.status(400).json({ error: "Category parameter is required" });
+    }
 
-      if (categoryExists.length === 0) {
-        return res.status(404).json({ error: "Category not found" });
-      }
+    const decodedCategory = decodeURIComponent(category);
+    console.log('Fetching photos for category:', decodedCategory);
+
+    const categoryExists = await db.select({ id: categories.id })
+      .from(categories)
+      .where(eq(categories.name, decodedCategory))
+      .limit(1);
+
+    if (categoryExists.length === 0) {
+      return res.status(404).json({ error: "Category not found" });
     }
 
     const query = db.select()
       .from(photos)
-      .where(category ? eq(photos.category, decodeURIComponent(category as string)) : undefined)
+      .where(eq(photos.category, decodedCategory))
       .orderBy(photos.displayOrder);
 
     const results = await query;
