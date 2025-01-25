@@ -280,10 +280,7 @@ export default function Home() {
                       <AspectRatio ratio={4 / 3} className="bg-muted">
                         <div className="relative w-full h-full">
                           <img
-                            src={
-                              category.firstPhoto?.imageUrl ||
-                              `/assets/${category.name.replace(' ', '_')}/${String(1).padStart(3, '0')}.jpeg`
-                            }
+                            src={`/assets/${category.name.replace(/\s+/g, '_')}/${String(1).padStart(3, '0')}.jpeg`}
                             alt={category.name}
                             className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
                             decoding="async"
