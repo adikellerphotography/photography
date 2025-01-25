@@ -305,33 +305,51 @@ export default function Home() {
                             }}
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
-                              const retryCount = Number(
-                                target.dataset.retryCount || 0,
-                              );
+                              const retryCount = Number(target.dataset.retryCount || 0);
                               const maxRetries = 3;
+                              const originalSrc = target.src;
 
                               if (retryCount < maxRetries) {
-                                console.log(
-                                  `Retrying category image load (${retryCount + 1}/${maxRetries}):`,
-                                  target.src,
-                                );
-                                target.dataset.retryCount = String(
-                                  retryCount + 1,
-                                );
-                                const cacheBuster = `?retry=${retryCount + 1}-${Date.now()}`;
-                                setTimeout(() => {
-                                  target.src =
-                                    target.src.split("?")[0] + cacheBuster;
-                                }, retryCount * 1000); // Incremental delay between retries
+                                target.dataset.retryCount = String(retryCount + 1);
+                                
+                                // Try thumbnail first, then original, then fallback paths
+                                const tryAlternativePath = () => {
+                                  const paths = [
+                                    // Try thumbnail version
+                                    originalSrc.replace('.jpeg', '-thumb.jpeg'),
+                                    // Try without thumb if we were using thumb
+                                    originalSrc.replace('-thumb.jpeg', '.jpeg'),
+                                    // Try alternate category path format
+                                    `/assets/${category.name.replace(/\s+/g, '_')}/${String(1).padStart(3, '0')}.jpeg`,
+                                    // Try facebook posts path
+                                    `/assets/facebook_posts_image/${category.name.toLowerCase().replace(/\s+/g, '_')}/1.jpg`
+                                  ];
+
+                                  const nextPath = paths[retryCount];
+                                  if (nextPath) {
+                                    setTimeout(() => {
+                                      target.src = `${nextPath}?retry=${Date.now()}`;
+                                    }, retryCount * 800);
+                                  }
+                                };
+
+                                tryAlternativePath();
                               } else {
-                                console.error(
-                                  "Failed to load image after retries:",
-                                  category.firstPhoto?.imageUrl,
-                                );
+                                console.error("Failed to load image after all retries:", originalSrc);
                                 target.onerror = null;
                                 target.src = "/assets/placeholder-category.jpg";
-                                target.style.opacity = "0.7";
+                                target.style.opacity = "0.8";
+                                target.style.backgroundColor = "#1a1a1a";
                               }
+                            }}
+                            style={{
+                              objectFit: "cover",
+                              backgroundColor: "#1a1a1a",
+                              WebkitBackfaceVisibility: "hidden",
+                              MozBackfaceVisibility: "hidden",
+                              backfaceVisibility: "hidden",
+                              transform: "translateZ(0)",
+                              willChange: "transform"
                             }}
                             loading={
                               index === 0
