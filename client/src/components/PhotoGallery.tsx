@@ -234,28 +234,31 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [transitionDirection, setTransitionDirection] = useState<"next" | "prev" | null>(null);
   const [isNextImageLoaded, setIsNextImageLoaded] = useState(false);
 
+  const categoryMappings: Record<string, string> = {
+    'Bat Mitsva': 'Bat_Mitsva',
+    'Kids': 'kids',
+    'Family': 'Family',
+    'Horses': 'Horses',
+    'Modeling': 'Modeling',
+    'Women': 'Women',
+    'Yoga': 'Yoga',
+    'Artful Nude': 'Artful_Nude',
+    'Femininity': 'Femininity'
+  };
+
+  const imageStrategies = [
+    (p: Photo) => `/assets/${categoryMappings[p.category] || p.category}/${String(p.id).padStart(3, '0')}.jpeg`,
+    (p: Photo) => `/assets/facebook_posts_image/${(categoryMappings[p.category] || p.category).toLowerCase()}/${p.id}.jpg`,
+    (p: Photo) => `/assets/${categoryMappings[p.category] || p.category}/${p.id}.jpeg`,
+    (p: Photo) => `/assets/${p.category.replace(/\s+/g, '_')}/${String(p.id).padStart(3, '0')}.jpeg`
+  ];
+
   const getImagePath = (photo: Photo, attempt = 0) => {
-    const categoryMappings: Record<string, string> = {
-      'Bat Mitsva': 'Bat_Mitsva',
-      'Kids': 'kids',
-      'Family': 'Family',
-      'Horses': 'Horses',
-      'Modeling': 'Modeling',
-      'Women': 'Women',
-      'Yoga': 'Yoga',
-      'Artful Nude': 'Artful_Nude',
-      'Femininity': 'Femininity'
-    };
-
-    // Multiple path strategies based on attempt number
-    const strategies = [
-      (photo: Photo) => `/assets/${categoryMappings[photo.category] || photo.category}/${String(photo.id).padStart(3, '0')}.jpeg`,
-      (photo: Photo) => `/assets/facebook_posts_image/${(categoryMappings[photo.category] || photo.category).toLowerCase()}/${photo.id}.jpg`,
-      (photo: Photo) => `/assets/${categoryMappings[photo.category] || photo.category}/${photo.id}.jpeg`,
-      (photo: Photo) => `/assets/${photo.category.replace(/\s+/g, '_')}/${String(photo.id).padStart(3, '0')}.jpeg`
-    ];
-
-    return strategies[attempt % strategies.length]();
+    if (!photo || !photo.category) {
+      console.error('Invalid photo object:', photo);
+      return '';
+    }
+    return imageStrategies[attempt % imageStrategies.length](photo);
   };
 
   const strategies = [
