@@ -30,6 +30,7 @@ const getCategoryPath = (categoryName: string) => {
 // Configure static file serving
 const configureStaticFiles = (app: Express) => {
   const assetsPath = path.join(process.cwd(), 'attached_assets');
+const galleriesPath = path.join(assetsPath, 'galleries');
   app.use('/assets', express.static(assetsPath, {
     setHeaders: (res, filePath) => {
       if (filePath.toLowerCase().endsWith('.jpg') || filePath.toLowerCase().endsWith('.jpeg')) {
@@ -74,7 +75,7 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
     // If no results in database or results are incomplete, scan directory
     if (category) {
       const categoryPath = getCategoryPath(category);
-      const dirPath = path.join(process.cwd(), 'attached_assets', categoryPath);
+      const dirPath = path.join(process.cwd(), 'attached_assets/galleries', categoryPath);
       try {
         const files = await fs.readdir(dirPath);
         const photoFiles = files
