@@ -239,7 +239,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     console.error(`Failed to load image after retries:`, imageUrl);
   };
 
-  const getImagePath = (photo: Photo) => {
+  const getImagePath = (photo: Photo, type: 'thumb' | 'full' = 'full') => {
     // Handle special cases for category paths
     const categoryMappings: Record<string, string> = {
       'Bat Mitsva': 'Bat_Mitsva',
@@ -250,8 +250,21 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       'Women': 'Women',
       'Yoga': 'Yoga'
     };
-    const categoryPath = categoryMappings[photo.category] || photo.category;
-    return `/assets/${categoryPath}/${String(photo.id).padStart(3, '0')}.jpeg`;
+    
+    // Try multiple path formats
+    const paths = [
+      // Main path format
+      `/attached_assets/${categoryMappings[photo.category] || photo.category}/${String(photo.id).padStart(3, '0')}${type === 'thumb' ? '-thumb' : ''}.jpeg`,
+      // Alternative path format
+      `/assets/${categoryMappings[photo.category] || photo.category}/${String(photo.id).padStart(3, '0')}${type === 'thumb' ? '-thumb' : ''}.jpeg`,
+      // Facebook posts fallback
+      `/assets/facebook_posts_image/${(photo.category || '').toLowerCase().replace(/\s+/g, '_')}/${photo.id}.jpg`,
+      // Public assets fallback
+      `/public/assets/${categoryMappings[photo.category] || photo.category}/${String(photo.id).padStart(3, '0')}.jpeg`
+    ];
+
+    // Return the first path that exists
+    return paths[0];
   };
 
   if (isLoading) {
@@ -334,13 +347,26 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                     {/* Main image */}
                     <img
                         key={`${photo.id}-${photo.imageUrl}`}
-                        src={getImagePath(photo)}
+                        src={getImagePath(photo, 'thumb')}
+                        data-src={getImagePath(photo, 'full')}
                         alt={photo.title || ""}
                         className="relative w-full h-full transition-all duration-500 group-hover:scale-110 object-cover"
                         loading={index < 12 ? "eager" : "lazy"}
                         decoding="async"
                         fetchpriority={index < 8 ? "high" : "auto"}
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        onLoad={(e) => {
+                          const img = e.target as HTMLImageElement;
+                          // If this is a thumbnail, load the full image
+                          if (img.src.includes('-thumb')) {
+                            const fullImg = new Image();
+                            fullImg.src = img.dataset.src || '';
+                            fullImg.onload = () => {
+                              img.src = fullImg.src;
+                            };
+                          }
+                          img.style.opacity = '1';
+                        }}
                         onLoad={(e) => {
                           const img = e.target as HTMLImageElement;
                           img.style.opacity = '1';
