@@ -5,15 +5,20 @@ import path from 'path';
 async function renameFilesInDirectory(dirPath: string) {
   try {
     const files = await fs.readdir(dirPath);
-    const imageFiles = files.filter(file => /\.(jpg|jpeg)$/i.test(file));
+    const imageFiles = files.filter(file => /\.(jpg|jpeg|png)$/i.test(file));
+    
+    // Sort files to ensure consistent ordering
+    imageFiles.sort();
     
     for (let i = 0; i < imageFiles.length; i++) {
       const oldPath = path.join(dirPath, imageFiles[i]);
       const newName = `${String(i + 1).padStart(3, '0')}.jpeg`;
       const newPath = path.join(dirPath, newName);
       
-      await fs.rename(oldPath, newPath);
-      console.log(`Renamed ${imageFiles[i]} to ${newName}`);
+      if (imageFiles[i] !== newName) {
+        await fs.rename(oldPath, newPath);
+        console.log(`Renamed ${imageFiles[i]} to ${newName}`);
+      }
     }
     
     console.log(`File renaming completed for ${dirPath}`);
@@ -24,13 +29,9 @@ async function renameFilesInDirectory(dirPath: string) {
 
 async function renameAllDirectories() {
   const directories = [
-    'Family',
-    'Horses',
-    'kids',
-    'Modeling',
     'Artful_Nude',
     'Femininity',
-    'Yoga'
+    'Modeling'
   ];
 
   for (const dir of directories) {
