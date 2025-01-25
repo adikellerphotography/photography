@@ -5,15 +5,21 @@ import { photos, categories } from "@db/schema";
 import { sql } from 'drizzle-orm';
 
 async function scanDirectory(dirPath: string): Promise<string[]> {
-  const entries = await fs.readdir(dirPath, { withFileTypes: true });
-  const files = entries
-    .filter(entry => entry.isFile() && /\.(jpg|jpeg)$/i.test(entry.name))
-    .map(entry => entry.name);
-  return files.sort((a, b) => {
-    const numA = parseInt(a.match(/\d+/)?.[0] || '0');
-    const numB = parseInt(b.match(/\d+/)?.[0] || '0');
-    return numA - numB;
-  });
+  try {
+    const entries = await fs.readdir(dirPath, { withFileTypes: true });
+    const files = entries
+      .filter(entry => entry.isFile() && /\.(jpg|jpeg)$/i.test(entry.name) && !entry.name.includes('thumb'))
+      .map(entry => entry.name);
+    console.log(`Found ${files.length} files in ${dirPath}`);
+    return files.sort((a, b) => {
+      const numA = parseInt(a.match(/\d+/)?.[0] || '0');
+      const numB = parseInt(b.match(/\d+/)?.[0] || '0');
+      return numA - numB;
+    });
+  } catch (error) {
+    console.error(`Error scanning directory ${dirPath}:`, error);
+    return [];
+  }
 }
 
 export async function scanImages(targetPath?: string) {

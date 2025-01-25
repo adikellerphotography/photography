@@ -117,7 +117,10 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
     }));
 
     console.log('Processed photos:', processedPhotos);
-    res.json(processedPhotos);
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+  res.json(processedPhotos);
   } catch (error: any) {
     console.error('Error fetching photos:', error);
     res.status(500).json({ error: "Failed to fetch photos", details: error.message });
