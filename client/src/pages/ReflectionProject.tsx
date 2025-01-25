@@ -85,12 +85,10 @@ export default function ReflectionProject() {
                     <svg width="32" height="32" viewBox="0 0 32 32" className="text-muted-foreground">
                       <circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" strokeWidth="2.5"/>
                       <path
-                        d="M16 2 A 14 14 0 1 1 16 30 A 14 14 0 1 1 16 2"
+                        d="M16 2 A 14 14 0 1 1 2 16"
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="2.5"
-                        strokeDasharray="66"
-                        strokeDashoffset="16.5"
                       />
                     </svg>
                     <div className="absolute inset-0 flex items-center justify-center text-sm font-bold text-muted-foreground">
@@ -104,12 +102,10 @@ export default function ReflectionProject() {
                     <svg width="32" height="32" viewBox="0 0 32 32" className="text-muted-foreground">
                       <circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" strokeWidth="2.5"/>
                       <path
-                        d="M16 2 A 14 14 0 1 1 16 30 A 14 14 0 1 1 16 2"
+                        d="M16 2 A 14 14 0 0 1 30 16"
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="2.5"
-                        strokeDasharray="66"
-                        strokeDashoffset="49.5"
                       />
                     </svg>
                     <div className="absolute inset-0 flex items-center justify-center text-sm font-bold text-muted-foreground">
