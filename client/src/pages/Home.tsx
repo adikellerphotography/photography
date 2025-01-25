@@ -21,16 +21,11 @@ export default function Home() {
 
   const { t } = useTranslation();
 
-  const allowedCategories = [
-    "Bat Mitsva",
-    "Family", 
-    "Horses",
-    "Kids",
-    "Modeling",
-    "Femininity",
-    "Artful Nude",
-    "Yoga",
-  ];
+  // Include all categories except specific ones
+  const excludedCategories = ["Before And After"];
+  const allowedCategories = categories
+    ?.filter(cat => !excludedCategories.includes(cat.name))
+    .map(cat => cat.name) || [];
 
   // Override the firstPhoto for specific categories
   const processedCategories = categories?.map((category) => {

@@ -128,17 +128,11 @@ export default function Gallery() {
     setIsHorizontalSwipe(null);
   };
 
-  // Define the allowed categories in the correct order
-  const allowedCategories = [
-    "Bat Mitsva",
-    "Family",
-    "Horses", 
-    "Modeling",
-    "Femininity",
-    "Artful Nude",
-    "Yoga",
-    "Kids",
-  ];
+  // Include all categories except specific ones
+  const excludedCategories = ["Before And After"];
+  const allowedCategories = categories
+    ?.filter(cat => !excludedCategories.includes(cat.name))
+    .map(cat => cat.name) || [];
 
   // Filter and sort categories, ensuring uniqueness
   const processedCategories =
