@@ -291,9 +291,14 @@ export default function Home() {
                               objectPosition: "center center",
                               WebkitBackfaceVisibility: "hidden",
                               WebkitTransform: "translate3d(0, 0, 0)",
+                              opacity: '0',
+                              background: 'rgba(0,0,0,0.05)',
+                              transition: 'opacity 0.3s ease-in-out'
                             }}
                             onLoad={(e) => {
                               const img = e.target as HTMLImageElement;
+                              img.style.opacity = '1';
+                              img.style.background = 'transparent';
                               if (img.naturalHeight > img.naturalWidth) {
                                 img.style.objectPosition = "center 50%";
                               }
@@ -330,19 +335,6 @@ export default function Home() {
                                   target.style.opacity = "0.7";
                                   target.style.background = "rgba(0,0,0,0.1)";
                                 }
-                              }
-                            }}
-                            style={{
-                              opacity: '0',
-                              background: 'rgba(0,0,0,0.05)',
-                              transition: 'opacity 0.3s ease-in-out'
-                            }}
-                            onLoad={(e) => {
-                              const img = e.target as HTMLImageElement;
-                              img.style.opacity = '1';
-                              img.style.background = 'transparent';
-                              if (img.naturalHeight > img.naturalWidth) {
-                                img.style.objectPosition = "center 50%";
                               }
                             }}
                             loading={index === 0 ? "eager" : index < 6 ? "eager" : "lazy"}
