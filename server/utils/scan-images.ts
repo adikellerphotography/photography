@@ -1,9 +1,21 @@
 
 import path from 'path';
 import fs from 'fs/promises';
+import sharp from 'sharp';
 import { db } from "@db";
 import { photos, categories } from "@db/schema";
 import { sql } from 'drizzle-orm';
+
+async function generateThumbnail(inputPath: string, outputPath: string) {
+  try {
+    await sharp(inputPath)
+      .resize(300, null, { fit: 'inside' })
+      .jpeg({ quality: 80 })
+      .toFile(outputPath);
+  } catch (error) {
+    console.error(`Error generating thumbnail for ${inputPath}:`, error);
+  }
+}
 
 export async function scanImages() {
   try {
@@ -50,7 +62,7 @@ export async function scanImages() {
       const dirPath = path.join(assetsPath, dir);
       const files = await fs.readdir(dirPath);
       const imageFiles = files
-        .filter(file => /\.(jpg|jpeg)$/i.test(file) && !file.includes('thumb'))
+        .filter(file => /\.(jpg|jpeg)$/i.test(file) && !file.includes('thumb') && !file.includes('.DS_Store'))
         .sort((a, b) => {
           const numA = parseInt(a.match(/\d+/)?.[0] || '0');
           const numB = parseInt(b.match(/\d+/)?.[0] || '0');
@@ -68,6 +80,14 @@ export async function scanImages() {
         try {
           const id = parseInt(imageFile.match(/\d+/)?.[0] || '0');
           
+          const imagePath = path.join(dirPath, imageFile);
+          const thumbnailPath = path.join(dirPath, imageFile.replace('.jpeg', '-thumb.jpeg'));
+          
+          // Generate thumbnail if it doesn't exist
+          if (!await fs.access(thumbnailPath).then(() => true).catch(() => false)) {
+            await generateThumbnail(imagePath, thumbnailPath);
+          }
+
           await db.insert(photos).values({
             id,
             title: `${displayName} Portrait Session`,

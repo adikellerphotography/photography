@@ -43,8 +43,8 @@ export default function Home() {
         ...category,
         firstPhoto: {
           ...category.firstPhoto,
-          imageUrl: "/assets/kids/011.jpeg",
-          thumbnailUrl: "/assets/kids/011-thumb.jpeg",
+          imageUrl: "/assets/kids/014.jpeg",
+          thumbnailUrl: "/assets/kids/014-thumb.jpeg",
         },
       };
     }
