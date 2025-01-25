@@ -247,9 +247,9 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   };
 
   const imageStrategies = [
-    (p: Photo) => `/assets/galleries/${categoryMappings[p.category] || p.category}/${String(p.id).padStart(3, '0')}.jpeg`,
-    (p: Photo) => `/assets/galleries/${categoryMappings[p.category] || p.category}/${p.id}.jpeg`,
-    (p: Photo) => `/assets/galleries/${p.category.replace(/\s+/g, '_')}/${String(p.id).padStart(3, '0')}.jpeg`
+    (p: Photo) => `/assets/${categoryMappings[p.category] || p.category}/${String(p.id).padStart(3, '0')}.jpeg`,
+    (p: Photo) => `/assets/${categoryMappings[p.category] || p.category}/${p.id}.jpeg`,
+    (p: Photo) => `/assets/${p.category.replace(/\s+/g, '_')}/${String(p.id).padStart(3, '0')}.jpeg`
   ];
 
   const getImagePath = (photo: Photo, attempt = 0) => {

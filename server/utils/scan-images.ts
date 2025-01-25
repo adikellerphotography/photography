@@ -7,7 +7,7 @@ import { sql } from 'drizzle-orm';
 
 export async function scanImages() {
   try {
-    const assetsPath = path.join(process.cwd(), 'attached_assets', 'galleries');
+    const assetsPath = path.join(process.cwd(), 'attached_assets');
     console.log('\n=== Starting Image Scan ===');
     console.log('Assets path:', assetsPath);
 
