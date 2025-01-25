@@ -14,6 +14,8 @@ const allowedHosts = [
   '*.repl.co',
   '*.repl.dev',
   '*.replit.dev',
+  '*.sisko.replit.dev',
+  '*.riker.replit.dev',
   process.env.REPLIT_HOST || '',
 ].filter(Boolean);
 
