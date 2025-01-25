@@ -44,6 +44,14 @@ export async function scanImages(targetPath?: string) {
     const assetsPath = targetPath || path.join(process.cwd(), 'attached_assets', 'galleries');
     console.log('Assets path:', assetsPath);
 
+    // Verify directory exists
+    try {
+      await fs.access(assetsPath);
+    } catch (error) {
+      console.error('Gallery directory not found:', assetsPath);
+      throw new Error('Gallery directory not found');
+    }
+
     // Clear existing records
     await clearDatabase();
 

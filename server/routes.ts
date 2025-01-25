@@ -11,9 +11,24 @@ import fs from "fs/promises";
 
 // Helper function to get the correct category path
 const getCategoryPath = (categoryName: string) => {
-  return categoryName.split(' ')
+  const normalized = categoryName.split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join('_');
+  
+  // Check both original and normalized paths
+  const paths = [
+    normalized,
+    categoryName.replace(/\s+/g, '_'),
+    categoryName
+  ];
+  
+  return paths.find(p => {
+    try {
+      return fs.existsSync(path.join(process.cwd(), 'attached_assets', 'galleries', p));
+    } catch {
+      return false;
+    }
+  }) || normalized;
 };
 
 // Configure static file serving
