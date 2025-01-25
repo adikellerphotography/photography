@@ -26,7 +26,7 @@ export async function scanImages() {
         return { dir, isDirectory: stats?.isDirectory() || false };
       })
     )).filter(({ dir, isDirectory }) => 
-      isDirectory && !excludedDirs.includes(dir.toLowerCase())
+      isDirectory && !excludedDirs.includes(dir.toLowerCase()) && !dir.startsWith('.')
     ).map(({ dir }) => dir);
 
     console.log('Found valid directories:', categoryDirs);
@@ -62,31 +62,37 @@ export async function scanImages() {
         .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
         .join(' ');
 
-      for (const imageFile of imageFiles) {
+      for (const [index, imageFile] of imageFiles.entries()) {
         try {
-          const id = parseInt(imageFile.match(/\d+/)?.[0] || '0');
+          const id = parseInt(imageFile.match(/\d+/)?.[0] || String(index + 1));
           const imagePath = path.join(dirPath, imageFile);
           
           // Verify file exists and is readable
           await fs.access(imagePath, fs.constants.R_OK);
           
+          // Insert with consistent path format
+          const imageUrl = `/assets/${dir}/${imageFile}`;
+          const thumbnailUrl = `/assets/${dir}/${imageFile.replace(/\.(jpg|jpeg)$/i, '-thumb.jpeg')}`;
+          
           await db.insert(photos).values({
             id,
             title: `${displayName} Portrait Session`,
             category: displayName,
-            imageUrl: `/assets/${dir}/${imageFile}`,
-            thumbnailUrl: `/assets/${dir}/${imageFile.replace(/\.(jpg|jpeg)$/i, '-thumb.jpeg')}`,
+            imageUrl,
+            thumbnailUrl,
             displayOrder: id
           }).onConflictDoUpdate({
             target: [photos.id],
             set: { 
               title: `${displayName} Portrait Session`,
               category: displayName,
-              imageUrl: `/assets/${dir}/${imageFile}`,
-              thumbnailUrl: `/assets/${dir}/${imageFile.replace(/\.(jpg|jpeg)$/i, '-thumb.jpeg')}`,
+              imageUrl,
+              thumbnailUrl,
               displayOrder: id
             }
           });
+
+          console.log(`Processed: ${imageUrl}`);
         } catch (error) {
           console.error(`Error processing ${imageFile}:`, error);
         }
