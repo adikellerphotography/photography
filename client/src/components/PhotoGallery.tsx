@@ -58,12 +58,16 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const getImagePath = (photo: Photo): string[] => {
     if (!photo?.category) return [];
 
-    const id = String(photo.id).padStart(3, '0');
     const categoryPath = photo.category.replace(/\s+/g, '_');
-
-    return [
-      `${IMAGE_PATHS.GALLERIES}/${categoryPath}/${id}.jpeg`
+    const id = String(photo.id).padStart(3, '0');
+    const paths = [
+      `/assets/galleries/${categoryPath}/${id}.jpeg`,
+      `/assets/galleries/${categoryPath}/${id}.jpg`,
+      `/assets/facebook_posts_image/${categoryPath.toLowerCase()}/${id}.jpg`,
+      `/assets/facebook_posts_image/${categoryPath.toLowerCase()}/${id}.jpeg`
     ];
+
+    return paths;
   };
 
   const handleImageError = async (

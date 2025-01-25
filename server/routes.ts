@@ -49,21 +49,52 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
     const decodedCategory = decodeURIComponent(category);
     console.log('Fetching photos for category:', decodedCategory);
 
-    const categoryExists = await db.select({ id: categories.id })
-      .from(categories)
-      .where(eq(categories.name, decodedCategory))
-      .limit(1);
+    // Try to find photos in both galleries and facebook_posts_image directories
+    const categoryPaths = [
+      path.join(process.cwd(), 'attached_assets', 'galleries', decodedCategory.replace(/\s+/g, '_')),
+      path.join(process.cwd(), 'attached_assets', 'facebook_posts_image', decodedCategory.toLowerCase().replace(/\s+/g, '_'))
+    ];
 
-    if (categoryExists.length === 0) {
-      return res.status(404).json({ error: "Category not found" });
+    let results: any[] = [];
+    let photoFiles: string[] = [];
+
+    for (const dirPath of categoryPaths) {
+      try {
+        const files = await fs.readdir(dirPath);
+        photoFiles = [
+          ...photoFiles,
+          ...files.filter(f => 
+            (f.endsWith('.jpeg') || f.endsWith('.jpg')) && 
+            !f.includes('-thumb') && 
+            !f.includes('thumbnails')
+          )
+        ];
+      } catch (err) {
+        console.log(`No photos found in ${dirPath}`);
+      }
     }
 
-    const query = db.select()
-      .from(photos)
-      .where(eq(photos.category, decodedCategory))
-      .orderBy(photos.displayOrder);
+    // Sort files numerically
+    photoFiles.sort((a, b) => {
+      const numA = parseInt(a.match(/\d+/)?.[0] || '0');
+      const numB = parseInt(b.match(/\d+/)?.[0] || '0');
+      return numA - numB;
+    });
 
-    const results = await query;
+    // Create entries for each photo
+    results = photoFiles.map((file, index) => {
+      const fileNum = index + 1;
+      const paddedId = String(fileNum).padStart(3, '0');
+      return {
+        id: fileNum,
+        title: `${decodedCategory} Portrait Session`,
+        category: decodedCategory,
+        imageUrl: `/assets/galleries/${decodedCategory.replace(/\s+/g, '_')}/${paddedId}.jpeg`,
+        thumbnailUrl: `/assets/galleries/${decodedCategory.replace(/\s+/g, '_')}/${paddedId}-thumb.jpeg`,
+        displayOrder: fileNum,
+        likesCount: 0
+      };
+    });
 
     // If no results in database or results are incomplete, scan directory
     if (category) {
@@ -131,10 +162,34 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
 
 const getCategories = async (_req: express.Request, res: express.Response) => {
   try {
-    const validCategories = await db
-      .select()
-      .from(categories)
-      .orderBy(categories.displayOrder);
+    // Scan galleries directory for categories
+    const galleriesPath = path.join(process.cwd(), 'attached_assets', 'galleries');
+    const dirs = await fs.readdir(galleriesPath, { withFileTypes: true });
+    
+    const categoryFolders = dirs
+      .filter(dir => dir.isDirectory() && !dir.name.startsWith('.'))
+      .map(dir => ({
+        name: dir.name.replace(/_/g, ' '),
+        path: path.join(galleriesPath, dir.name)
+      }));
+
+    const validCategories = await Promise.all(
+      categoryFolders.map(async (folder, index) => {
+        const files = await fs.readdir(folder.path);
+        const photoCount = files.filter(f => 
+          (f.endsWith('.jpeg') || f.endsWith('.jpg')) && 
+          !f.includes('-thumb')
+        ).length;
+
+        return {
+          id: index + 1,
+          name: folder.name,
+          displayOrder: index + 1,
+          description: `${folder.name} Photography Portfolio`,
+          photoCount
+        };
+      })
+    );
 
     const categoriesWithPhotos = await Promise.all(
       validCategories.map(async (category) => {
