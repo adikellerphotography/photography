@@ -11,18 +11,7 @@ import fs from "fs/promises";
 
 // Helper function to get the correct category path
 const getCategoryPath = (categoryName: string) => {
-  const categoryMappings: Record<string, string> = {
-    'Kids': 'kids',
-    'Bat Mitsva': 'Bat_Mitsva',
-    'Family': 'Family',
-    'Horses': 'Horses',
-    'Modeling': 'Modeling',
-    'Women': 'Women',
-    'Yoga': 'Yoga',
-    'Artful Nude': 'Artful_Nude',
-    'Femininity': 'Femininity'
-  };
-  return categoryMappings[categoryName] || categoryName.split(' ')
+  return categoryName.split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join('_');
 };

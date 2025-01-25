@@ -1,13 +1,24 @@
-
 import path from 'path';
 import fs from 'fs/promises';
 import { db } from "@db";
 import { photos, categories } from "@db/schema";
 import { sql } from 'drizzle-orm';
 
-export async function scanImages() {
+async function scanDirectory(dirPath: string): Promise<string[]> {
+  const entries = await fs.readdir(dirPath, { withFileTypes: true });
+  const files = entries
+    .filter(entry => entry.isFile() && /\.(jpg|jpeg)$/i.test(entry.name))
+    .map(entry => entry.name);
+  return files.sort((a, b) => {
+    const numA = parseInt(a.match(/\d+/)?.[0] || '0');
+    const numB = parseInt(b.match(/\d+/)?.[0] || '0');
+    return numA - numB;
+  });
+}
+
+export async function scanImages(targetPath?: string) {
   try {
-    const assetsPath = path.join(process.cwd(), 'attached_assets', 'galleries');
+    const assetsPath = targetPath || path.join(process.cwd(), 'attached_assets', 'galleries');
     console.log('\n=== Starting Image Scan ===');
     console.log('Assets path:', assetsPath);
 
@@ -15,65 +26,41 @@ export async function scanImages() {
     await db.delete(photos);
     await db.delete(categories);
 
-    // Get all directories in attached_assets
-    const dirs = await fs.readdir(assetsPath);
-    const excludedDirs = ['before_and_after', 'facebook_posts_image', '.DS_Store'];
-    
-    const categoryDirs = (await Promise.all(
-      dirs.map(async dir => {
-        const fullPath = path.join(assetsPath, dir);
-        const stats = await fs.stat(fullPath).catch(() => null);
-        return { dir, isDirectory: stats?.isDirectory() || false };
-      })
-    )).filter(({ dir, isDirectory }) => 
-      isDirectory && !excludedDirs.includes(dir.toLowerCase()) && !dir.startsWith('.')
-    ).map(({ dir }) => dir);
+    // Get all directories in galleries
+    const entries = await fs.readdir(assetsPath, { withFileTypes: true });
+    const dirs = entries
+      .filter(entry => entry.isDirectory() && !entry.name.startsWith('.'))
+      .map(entry => entry.name);
 
-    console.log('Found valid directories:', categoryDirs);
+    console.log('Found directories:', dirs);
 
-    // Insert categories
-    for (const [index, dir] of categoryDirs.entries()) {
+    // Process each category directory
+    for (const [index, dir] of dirs.entries()) {
       const displayName = dir.split('_')
         .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
         .join(' ');
 
+      // Insert category
       await db.insert(categories).values({
         name: displayName,
         displayOrder: index + 1,
         description: `${displayName} Photography Sessions`
       });
-    }
 
-    // Process images in each category
-    for (const dir of categoryDirs) {
       const dirPath = path.join(assetsPath, dir);
-      const files = await fs.readdir(dirPath);
-      const imageFiles = files
-        .filter(file => /\.(jpg|jpeg)$/i.test(file) && !file.includes('thumb'))
-        .sort((a, b) => {
-          const numA = parseInt(a.match(/\d+/)?.[0] || '0');
-          const numB = parseInt(b.match(/\d+/)?.[0] || '0');
-          return numA - numB;
-        });
-
+      const imageFiles = await scanDirectory(dirPath);
       console.log(`Found ${imageFiles.length} images in ${dir}`);
 
-      const displayName = dir.split('_')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-        .join(' ');
-
-      for (const [index, imageFile] of imageFiles.entries()) {
+      // Process images
+      for (const [idx, imageFile] of imageFiles.entries()) {
         try {
-          const id = parseInt(imageFile.match(/\d+/)?.[0] || String(index + 1));
-          const imagePath = path.join(dirPath, imageFile);
-          
-          // Verify file exists and is readable
-          await fs.access(imagePath, fs.constants.R_OK);
-          
-          // Insert with consistent path format
-          const imageUrl = `/assets/${dir}/${imageFile}`;
-          const thumbnailUrl = `/assets/${dir}/${imageFile.replace(/\.(jpg|jpeg)$/i, '-thumb.jpeg')}`;
-          
+          const id = parseInt(imageFile.match(/\d+/)?.[0] || String(idx + 1));
+          const baseName = path.parse(imageFile).name;
+          const ext = path.parse(imageFile).ext;
+
+          const imageUrl = `/assets/galleries/${dir}/${imageFile}`;
+          const thumbnailUrl = `/assets/galleries/${dir}/${baseName}-thumb${ext}`;
+
           await db.insert(photos).values({
             id,
             title: `${displayName} Portrait Session`,
@@ -83,7 +70,7 @@ export async function scanImages() {
             displayOrder: id
           }).onConflictDoUpdate({
             target: [photos.id],
-            set: { 
+            set: {
               title: `${displayName} Portrait Session`,
               category: displayName,
               imageUrl,
@@ -91,8 +78,6 @@ export async function scanImages() {
               displayOrder: id
             }
           });
-
-          console.log(`Processed: ${imageUrl}`);
         } catch (error) {
           console.error(`Error processing ${imageFile}:`, error);
         }
@@ -101,6 +86,7 @@ export async function scanImages() {
 
     const photoCount = await db.select({ count: sql`count(*)` }).from(photos);
     const categoryCount = await db.select({ count: sql`count(*)` }).from(categories);
+
     console.log(`Total photos in database: ${photoCount[0].count}`);
     console.log(`Total categories in database: ${categoryCount[0].count}`);
 
