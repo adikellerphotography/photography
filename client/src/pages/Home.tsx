@@ -341,17 +341,13 @@ export default function Home() {
                               const img = e.target as HTMLImageElement;
                               img.style.opacity = '1';
                               img.style.background = 'transparent';
+                              if (img.naturalHeight > img.naturalWidth) {
+                                img.style.objectPosition = "center 50%";
+                              }
                             }}
-                            loading={
-                              index === 0
-                                ? "eager"
-                                : index < 6
-                                  ? "eager"
-                                  : "lazy"
-                            }
+                            loading={index === 0 ? "eager" : index < 6 ? "eager" : "lazy"}
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                            fetchPriority={index === 0 ? "high" : "auto"}
-                            decoding={index === 0 ? "sync" : "async"}
+                            fetchpriority={index === 0 ? "high" : "auto"}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent">
                             <div className="absolute bottom-0 left-0 right-0 p-4">

@@ -234,11 +234,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [transitionDirection, setTransitionDirection] = useState<"next" | "prev" | null>(null);
   const [isNextImageLoaded, setIsNextImageLoaded] = useState(false);
 
-  const handleImageError = (imageUrl: string) => {
-    setFailedImages(prev => new Set(prev).add(imageUrl));
-    console.error(`Failed to load image after retries:`, imageUrl);
-  };
-
   const getImagePath = (photo: Photo, attempt = 0) => {
     const categoryMappings: Record<string, string> = {
       'Bat Mitsva': 'Bat_Mitsva',
