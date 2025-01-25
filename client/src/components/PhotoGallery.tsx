@@ -249,14 +249,21 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
     // Multiple path strategies based on attempt number
     const strategies = [
-      () => `/assets/${categoryMappings[photo.category] || photo.category}/${String(photo.id).padStart(3, '0')}.jpeg`,
-      () => `/assets/facebook_posts_image/${(categoryMappings[photo.category] || photo.category).toLowerCase()}/${photo.id}.jpg`,
-      () => `/assets/${categoryMappings[photo.category] || photo.category}/${photo.id}.jpeg`,
-      () => `/assets/${photo.category.replace(/\s+/g, '_')}/${String(photo.id).padStart(3, '0')}.jpeg`
+      (photo: Photo) => `/assets/${categoryMappings[photo.category] || photo.category}/${String(photo.id).padStart(3, '0')}.jpeg`,
+      (photo: Photo) => `/assets/facebook_posts_image/${(categoryMappings[photo.category] || photo.category).toLowerCase()}/${photo.id}.jpg`,
+      (photo: Photo) => `/assets/${categoryMappings[photo.category] || photo.category}/${photo.id}.jpeg`,
+      (photo: Photo) => `/assets/${photo.category.replace(/\s+/g, '_')}/${String(photo.id).padStart(3, '0')}.jpeg`
     ];
 
     return strategies[attempt % strategies.length]();
   };
+
+  const strategies = [
+    (photo: Photo) => `/assets/${photo.category}/${String(photo.id).padStart(3, '0')}.jpeg`,
+    (photo: Photo) => `/assets/facebook_posts_image/${photo.category.toLowerCase()}/${photo.id}.jpg`,
+    (photo: Photo) => `/assets/${photo.category.replace(/\s+/g, '_')}/${photo.id}.jpeg`,
+    (photo: Photo) => `/assets/${photo.category.replace(/\s+/g, '_')}/${String(photo.id).padStart(3, '0')}.jpeg`
+  ];
 
   const handleImageError = (photo: Photo, img: HTMLImageElement) => {
     const retryCount = Number(img.dataset.retryCount || '0');
@@ -526,7 +533,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                       setIsFullImageLoaded(true);
                       setTransitionDirection(null);
                     }}
-                    onError={(e) => handleImageError(getImagePath(selectedPhoto))}
+                    onError={(e) => handleImageError(selectedPhoto, e.target as HTMLImageElement)}
                   />
                 </motion.div>
               </div>
