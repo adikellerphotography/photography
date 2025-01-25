@@ -284,16 +284,17 @@ export default function Home() {
                     <CardContent className="p-0">
                       <AspectRatio ratio={4 / 3} className="bg-muted">
                         <div className="relative w-full h-full">
-                          <img
+                          <ImageErrorBoundary
                             src={
                               category.firstPhoto?.imageUrl ||
                               `/assets/${category.name.replace(/\s+/g, '_')}/${String(1).padStart(3, '0')}.jpeg`
                             }
                             alt={category.name}
                             className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
-                            decoding={index < 3 ? "sync" : "async"}
                             loading={index < 3 ? "eager" : "lazy"}
                             fetchpriority={index < 3 ? "high" : "auto"}
+                            maxRetries={3}
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                             style={{
                               objectPosition: "center center",
                               WebkitBackfaceVisibility: "hidden",

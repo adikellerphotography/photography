@@ -334,28 +334,31 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                     <div className="absolute inset-0 bg-gradient-to-r from-background/5 via-background/10 to-background/5 animate-shimmer" />
 
                     {/* Low quality image placeholder */}
-                    <img
+                    <ImageErrorBoundary
                       src={`${getImagePath(photo).replace('.jpeg', '-thumb.jpeg')}`}
                       alt=""
                       className="absolute inset-0 w-full h-full object-cover blur-sm scale-105"
                       loading="eager"
-                      decoding="async"
+                      fetchpriority="high"
+                      maxRetries={3}
                     />
 
                     {/* Main image */}
                     <ImageErrorBoundary
-                        key={`${photo.id}-${photo.imageUrl}`}
-                        src={getImagePath(photo)}
-                        alt={photo.title || ""}
-                        className="relative w-full h-full transition-all duration-500 group-hover:scale-110 object-cover"
-                        onError={() => console.error(`Failed to load image: ${photo.id}`)}
-                        maxRetries={3}
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                        onLoad={(e) => {
-                          const img = e.target as HTMLImageElement;
-                          img.style.opacity = '1';
-                          img.style.backgroundColor = 'transparent';
-                        }}
+                      key={`${photo.id}-${photo.imageUrl}`}
+                      src={getImagePath(photo)}
+                      alt={photo.title || ""}
+                      className="relative w-full h-full transition-all duration-500 group-hover:scale-110 object-cover"
+                      onError={() => console.error(`Failed to load image: ${photo.id}`)}
+                      maxRetries={3}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      loading="lazy"
+                      fetchpriority="auto"
+                      onLoad={(e) => {
+                        const img = e.target as HTMLImageElement;
+                        img.style.opacity = '1';
+                        img.style.backgroundColor = 'transparent';
+                      }}
                         onError={(e) => {
                           const img = e.target as HTMLImageElement;
                           const timestamp = Date.now();
