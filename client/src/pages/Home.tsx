@@ -312,13 +312,13 @@ export default function Home() {
                               if (retryCount < maxRetries) {
                                 console.log(`Retrying category image load (${retryCount + 1}/${maxRetries}):`, target.src);
                                 target.dataset.retryCount = String(retryCount + 1);
-                                
+
                                 // Try thumbnail first on initial error
                                 if (retryCount === 0 && target.src.includes('.jpeg')) {
                                   target.src = target.src.replace('.jpeg', '-thumb.jpeg');
                                   return;
                                 }
-                                
+
                                 // Progressive delay for retries
                                 setTimeout(() => {
                                   const timestamp = Date.now();
