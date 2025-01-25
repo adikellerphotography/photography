@@ -31,7 +31,9 @@ export default function Home() {
     "Horses",
     "Kids",
     "Modeling",
-    "Yoga"
+    "Yoga",
+    "Artful Nude",
+    "Femininity"
   ];
 
   // Override the firstPhoto for specific categories

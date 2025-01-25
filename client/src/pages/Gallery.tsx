@@ -138,7 +138,9 @@ export default function Gallery() {
     "Horses",
     "Kids",
     "Modeling",
-    "Yoga"
+    "Yoga",
+    "Artful Nude",
+    "Femininity"
   ];
 
   // Filter and sort categories, ensuring uniqueness
