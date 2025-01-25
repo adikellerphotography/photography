@@ -27,5 +27,9 @@ export default defineConfig({
     hmr: {
       clientPort: 443,
     },
+    allowedHosts: [
+      "f9f55473-f018-4d1a-90d9-739df25f5fa4-00-lushty3eutoh.sisko.replit.dev",
+      ".replit.dev"
+    ],
   },
 });
