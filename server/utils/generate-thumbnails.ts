@@ -1,29 +1,8 @@
 import { db } from "@db";
 import { photos } from "@db/schema";
+import { generateThumbnail } from "./image";
 import path from "path";
 import { eq, isNull } from "drizzle-orm";
-import sharp from 'sharp';
-
-export async function generateThumbnail(
-  inputPath: string,
-  outputPath: string,
-  width: number = 300
-) {
-  try {
-    await sharp(inputPath)
-      .resize(width, null, {
-        withoutEnlargement: true,
-        fit: 'inside'
-      })
-      .jpeg({ quality: 80 })
-      .toFile(outputPath);
-
-    console.log(`Generated thumbnail: ${outputPath}`);
-  } catch (error) {
-    console.error(`Error generating thumbnail for ${inputPath}:`, error);
-    throw error;
-  }
-}
 
 export async function generateMissingThumbnails() {
   try {
@@ -40,17 +19,13 @@ export async function generateMissingThumbnails() {
       try {
         // Create full path including category folder
         const fullImagePath = path.join(process.cwd(), 'attached_assets', photo.category, photo.imageUrl);
-        const thumbnailDir = path.join(process.cwd(), 'attached_assets', photo.category, 'thumbnails');
-        const thumbnailFileName = `${photo.id}.jpg`;
-        const thumbnailPath = path.join(thumbnailDir, thumbnailFileName);
-
-        await generateThumbnail(fullImagePath, thumbnailPath);
+        const thumbnailPath = await generateThumbnail(fullImagePath);
 
         // Update the photo record with the thumbnail path
         await db
           .update(photos)
           .set({
-            thumbnailUrl: path.join('attached_assets', photo.category, 'thumbnails', thumbnailFileName),
+            thumbnailUrl: thumbnailPath,
           })
           .where(eq(photos.id, photo.id));
 
