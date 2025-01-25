@@ -1,3 +1,4 @@
+
 import path from 'path';
 import fs from 'fs/promises';
 import { db } from "@db";
@@ -7,98 +8,86 @@ import { sql } from 'drizzle-orm';
 export async function scanImages() {
   try {
     const assetsPath = path.join(process.cwd(), 'attached_assets');
-    const facebookPostsPath = path.join(assetsPath, 'facebook_posts_image');
-
     console.log('\n=== Starting Image Scan ===');
-    console.log('Assets path:', facebookPostsPath);
+    console.log('Assets path:', assetsPath);
 
     // Clear existing records
     await db.delete(photos);
     await db.delete(categories);
 
-    // Get all subdirectories in facebook_posts_image
-    const dirs = await fs.readdir(facebookPostsPath);
-    const categories_map: Record<string, string> = {
-      'Artful_Nude': 'Artful Nude',
-      'Bat_Mitsva': 'Bat Mitsva',
-      'Family': 'Family', 
-      'Femininity': 'Femininity',
-      'Horses': 'Horses',
-      'Modeling': 'Modeling',
-      'Yoga': 'Yoga',
-      'kids': 'Kids'
-    };
+    // Get all directories in attached_assets
+    const dirs = await fs.readdir(assetsPath);
+    const excludedDirs = ['before_and_after', 'facebook_posts_image'];
+    
+    const categoryDirs = (await Promise.all(
+      dirs.map(async dir => {
+        const fullPath = path.join(assetsPath, dir);
+        const stats = await fs.stat(fullPath);
+        return { dir, isDirectory: stats.isDirectory() };
+      })
+    )).filter(({ dir, isDirectory }) => 
+      isDirectory && !excludedDirs.includes(dir)
+    ).map(({ dir }) => dir);
 
-    console.log('Found directories:', dirs);
+    console.log('Found valid directories:', categoryDirs);
 
-    // Insert categories first
-    for (const [index, dir] of dirs.entries()) {
-      if ((await fs.stat(path.join(facebookPostsPath, dir))).isDirectory()) {
-        const displayName = categories_map[dir] || dir.split('_').map(word => 
-          word.charAt(0).toUpperCase() + word.slice(1)
+    // Insert categories
+    for (const [index, dir] of categoryDirs.entries()) {
+      const displayName = dir === 'Women' ? 'Femininity' : 
+        dir.split('_').map(word => 
+          word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
         ).join(' ');
 
-        await db.insert(categories).values({
-          name: displayName,
-          displayOrder: index + 1,
-          description: `${displayName} Photography Sessions`
-        });
-      }
+      await db.insert(categories).values({
+        name: displayName,
+        displayOrder: index + 1,
+        description: `${displayName} Photography Sessions`
+      });
     }
 
-    async function processDirectory(dirPath: string, categoryName: string) {
-      try {
-        const files = await fs.readdir(dirPath);
-        const imageFiles = files.filter(file => 
-          /\.(jpg|jpeg)$/i.test(file) && !file.startsWith('.')
-        ).sort((a, b) => {
-          const numA = parseInt(a.split('.')[0]);
-          const numB = parseInt(b.split('.')[0]);
+    // Process images in each category
+    for (const dir of categoryDirs) {
+      const dirPath = path.join(assetsPath, dir);
+      const files = await fs.readdir(dirPath);
+      const imageFiles = files
+        .filter(file => /\.(jpg|jpeg)$/i.test(file) && !file.includes('thumb'))
+        .sort((a, b) => {
+          const numA = parseInt(a.match(/\d+/)?.[0] || '0');
+          const numB = parseInt(b.match(/\d+/)?.[0] || '0');
           return numA - numB;
         });
 
-        console.log(`Found ${imageFiles.length} images in ${categoryName}`);
+      console.log(`Found ${imageFiles.length} images in ${dir}`);
 
-        for (const imageFile of imageFiles) {
-          try {
-            const id = parseInt(imageFile.split('.')[0]);
-            const displayName = categories_map[categoryName] || categoryName.split('_').map(word => 
-              word.charAt(0).toUpperCase() + word.slice(1)
-            ).join(' ');
+      const displayName = dir === 'Women' ? 'Femininity' : 
+        dir.split('_').map(word => 
+          word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        ).join(' ');
 
-            console.log(`Processing ${categoryName}/${imageFile}`);
-
-            await db.insert(photos).values({
-              id,
+      for (const imageFile of imageFiles) {
+        try {
+          const id = parseInt(imageFile.match(/\d+/)?.[0] || '0');
+          
+          await db.insert(photos).values({
+            id,
+            title: `${displayName} Portrait Session`,
+            category: displayName,
+            imageUrl: `/assets/${dir}/${imageFile}`,
+            thumbnailUrl: `/assets/${dir}/${imageFile.replace('.jpeg', '-thumb.jpeg')}`,
+            displayOrder: id
+          }).onConflictDoUpdate({
+            target: [photos.id],
+            set: { 
               title: `${displayName} Portrait Session`,
               category: displayName,
-              imageUrl: `/assets/facebook_posts_image/${categoryName}/${imageFile}`,
-              thumbnailUrl: `/assets/facebook_posts_image/${categoryName}/${imageFile}`,
+              imageUrl: `/assets/${dir}/${imageFile}`,
+              thumbnailUrl: `/assets/${dir}/${imageFile.replace('.jpeg', '-thumb.jpeg')}`,
               displayOrder: id
-            }).onConflictDoUpdate({
-              target: [photos.id],
-              set: { 
-                title: `${displayName} Portrait Session`,
-                category: displayName,
-                imageUrl: `/assets/facebook_posts_image/${categoryName}/${imageFile}`,
-                thumbnailUrl: `/assets/facebook_posts_image/${categoryName}/${imageFile}`,
-                displayOrder: id
-              }
-            });
-          } catch (error) {
-            console.error(`Error processing ${imageFile}:`, error);
-          }
+            }
+          });
+        } catch (error) {
+          console.error(`Error processing ${imageFile}:`, error);
         }
-      } catch (error) {
-        console.error(`Error processing directory ${categoryName}:`, error);
-      }
-    }
-
-    for (const dir of dirs) {
-      const dirPath = path.join(facebookPostsPath, dir);
-      if ((await fs.stat(dirPath)).isDirectory()) {
-        console.log(`\nProcessing directory: ${dir}`);
-        await processDirectory(dirPath, dir);
       }
     }
 

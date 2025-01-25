@@ -128,40 +128,17 @@ export default function Gallery() {
     setIsHorizontalSwipe(null);
   };
 
-  // Define the allowed categories in the correct order
-  const allowedCategories = [
-    "Artful Nude",
-    "Bat Mitsva",
-    "Family",
-    "Femininity", 
-    "Horses",
-    "Kids",
-    "Modeling",
-    "Yoga"
-  ];
-
-  // Filter and sort categories, ensuring uniqueness
+  const excludedCategories = ["before_and_after", "facebook_posts_image"];
   const processedCategories =
     categories
       ?.filter(
         (category, index, self) =>
-          // Only include if it's in allowedCategories and it's the first occurrence
-          allowedCategories.some(
-            (allowed) => allowed.toLowerCase() === category.name.toLowerCase(),
-          ) &&
+          !excludedCategories.includes(category.name.toLowerCase()) &&
           self.findIndex(
             (c) => c.name.toLowerCase() === category.name.toLowerCase(),
           ) === index,
       )
-      .sort((a, b) => {
-        const aIndex = allowedCategories.findIndex(
-          (c) => c.toLowerCase() === a.name.toLowerCase(),
-        );
-        const bIndex = allowedCategories.findIndex(
-          (c) => c.toLowerCase() === b.name.toLowerCase(),
-        );
-        return aIndex - bIndex;
-      }) || [];
+      .sort((a, b) => a.name.localeCompare(b.name)) || [];
 
   // Update active category when categories load or URL changes
   useEffect(() => {
