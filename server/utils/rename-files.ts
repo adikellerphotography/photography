@@ -28,7 +28,8 @@ async function renameAllDirectories() {
     'Horses',
     'kids',
     'Modeling',
-    'Women',
+    'Artful_Nude',
+    'Femininity',
     'Yoga'
   ];
 
