@@ -23,9 +23,16 @@ export default function Home() {
 
   // Include all categories except specific ones
   const excludedCategories = ["Before And After"];
-  const allowedCategories = categories
-    ?.filter(cat => !excludedCategories.includes(cat.name))
-    .map(cat => cat.name) || [];
+  const allowedCategories = [
+    "Artful Nude",
+    "Bat Mitsva",
+    "Family",
+    "Femininity", 
+    "Horses",
+    "Kids",
+    "Modeling",
+    "Yoga"
+  ];
 
   // Override the firstPhoto for specific categories
   const processedCategories = categories?.map((category) => {
@@ -49,13 +56,13 @@ export default function Home() {
         },
       };
     }
-    if (category.name === "Women") {
+    if (category.name === "Femininity") {
       return {
         ...category,
         firstPhoto: {
           ...category.firstPhoto,
-          imageUrl: "/assets/Women/006.jpeg",
-          thumbnailUrl: "/assets/Women/006-thumb.jpeg",
+          imageUrl: "/assets/Femininity/006.jpeg",
+          thumbnailUrl: "/assets/Femininity/006-thumb.jpeg",
         },
       };
     }

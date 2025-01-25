@@ -130,9 +130,16 @@ export default function Gallery() {
 
   // Include all categories except specific ones
   const excludedCategories = ["Before And After"];
-  const allowedCategories = categories
-    ?.filter(cat => !excludedCategories.includes(cat.name))
-    .map(cat => cat.name) || [];
+  const allowedCategories = [
+    "Artful Nude",
+    "Bat Mitsva",
+    "Family",
+    "Femininity",
+    "Horses",
+    "Kids",
+    "Modeling",
+    "Yoga"
+  ];
 
   // Filter and sort categories, ensuring uniqueness
   const processedCategories =
