@@ -1,4 +1,3 @@
-
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import themePlugin from "@replit/vite-plugin-shadcn-theme-json";
@@ -8,7 +7,6 @@ import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
 export default defineConfig({
   plugins: [react(), runtimeErrorOverlay(), themePlugin()],
   resolve: {
@@ -21,18 +19,5 @@ export default defineConfig({
   build: {
     outDir: path.resolve(__dirname, "dist/public"),
     emptyOutDir: true,
-  },
-  server: {
-    host: "0.0.0.0",
-    port: 3001,
-    hmr: {
-      clientPort: 443,
-      host: "0.0.0.0",
-    },
-    allowedHosts: [
-      "f9f55473-f018-4d1a-90d9-739df25f5fa4-00-lushty3eutoh.sisko.replit.dev",
-      ".replit.dev",
-      ".*.replit.dev"
-    ],
   },
 });

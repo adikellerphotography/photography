@@ -17,8 +17,8 @@ export async function generateMissingThumbnails() {
     // Generate thumbnails for each photo
     for (const photo of photosWithoutThumbnails) {
       try {
-        // Create full path including galleries folder and category subfolder
-        const fullImagePath = path.join(process.cwd(), 'attached_assets', 'galleries', photo.category, photo.imageUrl);
+        // Create full path including category folder
+        const fullImagePath = path.join(process.cwd(), 'attached_assets', photo.category, photo.imageUrl);
         const thumbnailPath = await generateThumbnail(fullImagePath);
 
         // Update the photo record with the thumbnail path
