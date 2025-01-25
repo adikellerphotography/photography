@@ -5,10 +5,14 @@ import { setupVite, serveStatic, log } from "./vite";
 const setupMiddleware = (app: express.Express) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
-
+  
+  // Serve static files
+  app.use('/assets', express.static(path.join(process.cwd(), 'attached_assets')));
+  
   // CORS and proxy headers for development
   app.use((_req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    const origin = _req.headers.origin || '*';
+    res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
