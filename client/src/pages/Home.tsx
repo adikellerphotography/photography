@@ -307,7 +307,7 @@ export default function Home() {
                             onLoad={(e) => {
                               const img = e.target as HTMLImageElement;
                               img.style.opacity = "1";
-                              
+
                               if (img.naturalHeight > img.naturalWidth) {
                                 img.style.objectPosition = "center 50%";
                               }
@@ -316,7 +316,7 @@ export default function Home() {
                               if (img.src.includes('-thumb')) {
                                 const fullImg = new Image();
                                 fullImg.onload = () => {
-                                  img.src = fullImg.src;
+                                  img.src = img.dataset.src || '';
                                 };
                                 fullImg.src = img.dataset.src || '';
                               }
@@ -325,7 +325,7 @@ export default function Home() {
                               const target = e.target as HTMLImageElement;
                               const retryCount = Number(target.dataset.retryCount || 0);
                               const maxRetries = 3;
-                              
+
                               if (retryCount < maxRetries) {
                                 target.dataset.retryCount = String(retryCount + 1);
                                 const paths = [
