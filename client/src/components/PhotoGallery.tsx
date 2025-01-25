@@ -60,14 +60,24 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
     const categoryPath = photo.category.replace(/\s+/g, '_');
     const id = String(photo.id).padStart(3, '0');
-    const paths = [
-      `/assets/galleries/${categoryPath}/${id}.jpeg`,
-      `/assets/galleries/${categoryPath}/${id}.jpg`,
-      `/assets/facebook_posts_image/${categoryPath.toLowerCase()}/${id}.jpg`,
-      `/assets/facebook_posts_image/${categoryPath.toLowerCase()}/${id}.jpeg`
+    const categoryVariations = [
+      categoryPath,
+      photo.category,
+      categoryPath.toLowerCase(),
+      photo.category.toLowerCase()
     ];
 
-    return paths;
+    const paths: string[] = [];
+    for (const cat of categoryVariations) {
+      paths.push(
+        `/assets/galleries/${cat}/${id}.jpeg`,
+        `/assets/galleries/${cat}/${id}.jpg`,
+        `/assets/facebook_posts_image/${cat}/${id}.jpeg`,
+        `/assets/facebook_posts_image/${cat}/${id}.jpg`
+      );
+    }
+
+    return [...new Set(paths)]; // Remove duplicates
   };
 
   const handleImageError = async (

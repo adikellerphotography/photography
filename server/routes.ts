@@ -52,7 +52,9 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
     // Try to find photos in both galleries and facebook_posts_image directories
     const categoryPaths = [
       path.join(process.cwd(), 'attached_assets', 'galleries', decodedCategory.replace(/\s+/g, '_')),
-      path.join(process.cwd(), 'attached_assets', 'facebook_posts_image', decodedCategory.toLowerCase().replace(/\s+/g, '_'))
+      path.join(process.cwd(), 'attached_assets', 'galleries', decodedCategory),
+      path.join(process.cwd(), 'attached_assets', 'facebook_posts_image', decodedCategory.toLowerCase().replace(/\s+/g, '_')),
+      path.join(process.cwd(), 'attached_assets', 'facebook_posts_image', decodedCategory.replace(/\s+/g, '_'))
     ];
 
     let results: any[] = [];
