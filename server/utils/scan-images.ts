@@ -22,7 +22,7 @@ export async function scanImages() {
     const categories_map: Record<string, string> = {
       'bat_mitsva': 'Bat Mitsva',
       'bar_mitsva': 'Bar Mitsva',
-      'feminine': 'Women',
+      'feminine': 'Femininity',
       'kids': 'Kids',
       'family': 'Family',
       'big_family': 'Big Family',
@@ -31,7 +31,8 @@ export async function scanImages() {
       'sweet_16': 'Sweet 16',
       'purim': 'Purim',
       'pregnancy': 'Pregnancy',
-      'yoga': 'Yoga'
+      'yoga': 'Yoga',
+      'artful_nude': 'Artful Nude'
     };
 
     console.log('Found directories:', dirs);

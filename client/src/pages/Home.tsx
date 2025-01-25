@@ -23,11 +23,12 @@ export default function Home() {
 
   const allowedCategories = [
     "Bat Mitsva",
-    "Family",
+    "Family", 
     "Horses",
     "Kids",
     "Modeling",
-    "Women",
+    "Femininity",
+    "Artful Nude",
     "Yoga",
   ];
 

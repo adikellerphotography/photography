@@ -132,9 +132,10 @@ export default function Gallery() {
   const allowedCategories = [
     "Bat Mitsva",
     "Family",
-    "Horses",
+    "Horses", 
     "Modeling",
-    "Women",
+    "Femininity",
+    "Artful Nude",
     "Yoga",
     "Kids",
   ];
