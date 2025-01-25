@@ -286,60 +286,65 @@ export default function Home() {
                         <div className="relative w-full h-full">
                           <img
                             src={
+                              category.firstPhoto?.thumbnailUrl ||
+                              `/attached_assets/${category.name.replace(/\s+/g, '_')}/${String(1).padStart(3, '0')}-thumb.jpeg`
+                            }
+                            data-src={
                               category.firstPhoto?.imageUrl ||
-                              `/assets/${category.name.replace(' ', '_')}/${String(1).padStart(3, '0')}.jpeg`
+                              `/attached_assets/${category.name.replace(/\s+/g, '_')}/${String(1).padStart(3, '0')}.jpeg`
                             }
                             alt={category.name}
-                            className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
+                            className="object-cover w-full h-full transition-transform duration-300 hover:scale-105 bg-muted"
                             decoding="async"
+                            loading={index < 4 ? "eager" : "lazy"}
                             style={{
                               objectPosition: "center center",
                               WebkitBackfaceVisibility: "hidden",
                               WebkitTransform: "translate3d(0, 0, 0)",
+                              opacity: 0,
+                              transition: "opacity 0.3s ease-in-out",
                             }}
                             onLoad={(e) => {
                               const img = e.target as HTMLImageElement;
+                              img.style.opacity = "1";
+                              
                               if (img.naturalHeight > img.naturalWidth) {
                                 img.style.objectPosition = "center 50%";
+                              }
+
+                              // If this is a thumbnail, load the full image
+                              if (img.src.includes('-thumb')) {
+                                const fullImg = new Image();
+                                fullImg.onload = () => {
+                                  img.src = fullImg.src;
+                                };
+                                fullImg.src = img.dataset.src || '';
                               }
                             }}
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
                               const retryCount = Number(target.dataset.retryCount || 0);
                               const maxRetries = 3;
-                              const originalSrc = target.src;
-
+                              
                               if (retryCount < maxRetries) {
                                 target.dataset.retryCount = String(retryCount + 1);
-                                
-                                // Try thumbnail first, then original, then fallback paths
-                                const tryAlternativePath = () => {
-                                  const paths = [
-                                    // Try thumbnail version
-                                    originalSrc.replace('.jpeg', '-thumb.jpeg'),
-                                    // Try without thumb if we were using thumb
-                                    originalSrc.replace('-thumb.jpeg', '.jpeg'),
-                                    // Try alternate category path format
-                                    `/assets/${category.name.replace(/\s+/g, '_')}/${String(1).padStart(3, '0')}.jpeg`,
-                                    // Try facebook posts path
-                                    `/assets/facebook_posts_image/${category.name.toLowerCase().replace(/\s+/g, '_')}/1.jpg`
-                                  ];
+                                const paths = [
+                                  `/attached_assets/${category.name.replace(/\s+/g, '_')}/${String(1).padStart(3, '0')}-thumb.jpeg`,
+                                  `/assets/${category.name.replace(/\s+/g, '_')}/${String(1).padStart(3, '0')}-thumb.jpeg`,
+                                  `/assets/facebook_posts_image/${category.name.toLowerCase().replace(/\s+/g, '_')}/1.jpg`,
+                                  `/public/assets/${category.name.replace(/\s+/g, '_')}/${String(1).padStart(3, '0')}.jpeg`
+                                ];
 
-                                  const nextPath = paths[retryCount];
-                                  if (nextPath) {
-                                    setTimeout(() => {
-                                      target.src = `${nextPath}?retry=${Date.now()}`;
-                                    }, retryCount * 800);
-                                  }
-                                };
-
-                                tryAlternativePath();
+                                const nextPath = paths[retryCount];
+                                if (nextPath) {
+                                  setTimeout(() => {
+                                    target.src = `${nextPath}?t=${Date.now()}`;
+                                  }, retryCount * 1000);
+                                }
                               } else {
-                                console.error("Failed to load image after all retries:", originalSrc);
-                                target.onerror = null;
-                                target.src = "/assets/placeholder-category.jpg";
-                                target.style.opacity = "0.8";
-                                target.style.backgroundColor = "#1a1a1a";
+                                console.error("Failed to load image:", target.src);
+                                target.style.opacity = "0.5";
+                                target.style.backgroundColor = "rgba(0,0,0,0.1)";
                               }
                             }}
                             style={{
