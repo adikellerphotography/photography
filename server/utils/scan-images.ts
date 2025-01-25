@@ -22,8 +22,9 @@ export async function scanImages(targetPath?: string) {
     console.log('\n=== Starting Image Scan ===');
     console.log('Assets path:', assetsPath);
 
-    // Don't clear records, just update them
-    const existingCategories = await db.select().from(categories);
+    // Clear existing records
+    await db.delete(photos);
+    await db.delete(categories);
 
     // Get all directories in galleries
     const entries = await fs.readdir(assetsPath, { withFileTypes: true });
