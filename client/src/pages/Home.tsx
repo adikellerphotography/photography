@@ -21,18 +21,10 @@ export default function Home() {
 
   const { t } = useTranslation();
 
-  // Include all categories except specific ones
   const excludedCategories = ["before_and_after", "facebook_posts_image"];
-  const allowedCategories = [
-    "Artful Nude",
-    "Bat Mitsva", 
-    "Family",
-    "Femininity",
-    "Horses",
-    "Kids",
-    "Modeling",
-    "Yoga"
-  ];
+  const allowedCategories = categories
+    ?.filter(cat => !excludedCategories.includes(cat.name.toLowerCase()))
+    .map(cat => cat.name) || [];
 
   // Override the firstPhoto for specific categories
   const processedCategories = categories?.map((category) => {
@@ -103,16 +95,6 @@ export default function Home() {
           ...category.firstPhoto,
           imageUrl: "/assets/Horses/015.jpeg",
           thumbnailUrl: "/assets/Horses/015-thumb.jpeg",
-        },
-      };
-    }
-    if (category.name === "Femininity") {
-      return {
-        ...category,
-        firstPhoto: {
-          ...category.firstPhoto,
-          imageUrl: "/assets/Femininity/001.jpeg",
-          thumbnailUrl: "/assets/Femininity/001-thumb.jpeg",
         },
       };
     }
