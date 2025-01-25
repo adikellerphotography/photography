@@ -17,7 +17,7 @@ export async function scanImages() {
 
     // Get all directories in attached_assets
     const dirs = await fs.readdir(assetsPath);
-    const excludedDirs = ['before_and_after', 'facebook_posts_image'];
+    const excludedDirs = ['before_and_after', 'facebook_posts_image', '.DS_Store'];
     
     const categoryDirs = (await Promise.all(
       dirs.map(async dir => {

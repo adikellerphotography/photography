@@ -337,9 +337,9 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                         src={getImagePath(photo)}
                         alt={photo.title || ""}
                         className="relative w-full h-full transition-all duration-500 group-hover:scale-110 object-cover"
-                        loading={index < 12 ? "eager" : "lazy"}
-                        decoding="async"
-                        fetchpriority={index < 8 ? "high" : "auto"}
+                        loading={index < 8 ? "eager" : "lazy"}
+                        decoding={index < 8 ? "sync" : "async"}
+                        fetchpriority={index < 4 ? "high" : "auto"}
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                         onLoad={(e) => {
                           const img = e.target as HTMLImageElement;

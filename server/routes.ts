@@ -18,7 +18,9 @@ const getCategoryPath = (categoryName: string) => {
     'Horses': 'Horses',
     'Modeling': 'Modeling',
     'Women': 'Women',
-    'Yoga': 'Yoga'
+    'Yoga': 'Yoga',
+    'Artful Nude': 'Artful_Nude',
+    'Femininity': 'Femininity'
   };
   return categoryMappings[categoryName] || categoryName.split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
@@ -331,7 +333,7 @@ export function registerRoutes(app: Express): Server {
     try {
       const { category, filename } = req.params;
       const noWatermark = req.query.no_watermark === 'true';
-      
+
       // Try multiple possible paths
       const possiblePaths = [
         path.join(process.cwd(), 'attached_assets', category, filename),
@@ -388,7 +390,9 @@ export function registerRoutes(app: Express): Server {
         'Sweet 16': 'sweet_16',
         'Purim': 'purim',
         'Pregnancy': 'pregnancy',
-        'Yoga': 'yoga'
+        'Yoga': 'yoga',
+        'Artful Nude': 'artful_nude',
+        'Femininity': 'femininity'
       };
 
       const folderName = categoryMappings[category] || category.toLowerCase().replace(' ', '_');
