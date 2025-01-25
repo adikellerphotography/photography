@@ -76,9 +76,8 @@ export default function ReflectionProject() {
               key={comparison.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true, margin: "-50px" }}
               className="w-full"
-              loading="eager"
             >
               <div className="mb-1 flex items-center justify-between px-6 py-2.5 bg-background/30 backdrop-blur-sm">
                 <div className="flex items-center gap-1.5">

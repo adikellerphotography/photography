@@ -128,17 +128,6 @@ export default function ImageCompare({
     );
   }
 
-  useEffect(() => {
-    // Preload images
-    const preloadImages = () => {
-      const beforeImg = new Image();
-      const afterImg = new Image();
-      beforeImg.src = beforeImage;
-      afterImg.src = afterImage;
-    };
-    preloadImages();
-  }, [beforeImage, afterImage]);
-
   return (
     <div
       ref={containerRef}
@@ -156,9 +145,9 @@ export default function ImageCompare({
         className="absolute inset-0 w-full h-full object-contain"
         onLoad={handleImageLoad}
         onError={handleImageError}
-        loading="eager"
-        decoding="async"
-        fetchpriority="high"
+        loading={priority || isMobile ? "eager" : "lazy"}
+        decoding={priority || isMobile ? "sync" : "async"}
+        fetchpriority={priority || isMobile ? "high" : "low"}
       />
 
       <div
