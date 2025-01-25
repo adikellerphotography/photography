@@ -22,9 +22,7 @@ interface PhotoGalleryProps {
 }
 
 const IMAGE_PATHS = {
-  ROOT: '/assets',
-  GALLERIES: '/assets/galleries',
-  FACEBOOK: '/assets/facebook_posts_image'
+  GALLERIES: '/assets/galleries'
 };
 
 export default function PhotoGallery({ category }: PhotoGalleryProps) {
@@ -64,11 +62,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     const categoryPath = photo.category.replace(/\s+/g, '_');
 
     return [
-      `${IMAGE_PATHS.GALLERIES}/${categoryPath}/${id}.jpeg`,
-      `${IMAGE_PATHS.ROOT}/${categoryPath}/${id}.jpeg`,
-      `${IMAGE_PATHS.FACEBOOK}/${categoryPath.toLowerCase()}/${photo.id}.jpg`,
-      `/assets/${categoryPath}/${photo.id}.jpeg`,
-      `/assets/${photo.category}/${photo.id}.jpeg`
+      `${IMAGE_PATHS.GALLERIES}/${categoryPath}/${id}.jpeg`
     ];
   };
 
