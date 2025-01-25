@@ -84,8 +84,16 @@ export default function ReflectionProject() {
                   <div className="relative w-8 h-8">
                     <svg width="32" height="32" viewBox="0 0 32 32" className="text-muted-foreground">
                       <circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" strokeWidth="2.5"/>
+                      <path
+                        d="M16 2 A 14 14 0 1 1 16 30 A 14 14 0 1 1 16 2"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeDasharray="66"
+                        strokeDashoffset="16.5"
+                      />
                     </svg>
-                    <div className="absolute inset-0 flex items-center justify-center text-base font-extrabold text-muted-foreground">
+                    <div className="absolute inset-0 flex items-center justify-center text-sm font-bold text-muted-foreground">
                       {comparison.oldAge}
                     </div>
                   </div>
@@ -95,8 +103,16 @@ export default function ReflectionProject() {
                   <div className="relative w-8 h-8">
                     <svg width="32" height="32" viewBox="0 0 32 32" className="text-muted-foreground">
                       <circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" strokeWidth="2.5"/>
+                      <path
+                        d="M16 2 A 14 14 0 1 1 16 30 A 14 14 0 1 1 16 2"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeDasharray="66"
+                        strokeDashoffset="49.5"
+                      />
                     </svg>
-                    <div className="absolute inset-0 flex items-center justify-center text-base font-extrabold text-muted-foreground">
+                    <div className="absolute inset-0 flex items-center justify-center text-sm font-bold text-muted-foreground">
                       {comparison.youngAge}
                     </div>
                   </div>
