@@ -74,8 +74,7 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
           try {
             await fs.access(path.join(dirPath, file), fs.constants.R_OK);
             photoFiles.push(file);
-          } catch (err) {
-            console.error('File not accessible:', file);
+          } catch {
             continue;
           }
         }
