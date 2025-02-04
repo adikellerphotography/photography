@@ -148,8 +148,7 @@ const getCategories = async (_req: express.Request, res: express.Response) => {
           .select()
           .from(photos)
           .where(eq(photos.category, category.name))
-          .orderBy(desc(photos.displayOrder))
-          .limit(1);
+          .orderBy(sql`RANDOM()`); // Changed to random order
 
         const categoryPath = getCategoryPath(category.name);
 
@@ -301,7 +300,7 @@ export function registerRoutes(app: Express): Server {
       for (let i = 0; i < 29; i++) {
         const beforeFile = `${i}-1 Large.jpeg`;
         const afterFile = `${i}-2 Large.jpeg`;
-        
+
         if (files.includes(beforeFile) && files.includes(afterFile)) {
           imageSets.push({
             id: id++,

@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
@@ -77,7 +76,7 @@ export default function Gallery() {
         const tabTrigger = tabsListRef.current.querySelector(
           `[value="${newCategory}"]`
         ) as HTMLButtonElement;
-        
+
         if (tabTrigger) {
           tabTrigger.click();
           const container = tabsListRef.current;
@@ -122,7 +121,7 @@ export default function Gallery() {
     "Modeling",
     "Artful Nude"
   ];
-  
+
   const processedCategories = categories
     ?.filter(
       (category, index, self) =>
@@ -192,7 +191,31 @@ export default function Gallery() {
     },
   };
 
-  if (categoriesLoading || !processedCategories.length) {
+  const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({
+    queryKey: ["/api/photos", activeCategory],
+    queryFn: async () => {
+      const response = await fetch(`/api/photos?category=${encodeURIComponent(activeCategory)}`);
+      if (!response.ok) throw new Error('Failed to fetch photos');
+      const data = await response.json();
+      return data.filter((photo: Photo) => photo && photo.imageUrl);
+    },
+    staleTime: Infinity,
+    cacheTime: Infinity,
+
+  });
+
+  const shuffleArray = (array: Photo[]) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+
+  const shuffledPhotos = photos && shuffleArray(photos);
+
+
+  if (categoriesLoading || !processedCategories.length || isLoading) {
     return (
       <div className="min-h-screen pt-16">
         <div className="container mx-auto px-4 py-16">
@@ -325,7 +348,7 @@ export default function Gallery() {
                 >
                   <Card>
                     <CardContent className="pt-6">
-                      <PhotoGallery category={category.name} />
+                      <PhotoGallery category={category.name} photos={shuffledPhotos} />
                     </CardContent>
                   </Card>
                 </motion.div>
