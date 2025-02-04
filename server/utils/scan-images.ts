@@ -1,3 +1,4 @@
+
 import path from 'path';
 import fs from 'fs/promises';
 import { db } from "@db";
@@ -68,15 +69,6 @@ export async function scanImages(targetPath?: string) {
             imageUrl,
             thumbnailUrl,
             displayOrder: id
-          }).onConflictDoUpdate({
-            target: [photos.id],
-            set: {
-              title: `${displayName} Portrait Session`,
-              category: displayName,
-              imageUrl,
-              thumbnailUrl,
-              displayOrder: id
-            }
           });
         } catch (error) {
           console.error(`Error processing ${imageFile}:`, error);
