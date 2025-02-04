@@ -243,9 +243,9 @@ export default function Gallery() {
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        className="container mx-auto px-4 py-8"
+        className="container mx-auto px-4 pt-8"
       >
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex justify-between items-center mb-4">
           <motion.h1
             variants={itemVariants}
             className={`text-3xl font-bold text-[#FF9500] w-full ${
@@ -255,8 +255,9 @@ export default function Gallery() {
             {language === "he" ? "גלריית תמונות" : "Photo Gallery"}
           </motion.h1>
         </div>
+      </motion.div>
 
-        <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b mb-8 py-3">
+      <nav className="sticky top-16 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b py-3">
           <div className="container max-w-5xl mx-auto">
             <div className="flex flex-wrap justify-center gap-1.5">
               {processedCategories.map((category) => (
@@ -280,12 +281,13 @@ export default function Gallery() {
           </div>
         </nav>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-        >
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
 
           <AnimatePresence mode="wait">
             {processedCategories.map((category) => (
@@ -328,8 +330,8 @@ export default function Gallery() {
               )
             ))}
           </AnimatePresence>
-        </motion.div>
-      </motion.div>
+          </motion.div>
+        </div>
     </div>
   );
 }
