@@ -241,10 +241,10 @@ export const translations = {
       Nature: "טבע",
       Wedding: "חתונה",
       Modeling: "דוגמנות",
-      Feminine: "נשי",
+      Feminine: "נשיות",
       Yoga: "יוגה",
       Horses: "סוסים",
-      Women: "נשיות",
+      Women: "נשים",
     },
     contact: {
       phone: "מספר טלפון",
