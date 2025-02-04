@@ -535,7 +535,7 @@ export default function MySessions() {
                       <motion.div
                         className="relative aspect-square w-full overflow-hidden rounded-lg bg-muted"
                         transition={{ duration: 0.2 }}
-                        initial={{ opacity: 0, scale: 0.95 }}
+                        initial{{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.95 }}
                       >
@@ -574,34 +574,25 @@ export default function MySessions() {
                               }}
                               onError={(e) => {
                                 const img = e.target as HTMLImageElement;
-                                const retryCount = Number(
-                                  img.dataset.retryCount || 0,
-                                );
+                                const retryCount = Number(img.dataset.retryCount || 0);
                                 const maxRetries = 3;
 
                                 if (retryCount < maxRetries) {
                                   console.log(
                                     `Retrying image load (${retryCount + 1}/${maxRetries}):`,
-                                    img.src,
+                                    img.src
                                   );
-                                  img.dataset.retryCount = String(
-                                    retryCount + 1,
-                                  );
-                                  // Add cache-busting parameter and retry
+                                  img.dataset.retryCount = String(retryCount + 1);
                                   const timestamp = Date.now();
                                   const cacheBuster = `?retry=${retryCount + 1}&t=${timestamp}`;
                                   setTimeout(() => {
-                                    img.src =
-                                      img.src.split("?")[0] + cacheBuster;
-                                  }, retryCount * 1000); // Incremental delay between retries
+                                    img.src = img.src.split("?")[0] + cacheBuster;
+                                  }, retryCount * 1000);
                                 } else {
-                                  console.error(
-                                    "Failed to load image after retries:",
-                                    img.src,
-                                  );
+                                  console.error("Failed to load image after retries:", img.src);
                                   img.style.opacity = "0.3";
                                   img.style.backgroundColor = "rgba(0,0,0,0.1)";
-                                  // Try loading a lower quality version as fallback
+                                  // Load thumbnail as fallback
                                   const fallbackSrc = `/assets/facebook_posts_image/${categoryMappings[group.name]}/thumbnails/${link.number}.jpg`;
                                   img.src = fallbackSrc;
                                 }
