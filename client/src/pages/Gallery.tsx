@@ -113,15 +113,28 @@ export default function Gallery() {
   };
 
   const excludedCategories = ["before_and_after", "facebook_posts_image"];
+  const categoryOrder = [
+    "Bat Mitsva",
+    "Horses",
+    "Kids",
+    "Femininity", 
+    "Yoga",
+    "Modeling",
+    "Artful Nude"
+  ];
+  
   const processedCategories = categories
     ?.filter(
       (category, index, self) =>
         !excludedCategories.includes(category.name.toLowerCase()) &&
+        categoryOrder.includes(category.name) &&
         self.findIndex(
           (c) => c.name.toLowerCase() === category.name.toLowerCase()
         ) === index
     )
-    .sort((a, b) => a.name.localeCompare(b.name)) || [];
+    .sort((a, b) => 
+      categoryOrder.indexOf(a.name) - categoryOrder.indexOf(b.name)
+    ) || [];
 
   useEffect(() => {
     if (processedCategories.length > 0) {

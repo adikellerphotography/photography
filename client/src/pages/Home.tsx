@@ -22,9 +22,18 @@ export default function Home() {
   const { t } = useTranslation();
 
   const excludedCategories = ["before_and_after", "facebook_posts_image"];
-  const allowedCategories = categories
-    ?.filter(cat => !excludedCategories.includes(cat.name.toLowerCase()))
-    .map(cat => cat.name) || [];
+  const categoryOrder = [
+    "Bat Mitsva",
+    "Horses",
+    "Kids",
+    "Femininity", 
+    "Yoga",
+    "Modeling",
+    "Artful Nude"
+  ];
+  const allowedCategories = categoryOrder.filter(cat => 
+    !excludedCategories.includes(cat.toLowerCase())
+  );
 
   // Override the firstPhoto for specific categories
   const processedCategories = categories?.map((category) => {
