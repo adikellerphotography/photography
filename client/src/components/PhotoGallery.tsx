@@ -23,17 +23,29 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const { data: photos = [], isLoading } = useQuery<Photo[]>({
     queryKey: ["/api/photos", category],
     queryFn: async () => {
-      const response = await fetch(`/api/photos?category=${encodeURIComponent(category || '')}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch photos');
+      try {
+        const response = await fetch(`/api/photos?category=${encodeURIComponent(category || '')}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch photos');
+        }
+        const data = await response.json();
+        return data.map((photo: Photo) => ({
+          ...photo,
+          imageUrl: photo.imageUrl.startsWith('/assets/') ? photo.imageUrl : `/assets/${category}/${photo.imageUrl}`
+        }));
+      } catch (error) {
+        console.error('Error fetching photos:', error);
+        throw error;
       }
-      return response.json();
     },
+    retry: 3,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
   });
 
   const getImagePath = (photo: Photo): string => {
     if (!photo?.imageUrl) return '';
-    return `${GALLERIES_PATH}/${category?.replace(/\s+/g, '_')}/${photo.imageUrl}`;
+    const normalizedCategory = category?.replace(/\s+/g, '_') ?? '';
+    return `/attached_assets/galleries/${normalizedCategory}/${photo.imageUrl.replace(/^\/assets\/[^/]+\//, '')}`;
   };
 
   if (isLoading) {
@@ -91,6 +103,18 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   onLoad={(e) => {
                     const img = e.target as HTMLImageElement;
                     img.style.opacity = '1';
+                  }}
+                  onError={(e) => {
+                    const img = e.target as HTMLImageElement;
+                    const retryCount = Number(img.dataset.retryCount || 0);
+                    if (retryCount < 3) {
+                      img.dataset.retryCount = String(retryCount + 1);
+                      setTimeout(() => {
+                        img.src = getImagePath(photo);
+                      }, 1000 * (retryCount + 1));
+                    } else {
+                      img.src = `/attached_assets/galleries/${category?.replace(/\s+/g, '_')}/${photo.imageUrl.split('/').pop()}`;
+                    }
                   }}
                 />
               </div>
