@@ -329,7 +329,6 @@ export default function Gallery() {
             ))}
           </AnimatePresence>
         </motion.div>
-        </Tabs>
       </motion.div>
     </div>
   );
