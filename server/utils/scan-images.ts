@@ -1,4 +1,3 @@
-
 import path from 'path';
 import fs from 'fs/promises';
 import { db } from "@db";
@@ -13,7 +12,7 @@ async function scanDirectory(dirPath: string): Promise<string[]> {
   return files.sort();
 }
 
-export async function scanImages(targetPath?: string) {
+export async function scanGalleries(targetPath?: string) { // Renamed for clarity
   try {
     const assetsPath = targetPath || path.join(process.cwd(), 'attached_assets', 'galleries');
     console.log('\n=== Starting Image Scan ===');
@@ -85,6 +84,67 @@ export async function scanImages(targetPath?: string) {
     console.log('=== Scan Complete ===');
     console.log(`Total photos in database: ${photoCount[0].count}`);
     console.log(`Total categories in database: ${categoryCount[0].count}`);
+  } catch (error) {
+    console.error('Error during image scan:', error);
+    throw error;
+  }
+}
+
+export async function scanFacebookPostsImages() { // New function for Facebook posts
+  try {
+    const fbPostsPath = path.join(process.cwd(), 'attached_assets', 'facebook_posts_image');
+    console.log('\n=== Starting Facebook Posts Image Scan ===');
+    console.log('Assets path:', fbPostsPath);
+
+    const entries = await fs.readdir(fbPostsPath, { withFileTypes: true });
+    const dirs = entries
+      .filter(entry => entry.isDirectory() && !entry.name.startsWith('.'))
+      .map(entry => entry.name);
+
+    console.log('Found directories:', dirs);
+
+    for (const dir of dirs) {
+      const dirPath = path.join(fbPostsPath, dir);
+      const imageFiles = await scanDirectory(dirPath);
+
+      // Create thumbnails directory if it doesn't exist
+      const thumbnailsDir = path.join(dirPath, 'thumbnails');
+      try {
+        await fs.mkdir(thumbnailsDir, { recursive: true });
+      } catch (error) {
+        console.log('Thumbnails directory already exists or error creating it:', error);
+      }
+
+      // Process each image
+      for (const imageFile of imageFiles) {
+        try {
+          const baseName = path.parse(imageFile).name;
+          const ext = path.parse(imageFile).ext.toLowerCase();
+
+          // Copy original file as numbered sequence.  This section seems redundant.
+          const originalPath = path.join(dirPath, imageFile);
+          const newPath = path.join(dirPath, `${baseName}${ext}`);
+
+          if (originalPath !== newPath) {
+            await fs.copyFile(originalPath, newPath);
+          }
+
+          // Create thumbnail if it doesn't exist
+          const thumbPath = path.join(thumbnailsDir, `${baseName}${ext}`);
+          try {
+            await fs.copyFile(originalPath, thumbPath);
+          } catch (error) {
+            console.error(`Error creating thumbnail for ${imageFile}:`, error);
+          }
+        } catch (error) {
+          console.error(`Error processing ${imageFile}:`, error);
+        }
+      }
+
+      console.log(`Processed ${imageFiles.length} images in ${dir}`);
+    }
+
+    console.log('=== Scan Complete ===');
   } catch (error) {
     console.error('Error during image scan:', error);
     throw error;
