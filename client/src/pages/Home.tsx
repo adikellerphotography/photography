@@ -26,73 +26,76 @@ export default function Home() {
     "Bat Mitsva",
     "Horses",
     "Kids",
-    "Femininity", 
+    "Femininity",
     "Yoga",
     "Modeling",
-    "Artful Nude"
+    "Artful Nude",
   ];
-  const allowedCategories = categoryOrder.filter(cat => 
-    !excludedCategories.includes(cat.toLowerCase())
+  const allowedCategories = categoryOrder.filter(
+    (cat) => !excludedCategories.includes(cat.toLowerCase()),
   );
 
   // Override the firstPhoto for specific categories
   const processedCategories = categories?.map((category) => {
-    const categoryPath = category.name.replace(/\s+/g, '_');
-  const defaultImage = `/assets/galleries/${categoryPath}/001.jpeg`;
-  const defaultThumb = `/assets/galleries/${categoryPath}/001-thumb.jpeg`;
+    const categoryPath = category.name.replace(/\s+/g, "_");
+    const defaultImage = `/assets/galleries/${categoryPath}/001.jpeg`;
+    const defaultThumb = `/assets/galleries/${categoryPath}/001-thumb.jpeg`;
 
-  // Category image configuration with ranges
-  // Fixed images for each category
-  const customImages: Record<string, { img: string; thumb: string }> = {
-    "Bat Mitsva": {
-      img: `/attached_assets/galleries/Bat_Mitsva/001.jpeg`,
-      thumb: `/attached_assets/galleries/Bat_Mitsva/001-thumb.jpeg`
-    },
-    "Horses": {
-      img: `/attached_assets/galleries/Horses/058.jpeg`,
-      thumb: `/attached_assets/galleries/Horses/058-thumb.jpeg`
-    },
-    "Kids": {
-      img: `/attached_assets/galleries/Kids/021.jpeg`,
-      thumb: `/attached_assets/galleries/Kids/021-thumb.jpeg`
-    },
-    "Femininity": {
-      img: `/attached_assets/galleries/Femininity/008.jpeg`,
-      thumb: `/attached_assets/galleries/Femininity/008-thumb.jpeg`
-    },
-    "Yoga": {
-      img: `/attached_assets/galleries/Yoga/064.jpeg`,
-      thumb: `/attached_assets/galleries/Yoga/064-thumb.jpeg`
-    },
-    "Modeling": {
-      img: `/attached_assets/galleries/Modeling/010.jpeg`,
-      thumb: `/attached_assets/galleries/Modeling/010-thumb.jpeg`
-    },
-    "Artful Nude": {
-      img: `/attached_assets/galleries/Artful_Nude/023.jpeg`,
-      thumb: `/attached_assets/galleries/Artful_Nude/023-thumb.jpeg`
-    }
-  };
+    // Category image configuration with ranges
+    // Fixed images for each category
+    const customImages: Record<string, { img: string; thumb: string }> = {
+      "Bat Mitsva": {
+        img: `/attached_assets/galleries/Bat_Mitsva/001.jpeg`,
+        thumb: `/attached_assets/galleries/Bat_Mitsva/001-thumb.jpeg`,
+      },
+      Horses: {
+        img: `/attached_assets/galleries/Horses/058.jpeg`,
+        thumb: `/attached_assets/galleries/Horses/058-thumb.jpeg`,
+      },
+      Kids: {
+        img: `/attached_assets/galleries/Kids/021.jpeg`,
+        thumb: `/attached_assets/galleries/Kids/021-thumb.jpeg`,
+      },
+      Femininity: {
+        img: `/attached_assets/galleries/Femininity/014.jpeg`,
+        thumb: `/attached_assets/galleries/Femininity/014-thumb.jpeg`,
+      },
+      Yoga: {
+        img: `/attached_assets/galleries/Yoga/064.jpeg`,
+        thumb: `/attached_assets/galleries/Yoga/064-thumb.jpeg`,
+      },
+      Modeling: {
+        img: `/attached_assets/galleries/Modeling/010.jpeg`,
+        thumb: `/attached_assets/galleries/Modeling/010-thumb.jpeg`,
+      },
+      "Artful Nude": {
+        img: `/attached_assets/galleries/Artful_Nude/023.jpeg`,
+        thumb: `/attached_assets/galleries/Artful_Nude/023-thumb.jpeg`,
+      },
+    };
 
-  const imageConfig = customImages[category.name] || { img: defaultImage, thumb: defaultThumb };
+    const imageConfig = customImages[category.name] || {
+      img: defaultImage,
+      thumb: defaultThumb,
+    };
 
-  return {
-    ...category,
-    firstPhoto: {
-      ...category.firstPhoto,
-      imageUrl: imageConfig.img,
-      thumbnailUrl: imageConfig.thumb,
-    },
-  };
+    return {
+      ...category,
+      firstPhoto: {
+        ...category.firstPhoto,
+        imageUrl: imageConfig.img,
+        thumbnailUrl: imageConfig.thumb,
+      },
+    };
     return category;
   });
 
   const filteredCategories =
-    processedCategories?.filter((category) =>
-      categoryOrder.includes(category.name)
-    ).sort((a, b) => 
-      categoryOrder.indexOf(a.name) - categoryOrder.indexOf(b.name)
-    ) || [];
+    processedCategories
+      ?.filter((category) => categoryOrder.includes(category.name))
+      .sort(
+        (a, b) => categoryOrder.indexOf(a.name) - categoryOrder.indexOf(b.name),
+      ) || [];
 
   useEffect(() => {
     // Preload the first category image
@@ -270,7 +273,7 @@ export default function Home() {
                           <img
                             src={
                               category.firstPhoto?.imageUrl ||
-                              `/assets/${category.name.replace(' ', '_')}/${String(1).padStart(3, '0')}.jpeg`
+                              `/assets/${category.name.replace(" ", "_")}/${String(1).padStart(3, "0")}.jpeg`
                             }
                             alt={category.name}
                             className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
@@ -279,44 +282,60 @@ export default function Home() {
                               objectPosition: "center center",
                               WebkitBackfaceVisibility: "hidden",
                               WebkitTransform: "translate3d(0, 0, 0)",
-                              opacity: '0',
-                              background: 'rgba(0,0,0,0.05)',
-                              transition: 'opacity 0.3s ease-in-out'
+                              opacity: "0",
+                              background: "rgba(0,0,0,0.05)",
+                              transition: "opacity 0.3s ease-in-out",
                             }}
                             onLoad={(e) => {
                               const img = e.target as HTMLImageElement;
-                              img.style.opacity = '1';
-                              img.style.background = 'transparent';
+                              img.style.opacity = "1";
+                              img.style.background = "transparent";
                               if (img.naturalHeight > img.naturalWidth) {
                                 img.style.objectPosition = "center 50%";
                               }
                             }}
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
-                              const retryCount = Number(target.dataset.retryCount || '0');
+                              const retryCount = Number(
+                                target.dataset.retryCount || "0",
+                              );
                               const maxRetries = 3;
 
                               if (retryCount < maxRetries) {
-                                console.log(`Retrying category image load (${retryCount + 1}/${maxRetries}):`, target.src);
-                                target.dataset.retryCount = String(retryCount + 1);
+                                console.log(
+                                  `Retrying category image load (${retryCount + 1}/${maxRetries}):`,
+                                  target.src,
+                                );
+                                target.dataset.retryCount = String(
+                                  retryCount + 1,
+                                );
 
                                 // Try thumbnail first on initial error
-                                if (retryCount === 0 && target.src.includes('.jpeg')) {
-                                  target.src = target.src.replace('.jpeg', '-thumb.jpeg');
+                                if (
+                                  retryCount === 0 &&
+                                  target.src.includes(".jpeg")
+                                ) {
+                                  target.src = target.src.replace(
+                                    ".jpeg",
+                                    "-thumb.jpeg",
+                                  );
                                   return;
                                 }
 
                                 // Progressive delay for retries
                                 setTimeout(() => {
                                   const timestamp = Date.now();
-                                  const baseUrl = target.src.split('?')[0];
+                                  const baseUrl = target.src.split("?")[0];
                                   target.src = `${baseUrl}?retry=${retryCount + 1}&t=${timestamp}`;
                                 }, retryCount * 1500);
                               } else {
-                                console.error("Failed to load image after retries:", target.src);
+                                console.error(
+                                  "Failed to load image after retries:",
+                                  target.src,
+                                );
                                 target.onerror = null;
                                 // Try alternative path format
-                                const altPath = `/assets/${category.name.replace(' ', '_')}/${String(1).padStart(3, '0')}.jpeg`;
+                                const altPath = `/assets/${category.name.replace(" ", "_")}/${String(1).padStart(3, "0")}.jpeg`;
                                 if (target.src !== altPath) {
                                   target.src = altPath;
                                 } else {
@@ -325,7 +344,13 @@ export default function Home() {
                                 }
                               }
                             }}
-                            loading={index === 0 ? "eager" : index < 6 ? "eager" : "lazy"}
+                            loading={
+                              index === 0
+                                ? "eager"
+                                : index < 6
+                                  ? "eager"
+                                  : "lazy"
+                            }
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                             fetchpriority={index === 0 ? "high" : "auto"}
                           />
