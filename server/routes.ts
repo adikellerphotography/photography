@@ -113,17 +113,7 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
 
     const processedPhotos = await Promise.all(results.map(async (photo) => {
       const paddedId = String(photo.id).padStart(3, '0');
-      const categoryMap: Record<string, string> = {
-        'Family': 'Family',
-        'Horses': 'Horses', 
-        'Kids': 'kids',
-        'Yoga': 'Yoga',
-        'Modeling': 'Modeling',
-        'Femininity': 'Femininity',
-        'Artful Nude': 'Artful_Nude',
-        'Bat Mitsva': 'Bat_Mitsva'
-      };
-      const categoryPath = categoryMap[photo.category] || photo.category;
+      const categoryPath = getCategoryPath(photo.category);
       const imageUrl = `${paddedId}.jpeg`;
       const thumbnailUrl = `${paddedId}-thumb.jpeg`;
       return {
