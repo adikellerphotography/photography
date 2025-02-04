@@ -49,17 +49,29 @@ export async function scanImages(targetPath?: string) {
         try {
           const baseName = path.parse(imageFile).name;
           const ext = path.parse(imageFile).ext.toLowerCase();
+          const id = parseInt(baseName) || imageIndex + 1;
+          
+          // Check for thumbnail
+          const thumbName = `${baseName}-thumb${ext}`;
+          const thumbExists = imageFiles.includes(thumbName);
           
           const imageUrl = `/assets/galleries/${dir}/${imageFile}`;
-          const thumbnailUrl = `/assets/galleries/${dir}/${baseName}-thumb${ext}`;
+          const thumbnailUrl = thumbExists ? `/assets/galleries/${dir}/${thumbName}` : imageUrl;
           
           await db.insert(photos).values({
-            id: parseInt(baseName) || imageIndex + 1,
+            id,
             title: `${displayName} Portrait Session`,
             category: displayName,
             imageUrl,
             thumbnailUrl,
-            displayOrder: parseInt(baseName) || imageIndex + 1
+            displayOrder: id
+          }).onConflictDoUpdate({
+            target: [photos.id],
+            set: {
+              imageUrl,
+              thumbnailUrl,
+              displayOrder: id
+            }
           });
         } catch (error) {
           console.error(`Error processing ${imageFile}:`, error);

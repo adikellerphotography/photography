@@ -56,8 +56,12 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   });
 
   const getImagePath = (photo: Photo): string[] => {
-    if (!photo?.imageUrl || !photo?.thumbnailUrl) return [];
-    return [photo.imageUrl, photo.thumbnailUrl];
+    if (!photo?.imageUrl) return [];
+    const paths = [photo.imageUrl];
+    if (photo.thumbnailUrl && photo.thumbnailUrl !== photo.imageUrl) {
+      paths.push(photo.thumbnailUrl);
+    }
+    return paths;
 
     return [
       `/assets/galleries/${categoryPath}/${id}.jpeg`,
