@@ -556,7 +556,7 @@ export default function MySessions() {
                         ].includes(group.name) ? (
                           <div className="relative w-full pb-[100%]">
                             <img
-                              src={`/assets/facebook_posts_image/${categoryMappings[group.name]}/${link.number}.jpg`}
+                              src={`/attached_assets/facebook_posts_image/${categoryMappings[group.name].replace(' ', '_')}/${link.number}.jpg`}
                               alt={`${group.name} session ${link.number}`}
                               className="absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-in-out bg-muted"
                               loading={idx < 6 ? "eager" : "lazy"}
@@ -593,7 +593,7 @@ export default function MySessions() {
                                   img.style.opacity = "0.3";
                                   img.style.backgroundColor = "rgba(0,0,0,0.1)";
                                   // Load thumbnail as fallback
-                                  const fallbackSrc = `/assets/facebook_posts_image/${categoryMappings[group.name]}/thumbnails/${link.number}.jpg`;
+                                  const fallbackSrc = `/attached_assets/facebook_posts_image/${categoryMappings[group.name].replace(' ', '_')}/${link.number}.jpg`;
                                   img.src = fallbackSrc;
                                 }
                               }}
