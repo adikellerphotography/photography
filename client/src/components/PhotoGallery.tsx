@@ -44,6 +44,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   const getImagePath = (photo: Photo): string => {
     if (!photo?.imageUrl) return '';
+    // Convert ID to padded format
+    const paddedId = photo.id.toString().padStart(3, '0');
+    
+    // Direct mapping to actual folder names
     const categoryMap: Record<string, string> = {
       'Family': 'Family',
       'Horses': 'Horses',
@@ -54,10 +58,12 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       'Artful Nude': 'Artful_Nude',
       'Bat Mitsva': 'Bat_Mitsva'
     };
-    const paddedId = photo.id.toString().padStart(3, '0');
-    const normalizedCategory = categoryMap[photo.category] || photo.category.replace(/\s+/g, '_');
-    const imagePath = `/attached_assets/galleries/${normalizedCategory}/${paddedId}.jpeg`;
-    return imagePath;
+    
+    // Get the correct folder name
+    const folder = categoryMap[photo.category] || photo.category;
+    
+    // Construct the full path
+    return `/attached_assets/galleries/${folder}/${paddedId}.jpeg`;
   };
 
   if (isLoading) {
