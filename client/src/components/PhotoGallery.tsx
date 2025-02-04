@@ -145,8 +145,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                     const img = e.target as HTMLImageElement;
                     console.error('Failed to load image:', img.src);
                     const container = img.closest('.relative');
-                    if (container) {
-                      container.style.display = 'none'; // Hide the container if image fails to load
+                    if (container && container.parentNode) {
+                      container.parentNode.removeChild(container); // Remove the container if image fails to load
                     }
                   }}
                 />

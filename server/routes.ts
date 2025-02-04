@@ -81,6 +81,12 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
         }
       }
 
+      photoFiles.sort((a, b) => {
+        const numA = parseInt(a.match(/\d+/)?.[0] || '0');
+        const numB = parseInt(b.match(/\d+/)?.[0] || '0');
+        return numA - numB;
+      });
+
       results = photoFiles.map((file, index) => {
         const fileNum = parseInt(file.match(/\d+/)?.[0] || '0');
         return {
