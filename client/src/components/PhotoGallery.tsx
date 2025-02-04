@@ -22,7 +22,7 @@ interface PhotoGalleryProps {
 }
 
 const IMAGE_PATHS = {
-  GALLERIES: '/assets/galleries'
+  GALLERIES: '/attached_assets/galleries'
 };
 
 export default function PhotoGallery({ category }: PhotoGalleryProps) {
