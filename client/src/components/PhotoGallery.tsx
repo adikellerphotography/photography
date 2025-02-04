@@ -55,7 +55,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       'Bat Mitsva': 'Bat_Mitsva'
     };
     const normalizedCategory = categoryMap[category || ''] || category;
-    return `/attached_assets/galleries/${normalizedCategory}/${photo.imageUrl}`;
+    const paddedId = String(photo.id).padStart(3, '0');
+    return `/attached_assets/galleries/${normalizedCategory}/${paddedId}.jpeg`;
   };
 
   if (isLoading) {
