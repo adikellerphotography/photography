@@ -144,22 +144,7 @@ const getCategories = async (_req: express.Request, res: express.Response) => {
     const validCategories = await db
       .select()
       .from(categories)
-      .orderBy((categories) => {
-        const orderMap = {
-          "Bat Mitsva": 1,
-          "Horses": 2,
-          "Kids": 3,
-          "Femininity": 4,
-          "Yoga": 5,
-          "Modeling": 6,
-          "Artful Nude": 7
-        };
-        return sql`CASE ${categories.name} 
-          ${Object.entries(orderMap).map(([name, order]) => 
-            sql`WHEN ${name} THEN ${order}`
-          )}
-          ELSE 99 END`;
-      });
+      .orderBy(categories.displayOrder);
 
     const categoriesWithPhotos = await Promise.all(
       validCategories.map(async (category) => {
