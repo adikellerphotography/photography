@@ -44,8 +44,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   const getImagePath = (photo: Photo): string => {
     if (!photo?.imageUrl) return '';
-    const normalizedCategory = category?.replace(/\s+/g, '_') ?? '';
-    return `/attached_assets/galleries/${normalizedCategory}/${photo.imageUrl.replace(/^\/assets\/[^/]+\//, '')}`;
+    const normalizedCategory = category?.replace(/\s+/g, '_').replace(/&/g, 'and') ?? '';
+    return `/assets/galleries/${normalizedCategory}/${photo.id.toString().padStart(3, '0')}.jpeg`;
   };
 
   if (isLoading) {

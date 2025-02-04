@@ -30,10 +30,13 @@ const configureStaticFiles = (app: Express) => {
       res.setHeader('Accept-Ranges', 'bytes');
       res.setHeader('Vary', 'Accept-Encoding');
       res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+      res.setHeader('Access-Control-Allow-Origin', '*');
     },
     maxAge: 31536000000,
     lastModified: true,
     etag: true,
+    fallthrough: true,
+    redirect: false
   }));
 };
 
@@ -111,12 +114,17 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
     const processedPhotos = await Promise.all(results.map(async (photo) => {
       const paddedId = String(photo.id).padStart(3, '0');
       const categoryPath = getCategoryPath(photo.category);
-      const imageUrl = `/assets/${categoryPath}/${paddedId}.jpeg`;
-      const thumbnailUrl = `/assets/${categoryPath}/${paddedId}-thumb.jpeg`;
+      const imageUrl = `${paddedId}.jpeg`;
+      const thumbnailUrl = `${paddedId}-thumb.jpeg`;
       return {
         ...photo,
+        id: photo.id,
+        title: photo.title || `${category} Portrait Session`,
+        category: photo.category,
         imageUrl,
         thumbnailUrl,
+        displayOrder: photo.displayOrder || photo.id,
+        likesCount: photo.likesCount || 0,
         isLiked: false
       };
     }));
