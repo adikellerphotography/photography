@@ -398,7 +398,7 @@ export const translations = {
       "Sweet 16": "יום הולדת 16",
       Purim: "פורים",
       Pregnancy: "הריון",
-      Feminine: "נשי",
+      Feminine: "נשיות",
       Yoga: "יוגה",
       Modeling: "דוגמנות",
     },
