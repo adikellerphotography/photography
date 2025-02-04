@@ -296,29 +296,21 @@ export function registerRoutes(app: Express): Server {
       const files = await fs.readdir(beforeAfterPath);
 
       const imageSets = [];
-      const imageMap = new Map();
+      let id = 0;
 
-      files.forEach(file => {
-        if (file.endsWith(' Large.jpeg') || file.endsWith(' Large.jpg')) {
-          const base = file.replace(/-[12] Large\.(jpeg|jpg)$/, '');
-          imageMap.set(base, (imageMap.get(base) || '') + file);
-        }
-      });
-
-      let id = 1;
-      imageMap.forEach((_, key) => {
-        const beforeFile = files.find(f => f.startsWith(key) && f.includes('-1 Large'));
-        const afterFile = files.find(f => f.startsWith(key) && f.includes('-2 Large'));
-
-        if (beforeFile && afterFile) {
+      for (let i = 0; i < 29; i++) {
+        const beforeFile = `${i}-1 Large.jpeg`;
+        const afterFile = `${i}-2 Large.jpeg`;
+        
+        if (files.includes(beforeFile) && files.includes(afterFile)) {
           imageSets.push({
             id: id++,
-            title: key.replace(/_/g, ' '),
+            title: `Before & After ${id}`,
             beforeImage: `/attached_assets/before_and_after/${beforeFile}`,
             afterImage: `/attached_assets/before_and_after/${afterFile}`
           });
         }
-      });
+      }
 
       res.json(imageSets);
     } catch (error) {
