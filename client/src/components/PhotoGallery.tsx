@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import type { Photo } from "@/lib/types";
@@ -20,7 +20,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [isFullImageLoaded, setIsFullImageLoaded] = useState(false);
   const galleryRef = useRef<HTMLDivElement>(null);
 
-  const { data: photos = [], isLoading } = useQuery<Photo[]>({
+  const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({
     queryKey: ["/api/photos", category],
     queryFn: async () => {
       try {
@@ -29,12 +29,31 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
           throw new Error('Failed to fetch photos');
         }
         const data = await response.json();
-        // Shuffle the photos array
-        const shuffledData = [...data].sort(() => Math.random() - 0.5);
-        return shuffledData.map((photo: Photo) => ({
-          ...photo,
-          imageUrl: photo.imageUrl.startsWith('/assets/') ? photo.imageUrl : `/assets/${category}/${photo.imageUrl}`
-        }));
+        // Filter out photos that don't exist and map remaining ones
+        const validPhotos = data.filter((photo: Photo) => photo && photo.imageUrl);
+        const shuffledData = [...validPhotos].sort(() => Math.random() - 0.5);
+        
+        // Verify images exist by preloading them
+        const verifiedPhotos = await Promise.all(
+          shuffledData.map(async (photo: Photo) => {
+            try {
+              const fullPath = `/attached_assets/galleries/${category?.replace(/\s+/g, '_')}/${photo.imageUrl}`;
+              const response = await fetch(fullPath, { method: 'HEAD' });
+              if (response.ok) {
+                return {
+                  ...photo,
+                  imageUrl: fullPath,
+                  thumbnailUrl: fullPath.replace('.jpeg', '-thumb.jpeg')
+                };
+              }
+              return null;
+            } catch {
+              return null;
+            }
+          })
+        );
+        
+        return verifiedPhotos.filter(Boolean);
       } catch (error) {
         console.error('Error fetching photos:', error);
         throw error;
@@ -43,6 +62,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
   });
+
+  useEffect(() => {
+    refetch();
+  }, [category, refetch]);
 
   const getImagePath = (photo: Photo): string => {
     if (!photo?.imageUrl) return '';
@@ -136,17 +159,17 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   onLoad={(e) => {
                     const img = e.target as HTMLImageElement;
                     img.style.opacity = '1';
+                    const container = img.closest('.relative');
+                    if (container) {
+                      container.style.display = 'block'; // Show container only when image loads
+                    }
                   }}
                   onError={(e) => {
                     const img = e.target as HTMLImageElement;
-                    const retryCount = Number(img.dataset.retryCount || 0);
-                    if (retryCount < 3) {
-                      img.dataset.retryCount = String(retryCount + 1);
-                      setTimeout(() => {
-                        img.src = getImagePath(photo);
-                      }, 1000 * (retryCount + 1));
-                    } else {
-                      img.src = `/attached_assets/galleries/${category?.replace(/\s+/g, '_')}/${photo.imageUrl.split('/').pop()}`;
+                    console.error('Failed to load image:', img.src);
+                    const container = img.closest('.relative');
+                    if (container && container.parentNode) {
+                      container.parentNode.removeChild(container); // Remove the container if image fails to load
                     }
                   }}
                 />
