@@ -10,11 +10,7 @@ async function scanDirectory(dirPath: string): Promise<string[]> {
   const files = entries
     .filter(entry => entry.isFile() && /\.(jpg|jpeg)$/i.test(entry.name))
     .map(entry => entry.name);
-  return files.sort((a, b) => {
-    const numA = parseInt(a.match(/\d+/)?.[0] || '0');
-    const numB = parseInt(b.match(/\d+/)?.[0] || '0');
-    return numA - numB;
-  });
+  return files.sort();
 }
 
 export async function scanImages(targetPath?: string) {
@@ -27,7 +23,6 @@ export async function scanImages(targetPath?: string) {
     await db.delete(photos);
     await db.delete(categories);
 
-    // Get all directories in galleries
     const entries = await fs.readdir(assetsPath, { withFileTypes: true });
     const dirs = entries
       .filter(entry => entry.isDirectory() && !entry.name.startsWith('.'))
@@ -35,40 +30,36 @@ export async function scanImages(targetPath?: string) {
 
     console.log('Found directories:', dirs);
 
-    // Process each category directory
-    for (const [index, dir] of dirs.entries()) {
+    for (const [categoryIndex, dir] of dirs.entries()) {
       const displayName = dir.split('_')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
 
-      // Insert category
       await db.insert(categories).values({
         name: displayName,
-        displayOrder: index + 1,
+        displayOrder: categoryIndex + 1,
         description: `${displayName} Photography Sessions`
       });
 
       const dirPath = path.join(assetsPath, dir);
       const imageFiles = await scanDirectory(dirPath);
-      console.log(`Found ${imageFiles.length} images in ${dir}`);
+      console.log(`Processing ${imageFiles.length} images in ${dir}`);
 
-      // Process images
-      for (const [idx, imageFile] of imageFiles.entries()) {
+      for (const [imageIndex, imageFile] of imageFiles.entries()) {
         try {
-          const id = parseInt(imageFile.match(/\d+/)?.[0] || String(idx + 1));
           const baseName = path.parse(imageFile).name;
-          const ext = path.parse(imageFile).ext;
-
-          const imageUrl = `/assets/galleries/${dir}/${baseName}${ext}`;
+          const ext = path.parse(imageFile).ext.toLowerCase();
+          
+          const imageUrl = `/assets/galleries/${dir}/${imageFile}`;
           const thumbnailUrl = `/assets/galleries/${dir}/${baseName}-thumb${ext}`;
-
+          
           await db.insert(photos).values({
-            id,
+            id: parseInt(baseName) || imageIndex + 1,
             title: `${displayName} Portrait Session`,
             category: displayName,
             imageUrl,
             thumbnailUrl,
-            displayOrder: id
+            displayOrder: parseInt(baseName) || imageIndex + 1
           });
         } catch (error) {
           console.error(`Error processing ${imageFile}:`, error);
@@ -79,9 +70,9 @@ export async function scanImages(targetPath?: string) {
     const photoCount = await db.select({ count: sql`count(*)` }).from(photos);
     const categoryCount = await db.select({ count: sql`count(*)` }).from(categories);
 
+    console.log('=== Scan Complete ===');
     console.log(`Total photos in database: ${photoCount[0].count}`);
     console.log(`Total categories in database: ${categoryCount[0].count}`);
-
   } catch (error) {
     console.error('Error during image scan:', error);
     throw error;
