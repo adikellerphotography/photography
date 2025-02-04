@@ -73,24 +73,11 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   const getImagePath = (photo: Photo): string => {
     if (!photo?.imageUrl) return '';
-    const paddedId = photo.id.toString().padStart(3, '0');
-
-    const startingNumbers: Record<string, number> = {
-      'Family': 13,
-      'Horses': 30,
-      'Kids': 14,
-      'Yoga': 41,
-      'Modeling': 1,
-      'Femininity': 1,
-      'Artful Nude': 1,
-      'Bat Mitsva': 1
-    };
-
+    
     const categoryMap: Record<string, string> = {
       'Family': 'Family',
       'Horses': 'Horses',
-      'Kids': 'kids',
-      'Kids': 'kids',
+      'Kids': 'Kids',
       'Yoga': 'Yoga',
       'Modeling': 'Modeling',
       'Femininity': 'Femininity',
@@ -98,13 +85,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       'Bat Mitsva': 'Bat_Mitsva'
     };
 
-    const folder = categoryMap[photo.category] || photo.category;
-    const adjustedId = startingNumbers[photo.category] 
-      ? startingNumbers[photo.category] + (photo.id - 1)
-      : photo.id;
-    const adjustedPaddedId = adjustedId.toString().padStart(3, '0');
-
-    return `/attached_assets/galleries/${folder}/${adjustedPaddedId}.jpeg`;
+    const folder = categoryMap[photo.category] || photo.category.replace(/\s+/g, '_');
+    return `/attached_assets/galleries/${folder}/${photo.imageUrl}`;
   };
 
   if (isLoading) {
