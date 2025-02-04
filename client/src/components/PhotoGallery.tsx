@@ -18,6 +18,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
+  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
 
   const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({
@@ -193,9 +194,39 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       >
         <DialogContent className="max-w-[90vw] max-h-[90vh] p-0">
           {selectedPhoto && (
-            <div className="relative w-full h-full">
+            <div 
+              className="relative w-full h-full"
+              onTouchStart={(e) => {
+                const touch = e.touches[0];
+                setTouchStart({ x: touch.clientX, y: touch.clientY });
+              }}
+              onTouchMove={(e) => {
+                if (!touchStart) return;
+                const touch = e.touches[0];
+                const deltaX = touchStart.x - touch.clientX;
+                const deltaY = touchStart.y - touch.clientY;
+
+                if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                  e.preventDefault();
+                }
+              }}
+              onTouchEnd={(e) => {
+                if (!touchStart) return;
+                const touch = e.changedTouches[0];
+                const deltaX = touchStart.x - touch.clientX;
+
+                if (Math.abs(deltaX) > 50) {
+                  const newIndex = deltaX > 0 
+                    ? (selectedIndex + 1) % photos.length 
+                    : selectedIndex === 0 ? photos.length - 1 : selectedIndex - 1;
+                  setSelectedIndex(newIndex);
+                  setSelectedPhoto(photos[newIndex]);
+                }
+                setTouchStart(null);
+              }}
+            >
               <Button
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-10"
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 transition-colors"
                 variant="ghost"
                 size="icon"
                 onClick={(e) => {
@@ -205,11 +236,11 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   setSelectedPhoto(photos[newIndex]);
                 }}
               >
-                <ChevronLeft className="h-6 w-6" />
+                <ChevronLeft className="h-6 w-6 text-white" />
               </Button>
 
               <Button
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-10"
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 transition-colors"
                 variant="ghost"
                 size="icon"
                 onClick={(e) => {
@@ -219,7 +250,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   setSelectedPhoto(photos[newIndex]);
                 }}
               >
-                <ChevronRight className="h-6 w-6" />
+                <ChevronRight className="h-6 w-6 text-white" />
               </Button>
 
               <img
@@ -227,6 +258,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 alt={selectedPhoto.title || ""}
                 className="w-full h-full object-contain"
                 loading="eager"
+                draggable={false}
               />
             </div>
           )}
