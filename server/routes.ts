@@ -61,14 +61,36 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
       return res.status(404).json({ error: "Category not found" });
     }
 
-    const query = db.select()
-      .from(photos)
-      .where(eq(photos.category, decodedCategory))
-      .orderBy(photos.displayOrder);
+    const categoryPath = getCategoryPath(decodedCategory);
+    const dirPath = path.join(process.cwd(), 'attached_assets', 'galleries', categoryPath);
+    let results = [];
 
-    let results = await query;
-        // Randomize the order of results
-        results = results.sort(() => Math.random() - 0.5);
+    try {
+      const files = await fs.readdir(dirPath);
+      const photoFiles = files
+        .filter(f => (f.endsWith('.jpeg') || f.endsWith('.jpg')) && !f.includes('-thumb'))
+        .sort((a, b) => {
+          const numA = parseInt(a.match(/\d+/)?.[0] || '0');
+          const numB = parseInt(b.match(/\d+/)?.[0] || '0');
+          return numA - numB;
+        });
+
+      results = photoFiles.map((file, index) => {
+        const fileNum = parseInt(file.match(/\d+/)?.[0] || '0');
+        return {
+          id: fileNum,
+          title: `${decodedCategory} Portrait Session`,
+          category: decodedCategory,
+          imageUrl: file,
+          thumbnailUrl: file.replace('.jpeg', '-thumb.jpeg'),
+          displayOrder: index + 1,
+          likesCount: 0
+        };
+      });
+    } catch (err) {
+      console.error('Error reading directory:', err);
+      results = [];
+    }
 
     // If no results in database or results are incomplete, scan directory
     if (category) {

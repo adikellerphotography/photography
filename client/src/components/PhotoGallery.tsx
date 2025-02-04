@@ -139,14 +139,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   }}
                   onError={(e) => {
                     const img = e.target as HTMLImageElement;
-                    const retryCount = Number(img.dataset.retryCount || 0);
-                    if (retryCount < 3) {
-                      img.dataset.retryCount = String(retryCount + 1);
-                      setTimeout(() => {
-                        img.src = getImagePath(photo);
-                      }, 1000 * (retryCount + 1));
-                    } else {
-                      img.src = `/attached_assets/galleries/${category?.replace(/\s+/g, '_')}/${photo.imageUrl.split('/').pop()}`;
+                    console.error('Failed to load image:', img.src);
+                    const container = img.closest('.relative');
+                    if (container) {
+                      container.remove(); // Remove the container if image fails to load
                     }
                   }}
                 />
