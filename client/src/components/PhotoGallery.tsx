@@ -29,7 +29,9 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
           throw new Error('Failed to fetch photos');
         }
         const data = await response.json();
-        return data.map((photo: Photo) => ({
+        // Shuffle the photos array
+        const shuffledData = [...data].sort(() => Math.random() - 0.5);
+        return shuffledData.map((photo: Photo) => ({
           ...photo,
           imageUrl: photo.imageUrl.startsWith('/assets/') ? photo.imageUrl : `/assets/${category}/${photo.imageUrl}`
         }));

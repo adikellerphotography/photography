@@ -66,7 +66,9 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
       .where(eq(photos.category, decodedCategory))
       .orderBy(photos.displayOrder);
 
-    const results = await query;
+    let results = await query;
+        // Randomize the order of results
+        results = results.sort(() => Math.random() - 0.5);
 
     // If no results in database or results are incomplete, scan directory
     if (category) {
