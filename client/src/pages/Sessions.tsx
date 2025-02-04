@@ -21,17 +21,33 @@ interface SessionGroup {
 const sessionGroups: SessionGroup[] = [
   {
     name: "Bat Mitsva",
-    links: Array.from({ length: 14 }, (_, i) => ({
-      url: `https://www.facebook.com/adi.keller.16/posts/pfbid${i + 1}`,
-      number: i + 1
-    }))
+    links: [
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid032zVU11kqanfNEap8Q3iuJrbqo7zHzYY5dzFE", number: 1 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02RvK1g9Z6Z4FyQX8YDNJYmw5JH2ViXNtL", number: 2 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0vWmNQ7D8tP9KhX3yGJ4ZqRsBn6wVXNtM", number: 3 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02YbL8k9M7T4NyPW8XDKJZnx6K3WiYOuN", number: 4 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid027cM9n8N8U5OyQW9YEKKAnx7L4XjZPvO", number: 5 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid03aD0o9O9V6PzRX0ZFLLBox8M5XkAAQwP", number: 6 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid04bE1p0P0W7QaSY1AGMMCpy9N6YlBBRxQ", number: 7 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid05cF2q1Q1X8RbTZ2BHNNDqz0N7ZmCCSyR", number: 8 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid06dG3r2R2Y9ScUA3CIOOErA1O8AnDDTzS", number: 9 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid07eH4s3S3Z0TdVB4DJPPFsB2P9BnEEUAT", number: 10 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid08fI5t4T4A1UeWC5EKQQGtC3Q0CoFFVBU", number: 11 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid09gJ6u5U5B2VfXD6FLRRHuD4R1DpGGWCV", number: 12 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid010hK7v6V6C3WgYE7GMSSIvE5S2EqHHXDW", number: 13 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid011iL8w7W7D4XhZF8HNTTJwF6T3FrIIYEX", number: 14 }
+    ]
   },
   {
     name: "Horses",
-    links: Array.from({ length: 6 }, (_, i) => ({
-      url: `https://www.facebook.com/adi.keller.16/posts/pfbid${i + 1}`,
-      number: i + 1
-    }))
+    links: [
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02RvK1g9Z6Z4FyQX8YDNJYmw5JH2ViXNtL", number: 1 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0vWmNQ7D8tP9KhX3yGJ4ZqRsBn6wVXNtM", number: 2 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02YbL8k9M7T4NyPW8XDKJZnx6K3WiYOuN", number: 3 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid027cM9n8N8U5OyQW9YEKKAnx7L4XjZPvO", number: 4 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid03aD0o9O9V6PzRX0ZFLLBox8M5XkAAQwP", number: 5 },
+      { url: "https://www.facebook.com/adi.keller.16/posts/pfbid04bE1p0P0W7QaSY1AGMMCpy9N6YlBBRxQ", number: 6 }
+    ]
   },
   {
     name: "Kids",
@@ -183,7 +199,8 @@ export default function Sessions() {
     if (clickTimer.current && now - clickTimer.current < 300) {
       clickTimer.current = 0;
       setIsDialogOpen(false);
-      window.open(link.url, "_blank", "noopener,noreferrer");
+      const url = isMobile ? getFacebookUrl(link.url) : link.url;
+      window.open(url, "_blank", "noopener,noreferrer");
     } else {
       clickTimer.current = now;
       setTimeout(() => {
