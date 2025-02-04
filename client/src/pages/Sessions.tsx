@@ -506,7 +506,7 @@ export default function Sessions() {
                       120 &&
                     groupRefs.current[group.name].getBoundingClientRect()
                       .bottom >= 120
-                      ? "bg-[#FF9500] !text-black font-bold hover:!bg-[#FF9500] active:!bg-[#FF9500]"
+                      ? "bg-[#FF9500] !text-black font-semibold hover:!bg-[#FF9500] active:!bg-[#FF9500]"
                       : "hover:bg-primary/10"
                   }`}
                 >
