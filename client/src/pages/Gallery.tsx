@@ -270,8 +270,10 @@ export default function Gallery() {
                     const newUrl = `/gallery?category=${encodeURIComponent(category.name)}`;
                     window.history.pushState({ category: category.name }, "", newUrl);
                   }}
-                  className={`text-xs font-medium px-3 py-1.5 h-7 rounded-full hover:bg-primary/10 transition-colors duration-200 ${
-                    activeCategory === category.name ? 'bg-[#FF9500] text-white' : ''
+                  className={`text-xs font-medium px-3 py-1.5 h-7 rounded-full transition-all duration-150 ${
+                    activeCategory === category.name 
+                      ? 'bg-[#FF9500] text-white scale-110 font-semibold shadow-md' 
+                      : 'hover:bg-primary/10'
                   }`}
                 >
                   {category.name}
