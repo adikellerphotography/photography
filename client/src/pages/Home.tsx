@@ -28,76 +28,36 @@ export default function Home() {
 
   // Override the firstPhoto for specific categories
   const processedCategories = categories?.map((category) => {
-    if (category.name === "Family") {
-      return {
-        ...category,
-        firstPhoto: {
-          ...category.firstPhoto,
-          imageUrl: "/assets/galleries/Family/001.jpeg",
-          thumbnailUrl: "/assets/galleries/Family/001-thumb.jpeg",
-        },
-      };
+    const categoryPath = category.name.replace(/\s+/g, '_');
+  const defaultImage = `/assets/galleries/${categoryPath}/001.jpeg`;
+  const defaultThumb = `/assets/galleries/${categoryPath}/001-thumb.jpeg`;
+
+  // Custom overrides for specific categories if needed
+  const customImages: Record<string, { img: string; thumb: string }> = {
+    "Kids": {
+      img: "/assets/galleries/kids/014.jpeg",
+      thumb: "/assets/galleries/kids/014-thumb.jpeg"
+    },
+    "Modeling": {
+      img: "/assets/galleries/Modeling/004.jpeg",
+      thumb: "/assets/galleries/Modeling/004-thumb.jpeg"
+    },
+    "Horses": {
+      img: "/assets/galleries/Horses/030.jpeg",
+      thumb: "/assets/galleries/Horses/030-thumb.jpeg"
     }
-    if (category.name === "Kids") {
-      return {
-        ...category,
-        firstPhoto: {
-          ...category.firstPhoto,
-          imageUrl: "/assets/galleries/Kids/011.jpeg",
-          thumbnailUrl: "/assets/galleries/Kids/011-thumb.jpeg",
-        },
-      };
-    }
-    if (category.name === "Women") {
-      return {
-        ...category,
-        firstPhoto: {
-          ...category.firstPhoto,
-          imageUrl: "/assets/Women/006.jpeg",
-          thumbnailUrl: "/assets/Women/006-thumb.jpeg",
-        },
-      };
-    }
-    if (category.name === "Yoga") {
-      return {
-        ...category,
-        firstPhoto: {
-          ...category.firstPhoto,
-          imageUrl: "/assets/galleries/Yoga/001.jpeg",
-          thumbnailUrl: "/assets/galleries/Yoga/001-thumb.jpeg",
-        },
-      };
-    }
-    if (category.name === "Bat Mitsva") {
-      return {
-        ...category,
-        firstPhoto: {
-          ...category.firstPhoto,
-          imageUrl: "/assets/galleries/Bat_Mitsva/001.jpeg",
-          thumbnailUrl: "/assets/galleries/Bat_Mitsva/001-thumb.jpeg",
-        },
-      };
-    }
-    if (category.name === "Modeling") {
-      return {
-        ...category,
-        firstPhoto: {
-          ...category.firstPhoto,
-          imageUrl: "/assets/Modeling/004.jpeg",
-          thumbnailUrl: "/assets/Modeling/004-thumb.jpeg",
-        },
-      };
-    }
-    if (category.name === "Horses") {
-      return {
-        ...category,
-        firstPhoto: {
-          ...category.firstPhoto,
-          imageUrl: "/assets/Horses/015.jpeg",
-          thumbnailUrl: "/assets/Horses/015-thumb.jpeg",
-        },
-      };
-    }
+  };
+
+  const imageConfig = customImages[category.name] || { img: defaultImage, thumb: defaultThumb };
+
+  return {
+    ...category,
+    firstPhoto: {
+      ...category.firstPhoto,
+      imageUrl: imageConfig.img,
+      thumbnailUrl: imageConfig.thumb,
+    },
+  };
     return category;
   });
 
