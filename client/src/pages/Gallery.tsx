@@ -50,16 +50,11 @@ export default function Gallery() {
     const diffX = touchStartX - x;
     const diffY = touchStartY - currentY;
 
-    // Only handle horizontal swipes and ignore vertical scrolling
-    if (Math.abs(diffY) > Math.abs(diffX)) {
-      return;
-    }
-
     setCurrentX(x);
     setSwipeDirection(diffX > 0 ? "left" : "right");
 
-    if (isHorizontalSwipe === null && Math.abs(diffX) > 10) {
-      setIsHorizontalSwipe(true);
+    if (isHorizontalSwipe === null && (Math.abs(diffX) > 10 || Math.abs(diffY) > 10)) {
+      setIsHorizontalSwipe(Math.abs(diffX) > Math.abs(diffY));
     }
 
     if (isHorizontalSwipe && Math.abs(diffX) > 50) {
