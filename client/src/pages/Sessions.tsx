@@ -229,20 +229,12 @@ export default function Sessions() {
                   key={group.name}
                   variant="ghost"
                   size="sm"
-                  onClick={() => {
-                    const element = groupRefs.current[group.name];
-                    if (element) {
-                      element.scrollIntoView({ behavior: "auto" });
-                      const yOffset = -100;
-                      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-                      window.scrollTo({ top: y, behavior: "auto" });
-                    }
-                  }}
-                  className={`text-xs font-medium px-3 py-1.5 h-7 rounded-full transition-all duration-150 ${
+                  onClick={() => scrollToGroup(group.name)}
+                  className={`text-xs font-medium px-3 py-1.5 h-7 rounded-full hover:bg-primary/10 transition-colors duration-200 ${
                     groupRefs.current[group.name]?.getBoundingClientRect().top <= 120 &&
                     groupRefs.current[group.name]?.getBoundingClientRect().top >= -groupRefs.current[group.name]?.offsetHeight
-                      ? 'bg-[#FF9500] text-white scale-110 font-semibold shadow-md'
-                      : 'hover:bg-primary/10'
+                      ? 'bg-[#FF9500] text-white'
+                      : ''
                   }`}
                 >
                   {language === "he"
