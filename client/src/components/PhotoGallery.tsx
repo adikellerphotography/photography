@@ -44,18 +44,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   const getImagePath = (photo: Photo): string => {
     if (!photo?.imageUrl) return '';
-    const categoryMap: Record<string, string> = {
-      'Family': 'Family',
-      'Horses': 'Horses', 
-      'Kids': 'kids',
-      'Yoga': 'Yoga',
-      'Modeling': 'Modeling',
-      'Femininity': 'Femininity',
-      'Artful Nude': 'Artful_Nude',
-      'Bat Mitsva': 'Bat_Mitsva'
-    };
-    const normalizedCategory = categoryMap[category || ''] || category;
     const paddedId = photo.id.toString().padStart(3, '0');
+    const normalizedCategory = photo.category.replace(/\s+/g, '_');
     return `/attached_assets/galleries/${normalizedCategory}/${paddedId}.jpeg`;
   };
 
