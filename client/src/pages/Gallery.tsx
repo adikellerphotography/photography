@@ -239,25 +239,7 @@ export default function Gallery() {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={containerVariants}
-        className="container mx-auto px-4 pt-8"
-      >
-        <div className="flex justify-between items-center mb-4">
-          <motion.h1
-            variants={itemVariants}
-            className={`text-3xl font-bold text-[#FF9500] w-full ${
-              language === "he" ? "text-right" : "text-left"
-            }`}
-          >
-            {language === "he" ? "גלריית תמונות" : "Photo Gallery"}
-          </motion.h1>
-        </div>
-      </motion.div>
-
-      <nav className="fixed top-[60px] w-full z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b py-3">
+      <nav className="fixed top-[60px] w-full z-[100] bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b py-3">
           <div className="container max-w-5xl mx-auto">
             <div className="flex flex-wrap justify-center gap-1.5">
               {processedCategories.map((category) => (
@@ -287,7 +269,24 @@ export default function Gallery() {
           </div>
         </nav>
 
-        <div className="container mx-auto px-4 pt-16">
+        <div className="container mx-auto px-4 pt-20">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+            className="mb-4"
+          >
+            <div className="flex justify-between items-center">
+              <motion.h1
+                variants={itemVariants}
+                className={`text-3xl font-bold text-[#FF9500] w-full ${
+                  language === "he" ? "text-right" : "text-left"
+                }`}
+              >
+                {language === "he" ? "גלריית תמונות" : "Photo Gallery"}
+              </motion.h1>
+            </div>
+          </motion.div>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
