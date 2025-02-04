@@ -80,7 +80,7 @@ const initializeServer = async () => {
       log("🛠️ Running in development mode");
     }
 
-    const PORT = parseInt(process.env.PORT || "3000", 10);
+    const PORT = parseInt(process.env.PORT || "5000", 10);
 
     server.listen(PORT, "0.0.0.0", () => {
       log(`✨ Server running on port ${PORT}`);
