@@ -87,7 +87,9 @@ export default function Home() {
 
   const filteredCategories =
     processedCategories?.filter((category) =>
-      allowedCategories.includes(category.name),
+      categoryOrder.includes(category.name)
+    ).sort((a, b) => 
+      categoryOrder.indexOf(a.name) - categoryOrder.indexOf(b.name)
     ) || [];
 
   useEffect(() => {
