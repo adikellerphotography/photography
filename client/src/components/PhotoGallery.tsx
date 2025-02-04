@@ -46,10 +46,19 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   const getImagePath = (photo: Photo): string => {
     if (!photo?.imageUrl) return '';
-    // Convert ID to padded format
     const paddedId = photo.id.toString().padStart(3, '0');
-    
-    // Direct mapping to actual folder names
+
+    const startingNumbers: Record<string, number> = {
+      'Family': 13,
+      'Horses': 30,
+      'Kids': 14,
+      'Yoga': 41,
+      'Modeling': 1,
+      'Femininity': 1,
+      'Artful Nude': 1,
+      'Bat Mitsva': 1
+    };
+
     const categoryMap: Record<string, string> = {
       'Family': 'Family',
       'Horses': 'Horses',
@@ -60,12 +69,14 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       'Artful Nude': 'Artful_Nude',
       'Bat Mitsva': 'Bat_Mitsva'
     };
-    
-    // Get the correct folder name
+
     const folder = categoryMap[photo.category] || photo.category;
-    
-    // Construct the full path
-    return `/attached_assets/galleries/${folder}/${paddedId}.jpeg`;
+    const adjustedId = startingNumbers[photo.category] 
+      ? startingNumbers[photo.category] + (photo.id - 1)
+      : photo.id;
+    const adjustedPaddedId = adjustedId.toString().padStart(3, '0');
+
+    return `/attached_assets/galleries/${folder}/${adjustedPaddedId}.jpeg`;
   };
 
   if (isLoading) {
@@ -114,8 +125,9 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   src={getImagePath(photo)}
                   alt={photo.title || ""}
                   className="relative w-full h-full transition-all duration-500 group-hover:scale-110 object-cover"
-                  loading={index < 8 ? "eager" : "lazy"}
-                  decoding={index < 8 ? "sync" : "async"}
+                  loading="eager"
+                  decoding="async"
+                  fetchpriority={index < 12 ? "high" : "auto"}
                   style={{
                     opacity: '0',
                     transition: 'opacity 0.3s ease-in-out',
