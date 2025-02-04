@@ -63,6 +63,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       'Family': 'Family',
       'Horses': 'Horses',
       'Kids': 'kids',
+      'Kids': 'kids',
       'Yoga': 'Yoga',
       'Modeling': 'Modeling',
       'Femininity': 'Femininity',
