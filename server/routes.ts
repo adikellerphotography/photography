@@ -113,7 +113,7 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
 
     const processedPhotos = await Promise.all(results.map(async (photo) => {
       const paddedId = String(photo.id).padStart(3, '0');
-      const categoryPath = getCategoryPath(photo.category);
+      const categoryPath = photo.category.replace(/\s+/g, '_');
       const imageUrl = `${paddedId}.jpeg`;
       const thumbnailUrl = `${paddedId}-thumb.jpeg`;
       return {

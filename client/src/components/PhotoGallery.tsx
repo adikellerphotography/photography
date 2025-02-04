@@ -44,8 +44,18 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   const getImagePath = (photo: Photo): string => {
     if (!photo?.imageUrl) return '';
-    const normalizedCategory = category?.replace(/\s+/g, '_').replace(/&/g, 'and') ?? '';
-    return `/assets/galleries/${normalizedCategory}/${photo.id.toString().padStart(3, '0')}.jpeg`;
+    const categoryMap: Record<string, string> = {
+      'Family': 'Family',
+      'Horses': 'Horses', 
+      'Kids': 'kids',
+      'Yoga': 'Yoga',
+      'Modeling': 'Modeling',
+      'Femininity': 'Femininity',
+      'Artful Nude': 'Artful_Nude',
+      'Bat Mitsva': 'Bat_Mitsva'
+    };
+    const normalizedCategory = categoryMap[category || ''] || category;
+    return `/attached_assets/galleries/${normalizedCategory}/${photo.imageUrl}`;
   };
 
   if (isLoading) {
