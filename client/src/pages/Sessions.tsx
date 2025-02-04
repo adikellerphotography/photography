@@ -376,7 +376,7 @@ const categoryMappings: Record<string, string> = {
   "Big Family": "big_family",
   Horses: "horses",
   Modeling: "modeling",
-  Feminine: "feminine",
+  Femininity: "feminine",
   "Sweet 16": "sweet_16",
   Purim: "purim",
   Pregnancy: "pregnancy",
@@ -553,10 +553,23 @@ export default function Sessions() {
                   >
                     <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-muted">
                       <img
-                        src={`/attached_assets/facebook_posts_image/${group.name.replace(/\s+/g, "_")}/${link.number}.jpg`}
+                        src={`/attached_assets/facebook_posts_image/${categoryMappings[group.name]}/${link.number}.jpg`}
                         alt={`${group.name} session ${link.number}`}
                         className="absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-in-out"
                         loading="lazy"
+                        onError={(e) => {
+                          const img = e.target as HTMLImageElement;
+                          const retryCount = Number(img.dataset.retryCount || "0");
+                          if (retryCount < 3) {
+                            img.dataset.retryCount = String(retryCount + 1);
+                            setTimeout(() => {
+                              img.src = img.src + "?retry=" + (retryCount + 1);
+                            }, 1000 * (retryCount + 1));
+                          } else {
+                            img.style.opacity = "0.5";
+                            img.src = "/assets/black_background2.jpeg";
+                          }
+                        }}
                       />
                     </div>
                   </motion.div>
