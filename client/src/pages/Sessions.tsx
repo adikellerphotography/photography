@@ -395,7 +395,7 @@ export default function Sessions() {
   const isMobile = useIsMobile();
   const clickTimer = useRef<number>(0);
   const [groups] = useState<SessionGroup[]>(sessionGroups);
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("Bat Mitsva");
   const groupRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const scrollToGroup = (groupName: string) => {
