@@ -263,11 +263,11 @@ export default function Sessions() {
                   <ArrowUp className="h-4 w-4" />
                 </Button>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-3 gap-2 sm:gap-4">
                 {group.links.map((link) => (
                   <motion.div
                     key={`${group.name}-${link.number}`}
-                    className="relative cursor-pointer"
+                    className="relative cursor-pointer px-1 sm:px-0"
                     onClick={(e) => handleImageClick(e, link, group.name)}
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
