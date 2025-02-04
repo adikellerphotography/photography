@@ -29,28 +29,24 @@ export default function Home() {
   // Override the firstPhoto for specific categories
   const processedCategories = categories?.map((category) => {
     const categoryPath = category.name.replace(/\s+/g, '_');
-    const defaultImage = `/attached_assets/galleries/${categoryPath}/001.jpeg`;
-    const defaultThumb = `/attached_assets/galleries/${categoryPath}/001-thumb.jpeg`;
+  const defaultImage = `/assets/galleries/${categoryPath}/001.jpeg`;
+  const defaultThumb = `/assets/galleries/${categoryPath}/001-thumb.jpeg`;
 
-    // Custom overrides for specific categories if needed
-    const customImages: Record<string, { img: string; thumb: string }> = {
-      "Family": {
-        img: "/attached_assets/galleries/Family/013.jpeg",
-        thumb: "/attached_assets/galleries/Family/013.jpeg"
-      },
-      "Kids": {
-        img: "/attached_assets/galleries/kids/014.jpeg", 
-        thumb: "/attached_assets/galleries/kids/014-thumb.jpeg"
-      },
-      "Modeling": {
-        img: "/attached_assets/galleries/Modeling/004.jpeg",
-        thumb: "/attached_assets/galleries/Modeling/004-thumb.jpeg"
-      },
-      "Horses": {
-        img: "/attached_assets/galleries/Horses/030.jpeg",
-        thumb: "/attached_assets/galleries/Horses/030-thumb.jpeg"
-      }
-    };
+  // Custom overrides for specific categories if needed
+  const customImages: Record<string, { img: string; thumb: string }> = {
+    "Kids": {
+      img: "/assets/galleries/kids/014.jpeg",
+      thumb: "/assets/galleries/kids/014-thumb.jpeg"
+    },
+    "Modeling": {
+      img: "/assets/galleries/Modeling/004.jpeg",
+      thumb: "/assets/galleries/Modeling/004-thumb.jpeg"
+    },
+    "Horses": {
+      img: "/assets/galleries/Horses/030.jpeg",
+      thumb: "/assets/galleries/Horses/030-thumb.jpeg"
+    }
+  };
 
   const imageConfig = customImages[category.name] || { img: defaultImage, thumb: defaultThumb };
 
@@ -246,7 +242,7 @@ export default function Home() {
                           <img
                             src={
                               category.firstPhoto?.imageUrl ||
-                              `/attached_assets/galleries/${category.name.replace(' ', '_')}/${String(1).padStart(3, '0')}.jpeg`
+                              `/assets/${category.name.replace(' ', '_')}/${String(1).padStart(3, '0')}.jpeg`
                             }
                             alt={category.name}
                             className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
