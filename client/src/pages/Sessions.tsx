@@ -221,23 +221,21 @@ export default function Sessions() {
           {t("sessions.title")}
         </h1>
 
-        <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b mb-8 py-6">
-          <div className="container max-w-6xl mx-auto px-4">
-            <div className="flex flex-wrap justify-center gap-3">
-              {groups.map((group) => (
-                <Button
-                  key={group.name}
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => scrollToGroup(group.name)}
-                  className="text-sm font-medium px-4 py-2 rounded-full hover:bg-primary/10 transition-colors duration-200 min-w-[100px]"
-                >
-                  {language === "he"
-                    ? t(`sessions.${group.name}`)
-                    : capitalizeWords(group.name)}
-                </Button>
-              ))}
-            </div>
+        <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b mb-8 py-4">
+          <div className="flex flex-wrap gap-2">
+            {groups.map((group) => (
+              <Button
+                key={group.name}
+                variant="ghost"
+                size="sm"
+                onClick={() => scrollToGroup(group.name)}
+                className="text-sm"
+              >
+                {language === "he"
+                  ? t(`sessions.${group.name}`)
+                  : capitalizeWords(group.name)}
+              </Button>
+            ))}
           </div>
         </nav>
 
