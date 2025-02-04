@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
@@ -18,25 +17,31 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
+  const [isTouching, setIsTouching] = useState(false); // Added state to track touch events
   const galleryRef = useRef<HTMLDivElement>(null);
 
-  const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({
+  const { data: photos = [], isLoading } = useQuery<Photo[]>({
     queryKey: ["/api/photos", category],
     queryFn: async () => {
       const response = await fetch(`/api/photos?category=${encodeURIComponent(category || '')}`);
       if (!response.ok) throw new Error('Failed to fetch photos');
       const data = await response.json();
-      return data.filter((photo: Photo) => photo && photo.imageUrl);
+      return data
+        .filter((photo: Photo) => photo && photo.imageUrl)
+        .sort((a, b) => a.displayOrder - b.displayOrder);
     },
-    retry: 3,
-    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
+    staleTime: Infinity,
+    cacheTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false
   });
 
   const preloadImage = async (photo: Photo): Promise<void> => {
     if (!photo.imageUrl) return;
 
     const path = `/attached_assets/galleries/${category?.replace(/\s+/g, '_')}/${photo.imageUrl}`;
-    
+
     const img = new Image();
     const loadPromise = new Promise<void>((resolve, reject) => {
       img.onload = () => {
@@ -100,6 +105,21 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       preloadImage(photo);
     }
   };
+
+  useEffect(() => {
+    const handleTouchStart = () => setIsTouching(true);
+    const handleTouchEnd = () => setIsTouching(false);
+    const gallery = galleryRef.current;
+    if (gallery) {
+      gallery.addEventListener('touchstart', handleTouchStart);
+      gallery.addEventListener('touchend', handleTouchEnd);
+      return () => {
+        gallery.removeEventListener('touchstart', handleTouchStart);
+        gallery.removeEventListener('touchend', handleTouchEnd);
+      };
+    }
+  }, []);
+
 
   if (isLoading) {
     return (
