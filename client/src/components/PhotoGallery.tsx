@@ -66,12 +66,16 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     ];
   };
 
+  const getAdjustedPath = (path: string) => {
+    return path.replace('/assets/', '/attached_assets/');
+  };
+
   const handleImageError = async (
     img: HTMLImageElement, 
     photo: Photo, 
     pathIndex: number = 0
   ) => {
-    const paths = getImagePath(photo);
+    const paths = getImagePath(photo).map(getAdjustedPath);
     const nextPath = paths[pathIndex + 1];
 
     if (nextPath && pathIndex < paths.length - 1) {
@@ -138,7 +142,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               <div className="relative w-full h-full">
                 <div className="absolute inset-0 animate-pulse bg-muted/10" />
                 <img
-                  src={getImagePath(photo)[0]}
+                  src={getAdjustedPath(getImagePath(photo)[0])}
                   alt={photo.title || ""}
                   className="relative w-full h-full transition-all duration-500 group-hover:scale-110 object-cover"
                   loading={index < 8 ? "eager" : "lazy"}
@@ -202,7 +206,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               </Button>
 
               <img
-                src={getImagePath(selectedPhoto)[0]}
+                src={getAdjustedPath(getImagePath(selectedPhoto)[0])}
                 alt={selectedPhoto.title || ""}
                 className="w-full h-full object-contain"
                 loading="eager"
