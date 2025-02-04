@@ -238,8 +238,9 @@ export default function Sessions() {
                   size="sm"
                   onClick={() => scrollToGroup(group.name)}
                   className={`text-xs font-medium px-3 py-1.5 h-7 rounded-full transition-colors duration-200 ${
-                    groupRefs.current[group.name]?.getBoundingClientRect().top <= 120 &&
-                    groupRefs.current[group.name]?.getBoundingClientRect().top >= -groupRefs.current[group.name]?.offsetHeight
+                    groupRefs.current[group.name] && 
+                    groupRefs.current[group.name].getBoundingClientRect().top <= 120 &&
+                    groupRefs.current[group.name].getBoundingClientRect().bottom >= 120
                       ? 'bg-[#FF9500] !text-black font-semibold hover:!bg-[#FF9500] active:!bg-[#FF9500]'
                       : 'hover:bg-primary/10'
                   }`}
