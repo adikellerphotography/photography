@@ -324,8 +324,8 @@ export function registerRoutes(app: Express): Server {
           imageSets.push({
             id: id++,
             title: key.replace(/_/g, ' '),
-            beforeImage: `/assets/before_and_after/${encodeURIComponent(beforeFile)}`,
-            afterImage: `/assets/before_and_after/${encodeURIComponent(afterFile)}`
+            beforeImage: `/attached_assets/before_and_after/${beforeFile}`,
+            afterImage: `/attached_assets/before_and_after/${afterFile}`
           });
         }
       });
