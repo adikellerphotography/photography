@@ -16,6 +16,20 @@ export default function Gallery() {
   const { language } = useLanguage();
   const { data: categories, isLoading: categoriesLoading } = useQuery<Category[]>({
     queryKey: ["/api/categories"],
+    select: (data) => {
+      const categoryOrder = [
+        "Bat Mitsva",
+        "Horses",
+        "Kids",
+        "Femininity",
+        "Yoga",
+        "Modeling",
+        "Artful Nude"
+      ];
+      return data.sort((a, b) => 
+        categoryOrder.indexOf(a.name) - categoryOrder.indexOf(b.name)
+      );
+    }
   });
 
   const [location] = useLocation();
