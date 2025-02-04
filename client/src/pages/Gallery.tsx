@@ -251,11 +251,9 @@ export default function Gallery() {
                     setActiveCategory(category.name);
                     const newUrl = `/gallery?category=${encodeURIComponent(category.name)}`;
                     window.history.pushState({ category: category.name }, "", newUrl);
-                    requestAnimationFrame(() => {
-                      const element = document.getElementById(`gallery-${category.name}`);
-                      if (element) {
-                        element.scrollIntoView({ behavior: "auto" });
-                      }
+                    window.scrollTo({ 
+                      top: 0,
+                      behavior: 'smooth'
                     });
                   }}
                   className={`text-xs font-medium px-3 py-1.5 h-7 rounded-full transition-all duration-75 ${
@@ -269,12 +267,12 @@ export default function Gallery() {
           </div>
         </nav>
 
-        <div className="container mx-auto px-4 pt-20">
+        <div className="container mx-auto px-4 pt-28">
           <motion.div
             initial="hidden"
             animate="visible"
             variants={containerVariants}
-            className="mb-4"
+            className="mb-6"
           >
             <div className="flex justify-between items-center">
               <motion.h1
