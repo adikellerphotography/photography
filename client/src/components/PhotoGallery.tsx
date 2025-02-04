@@ -1,106 +1,104 @@
+
 import { useState, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import type { Photo } from "@/lib/types";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
 
 interface PhotoGalleryProps {
   category?: string;
 }
 
-const GALLERIES_PATH = '/attached_assets/galleries';
-
 export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
-  const [isFullImageLoaded, setIsFullImageLoaded] = useState(false);
+  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
   const galleryRef = useRef<HTMLDivElement>(null);
 
   const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({
     queryKey: ["/api/photos", category],
     queryFn: async () => {
-      try {
-        const response = await fetch(`/api/photos?category=${encodeURIComponent(category || '')}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch photos');
-        }
-        const data = await response.json();
-        // Filter out photos that don't exist and map remaining ones
-        const validPhotos = data.filter((photo: Photo) => photo && photo.imageUrl);
-        const shuffledData = [...validPhotos].sort(() => Math.random() - 0.5);
-        
-        // Verify images exist by preloading them
-        const verifiedPhotos = await Promise.all(
-          shuffledData.map(async (photo: Photo) => {
-            try {
-              const fullPath = `/attached_assets/galleries/${category?.replace(/\s+/g, '_')}/${photo.imageUrl}`;
-              const response = await fetch(fullPath, { method: 'HEAD' });
-              if (response.ok) {
-                return {
-                  ...photo,
-                  imageUrl: fullPath,
-                  thumbnailUrl: fullPath.replace('.jpeg', '-thumb.jpeg')
-                };
-              }
-              return null;
-            } catch {
-              return null;
-            }
-          })
-        );
-        
-        return verifiedPhotos.filter(Boolean);
-      } catch (error) {
-        console.error('Error fetching photos:', error);
-        throw error;
-      }
+      const response = await fetch(`/api/photos?category=${encodeURIComponent(category || '')}`);
+      if (!response.ok) throw new Error('Failed to fetch photos');
+      const data = await response.json();
+      return data.filter((photo: Photo) => photo && photo.imageUrl);
     },
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
   });
 
+  const preloadImage = async (photo: Photo): Promise<void> => {
+    if (!photo.imageUrl) return;
+
+    const path = `/attached_assets/galleries/${category?.replace(/\s+/g, '_')}/${photo.imageUrl}`;
+    
+    const img = new Image();
+    const loadPromise = new Promise<void>((resolve, reject) => {
+      img.onload = () => {
+        setLoadedImages(prev => new Set(prev).add(path));
+        resolve();
+      };
+      img.onerror = async () => {
+        const retryCount = parseInt(img.dataset.retryCount || '0', 10);
+        if (retryCount < 3) {
+          img.dataset.retryCount = (retryCount + 1).toString();
+          img.src = `${path}?retry=${retryCount + 1}&t=${Date.now()}`;
+        } else {
+          setFailedImages(prev => new Set(prev).add(path));
+          reject(new Error(`Failed to load image: ${path}`));
+        }
+      };
+    });
+
+    img.src = path;
+    try {
+      await Promise.race([
+        loadPromise,
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 10000))
+      ]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    refetch();
-  }, [category, refetch]);
+    if (photos.length) {
+      const preloadQueue = [...photos];
+      let running = 0;
+      const maxConcurrent = 4;
 
-  const getImagePath = (photo: Photo): string => {
-    if (!photo?.imageUrl) return '';
-    const paddedId = photo.id.toString().padStart(3, '0');
+      const processNext = async () => {
+        if (preloadQueue.length === 0 || running >= maxConcurrent) return;
+        running++;
+        const photo = preloadQueue.shift();
+        if (photo) {
+          await preloadImage(photo);
+          running--;
+          processNext();
+        }
+      };
 
-    const startingNumbers: Record<string, number> = {
-      'Family': 13,
-      'Horses': 30,
-      'Kids': 14,
-      'Yoga': 41,
-      'Modeling': 1,
-      'Femininity': 1,
-      'Artful Nude': 1,
-      'Bat Mitsva': 1
-    };
+      for (let i = 0; i < maxConcurrent; i++) {
+        processNext();
+      }
+    }
+  }, [photos]);
 
-    const categoryMap: Record<string, string> = {
-      'Family': 'Family',
-      'Horses': 'Horses',
-      'Kids': 'kids',
-      'Kids': 'kids',
-      'Yoga': 'Yoga',
-      'Modeling': 'Modeling',
-      'Femininity': 'Femininity',
-      'Artful Nude': 'Artful_Nude',
-      'Bat Mitsva': 'Bat_Mitsva'
-    };
-
-    const folder = categoryMap[photo.category] || photo.category;
-    const adjustedId = startingNumbers[photo.category] 
-      ? startingNumbers[photo.category] + (photo.id - 1)
-      : photo.id;
-    const adjustedPaddedId = adjustedId.toString().padStart(3, '0');
-
-    return `/attached_assets/galleries/${folder}/${adjustedPaddedId}.jpeg`;
+  const retryImage = (path: string) => {
+    setFailedImages(prev => {
+      const newSet = new Set(prev);
+      newSet.delete(path);
+      return newSet;
+    });
+    const photo = photos.find(p => p.imageUrl === path.split('/').pop());
+    if (photo) {
+      preloadImage(photo);
+    }
   };
 
   if (isLoading) {
@@ -109,12 +107,11 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
         {Array.from({ length: 12 }).map((_, i) => (
           <motion.div
             key={i}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ delay: i * 0.05 }}
-            className="relative overflow-hidden rounded-lg"
           >
-            <AspectRatio ratio={1.5}>
+            <AspectRatio ratio={4/3}>
               <Skeleton className="w-full h-full" />
             </AspectRatio>
           </motion.div>
@@ -126,57 +123,66 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   return (
     <div className="space-y-8" ref={galleryRef}>
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-background/50">
-        {photos.map((photo, index) => (
-          <motion.div
-            key={`${photo.id}-${index}`}
-            initial={{ opacity: 0, scale: 0.97 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              duration: 0.5,
-              delay: Math.min(index * 0.1, 1),
-              ease: [0.34, 1.56, 0.64, 1],
-            }}
-            onClick={() => {
-              setSelectedPhoto(photo);
-              setSelectedIndex(index);
-            }}
-            className="relative overflow-hidden rounded-lg cursor-pointer group"
-          >
-            <AspectRatio ratio={4/3}>
-              <div className="relative w-full h-full">
-                <div className="absolute inset-0 animate-pulse bg-muted/10" />
-                <img
-                  src={getImagePath(photo)}
-                  alt={photo.title || ""}
-                  className="relative w-full h-full transition-all duration-500 group-hover:scale-110 object-cover"
-                  loading="eager"
-                  decoding="async"
-                  fetchpriority={index < 12 ? "high" : "auto"}
-                  style={{
-                    opacity: '0',
-                    transition: 'opacity 0.3s ease-in-out',
-                  }}
-                  onLoad={(e) => {
-                    const img = e.target as HTMLImageElement;
-                    img.style.opacity = '1';
-                    const container = img.closest('.relative');
-                    if (container) {
-                      container.style.display = 'block'; // Show container only when image loads
-                    }
-                  }}
-                  onError={(e) => {
-                    const img = e.target as HTMLImageElement;
-                    console.error('Failed to load image:', img.src);
-                    const container = img.closest('.relative');
-                    if (container && container.parentNode) {
-                      container.parentNode.removeChild(container); // Remove the container if image fails to load
-                    }
-                  }}
-                />
-              </div>
-            </AspectRatio>
-          </motion.div>
-        ))}
+        {photos.map((photo, index) => {
+          const path = `/attached_assets/galleries/${category?.replace(/\s+/g, '_')}/${photo.imageUrl}`;
+          const isLoaded = loadedImages.has(path);
+          const hasFailed = failedImages.has(path);
+
+          return (
+            <motion.div
+              key={`${photo.id}-${index}`}
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                duration: 0.5,
+                delay: Math.min(index * 0.1, 1),
+                ease: [0.34, 1.56, 0.64, 1],
+              }}
+              className="relative overflow-hidden rounded-lg cursor-pointer group"
+              onClick={() => {
+                if (isLoaded) {
+                  setSelectedPhoto(photo);
+                  setSelectedIndex(index);
+                }
+              }}
+            >
+              <AspectRatio ratio={4/3}>
+                <div className="relative w-full h-full">
+                  {!isLoaded && !hasFailed && (
+                    <div className="absolute inset-0 animate-pulse bg-muted/10" />
+                  )}
+                  {hasFailed ? (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted/10">
+                      <p className="text-sm text-muted-foreground mb-2">Failed to load</p>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          retryImage(path);
+                        }}
+                      >
+                        <RefreshCw className="w-4 h-4 mr-2" />
+                        Retry
+                      </Button>
+                    </div>
+                  ) : (
+                    <img
+                      src={path}
+                      alt={photo.title || ""}
+                      className={`relative w-full h-full transition-all duration-500 ${
+                        isLoaded ? 'opacity-100 group-hover:scale-110' : 'opacity-0'
+                      } object-cover`}
+                      loading={index < 12 ? "eager" : "lazy"}
+                      decoding={index < 12 ? "sync" : "async"}
+                      fetchpriority={index < 12 ? "high" : "low"}
+                    />
+                  )}
+                </div>
+              </AspectRatio>
+            </motion.div>
+          );
+        })}
       </div>
 
       <Dialog
@@ -194,8 +200,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 size="icon"
                 onClick={(e) => {
                   e.stopPropagation();
-                  const newIndex =
-                    selectedIndex === 0 ? photos.length - 1 : selectedIndex - 1;
+                  const newIndex = selectedIndex === 0 ? photos.length - 1 : selectedIndex - 1;
                   setSelectedIndex(newIndex);
                   setSelectedPhoto(photos[newIndex]);
                 }}
@@ -218,11 +223,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               </Button>
 
               <img
-                src={getImagePath(selectedPhoto)}
+                src={`/attached_assets/galleries/${category?.replace(/\s+/g, '_')}/${selectedPhoto.imageUrl}`}
                 alt={selectedPhoto.title || ""}
                 className="w-full h-full object-contain"
                 loading="eager"
-                onLoad={() => setIsFullImageLoaded(true)}
               />
             </div>
           )}
