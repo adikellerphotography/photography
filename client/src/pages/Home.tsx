@@ -32,21 +32,36 @@ export default function Home() {
   const defaultImage = `/assets/galleries/${categoryPath}/001.jpeg`;
   const defaultThumb = `/assets/galleries/${categoryPath}/001-thumb.jpeg`;
 
-  // Custom overrides for specific categories if needed
-  const customImages: Record<string, { img: string; thumb: string }> = {
-    "Kids": {
-      img: "/attached_assets/galleries/kids/014.jpeg",
-      thumb: "/attached_assets/galleries/kids/014-thumb.jpeg"
-    },
-    "Modeling": {
-      img: "/attached_assets/galleries/Modeling/004.jpeg",
-      thumb: "/attached_assets/galleries/Modeling/004-thumb.jpeg"
-    },
-    "Horses": {
-      img: "/attached_assets/galleries/Horses/030.jpeg",
-      thumb: "/attached_assets/galleries/Horses/030-thumb.jpeg"
-    }
+  // Category image configuration with ranges
+  const categoryConfig = {
+    "Family": { start: 13, end: 24 },
+    "Kids": { start: 14, end: 26 },
+    "Modeling": { start: 1, end: 34 },
+    "Horses": { start: 30, end: 58 },
+    "Yoga": { start: 41, end: 80 },
+    "Artful Nude": { start: 1, end: 24 },
+    "Femininity": { start: 1, end: 19 },
+    "Bat Mitsva": { start: 1, end: 50 }
   };
+
+  // Get random image number for a category
+  const getRandomImageNumber = (category: string) => {
+    const config = categoryConfig[category];
+    if (!config) return 1;
+    return Math.floor(Math.random() * (config.end - config.start + 1)) + config.start;
+  };
+
+  // Custom overrides for specific categories with random images
+  const customImages: Record<string, { img: string; thumb: string }> = {};
+  Object.keys(categoryConfig).forEach(category => {
+    const imageNum = getRandomImageNumber(category);
+    const paddedNum = imageNum.toString().padStart(3, '0');
+    const categoryPath = category.replace(/\s+/g, '_');
+    customImages[category] = {
+      img: `/attached_assets/galleries/${categoryPath}/${paddedNum}.jpeg`,
+      thumb: `/attached_assets/galleries/${categoryPath}/${paddedNum}-thumb.jpeg`
+    };
+  });
 
   const imageConfig = customImages[category.name] || { img: defaultImage, thumb: defaultThumb };
 
