@@ -269,9 +269,15 @@ export default function Gallery() {
                     setActiveCategory(category.name);
                     const newUrl = `/gallery?category=${encodeURIComponent(category.name)}`;
                     window.history.pushState({ category: category.name }, "", newUrl);
+                    requestAnimationFrame(() => {
+                      const element = document.getElementById(`gallery-${category.name}`);
+                      if (element) {
+                        element.scrollIntoView({ behavior: "auto" });
+                      }
+                    });
                   }}
-                  className={`text-xs font-medium px-3 py-1.5 h-7 rounded-full hover:bg-primary/10 transition-colors duration-200 ${
-                    activeCategory === category.name ? 'bg-[#FF9500] text-white' : ''
+                  className={`text-xs font-medium px-3 py-1.5 h-7 rounded-full transition-all duration-75 ${
+                    activeCategory === category.name ? 'bg-[#FF9500] text-black font-semibold' : 'hover:bg-primary/10'
                   }`}
                 >
                   {category.name}
