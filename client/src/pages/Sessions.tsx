@@ -420,10 +420,10 @@ export default function Sessions() {
     if (isMobile) {
       const postId = url.split("pfbid")[1];
       if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
-        return `fb://profile/adi.keller.16/posts/pfbid${postId}`;
+        return `fb://post/pfbid${postId}`;
       }
       if (/Android/.test(navigator.userAgent)) {
-        return `intent://facebook.com/adi.keller.16/posts/pfbid${postId}#Intent;package=com.facebook.katana;scheme=https;end`;
+        return `fb://facewebmodal/f?href=${encodeURIComponent(url)}`;
       }
     }
     return url;
@@ -435,13 +435,18 @@ export default function Sessions() {
     groupName: string,
   ) => {
     event.preventDefault();
-    const now = Date.now();
+    
+    if (isMobile) {
+      const url = getFacebookUrl(link.url);
+      window.location.href = url;
+      return;
+    }
 
+    const now = Date.now();
     if (clickTimer.current && now - clickTimer.current < 300) {
       clickTimer.current = 0;
       setIsDialogOpen(false);
-      const url = isMobile ? getFacebookUrl(link.url) : link.url;
-      window.open(url, "_blank", "noopener,noreferrer");
+      window.open(link.url, "_blank", "noopener,noreferrer");
     } else {
       clickTimer.current = now;
       setTimeout(() => {
