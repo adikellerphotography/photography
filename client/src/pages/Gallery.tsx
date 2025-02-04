@@ -256,64 +256,48 @@ export default function Gallery() {
           </motion.h1>
         </div>
 
-        <Tabs
-          value={activeCategory}
-          onValueChange={(value) => {
-            setActiveCategory(value);
-            const newUrl = `/gallery?category=${encodeURIComponent(value)}`;
-            window.history.pushState({ category: value }, "", newUrl);
-          }}
-          className="space-y-8"
-        >
-          <div className="relative">
-            {showLeftScroll && (
-              <Button
-                variant="outline"
-                size="icon"
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm"
-                onClick={() => scroll("left")}
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-            )}
-
-            <div
-              className="overflow-x-auto scrollbar-hide relative scroll-smooth"
-              onScroll={checkScroll}
-              ref={tabsListRef}
-            >
-              <TabsList className="inline-flex min-w-full justify-start px-8 border-0 sticky left-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                {processedCategories.map((category) => (
-                  <TabsTrigger
-                    key={category.id}
-                    value={category.name}
-                    className="min-w-[120px] transition-all duration-300 ease-in-out data-[state=active]:bg-gray-100/10 rounded-md"
-                  >
-                    {category.name}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
+        <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b mb-8 py-3">
+          <div className="container max-w-5xl mx-auto">
+            <div className="flex flex-wrap justify-center gap-1.5">
+              {processedCategories.map((category) => (
+                <Button
+                  key={category.id}
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setActiveCategory(category.name);
+                    const newUrl = `/gallery?category=${encodeURIComponent(category.name)}`;
+                    window.history.pushState({ category: category.name }, "", newUrl);
+                  }}
+                  className={`text-xs font-medium px-3 py-1.5 h-7 rounded-full hover:bg-primary/10 transition-colors duration-200 ${
+                    activeCategory === category.name ? 'bg-primary/10' : ''
+                  }`}
+                >
+                  {category.name}
+                </Button>
+              ))}
             </div>
-
-            {showRightScroll && (
-              <Button
-                variant="outline"
-                size="icon"
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm"
-                onClick={() => scroll("right")}
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-            )}
           </div>
+        </nav>
 
-          <motion.div variants={itemVariants}>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+
+          <AnimatePresence mode="wait">
             {processedCategories.map((category) => (
-              <TabsContent
-                key={category.id}
-                value={category.name}
-                className="relative"
-              >
+              category.name === activeCategory && (
+                <motion.div
+                  key={category.id}
+                  initial={{ opacity: 0, x: swipeDirection === "left" ? 300 : -300 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: swipeDirection === "left" ? -300 : 300 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                  className="relative"
+                >
                 <motion.div
                   initial={{
                     opacity: 0,
@@ -340,9 +324,11 @@ export default function Gallery() {
                     </CardContent>
                   </Card>
                 </motion.div>
-              </TabsContent>
+              </motion.div>
+              )
             ))}
-          </motion.div>
+          </AnimatePresence>
+        </motion.div>
         </Tabs>
       </motion.div>
     </div>
