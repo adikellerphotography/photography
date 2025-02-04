@@ -271,7 +271,7 @@ export default function Gallery() {
                     window.history.pushState({ category: category.name }, "", newUrl);
                   }}
                   className={`text-xs font-medium px-3 py-1.5 h-7 rounded-full hover:bg-primary/10 transition-colors duration-200 ${
-                    activeCategory === category.name ? 'bg-primary/10' : ''
+                    activeCategory === category.name ? 'bg-[#FF9500] text-white' : ''
                   }`}
                 >
                   {category.name}
