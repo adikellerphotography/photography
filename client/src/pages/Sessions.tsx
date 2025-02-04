@@ -187,7 +187,7 @@ export default function Sessions() {
             window.location.pathname
           );
           setSelectedImage({
-            url: `/attached_assets/facebook_posts_image/${categoryMappings[groupName]}/${link.number}.jpg`,
+            url: `/attached_assets/facebook_posts_image/${group.name.replace(/\s+/g, '_')}/${link.number}.jpg`,
             number: link.number,
             groupName,
           });
@@ -263,7 +263,7 @@ export default function Sessions() {
                   <ArrowUp className="h-4 w-4" />
                 </Button>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-4">
                 {group.links.map((link) => (
                   <motion.div
                     key={`${group.name}-${link.number}`}
@@ -275,7 +275,7 @@ export default function Sessions() {
                   >
                     <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-muted">
                       <img
-                        src={`/attached_assets/facebook_posts_image/${categoryMappings[group.name]}/${link.number}.jpg`}
+                        src={`/attached_assets/facebook_posts_image/${group.name.replace(/\s+/g, '_')}/${link.number}.jpg`}
                         alt={`${group.name} session ${link.number}`}
                         className="absolute inset-0 w-full h-full object-cover transition-all duration-300 ease-in-out"
                         loading="lazy"
