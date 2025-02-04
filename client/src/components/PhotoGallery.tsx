@@ -59,11 +59,16 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     if (!photo?.category) return [];
 
     const id = String(photo.id).padStart(3, '0');
-    const categoryPath = photo.category.replace(/\s+/g, '_');
+    const categoryPath = photo.category.split(' ').map(word => 
+      word.charAt(0).toUpperCase() + word.slice(1)
+    ).join('_');
 
     return [
-      `${IMAGE_PATHS.GALLERIES}/${categoryPath}/${id}.jpeg`
-    ];
+      `/assets/galleries/${categoryPath}/${id}.jpeg`,
+      `/assets/galleries/${categoryPath}/${id}-thumb.jpeg`,
+      photo.imageUrl,
+      photo.thumbnailUrl
+    ].filter(Boolean);
   };
 
   const handleImageError = async (

@@ -59,7 +59,7 @@ export async function scanImages(targetPath?: string) {
           const baseName = path.parse(imageFile).name;
           const ext = path.parse(imageFile).ext;
 
-          const imageUrl = `/assets/galleries/${dir}/${imageFile}`;
+          const imageUrl = `/assets/galleries/${dir}/${baseName}${ext}`;
           const thumbnailUrl = `/assets/galleries/${dir}/${baseName}-thumb${ext}`;
 
           await db.insert(photos).values({
