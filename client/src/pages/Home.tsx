@@ -42,35 +42,37 @@ export default function Home() {
   const defaultThumb = `/assets/galleries/${categoryPath}/001-thumb.jpeg`;
 
   // Category image configuration with ranges
-  const categoryConfig = {
-    "Family": { start: 13, end: 24 },
-    "Kids": { start: 14, end: 26 },
-    "Modeling": { start: 1, end: 34 },
-    "Horses": { start: 30, end: 58 },
-    "Yoga": { start: 41, end: 80 },
-    "Artful Nude": { start: 1, end: 24 },
-    "Femininity": { start: 1, end: 19 },
-    "Bat Mitsva": { start: 1, end: 50 }
+  // Fixed images for each category
+  const customImages: Record<string, { img: string; thumb: string }> = {
+    "Bat Mitsva": {
+      img: `/attached_assets/galleries/Bat_Mitsva/001.jpeg`,
+      thumb: `/attached_assets/galleries/Bat_Mitsva/001-thumb.jpeg`
+    },
+    "Horses": {
+      img: `/attached_assets/galleries/Horses/058.jpeg`,
+      thumb: `/attached_assets/galleries/Horses/058-thumb.jpeg`
+    },
+    "Kids": {
+      img: `/attached_assets/galleries/Kids/021.jpeg`,
+      thumb: `/attached_assets/galleries/Kids/021-thumb.jpeg`
+    },
+    "Femininity": {
+      img: `/attached_assets/galleries/Femininity/008.jpeg`,
+      thumb: `/attached_assets/galleries/Femininity/008-thumb.jpeg`
+    },
+    "Yoga": {
+      img: `/attached_assets/galleries/Yoga/064.jpeg`,
+      thumb: `/attached_assets/galleries/Yoga/064-thumb.jpeg`
+    },
+    "Modeling": {
+      img: `/attached_assets/galleries/Modeling/010.jpeg`,
+      thumb: `/attached_assets/galleries/Modeling/010-thumb.jpeg`
+    },
+    "Artful Nude": {
+      img: `/attached_assets/galleries/Artful_Nude/023.jpeg`,
+      thumb: `/attached_assets/galleries/Artful_Nude/023-thumb.jpeg`
+    }
   };
-
-  // Get random image number for a category
-  const getRandomImageNumber = (category: string) => {
-    const config = categoryConfig[category];
-    if (!config) return 1;
-    return Math.floor(Math.random() * (config.end - config.start + 1)) + config.start;
-  };
-
-  // Custom overrides for specific categories with random images
-  const customImages: Record<string, { img: string; thumb: string }> = {};
-  Object.keys(categoryConfig).forEach(category => {
-    const imageNum = getRandomImageNumber(category);
-    const paddedNum = imageNum.toString().padStart(3, '0');
-    const categoryPath = category.replace(/\s+/g, '_');
-    customImages[category] = {
-      img: `/attached_assets/galleries/${categoryPath}/${paddedNum}.jpeg`,
-      thumb: `/attached_assets/galleries/${categoryPath}/${paddedNum}-thumb.jpeg`
-    };
-  });
 
   const imageConfig = customImages[category.name] || { img: defaultImage, thumb: defaultThumb };
 
