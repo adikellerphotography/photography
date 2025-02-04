@@ -204,15 +204,25 @@ export default function Gallery() {
 
   });
 
-  const shuffleArray = (array: Photo[]) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  };
-
-  const shuffledPhotos = photos && shuffleArray(photos);
+  const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({
+    queryKey: ["/api/photos", activeCategory],
+    queryFn: async () => {
+      const response = await fetch(`/api/photos?category=${encodeURIComponent(activeCategory)}`);
+      if (!response.ok) throw new Error('Failed to fetch photos');
+      const data = await response.json();
+      const filteredPhotos = data.filter((photo: Photo) => photo && photo.imageUrl);
+      
+      // Shuffle photos only once when fetched
+      for (let i = filteredPhotos.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [filteredPhotos[i], filteredPhotos[j]] = [filteredPhotos[j], filteredPhotos[i]];
+      }
+      
+      return filteredPhotos;
+    },
+    staleTime: Infinity,
+    cacheTime: Infinity,
+  });
 
 
   if (categoriesLoading || !processedCategories.length || isLoading) {
@@ -348,7 +358,7 @@ export default function Gallery() {
                 >
                   <Card>
                     <CardContent className="pt-6">
-                      <PhotoGallery category={category.name} photos={shuffledPhotos} />
+                      <PhotoGallery category={category.name} photos={photos} />
                     </CardContent>
                   </Card>
                 </motion.div>
