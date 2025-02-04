@@ -267,7 +267,7 @@ export default function Gallery() {
           </div>
         </nav>
 
-        <div className="container mx-auto px-4 pt-28">
+        <div className="container mx-auto px-4 pt-20">
           <motion.div
             initial="hidden"
             animate="visible"

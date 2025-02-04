@@ -233,7 +233,7 @@ export default function Sessions() {
                   className={`text-xs font-medium px-3 py-1.5 h-7 rounded-full hover:bg-primary/10 transition-colors duration-200 ${
                     groupRefs.current[group.name]?.getBoundingClientRect().top <= 120 &&
                     groupRefs.current[group.name]?.getBoundingClientRect().top >= -groupRefs.current[group.name]?.offsetHeight
-                      ? 'bg-[#FF9500] text-white'
+                      ? 'bg-[#FF9500] !text-black font-semibold hover:bg-[#FF9500] active:bg-[#FF9500]'
                       : ''
                   }`}
                 >
