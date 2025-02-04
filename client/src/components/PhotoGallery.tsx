@@ -30,8 +30,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     },
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
-    staleTime: Infinity,
-    cacheTime: Infinity,
   });
 
   const preloadImage = async (photo: Photo): Promise<void> => {
