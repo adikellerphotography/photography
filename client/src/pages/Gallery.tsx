@@ -197,19 +197,6 @@ export default function Gallery() {
       const response = await fetch(`/api/photos?category=${encodeURIComponent(activeCategory)}`);
       if (!response.ok) throw new Error('Failed to fetch photos');
       const data = await response.json();
-      return data.filter((photo: Photo) => photo && photo.imageUrl);
-    },
-    staleTime: Infinity,
-    cacheTime: Infinity,
-
-  });
-
-  const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({
-    queryKey: ["/api/photos", activeCategory],
-    queryFn: async () => {
-      const response = await fetch(`/api/photos?category=${encodeURIComponent(activeCategory)}`);
-      if (!response.ok) throw new Error('Failed to fetch photos');
-      const data = await response.json();
       const filteredPhotos = data.filter((photo: Photo) => photo && photo.imageUrl);
       
       // Shuffle photos only once when fetched
