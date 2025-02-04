@@ -19,10 +19,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [isFullImageLoaded, setIsFullImageLoaded] = useState(false);
   const galleryRef = useRef<HTMLDivElement>(null);
-  const [loadedImages, setLoadedImages] = useState(new Set<string>());
-  const [retryCount, setRetryCount] = useState({});
-  const MAX_RETRIES = 3;
-  const RETRY_DELAY = 1000;
 
   const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({
     queryKey: ["/api/photos", category],
@@ -36,7 +32,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
         // Filter out photos that don't exist and map remaining ones
         const validPhotos = data.filter((photo: Photo) => photo && photo.imageUrl);
         const shuffledData = [...validPhotos].sort(() => Math.random() - 0.5);
-
+        
         // Verify images exist by preloading them
         const verifiedPhotos = await Promise.all(
           shuffledData.map(async (photo: Photo) => {
@@ -56,7 +52,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
             }
           })
         );
-
+        
         return verifiedPhotos.filter(Boolean);
       } catch (error) {
         console.error('Error fetching photos:', error);
@@ -73,11 +69,24 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
   const getImagePath = (photo: Photo): string => {
     if (!photo?.imageUrl) return '';
-    
+    const paddedId = photo.id.toString().padStart(3, '0');
+
+    const startingNumbers: Record<string, number> = {
+      'Family': 13,
+      'Horses': 30,
+      'Kids': 14,
+      'Yoga': 41,
+      'Modeling': 1,
+      'Femininity': 1,
+      'Artful Nude': 1,
+      'Bat Mitsva': 1
+    };
+
     const categoryMap: Record<string, string> = {
       'Family': 'Family',
       'Horses': 'Horses',
-      'Kids': 'Kids',
+      'Kids': 'kids',
+      'Kids': 'kids',
       'Yoga': 'Yoga',
       'Modeling': 'Modeling',
       'Femininity': 'Femininity',
@@ -85,8 +94,13 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       'Bat Mitsva': 'Bat_Mitsva'
     };
 
-    const folder = categoryMap[photo.category] || photo.category.replace(/\s+/g, '_');
-    return `/attached_assets/galleries/${folder}/${photo.imageUrl}`;
+    const folder = categoryMap[photo.category] || photo.category;
+    const adjustedId = startingNumbers[photo.category] 
+      ? startingNumbers[photo.category] + (photo.id - 1)
+      : photo.id;
+    const adjustedPaddedId = adjustedId.toString().padStart(3, '0');
+
+    return `/attached_assets/galleries/${folder}/${adjustedPaddedId}.jpeg`;
   };
 
   if (isLoading) {
@@ -130,52 +144,36 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
           >
             <AspectRatio ratio={4/3}>
               <div className="relative w-full h-full">
-                  {!loadedImages.has(getImagePath(photo)) && (
-                    <div className="absolute inset-0 bg-muted/10 animate-pulse" />
-                  )}
-                  <img
-                    src={getImagePath(photo)}
-                    alt={photo.title || ""}
-                    className={`relative w-full h-full transition-all duration-500 group-hover:scale-110 object-cover ${
-                      loadedImages.has(getImagePath(photo)) ? 'opacity-100' : 'opacity-0'
-                    }`}
-                    loading="eager"
-                    decoding="async"
-                    fetchpriority={index < 12 ? "high" : "auto"}
-                    style={{
-                      transition: 'opacity 0.3s ease-in-out',
-                    }}
-                    onLoad={(e) => {
-                      const img = e.target as HTMLImageElement;
-                      setLoadedImages(prev => new Set([...prev, img.src]));
-                      if (img.naturalHeight > img.naturalWidth) {
-                        img.style.objectPosition = "center 50%";
-                      }
-                    }}
-                    onError={(e) => {
-                      const img = e.target as HTMLImageElement;
-                      const currentRetries = retryCount[img.src] || 0;
-
-                      if (currentRetries < MAX_RETRIES) {
-                        setRetryCount(prev => ({
-                          ...prev,
-                          [img.src]: currentRetries + 1
-                        }));
-
-                        setTimeout(() => {
-                          const timestamp = Date.now();
-                          img.src = `${img.src.split('?')[0]}?retry=${currentRetries + 1}&t=${timestamp}`;
-                        }, RETRY_DELAY * (currentRetries + 1));
-                      } else {
-                        // Try alternative format after all retries fail
-                        const altPath = `/attached_assets/galleries/${category}/${photo.imageUrl.split('/').pop()}`;
-                        if (img.src !== altPath) {
-                          img.src = altPath;
-                        }
-                      }
-                    }}
-                  />
-                </div>
+                <div className="absolute inset-0 animate-pulse bg-muted/10" />
+                <img
+                  src={getImagePath(photo)}
+                  alt={photo.title || ""}
+                  className="relative w-full h-full transition-all duration-500 group-hover:scale-110 object-cover"
+                  loading="eager"
+                  decoding="async"
+                  fetchpriority={index < 12 ? "high" : "auto"}
+                  style={{
+                    opacity: '0',
+                    transition: 'opacity 0.3s ease-in-out',
+                  }}
+                  onLoad={(e) => {
+                    const img = e.target as HTMLImageElement;
+                    img.style.opacity = '1';
+                    const container = img.closest('.relative');
+                    if (container) {
+                      container.style.display = 'block'; // Show container only when image loads
+                    }
+                  }}
+                  onError={(e) => {
+                    const img = e.target as HTMLImageElement;
+                    console.error('Failed to load image:', img.src);
+                    const container = img.closest('.relative');
+                    if (container && container.parentNode) {
+                      container.parentNode.removeChild(container); // Remove the container if image fails to load
+                    }
+                  }}
+                />
+              </div>
             </AspectRatio>
           </motion.div>
         ))}
