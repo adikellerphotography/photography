@@ -161,15 +161,18 @@ export default function Sessions() {
 
   const getFacebookUrl = (url: string) => {
     if (isMobile) {
-      const postId = url.split("pfbid")[1];
-      if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
-        return `fb://profile/adi.keller.16/posts/pfbid${postId}`;
-      }
-      if (/Android/.test(navigator.userAgent)) {
-        return `intent://facebook.com/adi.keller.16/posts/pfbid${postId}#Intent;package=com.facebook.katana;scheme=https;end`;
+      const matches = url.match(/facebook\.com\/([^\/]+)\/posts\/([^\/]+)/);
+      if (matches) {
+        const [, username, postId] = matches;
+        if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+          return `fb://post/${postId}`;
+        }
+        if (/Android/.test(navigator.userAgent)) {
+          return `intent://facebook.com/${username}/posts/${postId}#Intent;package=com.facebook.katana;scheme=https;end`;
+        }
       }
     }
-    return url;
+    return `https://www.facebook.com/adi.keller.16/posts/${url.split("pfbid")[1]}`;
   };
 
   const handleImageClick = (
