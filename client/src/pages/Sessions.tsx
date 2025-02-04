@@ -535,7 +535,7 @@ export default function MySessions() {
                       <motion.div
                         className="relative aspect-square w-full overflow-hidden rounded-lg bg-muted"
                         transition={{ duration: 0.2 }}
-                        initial{{ opacity: 0, scale: 0.95 }}
+                        initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.95 }}
                       >
