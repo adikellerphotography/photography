@@ -90,11 +90,15 @@ export async function scanGalleries(targetPath?: string) { // Renamed for clarit
   }
 }
 
-export async function scanFacebookPostsImages() { // New function for Facebook posts
+export async function scanFacebookPostsImages() {
   try {
     const fbPostsPath = path.join(process.cwd(), 'attached_assets', 'facebook_posts_image');
     console.log('\n=== Starting Facebook Posts Image Scan ===');
     console.log('Assets path:', fbPostsPath);
+
+    // Clear existing records first
+    await db.delete(photos);
+    await db.delete(categories);
 
     const entries = await fs.readdir(fbPostsPath, { withFileTypes: true });
     const dirs = entries
@@ -103,48 +107,56 @@ export async function scanFacebookPostsImages() { // New function for Facebook p
 
     console.log('Found directories:', dirs);
 
-    for (const dir of dirs) {
+    for (const [categoryIndex, dir] of dirs.entries()) {
+      const displayName = dir.split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+
+      // Add category to database
+      await db.insert(categories).values({
+        name: displayName,
+        displayOrder: categoryIndex + 1,
+        description: `${displayName} Photography Sessions`
+      });
+
       const dirPath = path.join(fbPostsPath, dir);
       const imageFiles = await scanDirectory(dirPath);
+      console.log(`Processing ${imageFiles.length} images in ${dir}`);
 
-      // Create thumbnails directory if it doesn't exist
-      const thumbnailsDir = path.join(dirPath, 'thumbnails');
-      try {
-        await fs.mkdir(thumbnailsDir, { recursive: true });
-      } catch (error) {
-        console.log('Thumbnails directory already exists or error creating it:', error);
-      }
-
-      // Process each image
-      for (const imageFile of imageFiles) {
+      for (const [imageIndex, imageFile] of imageFiles.entries()) {
         try {
           const baseName = path.parse(imageFile).name;
           const ext = path.parse(imageFile).ext.toLowerCase();
+          const id = parseInt(baseName) || imageIndex + 1;
 
-          // Copy original file as numbered sequence.  This section seems redundant.
-          const originalPath = path.join(dirPath, imageFile);
-          const newPath = path.join(dirPath, `${baseName}${ext}`);
-
-          if (originalPath !== newPath) {
-            await fs.copyFile(originalPath, newPath);
-          }
-
-          // Create thumbnail if it doesn't exist
-          const thumbPath = path.join(thumbnailsDir, `${baseName}${ext}`);
-          try {
-            await fs.copyFile(originalPath, thumbPath);
-          } catch (error) {
-            console.error(`Error creating thumbnail for ${imageFile}:`, error);
-          }
+          // Add photo to database
+          await db.insert(photos).values({
+            id,
+            title: `${displayName} Portrait Session`,
+            category: displayName,
+            imageUrl: `/attached_assets/facebook_posts_image/${dir}/${imageFile}`,
+            thumbnailUrl: `/attached_assets/facebook_posts_image/${dir}/${imageFile}`,
+            displayOrder: id
+          }).onConflictDoUpdate({
+            target: [photos.id],
+            set: {
+              imageUrl: `/attached_assets/facebook_posts_image/${dir}/${imageFile}`,
+              thumbnailUrl: `/attached_assets/facebook_posts_image/${dir}/${imageFile}`,
+              displayOrder: id
+            }
+          });
         } catch (error) {
           console.error(`Error processing ${imageFile}:`, error);
         }
       }
-
-      console.log(`Processed ${imageFiles.length} images in ${dir}`);
     }
 
+    const photoCount = await db.select({ count: sql`count(*)` }).from(photos);
+    const categoryCount = await db.select({ count: sql`count(*)` }).from(categories);
+
     console.log('=== Scan Complete ===');
+    console.log(`Total photos in database: ${photoCount[0].count}`);
+    console.log(`Total categories in database: ${categoryCount[0].count}`);
   } catch (error) {
     console.error('Error during image scan:', error);
     throw error;
