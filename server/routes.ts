@@ -313,6 +313,16 @@ export function registerRoutes(app: Express): Server {
         if (beforeFile && afterFile) {
           imageSets.push({
             id: id++,
+            beforeImage: `/attached_assets/before_and_after/${beforeFile}`,
+            afterImage: `/attached_assets/before_and_after/${afterFile}`,
+            title: `Before & After ${id}`
+          });
+        }
+      });
+
+        if (beforeFile && afterFile) {
+          imageSets.push({
+            id: id++,
             title: key.replace(/_/g, ' '),
             beforeImage: `/assets/before_and_after/${encodeURIComponent(beforeFile)}`,
             afterImage: `/assets/before_and_after/${encodeURIComponent(afterFile)}`

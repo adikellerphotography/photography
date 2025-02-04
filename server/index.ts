@@ -1,6 +1,7 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import path from 'path'; //Import path module
 
 const setupMiddleware = (app: express.Express) => {
   app.use(express.json());
@@ -74,6 +75,8 @@ const initializeServer = async () => {
 
     if (process.env.NODE_ENV === "production") {
       serveStatic(app);
+      app.use('/assets', express.static(path.join(process.cwd(), 'public', 'assets'))); //This line was already present.
+      app.use('/attached_assets', express.static(path.join(process.cwd(), 'attached_assets'))); //Added this line
       log("🚀 Running in production mode");
     } else {
       await setupVite(app, server);
