@@ -35,16 +35,16 @@ export default function Home() {
   // Custom overrides for specific categories if needed
   const customImages: Record<string, { img: string; thumb: string }> = {
     "Kids": {
-      img: "/assets/galleries/kids/014.jpeg",
-      thumb: "/assets/galleries/kids/014-thumb.jpeg"
+      img: "/attached_assets/galleries/kids/014.jpeg",
+      thumb: "/attached_assets/galleries/kids/014-thumb.jpeg"
     },
     "Modeling": {
-      img: "/assets/galleries/Modeling/004.jpeg",
-      thumb: "/assets/galleries/Modeling/004-thumb.jpeg"
+      img: "/attached_assets/galleries/Modeling/004.jpeg",
+      thumb: "/attached_assets/galleries/Modeling/004-thumb.jpeg"
     },
     "Horses": {
-      img: "/assets/galleries/Horses/030.jpeg",
-      thumb: "/assets/galleries/Horses/030-thumb.jpeg"
+      img: "/attached_assets/galleries/Horses/030.jpeg",
+      thumb: "/attached_assets/galleries/Horses/030-thumb.jpeg"
     }
   };
 

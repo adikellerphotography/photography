@@ -55,8 +55,8 @@ export async function scanImages(targetPath?: string) {
           const thumbName = `${baseName}-thumb${ext}`;
           const thumbExists = imageFiles.includes(thumbName);
           
-          const imageUrl = `/assets/galleries/${dir}/${imageFile}`;
-          const thumbnailUrl = thumbExists ? `/assets/galleries/${dir}/${thumbName}` : imageUrl;
+          const imageUrl = `/attached_assets/galleries/${dir}/${imageFile}`;
+          const thumbnailUrl = thumbExists ? `/attached_assets/galleries/${dir}/${thumbName}` : imageUrl;
           
           await db.insert(photos).values({
             id,
