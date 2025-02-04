@@ -241,7 +241,7 @@ const sessionGroups: SessionGroup[] = [
     ],
   },
   {
-    name: "Feminine",
+    name: "Femininity",
     links: [
       {
         url: "https://www.facebook.com/dalia.zvikler/posts/pfbid02waJ1fwPEfTadroXp2HYtqgruo4ucaZRQf9YexZDiXy36YGMWujErcx7rqkSpg9EFl",
@@ -376,7 +376,7 @@ const categoryMappings: Record<string, string> = {
   "Big Family": "big_family",
   Horses: "horses",
   Modeling: "modeling",
-  Feminine: "feminine",
+  Femininity: "femininity",
   "Sweet 16": "sweet_16",
   Purim: "purim",
   Pregnancy: "pregnancy",
