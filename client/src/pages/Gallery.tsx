@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
@@ -13,9 +14,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Gallery() {
   const { language } = useLanguage();
-  const { data: categories, isLoading: categoriesLoading } = useQuery<
-    Category[]
-  >({
+  const { data: categories, isLoading: categoriesLoading } = useQuery<Category[]>({
     queryKey: ["/api/categories"],
   });
 
@@ -25,18 +24,13 @@ export default function Gallery() {
   const [activeCategory, setActiveCategory] = useState<string>("");
   const [showLeftScroll, setShowLeftScroll] = useState(false);
   const [showRightScroll, setShowRightScroll] = useState(false);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
   const tabsListRef = useRef<HTMLDivElement>(null);
 
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [touchStartY, setTouchStartY] = useState<number | null>(null);
   const [currentX, setCurrentX] = useState<number | null>(null);
-  const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(
-    null,
-  );
-  const [isHorizontalSwipe, setIsHorizontalSwipe] = useState<boolean | null>(
-    null,
-  );
+  const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(null);
+  const [isHorizontalSwipe, setIsHorizontalSwipe] = useState<boolean | null>(null);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     const x = e.touches[0].clientX;
@@ -60,18 +54,13 @@ export default function Gallery() {
     setCurrentX(x);
     setSwipeDirection(diffX > 0 ? "left" : "right");
 
-    // Determine swipe direction on first significant movement
-    if (
-      isHorizontalSwipe === null &&
-      (Math.abs(diffX) > 10 || Math.abs(diffY) > 10)
-    ) {
+    if (isHorizontalSwipe === null && (Math.abs(diffX) > 10 || Math.abs(diffY) > 10)) {
       setIsHorizontalSwipe(Math.abs(diffX) > Math.abs(diffY));
     }
 
-    // Only handle horizontal swipes
     if (isHorizontalSwipe && Math.abs(diffX) > 50) {
       const currentIndex = processedCategories.findIndex(
-        (c) => c.name === activeCategory,
+        (c) => c.name === activeCategory
       );
       let newIndex = diffX > 0 ? currentIndex + 1 : currentIndex - 1;
 
@@ -84,26 +73,21 @@ export default function Gallery() {
       const newCategory = processedCategories[newIndex].name;
       setActiveCategory(newCategory);
 
-      // Ensure tab visibility and synchronization
       if (tabsListRef.current) {
         const tabTrigger = tabsListRef.current.querySelector(
-          `[value="${newCategory}"]`,
+          `[value="${newCategory}"]`
         ) as HTMLButtonElement;
+        
         if (tabTrigger) {
-          // Force tab activation
           tabTrigger.click();
-
-          // Calculate scroll position to keep the active tab visible on the left
           const container = tabsListRef.current;
           const scrollLeft = Math.max(0, tabTrigger.offsetLeft - 16);
 
-          // Smooth scroll with animation matching the swipe
           container.scrollTo({
             left: scrollLeft,
             behavior: "smooth",
           });
 
-          // Update active state visually
           const allTriggers = container.querySelectorAll('[role="tab"]');
           allTriggers.forEach((trigger) => {
             trigger.setAttribute("aria-selected", "false");
@@ -129,34 +113,30 @@ export default function Gallery() {
   };
 
   const excludedCategories = ["before_and_after", "facebook_posts_image"];
-  const processedCategories =
-    categories
-      ?.filter(
-        (category, index, self) =>
-          !excludedCategories.includes(category.name.toLowerCase()) &&
-          self.findIndex(
-            (c) => c.name.toLowerCase() === category.name.toLowerCase(),
-          ) === index,
-      )
-      .sort((a, b) => a.name.localeCompare(b.name)) || [];
+  const processedCategories = categories
+    ?.filter(
+      (category, index, self) =>
+        !excludedCategories.includes(category.name.toLowerCase()) &&
+        self.findIndex(
+          (c) => c.name.toLowerCase() === category.name.toLowerCase()
+        ) === index
+    )
+    .sort((a, b) => a.name.localeCompare(b.name)) || [];
 
-  // Update active category when categories load or URL changes
   useEffect(() => {
     if (processedCategories.length > 0) {
-      if (
-        categoryFromUrl &&
-        processedCategories.some((c) => c.name === categoryFromUrl)
-      ) {
+      if (categoryFromUrl && processedCategories.some((c) => c.name === categoryFromUrl)) {
         setActiveCategory(categoryFromUrl);
       } else if (!activeCategory) {
         setActiveCategory(processedCategories[0].name);
-        const newUrl = `/gallery?category=${encodeURIComponent(processedCategories[0].name)}`;
+        const newUrl = `/gallery?category=${encodeURIComponent(
+          processedCategories[0].name
+        )}`;
         window.history.replaceState(null, "", newUrl);
       }
     }
   }, [categoryFromUrl, processedCategories, activeCategory]);
 
-  // Handle scroll visibility
   const checkScroll = () => {
     if (tabsListRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = tabsListRef.current;
@@ -181,7 +161,6 @@ export default function Gallery() {
     }
   };
 
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -256,7 +235,9 @@ export default function Gallery() {
         <div className="flex justify-between items-center mb-8">
           <motion.h1
             variants={itemVariants}
-            className={`text-3xl font-bold text-[#FF9500] w-full ${language === "he" ? "text-right" : "text-left"}`}
+            className={`text-3xl font-bold text-[#FF9500] w-full ${
+              language === "he" ? "text-right" : "text-left"
+            }`}
           >
             {language === "he" ? "גלריית תמונות" : "Photo Gallery"}
           </motion.h1>
@@ -328,10 +309,7 @@ export default function Gallery() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{
                     opacity: 0,
-                    x:
-                      touchStartX && touchStartX - (currentX || 0) > 0
-                        ? -300
-                        : 300,
+                    x: touchStartX && touchStartX - (currentX || 0) > 0 ? -300 : 300,
                     transition: {
                       duration: 0.2,
                     },
