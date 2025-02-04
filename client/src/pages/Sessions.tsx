@@ -75,7 +75,7 @@ const sessionGroups: SessionGroup[] = [
         number: 13,
       },
       {
-        url: "https://www.facebook.com/adi.keller.16/posts/pfbid02HBAx8w5GRYa6z9ia97zvqeBhJCmuWjmT7ok35gWV9z9wJF4H2U8bn62B8nrzMN4sl",
+        url: "https://www.facebook.com/adi.keller.16/posts/pfbid02HBAx8w5GRYa6z9ia97zvqeBhJCmuWjmT7ok35gWV9z9wJF4H2U8bn62B8nrzMN4l",
         number: 14,
       },
     ],
@@ -435,7 +435,7 @@ export default function Sessions() {
     groupName: string,
   ) => {
     event.preventDefault();
-    
+
     if (isMobile) {
       const url = getFacebookUrl(link.url);
       window.location.href = url;
@@ -502,12 +502,11 @@ export default function Sessions() {
                   onClick={() => scrollToGroup(group.name)}
                   className={`text-xs font-medium px-3 py-1.5 h-7 rounded-full transition-colors duration-200 ${
                     groupRefs.current[group.name] &&
-                    groupRefs.current[group.name].getBoundingClientRect().top <=
-                      120 &&
-                    groupRefs.current[group.name].getBoundingClientRect()
-                      .bottom >= 120
-                      ? "bg-[#FF9500] !text-black font-semibold hover:!bg-[#FF9500] active:!bg-[#FF9500]"
-                      : "hover:bg-primary/10"
+                    ((groupRefs.current[group.name].getBoundingClientRect().top <= 120 &&
+                      groupRefs.current[group.name].getBoundingClientRect().bottom >= 120) ||
+                     window.location.hash === `#${group.name}`)
+                    ? "bg-[#FF9500] !text-black font-semibold hover:!bg-[#FF9500] active:!bg-[#FF9500]"
+                    : "hover:bg-primary/10"
                   }`}
                 >
                   {language === "he"
