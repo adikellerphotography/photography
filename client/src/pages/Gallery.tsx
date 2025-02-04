@@ -269,13 +269,9 @@ export default function Gallery() {
                     setActiveCategory(category.name);
                     const newUrl = `/gallery?category=${encodeURIComponent(category.name)}`;
                     window.history.pushState({ category: category.name }, "", newUrl);
-                    const element = document.getElementById(`gallery-${category.name}`);
-                    if (element) {
-                      element.scrollIntoView({ behavior: "auto" });
-                    }
                   }}
-                  className={`text-xs font-medium px-3 py-1.5 h-7 rounded-full hover:bg-primary/10 transition-colors duration-75 ${
-                    activeCategory === category.name ? 'bg-[#FF9500] text-black font-semibold' : ''
+                  className={`text-xs font-medium px-3 py-1.5 h-7 rounded-full hover:bg-primary/10 transition-colors duration-200 ${
+                    activeCategory === category.name ? 'bg-[#FF9500] text-white' : ''
                   }`}
                 >
                   {category.name}
@@ -297,12 +293,11 @@ export default function Gallery() {
             {processedCategories.map((category) => (
               category.name === activeCategory && (
                 <motion.div
-                  id={`gallery-${category.name}`}
                   key={category.id}
                   initial={{ opacity: 0, x: swipeDirection === "left" ? 300 : -300 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: swipeDirection === "left" ? -300 : 300 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 25 }}
                   className="relative"
                 >
                 <motion.div
