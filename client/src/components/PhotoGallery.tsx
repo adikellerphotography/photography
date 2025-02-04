@@ -136,13 +136,17 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   onLoad={(e) => {
                     const img = e.target as HTMLImageElement;
                     img.style.opacity = '1';
+                    const container = img.closest('.relative');
+                    if (container) {
+                      container.style.display = 'block'; // Show container only when image loads
+                    }
                   }}
                   onError={(e) => {
                     const img = e.target as HTMLImageElement;
                     console.error('Failed to load image:', img.src);
                     const container = img.closest('.relative');
                     if (container) {
-                      container.remove(); // Remove the container if image fails to load
+                      container.style.display = 'none'; // Hide the container if image fails to load
                     }
                   }}
                 />

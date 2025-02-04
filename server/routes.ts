@@ -67,13 +67,19 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
 
     try {
       const files = await fs.readdir(dirPath);
-      const photoFiles = files
-        .filter(f => (f.endsWith('.jpeg') || f.endsWith('.jpg')) && !f.includes('-thumb'))
-        .sort((a, b) => {
-          const numA = parseInt(a.match(/\d+/)?.[0] || '0');
-          const numB = parseInt(b.match(/\d+/)?.[0] || '0');
-          return numA - numB;
-        });
+      const photoFiles = [];
+
+      for (const file of files) {
+        if ((file.endsWith('.jpeg') || file.endsWith('.jpg')) && !file.includes('-thumb')) {
+          try {
+            await fs.access(path.join(dirPath, file), fs.constants.R_OK);
+            photoFiles.push(file);
+          } catch (err) {
+            console.error('File not accessible:', file);
+            continue;
+          }
+        }
+      }
 
       results = photoFiles.map((file, index) => {
         const fileNum = parseInt(file.match(/\d+/)?.[0] || '0');
@@ -92,43 +98,6 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
       results = [];
     }
 
-    // If no results in database or results are incomplete, scan directory
-    if (category) {
-      const categoryPath = getCategoryPath(category);
-      const dirPath = path.join(process.cwd(), 'attached_assets', 'galleries', categoryPath);
-      try {
-        const files = await fs.readdir(dirPath);
-        const photoFiles = files
-          .filter(f => (f.endsWith('.jpeg') || f.endsWith('.jpg')) && !f.includes('-thumb'))
-          .sort((a, b) => {
-            const numA = parseInt(a.match(/\d+/)?.[0] || '0');
-            const numB = parseInt(b.match(/\d+/)?.[0] || '0');
-            return numA - numB;
-          });
-
-        // Create entries for any missing photos
-        for (let i = 0; i < photoFiles.length; i++) {
-          const fileNum = i + 1;
-          const paddedId = String(fileNum).padStart(3, '0');
-          const exists = results.some(photo => photo.id === fileNum);
-
-          if (!exists) {
-            const newPhoto = {
-              id: fileNum,
-              title: `${category} Portrait Session`,
-              category: category,
-              imageUrl: `/assets/${categoryPath}/${paddedId}.jpeg`,
-              thumbnailUrl: `/assets/${categoryPath}/${paddedId}-thumb.jpeg`,
-              displayOrder: fileNum,
-              likesCount: 0
-            };
-            results.push(newPhoto);
-          }
-        }
-      } catch (err) {
-        console.error('Error reading directory:', err);
-      }
-    }
 
     // Sort results by ID to ensure correct order
     results.sort((a, b) => a.id - b.id);
