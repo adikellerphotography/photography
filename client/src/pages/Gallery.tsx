@@ -257,7 +257,7 @@ export default function Gallery() {
         </div>
       </motion.div>
 
-      <nav className="sticky top-[60px] z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b py-3">
+      <nav className="sticky top-16 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b py-3">
           <div className="container max-w-5xl mx-auto">
             <div className="flex flex-wrap justify-center gap-1.5">
               {processedCategories.map((category) => (
