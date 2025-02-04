@@ -277,7 +277,7 @@ export default function Gallery() {
                     });
                   }}
                   className={`text-xs font-medium px-3 py-1.5 h-7 rounded-full transition-all duration-75 ${
-                    activeCategory === category.name ? 'bg-[#FF9500] text-black font-semibold hover:bg-[#FF9500]' : 'hover:bg-primary/10'
+                    activeCategory === category.name ? 'bg-[#FF9500] !text-black font-semibold hover:bg-[#FF9500] active:bg-[#FF9500]' : 'hover:bg-primary/10'
                   }`}
                 >
                   {category.name}
