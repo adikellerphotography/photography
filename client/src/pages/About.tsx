@@ -18,18 +18,24 @@ export default function About() {
           <div className="mb-12 w-full max-w-[300px] mx-auto">
             <AspectRatio ratio={1}>
               <div className="relative w-full h-full overflow-hidden rounded-full bg-muted">
-                <motion.img
-                  src="/attached_assets/IMG_1133.jpg"
-                  alt="Profile"
-                  className="object-cover w-full h-full"
-                  width={300}
-                  height={300}
-                  loading="eager"
-                  decoding="sync"
-                  fetchpriority="high"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ 
+                    duration: 0.8,
+                    ease: [0.22, 1, 0.36, 1]
+                  }}
+                  className="w-full h-full"
+                >
+                  <img
+                    src="/attached_assets/IMG_1133.jpg"
+                    alt="Profile"
+                    className="object-cover w-full h-full"
+                    width={300}
+                    height={300}
+                    loading="eager"
+                    decoding="sync"
+                    fetchpriority="high"
                   onError={(e) => {
                     const img = e.currentTarget;
                     const retryCount = Number(img.dataset.retryCount || 0);
@@ -39,8 +45,18 @@ export default function About() {
                         img.src = `${img.src}?retry=${retryCount + 1}&t=${Date.now()}`;
                       }, retryCount * 1000);
                     }
-                  }}
-                />
+                  onError={(e) => {
+                      const img = e.currentTarget;
+                      const retryCount = Number(img.dataset.retryCount || 0);
+                      if (retryCount < 3) {
+                        img.dataset.retryCount = String(retryCount + 1);
+                        setTimeout(() => {
+                          img.src = `${img.src}?retry=${retryCount + 1}&t=${Date.now()}`;
+                        }, retryCount * 1000);
+                      }
+                    }}
+                  />
+                </motion.div>
               </div>
             </AspectRatio>
           </div>
