@@ -53,7 +53,7 @@ export default function Pricing() {
         className="container mx-auto px-4 py-16"
       >
         <div className={language === 'he' ? 'rtl text-right' : 'ltr text-left'}>
-          <h1 className="text-3xl font-bold mb-8 text-center text-[#E67E00]">
+          <h1 className="text-2xl font-bold mb-8 text-center text-[#E67E00]">
             {t("pricing.title")}
           </h1>
 

@@ -16,7 +16,7 @@ export default function Info() {
       >
         <div className="max-w-3xl mx-auto">
           <div className={language === 'he' ? 'text-right' : 'text-left'}>
-            <h1 className="text-3xl font-bold mb-8 text-[#FF9500]">{t("info.title")}</h1>
+            <h1 className="text-2xl font-bold mb-8 text-[#FF9500] text-center">{t("info.title")}</h1>
 
             <div className="prose prose-gray dark:prose-invert max-w-none space-y-8">
               <div>

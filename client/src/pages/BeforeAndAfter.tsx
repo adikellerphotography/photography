@@ -95,7 +95,7 @@ export default function BeforeAndAfter() {
         animate={{ opacity: 1, y: 0 }}
         className="container mx-auto px-4 py-16"
       >
-        <h1 className={`text-3xl font-bold mb-8 text-[#FF9500] ${language === 'he' ? 'text-right' : ''}`}>
+        <h1 className={`text-2xl font-bold mb-8 text-[#FF9500] text-center`}>
           {t("beforeAfter.title")}
         </h1>
         <p className={`text-lg text-muted-foreground mb-12 ${language === 'he' ? 'text-right' : ''}`}>
