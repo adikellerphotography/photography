@@ -217,8 +217,9 @@ export default function Sessions() {
       }
       return `intent://m.facebook.com/${url.split("facebook.com/")[1]}#Intent;package=com.facebook.katana;scheme=https;end`;
     }
-    // Desktop - use direct Facebook URL
-    return url.replace("m.facebook.com", "www.facebook.com");
+    // Desktop - extract and reformat the URL
+    const urlParts = url.split("facebook.com/")[1];
+    return `https://www.facebook.com/${urlParts}`;
   };
 
   const handleImageClick = (
