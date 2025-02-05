@@ -421,11 +421,10 @@ export default function Sessions() {
   const getFacebookUrl = (url: string) => {
     if (isMobile) {
       const postId = url.split("pfbid")[1];
-      const userId = "adi.keller.16";
       if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
-        return `fb://profile/${userId}/posts/${postId}`;
+        return `fb://post/pfbid${postId}`;
       }
-      return `intent://www.facebook.com/${userId}/posts/pfbid${postId}#Intent;package=com.facebook.katana;scheme=https;end`;
+      return `intent://facebook.com/stories.php?story_fbid=pfbid${postId}&id=100000095558835#Intent;package=com.facebook.katana;scheme=https;end`;
     }
     return url;
   };
@@ -439,13 +438,18 @@ export default function Sessions() {
     event.stopPropagation();
 
     if (isMobile) {
+      event.preventDefault();
       const url = getFacebookUrl(link.url);
-      window.location.href = url;
-      setTimeout(() => {
-        if (!document.hidden) {
-          window.location.href = link.url;
-        }
-      }, 2500);
+      try {
+        window.location.replace(url);
+        setTimeout(() => {
+          if (!document.hidden) {
+            window.location.replace(`https://m.facebook.com/story.php?story_fbid=pfbid${link.url.split("pfbid")[1]}&id=100000095558835`);
+          }
+        }, 2000);
+      } catch (e) {
+        window.location.replace(`https://m.facebook.com/story.php?story_fbid=pfbid${link.url.split("pfbid")[1]}&id=100000095558835`);
+      }
       return;
     }
 
