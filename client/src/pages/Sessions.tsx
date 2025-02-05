@@ -421,12 +421,11 @@ export default function Sessions() {
   const getFacebookUrl = (url: string) => {
     if (isMobile) {
       const postId = url.split("pfbid")[1];
-      if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
-        return `fb://post/pfbid${postId}`;
-      }
-      if (/Android/.test(navigator.userAgent)) {
-        return `fb://facewebmodal/f?href=${encodeURIComponent(url)}`;
-      }
+      const facebookAppUrl = /iPhone|iPad|iPod/.test(navigator.userAgent)
+        ? `fb://post/pfbid${postId}`
+        : `intent://facebook.com/story.php?story_fbid=pfbid${postId}#Intent;package=com.facebook.katana;scheme=https;end`;
+      
+      return facebookAppUrl;
     }
     return url;
   };
@@ -440,7 +439,15 @@ export default function Sessions() {
 
     if (isMobile) {
       const url = getFacebookUrl(link.url);
-      window.location.href = url;
+      try {
+        window.location.href = url;
+        // Fallback for when Facebook app is not installed
+        setTimeout(() => {
+          window.location.href = link.url;
+        }, 2000);
+      } catch (e) {
+        window.location.href = link.url;
+      }
       return;
     }
 
