@@ -1,74 +1,57 @@
-
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import SocialLinks from "@/components/SocialLinks";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { useEffect } from "react";
+import { useState } from "react";
 
 export default function About() {
   const { t } = useTranslation();
   const { language } = useLanguage();
-
-  useEffect(() => {
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = 'image';
-    link.href = '/attached_assets/IMG_1133.jpg';
-    document.head.appendChild(link);
-    return () => {
-      document.head.removeChild(link);
-    };
-  }, []);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
     <div className="min-h-screen pt-8">
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-3xl mx-auto">
-          {/* Portrait Image Section */}
           <div className="mb-12 w-full max-w-[300px] mx-auto">
             <AspectRatio ratio={1}>
-              <div className="relative w-full h-full overflow-hidden rounded-full bg-muted">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ 
-                    duration: 0.8,
-                    ease: [0.22, 1, 0.36, 1]
-                  }}
-                  className="w-full h-full"
-                >
-                  <img
-                    src="/attached_assets/IMG_1133.jpg"
-                    alt="Profile"
-                    className="object-cover w-full h-full"
-                    width={300}
-                    height={300}
-                    loading="eager"
-                    decoding="sync"
-                    fetchpriority="high"
-                    importance="high"
-                    referrerPolicy="no-referrer"
-                    sizes="300px"
-                    onLoad={(e) => {
-                      const img = e.currentTarget;
-                      img.style.opacity = '1';
-                    }}
-                    style={{ opacity: 0, transition: 'opacity 0.3s' }}
-                    onError={(e) => {
-                      const img = e.currentTarget;
-                      const retryCount = Number(img.dataset.retryCount || 0);
-                      if (retryCount < 3) {
-                        img.dataset.retryCount = String(retryCount + 1);
-                        setTimeout(() => {
-                          img.src = `${img.src}?retry=${retryCount + 1}&t=${Date.now()}`;
-                        }, retryCount * 1000);
-                      }
-                    }}
-                  />
-                </motion.div>
+              <div className="relative w-full h-full overflow-hidden rounded-full">
+                <AnimatePresence mode="wait">
+                  {!imageLoaded && (
+                    <motion.div
+                      key="placeholder"
+                      initial={{ opacity: 0.5 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="absolute inset-0 bg-muted animate-pulse"
+                    />
+                  )}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: imageLoaded ? 1 : 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="w-full h-full"
+                  >
+                    <img
+                      src="/attached_assets/IMG_1133.jpg"
+                      alt="Profile"
+                      className="object-cover w-full h-full transform-gpu"
+                      width={300}
+                      height={300}
+                      loading="eager"
+                      decoding="async"
+                      fetchpriority="high"
+                      onLoad={() => setImageLoaded(true)}
+                      style={{
+                        willChange: 'transform',
+                        backfaceVisibility: 'hidden'
+                      }}
+                    />
+                  </motion.div>
+                </AnimatePresence>
               </div>
             </AspectRatio>
           </div>
