@@ -232,14 +232,14 @@ export default function Sessions() {
       event.preventDefault();
       const url = getFacebookUrl(link.url);
       try {
-        window.location.href = url;
+        window.open(url, '_blank');
         setTimeout(() => {
           if (!document.hidden) {
-            window.location.href = link.url;
+            window.open(link.url, '_blank');
           }
-        }, 2500);
+        }, 1000);
       } catch (e) {
-        window.location.href = link.url;
+        window.open(link.url, '_blank');
       }
       return;
     }
@@ -387,7 +387,7 @@ export default function Sessions() {
                 transition={{ delay: 0.1 }}
               />
               <button
-                className="absolute top-4 right-4 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+                className="absolute top-4 right-4 p2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsDialogOpen(false);
