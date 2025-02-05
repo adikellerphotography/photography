@@ -39,12 +39,12 @@ export default function Contact() {
   const dir = isRTL ? 'rtl' : 'ltr';
 
   return (
-    <div className="min-h-screen pt-8" dir={dir}>
-      <div className="flex justify-center mb-8">
+    <div className="min-h-screen pt-16" dir={dir}>
+      <div className="flex justify-center mb-16">
         <img 
           src="/attached_assets/my_site_logo.png"
           alt="Site Logo"
-          className="w-[20%] opacity-80"
+          className="w-[40%] opacity-80"
         />
       </div>
       <motion.div
