@@ -107,7 +107,7 @@ const sessionGroups: SessionGroup[] = [
     ]
   },
   {
-    name: "Feminine",
+    name: "Femininity",
     links: [
       { url: "https://www.facebook.com/dalia.zvikler/posts/pfbid02waJ1fwPEfTadroXp2HYtqgruo4ucaZRQf9YexZDiXy36YGMWujErcx7rqkSpg9EFl", number: 1 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0GJcFw5tgBJxcEwmc1DF7wgoAQRkti5ibTr5eQYGNGEgXjKHxx7khJsmm1Shsy4p2l", number: 2 },
@@ -178,7 +178,7 @@ export default function Sessions() {
   const scrollToGroup = (groupName: string) => {
     const element = groupRefs.current[groupName];
     if (element) {
-      const headerOffset = 120;
+      const headerOffset = 80;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
       setSelectedCategory(groupName);
