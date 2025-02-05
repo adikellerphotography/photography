@@ -424,7 +424,7 @@ export default function Sessions() {
       if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
         return `fb://post/pfbid${postId}`;
       }
-      return `intent://facebook.com/stories.php?story_fbid=pfbid${postId}&id=100000095558835#Intent;package=com.facebook.katana;scheme=https;end`;
+      return `intent://m.facebook.com/${url.split("facebook.com/")[1]}#Intent;package=com.facebook.katana;scheme=https;end`;
     }
     return url;
   };
@@ -441,14 +441,14 @@ export default function Sessions() {
       event.preventDefault();
       const url = getFacebookUrl(link.url);
       try {
-        window.location.replace(url);
+        window.location.href = url;
         setTimeout(() => {
           if (!document.hidden) {
-            window.location.replace(`https://m.facebook.com/story.php?story_fbid=pfbid${link.url.split("pfbid")[1]}&id=100000095558835`);
+            window.location.href = link.url;
           }
-        }, 2000);
+        }, 2500);
       } catch (e) {
-        window.location.replace(`https://m.facebook.com/story.php?story_fbid=pfbid${link.url.split("pfbid")[1]}&id=100000095558835`);
+        window.location.href = link.url;
       }
       return;
     }
