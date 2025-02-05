@@ -378,24 +378,23 @@ export default function Sessions() {
       </motion.div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 border-none bg-black/80 shadow-xl backdrop-blur-sm flex items-center justify-center">
+        <DialogContent className="max-w-[100vw] max-h-[100vh] p-0 border-none bg-black shadow-xl backdrop-blur-sm overflow-hidden">
           {selectedImage && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="relative w-full h-full flex items-center justify-center p-4"
+              className="relative w-screen h-screen flex items-center justify-center"
               onClick={() => setIsDialogOpen(false)}
             >
               <motion.img
                 src={selectedImage.url}
                 alt={`${selectedImage.groupName} session ${selectedImage.number}`}
-                className="w-auto h-auto max-w-[calc(95vw-2rem)] max-h-[calc(95vh-2rem)] object-contain rounded-lg shadow-2xl"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                className="w-full h-full object-contain"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
                 transition={{ delay: 0.1 }}
-                style={{ margin: '1rem' }}
               />
               <button
                 className="absolute top-4 right-4 p2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
