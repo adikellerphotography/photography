@@ -232,16 +232,25 @@ export default function Sessions() {
 
     if (isMobile) {
       event.preventDefault();
-      const url = getFacebookUrl(link.url);
-      try {
-        window.open(url, '_blank');
+      const postId = link.url.split('pfbid')[1];
+      const userId = link.url.split('facebook.com/')[1].split('/posts')[0];
+      
+      if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        // iOS Facebook app deep link
+        window.location.href = `fb://profile/${userId}/posts/pfbid${postId}`;
         setTimeout(() => {
           if (!document.hidden) {
-            window.open(link.url, '_blank');
+            window.location.href = `https://m.facebook.com/${userId}/posts/pfbid${postId}`;
           }
-        }, 1000);
-      } catch (e) {
-        window.open(link.url, '_blank');
+        }, 2000);
+      } else {
+        // Android Facebook app intent
+        window.location.href = `intent://facebook.com/${userId}/posts/pfbid${postId}#Intent;package=com.facebook.katana;scheme=https;end`;
+        setTimeout(() => {
+          if (!document.hidden) {
+            window.location.href = link.url;
+          }
+        }, 2000);
       }
       return;
     }
