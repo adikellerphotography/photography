@@ -230,54 +230,62 @@ export default function Sessions() {
     event.preventDefault();
     event.stopPropagation();
 
+    const postId = link.url.split('pfbid')[1];
+    const userId = link.url.split('facebook.com/')[1].split('/posts')[0];
+
     if (isMobile) {
-      event.preventDefault();
-      const postId = link.url.split('pfbid')[1];
-      const userId = link.url.split('facebook.com/')[1].split('/posts')[0];
-      
+      const openInMobileBrowser = () => {
+        window.location.href = link.url;
+      };
+
       if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
         // iOS Facebook app deep link
-        window.location.href = `fb://profile/${userId}/posts/pfbid${postId}`;
+        const facebookAppUrl = `fb://profile/${userId}/posts/pfbid${postId}`;
+        window.location.href = facebookAppUrl;
+        
+        // Fallback to browser if app not installed
         setTimeout(() => {
           if (!document.hidden) {
-            window.location.href = `https://m.facebook.com/${userId}/posts/pfbid${postId}`;
+            openInMobileBrowser();
           }
         }, 2000);
       } else {
-        // Android Facebook app intent
-        window.location.href = `intent://facebook.com/${userId}/posts/pfbid${postId}#Intent;package=com.facebook.katana;scheme=https;end`;
+        // Android Facebook app intent with browser fallback
+        const androidIntent = `intent://facebook.com/${userId}/posts/pfbid${postId}#Intent;package=com.facebook.katana;scheme=https;end`;
+        window.location.href = androidIntent;
+        
         setTimeout(() => {
           if (!document.hidden) {
-            window.location.href = link.url;
+            openInMobileBrowser();
           }
         }, 2000);
       }
       return;
     }
 
-    const now = Date.now();
-    if (clickTimer.current && now - clickTimer.current < 300) {
-      clickTimer.current = 0;
-      setIsDialogOpen(false);
+    // Desktop: Show image in dialog first, then open Facebook in new tab on dialog close
+    window.history.pushState(
+      { isGalleryView: true },
+      "",
+      window.location.pathname,
+    );
+    setSelectedImage({
+      url: `/attached_assets/facebook_posts_image/${categoryMappings[groupName] || groupName.replace(/\s+/g, "_")}/${link.number}.jpg`,
+      number: link.number,
+      groupName,
+    });
+    setIsDialogOpen(true);
+
+    // Store the URL to be opened when dialog closes
+    const handleDialogClose = () => {
       window.open(link.url, "_blank", "noopener,noreferrer");
-    } else {
-      clickTimer.current = now;
-      setTimeout(() => {
-        if (clickTimer.current !== 0) {
-          window.history.pushState(
-            { isGalleryView: true },
-            "",
-            window.location.pathname,
-          );
-          setSelectedImage({
-            url: `/attached_assets/facebook_posts_image/${categoryMappings[groupName] || groupName.replace(/\s+/g, "_")}/${link.number}.jpg`,
-            number: link.number,
-            groupName,
-          });
-          setIsDialogOpen(true);
-        }
-        clickTimer.current = 0;
-      }, 300);
+      setIsDialogOpen(false);
+    };
+
+    // Override dialog close handler
+    const dialogContent = document.querySelector('[role="dialog"]');
+    if (dialogContent) {
+      dialogContent.addEventListener('click', handleDialogClose, { once: true });
     }
   };
 
