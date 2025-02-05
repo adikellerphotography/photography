@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
@@ -40,24 +39,14 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen pt-20" dir={dir}>
-      <div className="flex justify-center mb-1"> {/* Changed mb-6 to mb-1 */}
-        <motion.img 
+      <div className="flex justify-center mb-0">
+        <img 
           src="/attached_assets/my_site_logo.png"
           alt="Site Logo"
-          className="w-[35%] md:w-[35%] w-[60%] opacity-80 cursor-pointer"
-          whileTap={{ scale: 0.95 }}
-          whileHover={{ opacity: 1 }}
-          transition={{ 
-            type: "spring",
-            stiffness: 400,
-            damping: 17
-          }}
+          className="w-[35%] md:w-[35%] w-[60%] opacity-60"
         />
       </div>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+      <div
         className="container mx-auto px-4 py-4"
       >
         <div className="max-w-3xl mx-auto">
@@ -148,7 +137,7 @@ export default function Contact() {
             </Card>
           </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
