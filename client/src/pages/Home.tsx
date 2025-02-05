@@ -371,7 +371,7 @@ export default function Home() {
 
       {/* Contact Button */}
       {!categoriesLoading && categories?.length > 0 && (
-        <section className="container mx-auto px-4 pb-16 text-center">
+        <section className="container mx-auto px-4 pb-16 pt-6 text-center">
           <Link href="/contact">
             <Button className="bg-white hover:bg-gray-100 text-gray-800 text-lg px-8 py-6 border border-gray-300 shadow-sm hover:shadow-md transition-all">
               Contact Me
