@@ -55,8 +55,9 @@ export default function Contact() {
         />
       </div>
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
         className="container mx-auto px-4 py-4"
       >
         <div className="max-w-3xl mx-auto">
