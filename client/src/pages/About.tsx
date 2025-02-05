@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -5,14 +6,11 @@ import SocialLinks from "@/components/SocialLinks";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { useEffect } from "react";
 
 export default function About() {
   const { t } = useTranslation();
   const { language } = useLanguage();
-
-  return (
-    <div className="min-h-screen pt-8">
-      <div className="container mx-auto px-4 py-16">
 
   useEffect(() => {
     const link = document.createElement('link');
@@ -25,7 +23,9 @@ export default function About() {
     };
   }, []);
 
-
+  return (
+    <div className="min-h-screen pt-8">
+      <div className="container mx-auto px-4 py-16">
         <div className="max-w-3xl mx-auto">
           {/* Portrait Image Section */}
           <div className="mb-12 w-full max-w-[300px] mx-auto">
