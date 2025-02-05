@@ -231,24 +231,23 @@ export default function Sessions() {
     event.stopPropagation();
 
     if (isMobile) {
-      event.preventDefault();
       const postId = link.url.split('pfbid')[1];
       const userId = link.url.split('facebook.com/')[1].split('/posts')[0];
       
       if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
         // iOS Facebook app deep link
-        window.location.href = `fb://profile/${userId}/posts/pfbid${postId}`;
+        window.open(`fb://profile/${userId}/posts/pfbid${postId}`, '_blank');
         setTimeout(() => {
           if (!document.hidden) {
-            window.location.href = `https://m.facebook.com/${userId}/posts/pfbid${postId}`;
+            window.open(link.url, '_blank');
           }
         }, 2000);
       } else {
         // Android Facebook app intent
-        window.location.href = `intent://facebook.com/${userId}/posts/pfbid${postId}#Intent;package=com.facebook.katana;scheme=https;end`;
+        window.open(link.url, '_blank');
         setTimeout(() => {
           if (!document.hidden) {
-            window.location.href = link.url;
+            window.open(link.url, '_blank');
           }
         }, 2000);
       }
@@ -270,7 +269,7 @@ export default function Sessions() {
             window.location.pathname,
           );
           setSelectedImage({
-            url: `/attached_assets/facebook_posts_image/${categoryMappings[groupName] || groupName.replace(/\s+/g, "_")}/${link.number}.jpg`,
+            url: `/attached_assets/facebook_posts_image/${groupName.replace(/\s+/g, "_")}/${link.number}.jpg`,
             number: link.number,
             groupName,
           });
