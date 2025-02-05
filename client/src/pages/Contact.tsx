@@ -40,11 +40,11 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen pt-20" dir={dir}>
-      <div className="flex justify-center mb-0"> {/* Changed mb-6 to mb-0 */}
+      <div className="flex justify-center mb-1"> {/* Changed mb-6 to mb-1 */}
         <motion.img 
           src="/attached_assets/my_site_logo.png"
           alt="Site Logo"
-          className="w-[35%] md:w-[35%] w-[60%] opacity-60 cursor-pointer"
+          className="w-[35%] md:w-[35%] w-[60%] opacity-80 cursor-pointer"
           whileTap={{ scale: 0.95 }}
           whileHover={{ opacity: 1 }}
           transition={{ 
