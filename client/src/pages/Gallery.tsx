@@ -287,12 +287,12 @@ export default function Gallery() {
           </div>
         </nav>
 
-        <div className="container mx-auto px-4 pt-16">
+        <div className="container mx-auto px-4 pt-20">
           <motion.div
             initial="hidden"
             animate="visible"
             variants={containerVariants}
-            className="mb-12"
+            className="mb-6"
           >
             <div className="flex justify-between items-center">
               <motion.h1
