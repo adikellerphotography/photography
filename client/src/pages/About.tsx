@@ -13,6 +13,19 @@ export default function About() {
   return (
     <div className="min-h-screen pt-8">
       <div className="container mx-auto px-4 py-16">
+
+  useEffect(() => {
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.href = '/attached_assets/IMG_1133.jpg';
+    document.head.appendChild(link);
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, []);
+
+
         <div className="max-w-3xl mx-auto">
           {/* Portrait Image Section */}
           <div className="mb-12 w-full max-w-[300px] mx-auto">
@@ -36,16 +49,24 @@ export default function About() {
                     loading="eager"
                     decoding="sync"
                     fetchpriority="high"
-                  onError={(e) => {
-                    const img = e.currentTarget;
-                    const retryCount = Number(img.dataset.retryCount || 0);
-                    if (retryCount < 3) {
-                      img.dataset.retryCount = String(retryCount + 1);
-                      setTimeout(() => {
-                        img.src = `${img.src}?retry=${retryCount + 1}&t=${Date.now()}`;
-                      }, retryCount * 1000);
-                    }
-                  }}
+                    importance="high"
+                    referrerPolicy="no-referrer"
+                    sizes="300px"
+                    onLoad={(e) => {
+                      const img = e.currentTarget;
+                      img.style.opacity = '1';
+                    }}
+                    style={{ opacity: 0, transition: 'opacity 0.3s' }}
+                    onError={(e) => {
+                      const img = e.currentTarget;
+                      const retryCount = Number(img.dataset.retryCount || 0);
+                      if (retryCount < 3) {
+                        img.dataset.retryCount = String(retryCount + 1);
+                        setTimeout(() => {
+                          img.src = `${img.src}?retry=${retryCount + 1}&t=${Date.now()}`;
+                        }, retryCount * 1000);
+                      }
+                    }}
                   />
                 </motion.div>
               </div>
