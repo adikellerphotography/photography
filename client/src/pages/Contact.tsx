@@ -40,17 +40,17 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen pt-20" dir={dir}>
-      <div className="flex justify-center mb-12">
+      <div className="flex justify-center mb-8">
         <img 
           src="/attached_assets/my_site_logo.png"
           alt="Site Logo"
-          className="w-[30%] opacity-80"
+          className="w-[35%] opacity-80"
         />
       </div>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="container mx-auto px-4 py-8"
+        className="container mx-auto px-4 py-4"
       >
         <div className="max-w-3xl mx-auto">
           <div className="flex flex-col items-center mb-8">
