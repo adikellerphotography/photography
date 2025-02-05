@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Quicksand:wght@300;400;500;600;700&family=Frank+Ruhl+Libre:wght@300;400;500;600;700&display=swap');
 
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-in forwards;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
