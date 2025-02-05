@@ -40,7 +40,7 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen pt-20" dir={dir}>
-      <div className="flex justify-center mb-6">
+      <div className="flex justify-center mb-1"> {/* Changed mb-6 to mb-1 */}
         <motion.img 
           src="/attached_assets/my_site_logo.png"
           alt="Site Logo"
