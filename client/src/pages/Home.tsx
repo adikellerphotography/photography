@@ -293,52 +293,34 @@ export default function Home() {
                             }}
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
-                              const retryCount = Number(
-                                target.dataset.retryCount || "0",
-                              );
-                              const maxRetries = 3;
-
+                              const retryCount = Number(target.dataset.retryCount || "0");
+                              const maxRetries = 5;
+                              const paths = [
+                                target.src, // Original path
+                                target.src.replace(".jpeg", "-thumb.jpeg"), // Thumbnail
+                                `/attached_assets/galleries/${category.name.replace(/\s+/g, "_")}/${target.src.split("/").pop()}`, // Alternative gallery path
+                                `/assets/${category.name.replace(/\s+/g, "_")}/${String(1).padStart(3, "0")}.jpeg`, // Fallback path
+                              ];
+                              
                               if (retryCount < maxRetries) {
-                                console.log(
-                                  `Retrying category image load (${retryCount + 1}/${maxRetries}):`,
-                                  target.src,
-                                );
-                                target.dataset.retryCount = String(
-                                  retryCount + 1,
-                                );
-
-                                // Try thumbnail first on initial error
-                                if (
-                                  retryCount === 0 &&
-                                  target.src.includes(".jpeg")
-                                ) {
-                                  target.src = target.src.replace(
-                                    ".jpeg",
-                                    "-thumb.jpeg",
-                                  );
-                                  return;
-                                }
-
-                                // Progressive delay for retries
+                                console.log(`Retrying image load (${retryCount + 1}/${maxRetries}):`, target.src);
+                                target.dataset.retryCount = String(retryCount + 1);
+                                
+                                // Try next path in sequence
+                                const pathIndex = Math.min(Math.floor(retryCount / 2), paths.length - 1);
+                                const nextPath = paths[pathIndex];
+                                
                                 setTimeout(() => {
                                   const timestamp = Date.now();
-                                  const baseUrl = target.src.split("?")[0];
-                                  target.src = `${baseUrl}?retry=${retryCount + 1}&t=${timestamp}`;
-                                }, retryCount * 1500);
+                                  target.src = `${nextPath}?t=${timestamp}&retry=${retryCount + 1}`;
+                                }, Math.min(retryCount * 1000, 3000));
                               } else {
-                                console.error(
-                                  "Failed to load image after retries:",
-                                  target.src,
-                                );
+                                console.error("Failed to load image after all retries:", target.src);
                                 target.onerror = null;
-                                // Try alternative path format
-                                const altPath = `/assets/${category.name.replace(" ", "_")}/${String(1).padStart(3, "0")}.jpeg`;
-                                if (target.src !== altPath) {
-                                  target.src = altPath;
-                                } else {
-                                  target.style.opacity = "0.7";
-                                  target.style.background = "rgba(0,0,0,0.1)";
-                                }
+                                target.style.opacity = "0.7";
+                                target.style.background = "rgba(0,0,0,0.1)";
+                                // Set a data attribute to track failed loads
+                                target.dataset.loadFailed = "true";
                               }
                             }}
                             loading={
