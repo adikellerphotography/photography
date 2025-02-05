@@ -7,7 +7,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
+import { ChevronLeft, ChevronRight, RefreshCw, AlertCircle } from "lucide-react";
 
 interface PhotoGalleryProps {
   category?: string;
@@ -19,7 +19,9 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
   const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
+  const [retryAttempts, setRetryAttempts] = useState<Record<string, number>>({});
   const galleryRef = useRef<HTMLDivElement>(null);
+  const imageCache = useRef<Record<string, HTMLImageElement>>({});
 
   const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({
     queryKey: ["/api/photos", category],
@@ -31,39 +33,47 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     },
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
   });
 
   const preloadImage = async (photo: Photo): Promise<void> => {
     if (!photo.imageUrl) return;
 
     const path = `/attached_assets/galleries/${category?.replace(/\s+/g, '_')}/${photo.imageUrl}`;
-    
-    const img = new Image();
-    const loadPromise = new Promise<void>((resolve, reject) => {
-      img.onload = () => {
-        setLoadedImages(prev => new Set(prev).add(path));
-        resolve();
-      };
-      img.onerror = async () => {
-        const retryCount = parseInt(img.dataset.retryCount || '0', 10);
-        if (retryCount < 3) {
-          img.dataset.retryCount = (retryCount + 1).toString();
-          img.src = `${path}?retry=${retryCount + 1}&t=${Date.now()}`;
-        } else {
-          setFailedImages(prev => new Set(prev).add(path));
-          reject(new Error(`Failed to load image: ${path}`));
-        }
-      };
-    });
+    if (loadedImages.has(path) || failedImages.has(path)) return;
 
-    img.src = path;
+    const timestamp = Date.now();
+    const retryCount = retryAttempts[path] || 0;
+    const urlWithCache = `${path}?t=${timestamp}&r=${retryCount}`;
+
     try {
+      const img = new Image();
+      imageCache.current[path] = img;
+
+      const loadPromise = new Promise<void>((resolve, reject) => {
+        img.onload = () => {
+          setLoadedImages(prev => new Set(prev).add(path));
+          resolve();
+        };
+
+        img.onerror = () => {
+          if (retryCount < 3) {
+            setRetryAttempts(prev => ({ ...prev, [path]: retryCount + 1 }));
+            reject(new Error(`Failed to load image: ${path}`));
+          } else {
+            setFailedImages(prev => new Set(prev).add(path));
+            reject(new Error(`Max retries reached for: ${path}`));
+          }
+        };
+      });
+
+      img.src = urlWithCache;
       await Promise.race([
         loadPromise,
-        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 10000))
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 15000))
       ]);
     } catch (error) {
-      console.error(error);
+      console.error(`Error loading image ${path}:`, error);
     }
   };
 
@@ -71,7 +81,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     if (photos.length) {
       const preloadQueue = [...photos];
       let running = 0;
-      const maxConcurrent = 4;
+      const maxConcurrent = 3;
 
       const processNext = async () => {
         if (preloadQueue.length === 0 || running >= maxConcurrent) return;
@@ -87,6 +97,16 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       for (let i = 0; i < maxConcurrent; i++) {
         processNext();
       }
+
+      return () => {
+        // Cleanup image cache on unmount
+        Object.values(imageCache.current).forEach(img => {
+          img.onload = null;
+          img.onerror = null;
+          img.src = '';
+        });
+        imageCache.current = {};
+      };
     }
   }, [photos]);
 
@@ -96,6 +116,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       newSet.delete(path);
       return newSet;
     });
+    setRetryAttempts(prev => ({ ...prev, [path]: 0 }));
     const photo = photos.find(p => p.imageUrl === path.split('/').pop());
     if (photo) {
       preloadImage(photo);
@@ -150,10 +171,15 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               <AspectRatio ratio={4/3}>
                 <div className="relative w-full h-full">
                   {!isLoaded && !hasFailed && (
-                    <div className="absolute inset-0 animate-pulse bg-muted/10" />
+                    <div className="absolute inset-0 flex items-center justify-center bg-muted/10">
+                      <div className="animate-spin">
+                        <RefreshCw className="w-6 h-6 text-muted-foreground" />
+                      </div>
+                    </div>
                   )}
                   {hasFailed ? (
                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted/10">
+                      <AlertCircle className="w-6 h-6 text-destructive mb-2" />
                       <p className="text-sm text-muted-foreground mb-2">Failed to load</p>
                       <Button
                         variant="outline"
