@@ -18,15 +18,18 @@ export default function About() {
           <div className="mb-12 w-full max-w-[300px] mx-auto">
             <AspectRatio ratio={1}>
               <div className="relative w-full h-full overflow-hidden rounded-full bg-muted">
-                <img
+                <motion.img
                   src="/attached_assets/IMG_1133.jpg"
                   alt="Profile"
-                  className="object-cover w-full h-full transition-opacity duration-300"
+                  className="object-cover w-full h-full"
                   width={300}
                   height={300}
                   loading="eager"
                   decoding="sync"
                   fetchpriority="high"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
                   onError={(e) => {
                     const img = e.currentTarget;
                     const retryCount = Number(img.dataset.retryCount || 0);
