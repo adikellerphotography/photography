@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
@@ -87,7 +86,7 @@ export default function Workshop() {
         animate={{ opacity: 1, y: 0 }}
         className={`container mx-auto px-4 py-16 ${language === 'he' ? 'rtl text-right !font-heebo' : 'ltr text-left'}`}
       >
-        <h1 className="text-3xl font-bold mb-8 text-[#FF9500]">
+        <h1 className="text-2xl font-bold mb-8 text-[#FF9500] text-center">
           {language === 'he' ? 'סדנאות' : 'Workshop'}
         </h1>
 
