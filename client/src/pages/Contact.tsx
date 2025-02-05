@@ -40,27 +40,19 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen pt-20" dir={dir}>
-      <div className="flex justify-center mb-1">
-        <div className="shine-container">
-          <motion.img 
-            src="/attached_assets/my_site_logo.png"
-            alt="Site Logo"
-            className="w-[35%] md:w-[35%] w-[60%] opacity-80 cursor-pointer"
-            whileTap={{ scale: 0.95 }}
-            whileHover={{ opacity: 1 }}
-            transition={{ 
-              type: "spring",
-              stiffness: 400,
-              damping: 17
-            }}
-            onClick={(e) => {
-              const container = e.currentTarget.parentElement;
-              container?.classList.add('shine-effect');
-              setTimeout(() => container?.classList.remove('shine-effect'), 1000);
-            }}
-          />
-          <div className="shine-overlay"></div>
-        </div>
+      <div className="flex justify-center mb-1"> {/* Changed mb-6 to mb-1 */}
+        <motion.img 
+          src="/attached_assets/my_site_logo.png"
+          alt="Site Logo"
+          className="w-[35%] md:w-[35%] w-[60%] opacity-80 cursor-pointer"
+          whileTap={{ scale: 0.95 }}
+          whileHover={{ opacity: 1 }}
+          transition={{ 
+            type: "spring",
+            stiffness: 400,
+            damping: 17
+          }}
+        />
       </div>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
