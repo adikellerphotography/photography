@@ -17,16 +17,26 @@ export default function About() {
           {/* Portrait Image Section */}
           <div className="mb-12 w-full max-w-[300px] mx-auto">
             <AspectRatio ratio={1}>
-              <div className="relative w-full h-full overflow-hidden rounded-full">
+              <div className="relative w-full h-full overflow-hidden rounded-full bg-muted">
                 <img
-                  src="/assets/IMG_1133.jpg"
+                  src="/attached_assets/IMG_1133.jpg"
                   alt="Profile"
-                  className="object-cover w-full h-full"
+                  className="object-cover w-full h-full transition-opacity duration-300"
                   width={300}
                   height={300}
                   loading="eager"
                   decoding="sync"
                   fetchpriority="high"
+                  onError={(e) => {
+                    const img = e.currentTarget;
+                    const retryCount = Number(img.dataset.retryCount || 0);
+                    if (retryCount < 3) {
+                      img.dataset.retryCount = String(retryCount + 1);
+                      setTimeout(() => {
+                        img.src = `${img.src}?retry=${retryCount + 1}&t=${Date.now()}`;
+                      }, retryCount * 1000);
+                    }
+                  }}
                 />
               </div>
             </AspectRatio>
