@@ -259,7 +259,7 @@ export default function Sessions() {
             window.location.pathname,
           );
           setSelectedImage({
-            url: `/attached_assets/facebook_posts_image/${groupName.replace(/\s+/g, "_")}/${link.number}.jpg`,
+            url: `/attached_assets/facebook_posts_image/${categoryMappings[groupName] || groupName.replace(/\s+/g, "_")}/${link.number}.jpg`,
             number: link.number,
             groupName,
           });
