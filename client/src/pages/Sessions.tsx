@@ -199,14 +199,9 @@ export default function Sessions() {
     groupName: string,
   ) => {
     event.preventDefault();
-    setSelectedImage({
-      url: `/attached_assets/facebook_posts_image/${groupName.replace(/\s+/g, "_")}/${link.number}.jpg`,
-      number: link.number,
-      groupName,
-    });
-    setIsDialogOpen(true);
-    window.history.pushState({ isGalleryView: true }, "", window.location.pathname);
+    window.open(link.url, '_blank'); // Opens the Facebook link in a new tab
   };
+
 
   useEffect(() => {
     const handlePopState = () => {
@@ -280,10 +275,12 @@ export default function Sessions() {
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                   {group.links.map((link) => (
-                    <motion.div
+                    <motion.a
                       key={`${group.name}-${link.number}`}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="relative aspect-square cursor-pointer group"
-                      onClick={(e) => handleImageClick(e, link, group.name)}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
@@ -296,7 +293,7 @@ export default function Sessions() {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       </div>
-                    </motion.div>
+                    </motion.a>
                   ))}
                 </div>
               </div>
