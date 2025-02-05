@@ -40,11 +40,18 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen pt-20" dir={dir}>
-      <div className="flex justify-center mb-8">
-        <img 
+      <div className="flex justify-center mb-6">
+        <motion.img 
           src="/attached_assets/my_site_logo.png"
           alt="Site Logo"
-          className="w-[35%] md:w-[35%] w-[60%] opacity-80"
+          className="w-[35%] md:w-[35%] w-[60%] opacity-80 cursor-pointer"
+          whileTap={{ scale: 0.95 }}
+          whileHover={{ opacity: 1 }}
+          transition={{ 
+            type: "spring",
+            stiffness: 400,
+            damping: 17
+          }}
         />
       </div>
       <motion.div
