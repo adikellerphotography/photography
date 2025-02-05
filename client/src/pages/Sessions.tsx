@@ -436,18 +436,16 @@ export default function Sessions() {
     groupName: string,
   ) => {
     event.preventDefault();
+    event.stopPropagation();
 
     if (isMobile) {
       const url = getFacebookUrl(link.url);
-      try {
-        window.location.href = url;
-        // Fallback for when Facebook app is not installed
-        setTimeout(() => {
+      window.location.href = url;
+      setTimeout(() => {
+        if (!document.hidden) {
           window.location.href = link.url;
-        }, 2000);
-      } catch (e) {
-        window.location.href = link.url;
-      }
+        }
+      }, 2500);
       return;
     }
 
