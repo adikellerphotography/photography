@@ -178,7 +178,7 @@ export default function Sessions() {
   const scrollToGroup = (groupName: string) => {
     const element = groupRefs.current[groupName];
     if (element) {
-      const headerOffset = 80;
+      const headerOffset = 160; // Increased offset to account for categories bar
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
       setSelectedCategory(groupName);
