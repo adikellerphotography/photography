@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
@@ -53,7 +52,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
     const path = constructImagePath(photo);
     const thumbPath = constructImagePath(photo, true);
-    
+
     if (loadedImages.has(path) || failedImages.has(path)) return;
 
     const timestamp = Date.now();
@@ -249,13 +248,11 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                   ) : (
                     <>
                       {!isLoaded && (
-                        <img
-                          src={constructImagePath(photo, true)}
-                          alt={photo.title || "Gallery thumbnail"}
-                          className="absolute inset-0 w-full h-full object-cover blur-sm"
-                          loading="eager"
-                          decoding="sync"
-                        />
+                        <div className="absolute inset-0 flex items-center justify-center bg-muted/10">
+                          <div className="animate-spin">
+                            <RefreshCw className="w-6 h-6 text-muted-foreground" />
+                          </div>
+                        </div>
                       )}
                       <img
                         src={constructImagePath(photo)}
@@ -287,7 +284,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
           <VisuallyHidden>
             <h2>Image Preview</h2>
           </VisuallyHidden>
-          
+
           {selectedPhoto && (
             <div className="relative w-full h-full flex items-center justify-center">
               <Button
