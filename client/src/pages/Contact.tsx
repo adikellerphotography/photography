@@ -47,7 +47,7 @@ export default function Contact() {
         />
       </div>
       <div
-        className="container mx-auto px-4 py-4"
+        className="container mx-auto px-4 py-2"
       >
         <div className="max-w-3xl mx-auto">
           <div className="flex flex-col items-center mb-8">
