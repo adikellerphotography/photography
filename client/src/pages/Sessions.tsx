@@ -230,62 +230,54 @@ export default function Sessions() {
     event.preventDefault();
     event.stopPropagation();
 
-    const postId = link.url.split('pfbid')[1];
-    const userId = link.url.split('facebook.com/')[1].split('/posts')[0];
-
     if (isMobile) {
-      const openInMobileBrowser = () => {
-        window.location.href = link.url;
-      };
-
+      event.preventDefault();
+      const postId = link.url.split('pfbid')[1];
+      const userId = link.url.split('facebook.com/')[1].split('/posts')[0];
+      
       if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
         // iOS Facebook app deep link
-        const facebookAppUrl = `fb://profile/${userId}/posts/pfbid${postId}`;
-        window.location.href = facebookAppUrl;
-        
-        // Fallback to browser if app not installed
+        window.location.href = `fb://profile/${userId}/posts/pfbid${postId}`;
         setTimeout(() => {
           if (!document.hidden) {
-            openInMobileBrowser();
+            window.location.href = `https://m.facebook.com/${userId}/posts/pfbid${postId}`;
           }
         }, 2000);
       } else {
-        // Android Facebook app intent with browser fallback
-        const androidIntent = `intent://facebook.com/${userId}/posts/pfbid${postId}#Intent;package=com.facebook.katana;scheme=https;end`;
-        window.location.href = androidIntent;
-        
+        // Android Facebook app intent
+        window.location.href = `intent://facebook.com/${userId}/posts/pfbid${postId}#Intent;package=com.facebook.katana;scheme=https;end`;
         setTimeout(() => {
           if (!document.hidden) {
-            openInMobileBrowser();
+            window.location.href = link.url;
           }
         }, 2000);
       }
       return;
     }
 
-    // Desktop: Show image in dialog first, then open Facebook in new tab on dialog close
-    window.history.pushState(
-      { isGalleryView: true },
-      "",
-      window.location.pathname,
-    );
-    setSelectedImage({
-      url: `/attached_assets/facebook_posts_image/${categoryMappings[groupName] || groupName.replace(/\s+/g, "_")}/${link.number}.jpg`,
-      number: link.number,
-      groupName,
-    });
-    setIsDialogOpen(true);
-
-    // Store the URL to be opened when dialog closes
-    const handleDialogClose = () => {
-      window.open(link.url, "_blank", "noopener,noreferrer");
+    const now = Date.now();
+    if (clickTimer.current && now - clickTimer.current < 300) {
+      clickTimer.current = 0;
       setIsDialogOpen(false);
-    };
-
-    // Override dialog close handler
-    const dialogContent = document.querySelector('[role="dialog"]');
-    if (dialogContent) {
-      dialogContent.addEventListener('click', handleDialogClose, { once: true });
+      window.open(link.url, "_blank", "noopener,noreferrer");
+    } else {
+      clickTimer.current = now;
+      setTimeout(() => {
+        if (clickTimer.current !== 0) {
+          window.history.pushState(
+            { isGalleryView: true },
+            "",
+            window.location.pathname,
+          );
+          setSelectedImage({
+            url: `/attached_assets/facebook_posts_image/${categoryMappings[groupName] || groupName.replace(/\s+/g, "_")}/${link.number}.jpg`,
+            number: link.number,
+            groupName,
+          });
+          setIsDialogOpen(true);
+        }
+        clickTimer.current = 0;
+      }, 300);
     }
   };
 
