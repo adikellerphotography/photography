@@ -378,22 +378,22 @@ export default function Sessions() {
       </motion.div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-[100vw] max-h-[100vh] p-0 border-none bg-black shadow-xl backdrop-blur-sm overflow-hidden">
+        <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 border-none bg-black/80 shadow-xl backdrop-blur-sm">
           {selectedImage && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              className="relative w-screen h-screen flex items-center justify-center"
+              className="relative w-full h-full flex items-center justify-center p-4"
               onClick={() => setIsDialogOpen(false)}
             >
               <motion.img
                 src={selectedImage.url}
                 alt={`${selectedImage.groupName} session ${selectedImage.number}`}
-                className="w-full h-full object-contain"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                className="max-w-full max-h-[85vh] w-auto h-auto object-contain rounded-lg shadow-2xl"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
               />
               <button
