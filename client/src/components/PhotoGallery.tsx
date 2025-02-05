@@ -221,7 +221,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
         <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 border-none bg-black/80 shadow-xl backdrop-blur-sm">
           {selectedPhoto && (
             <div 
-              className="relative w-full h-full"
+              className="relative w-full h-full flex items-center justify-center"
               onTouchStart={(e) => {
                 const touch = e.touches[0];
                 setTouchStart({ x: touch.clientX, y: touch.clientY });
