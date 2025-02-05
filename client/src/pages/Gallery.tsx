@@ -198,13 +198,13 @@ export default function Gallery() {
       if (!response.ok) throw new Error('Failed to fetch photos');
       const data = await response.json();
       const filteredPhotos = data.filter((photo: Photo) => photo && photo.imageUrl);
-      
+
       // Shuffle photos only once when fetched
       for (let i = filteredPhotos.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [filteredPhotos[i], filteredPhotos[j]] = [filteredPhotos[j], filteredPhotos[i]];
       }
-      
+
       return filteredPhotos;
     },
     staleTime: Infinity,
@@ -297,9 +297,7 @@ export default function Gallery() {
             <div className="flex justify-between items-center">
               <motion.h1
                 variants={itemVariants}
-                className={`text-3xl font-bold text-[#FF9500] w-full ${
-                  language === "he" ? "text-right" : "text-left"
-                }`}
+                className="text-2xl font-bold text-[#FF9500] w-full text-center"
               >
                 {language === "he" ? "גלריית תמונות" : "Photo Gallery"}
               </motion.h1>
