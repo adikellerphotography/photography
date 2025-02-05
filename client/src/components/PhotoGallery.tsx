@@ -8,6 +8,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, RefreshCw, AlertCircle } from "lucide-react";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 interface PhotoGalleryProps {
   category?: string;
@@ -18,28 +19,39 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
-  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
   const [retryAttempts, setRetryAttempts] = useState<Record<string, number>>({});
   const galleryRef = useRef<HTMLDivElement>(null);
   const imageCache = useRef<Record<string, HTMLImageElement>>({});
 
+  const constructImagePath = (photo: Photo, isThumb = false): string => {
+    if (!photo?.imageUrl) return '';
+    const basePath = `/attached_assets/galleries/${category?.replace(/\s+/g, '_')}`;
+    const fileName = isThumb ? photo.imageUrl.replace('.jpeg', '-thumb.jpeg') : photo.imageUrl;
+    return `${basePath}/${fileName}`;
+  };
+
   const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({
     queryKey: ["/api/photos", category],
     queryFn: async () => {
-      const response = await fetch(`/api/photos?category=${encodeURIComponent(category || '')}`);
-      if (!response.ok) throw new Error('Failed to fetch photos');
-      const data = await response.json();
-      return data.filter((photo: Photo) => photo && photo.imageUrl);
+      try {
+        const response = await fetch(`/api/photos?category=${encodeURIComponent(category || '')}`);
+        if (!response.ok) throw new Error('Failed to fetch photos');
+        const data = await response.json();
+        return data.filter((photo: Photo) => photo && photo.imageUrl);
+      } catch (error) {
+        console.error('Error fetching photos:', error);
+        throw error;
+      }
     },
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    staleTime: 5 * 60 * 1000,
   });
 
   const preloadImage = async (photo: Photo): Promise<void> => {
     if (!photo.imageUrl) return;
 
-    const path = `/attached_assets/galleries/${category?.replace(/\s+/g, '_')}/${photo.imageUrl}`;
+    const path = constructImagePath(photo);
     if (loadedImages.has(path) || failedImages.has(path)) return;
 
     const timestamp = Date.now();
@@ -50,13 +62,17 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       const img = new Image();
       imageCache.current[path] = img;
 
-      const loadPromise = new Promise<void>((resolve, reject) => {
+      await new Promise<void>((resolve, reject) => {
+        let timeoutId: NodeJS.Timeout;
+
         img.onload = () => {
+          clearTimeout(timeoutId);
           setLoadedImages(prev => new Set(prev).add(path));
           resolve();
         };
 
         img.onerror = () => {
+          clearTimeout(timeoutId);
           if (retryCount < 3) {
             setRetryAttempts(prev => ({ ...prev, [path]: retryCount + 1 }));
             reject(new Error(`Failed to load image: ${path}`));
@@ -65,49 +81,51 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
             reject(new Error(`Max retries reached for: ${path}`));
           }
         };
-      });
 
-      img.src = urlWithCache;
-      await Promise.race([
-        loadPromise,
-        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 15000))
-      ]);
+        timeoutId = setTimeout(() => {
+          img.src = '';
+          reject(new Error('Timeout loading image'));
+        }, 15000);
+
+        img.src = urlWithCache;
+      });
     } catch (error) {
       console.error(`Error loading image ${path}:`, error);
     }
   };
 
   useEffect(() => {
-    if (photos.length) {
-      const preloadQueue = [...photos];
-      let running = 0;
-      const maxConcurrent = 3;
+    if (!photos?.length) return;
 
-      const processNext = async () => {
-        if (preloadQueue.length === 0 || running >= maxConcurrent) return;
-        running++;
-        const photo = preloadQueue.shift();
-        if (photo) {
-          await preloadImage(photo);
-          running--;
-          processNext();
-        }
-      };
+    const preloadQueue = [...photos];
+    let running = 0;
+    const maxConcurrent = 3;
+    let cancelled = false;
 
-      for (let i = 0; i < maxConcurrent; i++) {
-        processNext();
+    const processNext = async () => {
+      if (cancelled || preloadQueue.length === 0 || running >= maxConcurrent) return;
+      running++;
+      const photo = preloadQueue.shift();
+      if (photo) {
+        await preloadImage(photo);
+        running--;
+        if (!cancelled) processNext();
       }
+    };
 
-      return () => {
-        // Cleanup image cache on unmount
-        Object.values(imageCache.current).forEach(img => {
-          img.onload = null;
-          img.onerror = null;
-          img.src = '';
-        });
-        imageCache.current = {};
-      };
+    for (let i = 0; i < maxConcurrent; i++) {
+      processNext();
     }
+
+    return () => {
+      cancelled = true;
+      Object.values(imageCache.current).forEach(img => {
+        img.onload = null;
+        img.onerror = null;
+        img.src = '';
+      });
+      imageCache.current = {};
+    };
   }, [photos]);
 
   const retryImage = (path: string) => {
@@ -117,7 +135,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       return newSet;
     });
     setRetryAttempts(prev => ({ ...prev, [path]: 0 }));
-    const photo = photos.find(p => p.imageUrl === path.split('/').pop());
+    const photo = photos.find(p => constructImagePath(p) === path);
     if (photo) {
       preloadImage(photo);
     }
@@ -146,7 +164,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     <div className="space-y-8" ref={galleryRef}>
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-background/50">
         {photos.map((photo, index) => {
-          const path = `/attached_assets/galleries/${category?.replace(/\s+/g, '_')}/${photo.imageUrl}`;
+          const path = constructImagePath(photo);
           const isLoaded = loadedImages.has(path);
           const hasFailed = failedImages.has(path);
 
@@ -195,8 +213,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                     </div>
                   ) : (
                     <img
-                      src={path}
-                      alt={photo.title || ""}
+                      src={constructImagePath(photo)}
+                      alt={photo.title || "Gallery image"}
                       className={`relative w-full h-full transition-all duration-500 ${
                         isLoaded ? 'opacity-100 group-hover:scale-110' : 'opacity-0'
                       } object-cover`}
@@ -219,38 +237,12 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
         }}
       >
         <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 border-none bg-black/80 shadow-xl backdrop-blur-sm">
+          <VisuallyHidden>
+            <h2>Image Preview</h2>
+          </VisuallyHidden>
+          
           {selectedPhoto && (
-            <div 
-              className="relative w-full h-full flex items-center justify-center"
-              onTouchStart={(e) => {
-                const touch = e.touches[0];
-                setTouchStart({ x: touch.clientX, y: touch.clientY });
-              }}
-              onTouchMove={(e) => {
-                if (!touchStart) return;
-                const touch = e.touches[0];
-                const deltaX = touchStart.x - touch.clientX;
-                const deltaY = touchStart.y - touch.clientY;
-
-                if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                  e.preventDefault();
-                }
-              }}
-              onTouchEnd={(e) => {
-                if (!touchStart) return;
-                const touch = e.changedTouches[0];
-                const deltaX = touchStart.x - touch.clientX;
-
-                if (Math.abs(deltaX) > 50) {
-                  const newIndex = deltaX > 0 
-                    ? (selectedIndex + 1) % photos.length 
-                    : selectedIndex === 0 ? photos.length - 1 : selectedIndex - 1;
-                  setSelectedIndex(newIndex);
-                  setSelectedPhoto(photos[newIndex]);
-                }
-                setTouchStart(null);
-              }}
-            >
+            <div className="relative w-full h-full flex items-center justify-center">
               <Button
                 className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 transition-colors"
                 variant="ghost"
@@ -284,7 +276,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
-                src={`/attached_assets/galleries/${category?.replace(/\s+/g, '_')}/${selectedPhoto.imageUrl}`}
+                src={constructImagePath(selectedPhoto)}
                 alt={selectedPhoto.title || ""}
                 className="max-w-full max-h-[85vh] w-auto h-auto object-contain rounded-lg shadow-2xl"
                 loading="eager"
