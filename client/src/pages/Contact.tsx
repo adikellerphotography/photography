@@ -39,18 +39,18 @@ export default function Contact() {
   const dir = isRTL ? 'rtl' : 'ltr';
 
   return (
-    <div className="min-h-screen pt-16" dir={dir}>
-      <div className="flex justify-center mb-16">
+    <div className="min-h-screen pt-20" dir={dir}>
+      <div className="flex justify-center mb-12">
         <img 
           src="/attached_assets/my_site_logo.png"
           alt="Site Logo"
-          className="w-[40%] opacity-80"
+          className="w-[30%] opacity-80"
         />
       </div>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="container mx-auto px-4 py-16"
+        className="container mx-auto px-4 py-12"
       >
         <div className="max-w-3xl mx-auto">
           <div className="flex flex-col items-center mb-8">
