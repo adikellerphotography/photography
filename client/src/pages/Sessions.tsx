@@ -221,7 +221,7 @@ export default function Sessions() {
           language === "he" ? "rtl" : "ltr"
         }`}
       >
-        <h1 className="text-3xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-[#FF9500] to-[#FF5A00]">
+        <h1 className="text-2xl font-bold mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-[#FF9500] to-[#FF5A00]">
           {t("sessions.title")}
         </h1>
 
