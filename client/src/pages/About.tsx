@@ -45,16 +45,7 @@ export default function About() {
                         img.src = `${img.src}?retry=${retryCount + 1}&t=${Date.now()}`;
                       }, retryCount * 1000);
                     }
-                  onError={(e) => {
-                      const img = e.currentTarget;
-                      const retryCount = Number(img.dataset.retryCount || 0);
-                      if (retryCount < 3) {
-                        img.dataset.retryCount = String(retryCount + 1);
-                        setTimeout(() => {
-                          img.src = `${img.src}?retry=${retryCount + 1}&t=${Date.now()}`;
-                        }, retryCount * 1000);
-                      }
-                    }}
+                  }}
                   />
                 </motion.div>
               </div>
