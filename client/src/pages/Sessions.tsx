@@ -230,56 +230,54 @@ export default function Sessions() {
     event.preventDefault();
     event.stopPropagation();
 
-    const postId = link.url.split('pfbid')[1];
-    const userId = link.url.split('facebook.com/')[1].split('/posts')[0];
-    const imagePath = `/attached_assets/facebook_posts_image/${categoryMappings[groupName] || groupName.replace(/\s+/g, "_")}/${link.number}.jpg`;
-
-    const openImage = () => {
-      setSelectedImage({
-        url: imagePath,
-        number: link.number,
-        groupName,
-      });
-      setIsDialogOpen(true);
-      window.history.pushState({ isGalleryView: true }, "", window.location.pathname);
-    };
-
-    const openFacebookPost = () => {
-      window.open(link.url, "_blank", "noopener,noreferrer");
-    };
-
     if (isMobile) {
-      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-      const openInMobileBrowser = () => window.location.href = link.url;
-
-      if (isIOS) {
+      event.preventDefault();
+      const postId = link.url.split('pfbid')[1];
+      const userId = link.url.split('facebook.com/')[1].split('/posts')[0];
+      
+      if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
         // iOS Facebook app deep link
-        const facebookAppUrl = `fb://profile/${userId}/posts/pfbid${postId}`;
-        window.location.href = facebookAppUrl;
+        window.location.href = `fb://profile/${userId}/posts/pfbid${postId}`;
+        setTimeout(() => {
+          if (!document.hidden) {
+            window.location.href = `https://m.facebook.com/${userId}/posts/pfbid${postId}`;
+          }
+        }, 2000);
       } else {
-        // Android Facebook app intent with browser fallback
-        const androidIntent = `intent://facebook.com/${userId}/posts/pfbid${postId}#Intent;package=com.facebook.katana;scheme=https;end`;
-        window.location.href = androidIntent;
+        // Android Facebook app intent
+        window.location.href = `intent://facebook.com/${userId}/posts/pfbid${postId}#Intent;package=com.facebook.katana;scheme=https;end`;
+        setTimeout(() => {
+          if (!document.hidden) {
+            window.location.href = link.url;
+          }
+        }, 2000);
       }
-
-      // Fallback to browser if app not installed or URL doesn't open
-      setTimeout(() => {
-        if (!document.hidden) {
-          openInMobileBrowser();
-        }
-      }, 2000);
       return;
     }
 
-    // Desktop behavior: Show image first, then open Facebook post on dialog close
-    openImage();
-    const dialogContent = document.querySelector('[role="dialog"]');
-    if (dialogContent) {
-      const handleDialogClose = () => {
-        openFacebookPost();
-        setIsDialogOpen(false);
-      };
-      dialogContent.addEventListener('click', handleDialogClose, { once: true });
+    const now = Date.now();
+    if (clickTimer.current && now - clickTimer.current < 300) {
+      clickTimer.current = 0;
+      setIsDialogOpen(false);
+      window.open(link.url, "_blank", "noopener,noreferrer");
+    } else {
+      clickTimer.current = now;
+      setTimeout(() => {
+        if (clickTimer.current !== 0) {
+          window.history.pushState(
+            { isGalleryView: true },
+            "",
+            window.location.pathname,
+          );
+          setSelectedImage({
+            url: `/attached_assets/facebook_posts_image/${categoryMappings[groupName] || groupName.replace(/\s+/g, "_")}/${link.number}.jpg`,
+            number: link.number,
+            groupName,
+          });
+          setIsDialogOpen(true);
+        }
+        clickTimer.current = 0;
+      }, 300);
     }
   };
 
