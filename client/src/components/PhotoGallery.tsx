@@ -218,7 +218,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
           if (!open) setSelectedPhoto(null);
         }}
       >
-        <DialogContent className="max-w-[90vw] max-h-[90vh] p-0">
+        <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 border-none bg-black/80 shadow-xl backdrop-blur-sm">
           {selectedPhoto && (
             <div 
               className="relative w-full h-full"
@@ -279,10 +279,14 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 <ChevronRight className="h-6 w-6 text-white" />
               </Button>
 
-              <img
+              <motion.img
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.2 }}
                 src={`/attached_assets/galleries/${category?.replace(/\s+/g, '_')}/${selectedPhoto.imageUrl}`}
                 alt={selectedPhoto.title || ""}
-                className="w-full h-full object-contain"
+                className="max-w-full max-h-[85vh] w-auto h-auto object-contain rounded-lg shadow-2xl"
                 loading="eager"
                 draggable={false}
               />
