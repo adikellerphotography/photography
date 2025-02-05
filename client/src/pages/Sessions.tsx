@@ -421,11 +421,11 @@ export default function Sessions() {
   const getFacebookUrl = (url: string) => {
     if (isMobile) {
       const postId = url.split("pfbid")[1];
-      const facebookAppUrl = /iPhone|iPad|iPod/.test(navigator.userAgent)
-        ? `fb://post/pfbid${postId}`
-        : `intent://facebook.com/story.php?story_fbid=pfbid${postId}#Intent;package=com.facebook.katana;scheme=https;end`;
-      
-      return facebookAppUrl;
+      const userId = "adi.keller.16";
+      if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+        return `fb://profile/${userId}/posts/${postId}`;
+      }
+      return `intent://www.facebook.com/${userId}/posts/pfbid${postId}#Intent;package=com.facebook.katana;scheme=https;end`;
     }
     return url;
   };
