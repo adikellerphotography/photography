@@ -44,7 +44,7 @@ export default function Contact() {
         <img 
           src="/attached_assets/my_site_logo.png"
           alt="Site Logo"
-          className="w-[35%] opacity-80"
+          className="w-[35%] md:w-[35%] w-[60%] opacity-80"
         />
       </div>
       <motion.div
