@@ -235,7 +235,7 @@ export default function Home() {
           </div>
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <h1
-              className="font-bold font-cormorant text-2xl md:text-4xl text-center"
+              className="font-bold font-cormorant text-2xl md:text-4xl text-center tracking-wide"
             >
               {t("home.title")}
             </h1>
