@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/hooks/use-language";
-import 'flag-icon-css/css/flag-icons.min.css';
+import ReactCountryFlag from "react-country-flag";
 
 export default function LanguageToggle() {
   const { language, setLanguage } = useLanguage();
@@ -15,10 +15,10 @@ export default function LanguageToggle() {
       title={language === "en" ? "Switch to Hebrew" : "Switch to English"}
     >
       <div className={`absolute transition-all duration-300 ${language === "en" ? "rotate-0 scale-100" : "rotate-90 scale-0"}`}>
-        <span className="flag-icon flag-icon-us h-[1.2rem] w-[1.2rem]"></span>
+        <ReactCountryFlag countryCode="US" style={{ width: '1.2rem', height: '1.2rem' }} svg />
       </div>
       <div className={`absolute transition-all duration-300 ${language === "en" ? "rotate-90 scale-0" : "rotate-0 scale-100"}`}>
-        <span className="flag-icon flag-icon-il h-[1.2rem] w-[1.2rem]"></span>
+        <ReactCountryFlag countryCode="IL" style={{ width: '1.2rem', height: '1.2rem' }} svg />
       </div>
       <span className="sr-only">
         {language === "en" ? "Switch to Hebrew" : "Switch to English"}
