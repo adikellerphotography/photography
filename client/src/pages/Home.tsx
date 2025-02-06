@@ -9,7 +9,7 @@ import SocialLinks from "@/components/SocialLinks";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
 import { useEffect } from "react";
-import { Camera, Aperture, SplitSquareVertical } from "lucide-react";
+import { Camera, Aperture, SplitSquareVertical, ArrowUp } from "lucide-react";
 
 export default function Home() {
   const { language } = useLanguage();
@@ -107,6 +107,18 @@ export default function Home() {
       document.head.appendChild(link);
     }
   }, [filteredCategories]);
+
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <div className="min-h-screen pt-16">
@@ -361,6 +373,16 @@ export default function Home() {
           </Link>
         </section>
       )}
+      <motion.button
+        className={`fixed bottom-6 right-6 p-3 rounded-full bg-[#FF9500] text-black shadow-lg transition-all ${
+          scrollY > 200 ? "opacity-100 scale-100" : "opacity-0 scale-90"
+        }`}
+        onClick={scrollToTop}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        <ArrowUp className="h-5 w-5" />
+      </motion.button>
     </div>
   );
 }
