@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Quicksand:wght@300;400;500;600;700&family=Frank+Ruhl+Libre:wght@300;400;500;600;700&family=Polin+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Quicksand:wght@300;400;500;600;700&family=Frank+Ruhl+Libre:wght@300;400;500;600;700&display=swap');
 
 
 @keyframes fadeIn {
@@ -96,7 +96,7 @@
     white-space: nowrap;
     font-size: clamp(0.4rem, 0.9vw, 0.65rem);
     line-height: 1;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.04em;
     display: inline-block;
     width: auto;
   }
