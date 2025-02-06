@@ -8,7 +8,7 @@ import type { Category } from "@/lib/types";
 import SocialLinks from "@/components/SocialLinks";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Camera, Aperture, SplitSquareVertical, ArrowUp } from "lucide-react";
 
 export default function Home() {
