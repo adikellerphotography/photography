@@ -2,10 +2,25 @@ import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
 import { LuCamera, LuLightbulb, LuImage, LuWand } from "react-icons/lu";
+import { useState, useEffect } from 'react'; // Added imports
+import { ArrowUp } from "@/components/ArrowUp"; // Assumed import path
+
 
 export default function Workshop() {
   const { t } = useTranslation();
   const { language } = useLanguage();
+  const [scrollY, setScrollY] = useState(0); // Added scrollY state
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
 
   const classes = [
     {
@@ -154,6 +169,16 @@ export default function Workshop() {
           ))}
         </div>
       </motion.div>
+      <motion.button
+        className={`fixed bottom-6 right-6 p-3 rounded-full bg-[#FF9500] text-black shadow-lg transition-all ${
+          scrollY > 200 ? "opacity-100 scale-100" : "opacity-0 scale-90"
+        }`}
+        onClick={scrollToTop}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        <ArrowUp className="h-5 w-5" />
+      </motion.button>
     </div>
   );
 }
