@@ -45,32 +45,32 @@ export default function Home() {
     // Fixed images for each category
     const customImages: Record<string, { img: string; thumb: string }> = {
       "Bat Mitsva": {
-        img: `/assets/galleries/Bat_Mitsva/001.jpeg`,
-        thumb: `/assets/galleries/Bat_Mitsva/001-thumb.jpeg`,
+        img: `/attached_assets/galleries/Bat_Mitsva/001.jpeg`,
+        thumb: `/attached_assets/galleries/Bat_Mitsva/001-thumb.jpeg`,
       },
       Horses: {
-        img: `/assets/galleries/Horses/058.jpeg`,
-        thumb: `/assets/galleries/Horses/058-thumb.jpeg`,
+        img: `/attached_assets/galleries/Horses/058.jpeg`,
+        thumb: `/attached_assets/galleries/Horses/058-thumb.jpeg`,
       },
       Kids: {
-        img: `/assets/galleries/Kids/021.jpeg`,
-        thumb: `/assets/galleries/Kids/021-thumb.jpeg`,
+        img: `/attached_assets/galleries/Kids/021.jpeg`,
+        thumb: `/attached_assets/galleries/Kids/021-thumb.jpeg`,
       },
       Femininity: {
-        img: `/assets/galleries/Femininity/014.jpeg`,
-        thumb: `/assets/galleries/Femininity/014-thumb.jpeg`,
+        img: `/attached_assets/galleries/Femininity/014.jpeg`,
+        thumb: `/attached_assets/galleries/Femininity/014-thumb.jpeg`,
       },
       Yoga: {
-        img: `/assets/galleries/Yoga/064.jpeg`,
-        thumb: `/assets/galleries/Yoga/064-thumb.jpeg`,
+        img: `/attached_assets/galleries/Yoga/064.jpeg`,
+        thumb: `/attached_assets/galleries/Yoga/064-thumb.jpeg`,
       },
       Modeling: {
-        img: `/assets/galleries/Modeling/010.jpeg`,
-        thumb: `/assets/galleries/Modeling/010-thumb.jpeg`,
+        img: `/attached_assets/galleries/Modeling/010.jpeg`,
+        thumb: `/attached_assets/galleries/Modeling/010-thumb.jpeg`,
       },
       "Artful Nude": {
-        img: `/assets/galleries/Artful_Nude/023.jpeg`,
-        thumb: `/assets/galleries/Artful_Nude/023-thumb.jpeg`,
+        img: `/attached_assets/galleries/Artful_Nude/023.jpeg`,
+        thumb: `/attached_assets/galleries/Artful_Nude/023-thumb.jpeg`,
       },
     };
 
@@ -307,15 +307,12 @@ export default function Home() {
                               const target = e.target as HTMLImageElement;
                               const retryCount = Number(target.dataset.retryCount || "0");
                               const maxRetries = 5;
-                              const fileName = target.src.split("/").pop()?.split("?")[0];
-                              const categoryPath = category.name.replace(/\s+/g, "_");
                               const paths = [
-                                `/assets/galleries/${categoryPath}/${fileName}`,
-                                `/assets/galleries/${categoryPath}/${fileName?.replace(".jpeg", "-thumb.jpeg")}`,
-                                `/attached_assets/galleries/${categoryPath}/${fileName}`,
-                                `/public/assets/galleries/${categoryPath}/${fileName}`,
-                                `/assets/${categoryPath}/${String(1).padStart(3, "0")}.jpeg`,
-                              ].filter(Boolean);
+                                target.src, // Original path
+                                target.src.replace(".jpeg", "-thumb.jpeg"), // Thumbnail
+                                `/attached_assets/galleries/${category.name.replace(/\s+/g, "_")}/${target.src.split("/").pop()}`, // Alternative gallery path
+                                `/assets/${category.name.replace(/\s+/g, "_")}/${String(1).padStart(3, "0")}.jpeg`, // Fallback path
+                              ];
                               
                               if (retryCount < maxRetries) {
                                 console.log(`Retrying image load (${retryCount + 1}/${maxRetries}):`, target.src);
