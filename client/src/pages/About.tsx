@@ -48,7 +48,7 @@ export default function About() {
                     className="w-full h-full"
                   >
                     <img
-                      src="/attached_assets/IMG_1133.jpg"
+                      src="/assets/IMG_1133.jpg"
                       alt="Profile"
                       className="object-cover w-full h-full transform-gpu"
                       width={300}
