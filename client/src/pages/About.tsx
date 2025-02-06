@@ -5,6 +5,7 @@ import SocialLinks from "@/components/SocialLinks";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { ArrowUp } from "lucide-react";
 import { useState, useEffect } from "react";
 
 export default function About() {
