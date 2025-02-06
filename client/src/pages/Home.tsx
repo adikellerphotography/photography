@@ -38,39 +38,39 @@ export default function Home() {
   // Override the firstPhoto for specific categories
   const processedCategories = categories?.map((category) => {
     const categoryPath = category.name.replace(/\s+/g, "_");
-    const defaultImage = `/api/photos/${encodeURIComponent(categoryPath)}/001.jpeg`;
-    const defaultThumb = `/api/photos/${encodeURIComponent(categoryPath)}/001-thumb.jpeg`;
+    const defaultImage = `/attached_assets/galleries/${categoryPath}/001.jpeg`;
+    const defaultThumb = `/attached_assets/galleries/${categoryPath}/001-thumb.jpeg`;
 
     // Category image configuration with ranges
     // Fixed images for each category with multiple path fallbacks
     const customImages: Record<string, { img: string; thumb: string }> = {
       "Bat Mitsva": {
-        img: `/api/photos/${encodeURIComponent("Bat_Mitsva")}/001.jpeg`,
-        thumb: `/api/photos/${encodeURIComponent("Bat_Mitsva")}/001-thumb.jpeg`,
+        img: `/attached_assets/galleries/Bat_Mitsva/001.jpeg`,
+        thumb: `/attached_assets/galleries/Bat_Mitsva/001-thumb.jpeg`,
       },
       Horses: {
-        img: `/api/photos/${encodeURIComponent("Horses")}/058.jpeg`,
-        thumb: `/api/photos/${encodeURIComponent("Horses")}/058-thumb.jpeg`,
+        img: `/attached_assets/galleries/Horses/058.jpeg`,
+        thumb: `/attached_assets/galleries/Horses/058-thumb.jpeg`,
       },
       Kids: {
-        img: `/api/photos/${encodeURIComponent("Kids")}/021.jpeg`,
-        thumb: `/api/photos/${encodeURIComponent("Kids")}/021-thumb.jpeg`,
+        img: `/attached_assets/galleries/Kids/021.jpeg`,
+        thumb: `/attached_assets/galleries/Kids/021-thumb.jpeg`,
       },
       Femininity: {
-        img: `/api/photos/${encodeURIComponent("Femininity")}/014.jpeg`,
-        thumb: `/api/photos/${encodeURIComponent("Femininity")}/014-thumb.jpeg`,
+        img: `/attached_assets/galleries/Femininity/014.jpeg`,
+        thumb: `/attached_assets/galleries/Femininity/014-thumb.jpeg`,
       },
       Yoga: {
-        img: `/api/photos/${encodeURIComponent("Yoga")}/064.jpeg`,
-        thumb: `/api/photos/${encodeURIComponent("Yoga")}/064-thumb.jpeg`,
+        img: `/attached_assets/galleries/Yoga/064.jpeg`,
+        thumb: `/attached_assets/galleries/Yoga/064-thumb.jpeg`,
       },
       Modeling: {
-        img: `/api/photos/${encodeURIComponent("Modeling")}/010.jpeg`,
-        thumb: `/api/photos/${encodeURIComponent("Modeling")}/010-thumb.jpeg`,
+        img: `/attached_assets/galleries/Modeling/010.jpeg`,
+        thumb: `/attached_assets/galleries/Modeling/010-thumb.jpeg`,
       },
       "Artful Nude": {
-        img: `/api/photos/${encodeURIComponent("Artful_Nude")}/023.jpeg`,
-        thumb: `/api/photos/${encodeURIComponent("Artful_Nude")}/023-thumb.jpeg`,
+        img: `/attached_assets/galleries/Artful_Nude/023.jpeg`,
+        thumb: `/attached_assets/galleries/Artful_Nude/023-thumb.jpeg`,
       },
     };
 
@@ -87,6 +87,7 @@ export default function Home() {
         thumbnailUrl: imageConfig.thumb,
       },
     };
+    return category;
   });
 
   const filteredCategories =
@@ -279,7 +280,10 @@ export default function Home() {
                       <AspectRatio ratio={4 / 3} className="bg-muted">
                         <div className="relative w-full h-full">
                           <img
-                            src={`/attached_assets/galleries/${category.name.replace(/\s+/g, "_")}/${String(1).padStart(3, "0")}.jpeg`}
+                            src={
+                              category.firstPhoto?.imageUrl ||
+                              `/attached_assets/galleries/${category.name.replace(/\s+/g, "_")}/${String(1).padStart(3, "0")}.jpeg`
+                            }
                             alt={category.name}
                             className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
                             decoding="async"
@@ -298,75 +302,41 @@ export default function Home() {
                               if (img.naturalHeight > img.naturalWidth) {
                                 img.style.objectPosition = "center 50%";
                               }
-                              // Clear retry count on successful load
-                              delete img.dataset.retryCount;
                             }}
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
                               const retryCount = Number(target.dataset.retryCount || "0");
-                              const maxRetries = 3;
+                              const maxRetries = 5;
+                              const fileName = target.src.split("/").pop()?.split("?")[0];
                               const categoryPath = category.name.replace(/\s+/g, "_");
-
-                              const getFallbackPaths = () => {
-                                // Primary paths for full resolution
-                                const primaryPaths = [
-                                  `/attached_assets/galleries/${categoryPath}/${String(1).padStart(3, "0")}.jpeg`,
-                                  `/attached_assets/facebook_posts_image/${categoryPath}/1.jpg`,
-                                  `/assets/galleries/${categoryPath}/${String(1).padStart(3, "0")}.jpeg`,
-                                ];
-
-                                // Thumbnail paths as fallbacks
-                                const thumbnailPaths = [
-                                  `/attached_assets/galleries/${categoryPath}/${String(1).padStart(3, "0")}-thumb.jpeg`,
-                                  `/attached_assets/facebook_posts_image/${categoryPath}/1-thumb.jpg`,
-                                ];
-
-                                // Alternative formats
-                                const altFormatPaths = [
-                                  `/attached_assets/galleries/${categoryPath}/001.jpg`,
-                                  `/assets/galleries/${categoryPath}/001.jpg`,
-                                  `/attached_assets/facebook_posts_image/${categoryPath}/1.jpeg`,
-                                ];
-
-                                return [...primaryPaths, ...thumbnailPaths, ...altFormatPaths];
-                              };
-
-                              const paths = getFallbackPaths();
-
+                              const paths = [
+                                `/assets/galleries/${categoryPath}/${fileName}`,
+                                `/assets/galleries/${categoryPath}/${fileName?.replace(".jpeg", "-thumb.jpeg")}`,
+                                `/attached_assets/galleries/${categoryPath}/${fileName}`,
+                                `/attached_assets/facebook_posts_image/${categoryPath}/${fileName?.replace(".jpeg", ".jpg")}`,
+                                `/public/assets/galleries/${categoryPath}/${fileName}`,
+                                `/assets/${categoryPath}/${String(1).padStart(3, "0")}.jpeg`,
+                              ].filter(Boolean);
+                              
                               if (retryCount < maxRetries) {
+                                console.log(`Retrying image load (${retryCount + 1}/${maxRetries}):`, target.src);
                                 target.dataset.retryCount = String(retryCount + 1);
-                                const pathIndex = retryCount % paths.length;
-                                const nextPath = paths[pathIndex];
-                                const timestamp = Date.now();
-
-                                // Create a new image for preloading
-                                const preloadImg = new Image();
                                 
-                                preloadImg.onload = () => {
-                                  target.src = preloadImg.src;
-                                  target.style.opacity = "1";
-                                };
-
-                                preloadImg.onerror = () => {
-                                  // Try next path after short delay
-                                  const delay = Math.min(retryCount * 300, 1000);
-                                  setTimeout(() => {
-                                    target.src = `${nextPath}?t=${timestamp}&r=${retryCount}`;
-                                  }, delay);
-                                };
-
-                                // Start preloading
-                                preloadImg.src = `${nextPath}?t=${timestamp}&r=${retryCount}`;
+                                // Try next path in sequence
+                                const pathIndex = Math.min(Math.floor(retryCount / 2), paths.length - 1);
+                                const nextPath = paths[pathIndex];
+                                
+                                setTimeout(() => {
+                                  const timestamp = Date.now();
+                                  target.src = `${nextPath}?t=${timestamp}&retry=${retryCount + 1}`;
+                                }, Math.min(retryCount * 1000, 3000));
                               } else {
-                                // Final fallback - try direct Facebook post image
+                                console.error("Failed to load image after all retries:", target.src);
                                 target.onerror = null;
                                 target.style.opacity = "0.7";
-                                target.style.background = "rgba(0,0,0,0.05)";
+                                target.style.background = "rgba(0,0,0,0.1)";
+                                // Set a data attribute to track failed loads
                                 target.dataset.loadFailed = "true";
-                                
-                                // Last resort - try the facebook posts image directly
-                                const lastResortPath = `/attached_assets/facebook_posts_image/${categoryPath}/1.jpg`;
-                                target.src = `${lastResortPath}?final=true`;
                               }
                             }}
                             loading={

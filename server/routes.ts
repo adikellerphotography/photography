@@ -323,29 +323,52 @@ export function registerRoutes(app: Express): Server {
   app.get('/api/photos/:category/:filename', async (req, res) => {
     try {
       const { category, filename } = req.params;
-      const categoryPath = category.replace(/\s+/g, '_');
-      const imagePath = path.join(process.cwd(), 'attached_assets', 'galleries', categoryPath, filename);
-      
-      try {
-        await fs.access(imagePath, fs.constants.R_OK);
-        res.type('image/jpeg')
-           .header('Cache-Control', 'public, max-age=31536000')
-           .header('Access-Control-Allow-Origin', '*')
-           .header('Cross-Origin-Resource-Policy', 'cross-origin')
-           .sendFile(imagePath);
-      } catch (err) {
-        // Fallback to facebook_posts_image directory
-        const fbImagePath = path.join(process.cwd(), 'attached_assets', 'facebook_posts_image', categoryPath, filename.replace('.jpeg', '.jpg'));
-        try {
-          await fs.access(fbImagePath, fs.constants.R_OK);
-          res.type('image/jpeg')
-             .header('Cache-Control', 'public, max-age=31536000')
-             .header('Access-Control-Allow-Origin', '*')
-             .header('Cross-Origin-Resource-Policy', 'cross-origin')
-             .sendFile(fbImagePath);
-        } catch {
-          res.status(404).send('Image not found');
+      const noWatermark = req.query.no_watermark === 'true';
+
+      // Enhanced path resolution with multiple fallbacks
+      const categoryVariations = [
+        category,
+        category.replace(/\s+/g, '_'),
+        category.toLowerCase(),
+        category.replace(/\s+/g, '_').toLowerCase(),
+        `${category}_`,
+        category.replace(/\s+/g, '')
+      ];
+
+      const baseDirectories = [
+        'attached_assets',
+        'attached_assets/facebook_posts_image'
+      ];
+
+      const fileVariations = [
+        filename,
+        filename.toLowerCase(),
+        filename.replace('.jpeg', '.jpg'),
+        filename.replace(/\d+\.jpeg$/, (match) => match.padStart(7, '0'))
+      ];
+
+      const possiblePaths = [];
+      for (const baseDir of baseDirectories) {
+        for (const cat of categoryVariations) {
+          for (const file of fileVariations) {
+            possiblePaths.push(path.join(process.cwd(), baseDir, cat, file));
+          }
         }
+      }
+
+      let imagePath;
+      for (const p of possiblePaths) {
+        try {
+          await fs.access(p, fs.constants.R_OK);
+          imagePath = p;
+          break;
+        } catch (err) {
+          continue;
+        }
+      }
+
+      if (!imagePath) {
+        return res.status(404).send('Image not found');
       }
 
 
