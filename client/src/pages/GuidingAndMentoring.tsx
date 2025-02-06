@@ -170,18 +170,14 @@ export default function Workshop() {
         </div>
       </motion.div>
       <motion.button
-        className={`fixed bottom-6 right-6 p-4 rounded-full bg-[#FF9500] text-black shadow-lg transition-all ${
+        className={`fixed bottom-6 right-6 p-3 rounded-full bg-[#FF9500] text-black shadow-lg transition-all ${
           scrollY > 200 ? "opacity-100 scale-100" : "opacity-0 scale-90"
         }`}
         onClick={scrollToTop}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 30% 30%, rgb(255 255 255 / 0.1), transparent)",
-        }}
       >
-        <ArrowUp className="h-6 w-6" />
+        <ArrowUp className="h-5 w-5" />
       </motion.button>
     </div>
   );
