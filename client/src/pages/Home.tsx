@@ -282,7 +282,7 @@ export default function Home() {
                           <img
                             src={
                               category.firstPhoto?.imageUrl ||
-                              `/attached_assets/galleries/${category.name.replace(/\s+/g, "_")}/${String(1).padStart(3, "0")}.jpeg`
+                              `/api/photos/${encodeURIComponent(category.name)}/${String(1).padStart(3, "0")}.jpeg`
                             }
                             alt={category.name}
                             className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
