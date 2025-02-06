@@ -304,52 +304,69 @@ export default function Home() {
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
                               const retryCount = Number(target.dataset.retryCount || "0");
-                              const maxRetries = 5;
+                              const maxRetries = 3;
                               const categoryPath = category.name.replace(/\s+/g, "_");
-                              
-                              // Define all possible image paths and formats
-                              const getPaths = (format: string) => [
-                                `/attached_assets/galleries/${categoryPath}/${String(1).padStart(3, "0")}${format}`,
-                                `/attached_assets/facebook_posts_image/${categoryPath}/1${format}`,
-                                `/assets/galleries/${categoryPath}/${String(1).padStart(3, "0")}${format}`,
-                                `/public/assets/galleries/${categoryPath}/${String(1).padStart(3, "0")}${format}`,
-                              ];
 
-                              const allPaths = [
-                                ...getPaths(".jpeg"),
-                                ...getPaths(".jpg"),
-                                ...getPaths("-thumb.jpeg"),
-                                ...getPaths("-thumb.jpg"),
-                              ];
+                              const getFallbackPaths = () => {
+                                // Primary paths for full resolution
+                                const primaryPaths = [
+                                  `/attached_assets/galleries/${categoryPath}/${String(1).padStart(3, "0")}.jpeg`,
+                                  `/attached_assets/facebook_posts_image/${categoryPath}/1.jpg`,
+                                  `/assets/galleries/${categoryPath}/${String(1).padStart(3, "0")}.jpeg`,
+                                ];
+
+                                // Thumbnail paths as fallbacks
+                                const thumbnailPaths = [
+                                  `/attached_assets/galleries/${categoryPath}/${String(1).padStart(3, "0")}-thumb.jpeg`,
+                                  `/attached_assets/facebook_posts_image/${categoryPath}/1-thumb.jpg`,
+                                ];
+
+                                // Alternative formats
+                                const altFormatPaths = [
+                                  `/attached_assets/galleries/${categoryPath}/001.jpg`,
+                                  `/assets/galleries/${categoryPath}/001.jpg`,
+                                  `/attached_assets/facebook_posts_image/${categoryPath}/1.jpeg`,
+                                ];
+
+                                return [...primaryPaths, ...thumbnailPaths, ...altFormatPaths];
+                              };
+
+                              const paths = getFallbackPaths();
 
                               if (retryCount < maxRetries) {
                                 target.dataset.retryCount = String(retryCount + 1);
-                                const nextPath = allPaths[retryCount % allPaths.length];
-                                
-                                // Preload next image before setting src
+                                const pathIndex = retryCount % paths.length;
+                                const nextPath = paths[pathIndex];
+                                const timestamp = Date.now();
+
+                                // Create a new image for preloading
                                 const preloadImg = new Image();
+                                
                                 preloadImg.onload = () => {
                                   target.src = preloadImg.src;
+                                  target.style.opacity = "1";
                                 };
+
                                 preloadImg.onerror = () => {
-                                  // If preload fails, try next path immediately
+                                  // Try next path after short delay
+                                  const delay = Math.min(retryCount * 300, 1000);
                                   setTimeout(() => {
-                                    const timestamp = Date.now();
-                                    target.src = `${nextPath}?t=${timestamp}&retry=${retryCount + 1}`;
-                                  }, Math.min(retryCount * 500, 1500));
+                                    target.src = `${nextPath}?t=${timestamp}&r=${retryCount}`;
+                                  }, delay);
                                 };
-                                
-                                const timestamp = Date.now();
-                                preloadImg.src = `${nextPath}?t=${timestamp}&retry=${retryCount + 1}`;
+
+                                // Start preloading
+                                preloadImg.src = `${nextPath}?t=${timestamp}&r=${retryCount}`;
                               } else {
-                                // After all retries, show fallback state
+                                // Final fallback - try direct Facebook post image
                                 target.onerror = null;
                                 target.style.opacity = "0.7";
-                                target.style.background = "rgba(0,0,0,0.1)";
+                                target.style.background = "rgba(0,0,0,0.05)";
                                 target.dataset.loadFailed = "true";
                                 
-                                // Try loading a smaller thumbnail as last resort
-                                target.src = `/attached_assets/facebook_posts_image/${categoryPath}/1.jpg`;
+                                // Last resort - try the facebook posts image directly
+                                const lastResortPath = `/attached_assets/facebook_posts_image/${categoryPath}/1.jpg`;
+                                target.src = `${lastResortPath}?final=true`;
                               }
                             }}
                             loading={
