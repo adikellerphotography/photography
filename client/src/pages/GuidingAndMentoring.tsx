@@ -3,7 +3,7 @@ import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
 import { LuCamera, LuLightbulb, LuImage, LuWand } from "react-icons/lu";
 import { useState, useEffect } from 'react'; // Added imports
-import { ArrowUp } from "@/components/ArrowUp"; // Assumed import path
+import { ArrowUp } from "lucide-react";
 
 
 export default function Workshop() {
