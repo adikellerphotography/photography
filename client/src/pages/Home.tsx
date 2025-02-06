@@ -38,39 +38,39 @@ export default function Home() {
   // Override the firstPhoto for specific categories
   const processedCategories = categories?.map((category) => {
     const categoryPath = category.name.replace(/\s+/g, "_");
-    const defaultImage = `/attached_assets/galleries/${categoryPath}/001.jpeg`;
-    const defaultThumb = `/attached_assets/galleries/${categoryPath}/001-thumb.jpeg`;
+    const defaultImage = `/api/photos/${encodeURIComponent(categoryPath)}/001.jpeg`;
+    const defaultThumb = `/api/photos/${encodeURIComponent(categoryPath)}/001-thumb.jpeg`;
 
     // Category image configuration with ranges
     // Fixed images for each category with multiple path fallbacks
     const customImages: Record<string, { img: string; thumb: string }> = {
       "Bat Mitsva": {
-        img: `/attached_assets/galleries/Bat_Mitsva/001.jpeg`,
-        thumb: `/attached_assets/galleries/Bat_Mitsva/001-thumb.jpeg`,
+        img: `/api/photos/${encodeURIComponent("Bat_Mitsva")}/001.jpeg`,
+        thumb: `/api/photos/${encodeURIComponent("Bat_Mitsva")}/001-thumb.jpeg`,
       },
       Horses: {
-        img: `/attached_assets/galleries/Horses/058.jpeg`,
-        thumb: `/attached_assets/galleries/Horses/058-thumb.jpeg`,
+        img: `/api/photos/${encodeURIComponent("Horses")}/058.jpeg`,
+        thumb: `/api/photos/${encodeURIComponent("Horses")}/058-thumb.jpeg`,
       },
       Kids: {
-        img: `/attached_assets/galleries/Kids/021.jpeg`,
-        thumb: `/attached_assets/galleries/Kids/021-thumb.jpeg`,
+        img: `/api/photos/${encodeURIComponent("Kids")}/021.jpeg`,
+        thumb: `/api/photos/${encodeURIComponent("Kids")}/021-thumb.jpeg`,
       },
       Femininity: {
-        img: `/attached_assets/galleries/Femininity/014.jpeg`,
-        thumb: `/attached_assets/galleries/Femininity/014-thumb.jpeg`,
+        img: `/api/photos/${encodeURIComponent("Femininity")}/014.jpeg`,
+        thumb: `/api/photos/${encodeURIComponent("Femininity")}/014-thumb.jpeg`,
       },
       Yoga: {
-        img: `/attached_assets/galleries/Yoga/064.jpeg`,
-        thumb: `/attached_assets/galleries/Yoga/064-thumb.jpeg`,
+        img: `/api/photos/${encodeURIComponent("Yoga")}/064.jpeg`,
+        thumb: `/api/photos/${encodeURIComponent("Yoga")}/064-thumb.jpeg`,
       },
       Modeling: {
-        img: `/attached_assets/galleries/Modeling/010.jpeg`,
-        thumb: `/attached_assets/galleries/Modeling/010-thumb.jpeg`,
+        img: `/api/photos/${encodeURIComponent("Modeling")}/010.jpeg`,
+        thumb: `/api/photos/${encodeURIComponent("Modeling")}/010-thumb.jpeg`,
       },
       "Artful Nude": {
-        img: `/attached_assets/galleries/Artful_Nude/023.jpeg`,
-        thumb: `/attached_assets/galleries/Artful_Nude/023-thumb.jpeg`,
+        img: `/api/photos/${encodeURIComponent("Artful_Nude")}/023.jpeg`,
+        thumb: `/api/photos/${encodeURIComponent("Artful_Nude")}/023-thumb.jpeg`,
       },
     };
 
@@ -87,7 +87,6 @@ export default function Home() {
         thumbnailUrl: imageConfig.thumb,
       },
     };
-    return category;
   });
 
   const filteredCategories =
@@ -317,15 +316,15 @@ export default function Home() {
                                 `/public/assets/galleries/${categoryPath}/${fileName}`,
                                 `/assets/${categoryPath}/${String(1).padStart(3, "0")}.jpeg`,
                               ].filter(Boolean);
-                              
+
                               if (retryCount < maxRetries) {
                                 console.log(`Retrying image load (${retryCount + 1}/${maxRetries}):`, target.src);
                                 target.dataset.retryCount = String(retryCount + 1);
-                                
+
                                 // Try next path in sequence
                                 const pathIndex = Math.min(Math.floor(retryCount / 2), paths.length - 1);
                                 const nextPath = paths[pathIndex];
-                                
+
                                 setTimeout(() => {
                                   const timestamp = Date.now();
                                   target.src = `${nextPath}?t=${timestamp}&retry=${retryCount + 1}`;
