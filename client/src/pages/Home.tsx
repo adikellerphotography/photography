@@ -38,39 +38,39 @@ export default function Home() {
   // Override the firstPhoto for specific categories
   const processedCategories = categories?.map((category) => {
     const categoryPath = category.name.replace(/\s+/g, "_");
-    const defaultImage = `/assets/galleries/${categoryPath}/001.jpeg`;
-    const defaultThumb = `/assets/galleries/${categoryPath}/001-thumb.jpeg`;
+    const defaultImage = `/attached_assets/galleries/${categoryPath}/001.jpeg`;
+    const defaultThumb = `/attached_assets/galleries/${categoryPath}/001-thumb.jpeg`;
 
     // Category image configuration with ranges
     // Fixed images for each category with multiple path fallbacks
     const customImages: Record<string, { img: string; thumb: string }> = {
       "Bat Mitsva": {
-        img: `/assets/galleries/Bat_Mitsva/001.jpeg`,
-        thumb: `/assets/galleries/Bat_Mitsva/001-thumb.jpeg`,
+        img: `/attached_assets/galleries/Bat_Mitsva/001.jpeg`,
+        thumb: `/attached_assets/galleries/Bat_Mitsva/001-thumb.jpeg`,
       },
       Horses: {
-        img: `/assets/galleries/Horses/058.jpeg`,
-        thumb: `/assets/galleries/Horses/058-thumb.jpeg`,
+        img: `/attached_assets/galleries/Horses/058.jpeg`,
+        thumb: `/attached_assets/galleries/Horses/058-thumb.jpeg`,
       },
       Kids: {
-        img: `/assets/galleries/Kids/021.jpeg`,
-        thumb: `/assets/galleries/Kids/021-thumb.jpeg`,
+        img: `/attached_assets/galleries/Kids/021.jpeg`,
+        thumb: `/attached_assets/galleries/Kids/021-thumb.jpeg`,
       },
       Femininity: {
-        img: `/assets/galleries/Femininity/014.jpeg`,
-        thumb: `/assets/galleries/Femininity/014-thumb.jpeg`,
+        img: `/attached_assets/galleries/Femininity/014.jpeg`,
+        thumb: `/attached_assets/galleries/Femininity/014-thumb.jpeg`,
       },
       Yoga: {
-        img: `/assets/galleries/Yoga/064.jpeg`,
-        thumb: `/assets/galleries/Yoga/064-thumb.jpeg`,
+        img: `/attached_assets/galleries/Yoga/064.jpeg`,
+        thumb: `/attached_assets/galleries/Yoga/064-thumb.jpeg`,
       },
       Modeling: {
-        img: `/assets/galleries/Modeling/010.jpeg`,
-        thumb: `/assets/galleries/Modeling/010-thumb.jpeg`,
+        img: `/attached_assets/galleries/Modeling/010.jpeg`,
+        thumb: `/attached_assets/galleries/Modeling/010-thumb.jpeg`,
       },
       "Artful Nude": {
-        img: `/assets/galleries/Artful_Nude/023.jpeg`,
-        thumb: `/assets/galleries/Artful_Nude/023-thumb.jpeg`,
+        img: `/attached_assets/galleries/Artful_Nude/023.jpeg`,
+        thumb: `/attached_assets/galleries/Artful_Nude/023-thumb.jpeg`,
       },
     };
 
@@ -282,7 +282,7 @@ export default function Home() {
                           <img
                             src={
                               category.firstPhoto?.imageUrl ||
-                              `/assets/${category.name.replace(" ", "_")}/${String(1).padStart(3, "0")}.jpeg`
+                              `/attached_assets/galleries/${category.name.replace(/\s+/g, "_")}/${String(1).padStart(3, "0")}.jpeg`
                             }
                             alt={category.name}
                             className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
