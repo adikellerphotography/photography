@@ -13,6 +13,7 @@ import { SiWhatsapp } from "react-icons/si";
 export default function Contact() {
   const { t } = useTranslation();
   const { language } = useLanguage();
+  const [scrollY, setScrollY] = useState(0);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -36,6 +37,16 @@ export default function Contact() {
 
   const isRTL = language === 'he';
   const dir = isRTL ? 'rtl' : 'ltr';
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <div className="min-h-screen pt-20" dir={dir}>
@@ -138,6 +149,16 @@ export default function Contact() {
           </div>
         </div>
       </div>
+      <motion.button
+        className={`fixed bottom-6 right-6 p-3 rounded-full bg-[#FF9500] text-black shadow-lg transition-all ${
+          scrollY > 200 ? "opacity-100 scale-100" : "opacity-0 scale-90"
+        }`}
+        onClick={scrollToTop}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        <ArrowUp className="h-5 w-5" />
+      </motion.button>
     </div>
   );
 }

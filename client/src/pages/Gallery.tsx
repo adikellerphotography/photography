@@ -10,6 +10,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useLocation } from "wouter";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ArrowUp } from "lucide-react";
+
 
 export default function Gallery() {
   const { language } = useLanguage();
@@ -211,6 +213,14 @@ export default function Gallery() {
     cacheTime: Infinity,
   });
 
+  const scrollY = window.scrollY;
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
 
   if (categoriesLoading || !processedCategories.length || isLoading) {
     return (
@@ -353,6 +363,16 @@ export default function Gallery() {
           </AnimatePresence>
           </motion.div>
         </div>
+        <motion.button
+          className={`fixed bottom-6 right-6 p-3 rounded-full bg-[#FF9500] text-black shadow-lg transition-all ${
+            scrollY > 200 ? "opacity-100 scale-100" : "opacity-0 scale-90"
+          }`}
+          onClick={scrollToTop}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <ArrowUp className="h-5 w-5" />
+        </motion.button>
     </div>
   );
 }
