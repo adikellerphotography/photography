@@ -176,6 +176,9 @@ export default function Workshop() {
         onClick={scrollToTop}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
+        style={{
+          backgroundImage: "radial-gradient(circle at 30% 30%, rgb(255 255 255 / 0.1), transparent)"
+        }}
       >
         <ArrowUp className="h-5 w-5" />
       </motion.button>
