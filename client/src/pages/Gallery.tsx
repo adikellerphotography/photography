@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/hooks/use-language";
+import { useTranslation } from "@/hooks/use-translation";
 import PhotoGallery from "@/components/PhotoGallery";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -15,6 +16,7 @@ import { ArrowUp } from "lucide-react";
 
 export default function Gallery() {
   const { language } = useLanguage();
+  const { t } = useTranslation();
   const { data: categories, isLoading: categoriesLoading } = useQuery<Category[]>({
     queryKey: ["/api/categories"],
   });
