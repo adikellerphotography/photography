@@ -1,6 +1,6 @@
-
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Phone, Mail, MapPin, Send, ArrowUp } from "lucide-react";
 import { IL } from 'country-flag-icons/react/3x2';
+import { SiWhatsapp } from "react-icons/si";
 
 export default function Contact() {
   const { t } = useTranslation();
@@ -57,17 +58,16 @@ export default function Contact() {
           className="w-[35%] md:w-[35%] w-[60%] animate-fadeIn"
         />
       </div>
-      <div className="container mx-auto px-4 py-2">
+      <div
+        className="container mx-auto px-4 py-2"
+      >
         <div className="max-w-3xl mx-auto">
           <div className="flex flex-col items-center mb-8">
-            <div 
-              className="w-64 bg-muted/70 relative overflow-hidden shine-container" 
-              onClick={(e) => {
-                const el = e.currentTarget;
-                el.classList.add('shine-effect');
-                setTimeout(() => el.classList.remove('shine-effect'), 1000);
-              }}
-            >
+            <div className="w-64 bg-muted/70 relative overflow-hidden shine-container" onClick={(e) => {
+              const el = e.currentTarget;
+              el.classList.add('shine-effect');
+              setTimeout(() => el.classList.remove('shine-effect'), 1000);
+            }}>
               <div className="shine-overlay"></div>
               <img 
                 src="assets/AK_white_line.jpg" 
@@ -97,18 +97,12 @@ export default function Contact() {
                   <span className="text-xl font-semibold">{isRTL ? 'עדי קלר' : 'Adi Keller'}</span>
                 </div>
 
-                <a 
-                  href="tel:054-5667827" 
-                  className={`flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors ${isRTL ? 'flex-row-reverse justify-end' : ''}`}
-                >
+                <a href="tel:054-5667827" className={`flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
                   <Phone className="w-5 h-5" />
                   <span>054-5667827</span>
                 </a>
 
-                <a 
-                  href="mailto:adi.keller.photography@gmail.com" 
-                  className={`flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors ${isRTL ? 'flex-row-reverse justify-end' : ''}`}
-                >
+                <a href="mailto:adi.keller.photography@gmail.com" className={`flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
                   <Mail className="w-5 h-5" />
                   <span>adi.keller.photography@gmail.com</span>
                 </a>
@@ -146,10 +140,7 @@ export default function Contact() {
                     required
                     className={`min-h-[120px] ${isRTL ? 'text-right placeholder:text-right' : ''}`}
                   />
-                  <Button 
-                    type="submit" 
-                    className={`w-full bg-gray-100 hover:bg-gray-200 text-gray-800 ${isRTL ? 'flex-row-reverse' : ''}`}
-                  >
+                  <Button type="submit" className={`w-full bg-gray-100 hover:bg-gray-200 text-gray-800 ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <Send className="w-4 h-4 mx-2" />
                     {isRTL ? "שלח הודעה" : "Send Message"}
                   </Button>
