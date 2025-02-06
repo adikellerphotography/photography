@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
 import { LuCamera, LuLightbulb, LuImage, LuWand } from "react-icons/lu";
+import { ArrowUp } from "lucide-react";
+import { useState, useEffect } from "react";
 
 const classes = [
   {
@@ -75,6 +77,17 @@ const classes = [
 export default function GuidingAndMentoring() {
   const { t } = useTranslation();
   const { language } = useLanguage();
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <div className="min-h-screen pt-8">
@@ -138,6 +151,16 @@ export default function GuidingAndMentoring() {
           ))}
         </div>
       </motion.div>
+      <motion.button
+        className={`fixed bottom-6 right-6 p-3 rounded-full bg-[#FF9500] text-black shadow-lg transition-all ${
+          scrollY > 200 ? "opacity-100 scale-100" : "opacity-0 scale-90"
+        }`}
+        onClick={scrollToTop}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        <ArrowUp className="h-5 w-5" />
+      </motion.button>
     </div>
   );
 }
