@@ -290,7 +290,7 @@ export default function Gallery() {
                     activeCategory === category.name ? 'bg-[#FF9500] !text-black font-semibold hover:bg-[#FF9500] active:bg-[#FF9500]' : 'hover:bg-primary/10'
                   }`}
                 >
-                  {category.name}
+                  {language === 'he' ? t(`categories.${category.name}`) : category.name}
                 </Button>
               ))}
             </div>
