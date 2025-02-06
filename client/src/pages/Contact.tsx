@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, Mail, MapPin, Send } from "lucide-react";
+import { Phone, Mail, MapPin, Send, ArrowUp } from "lucide-react";
 import { IL } from 'country-flag-icons/react/3x2';
 import { SiWhatsapp } from "react-icons/si";
 
