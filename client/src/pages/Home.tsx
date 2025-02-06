@@ -13,10 +13,101 @@ import { Camera, Aperture, SplitSquareVertical, ArrowUp } from "lucide-react";
 
 export default function Home() {
   const { language } = useLanguage();
-  const { data: categories } = useQuery<Category[]>({
+  const { data: categories, isLoading: categoriesLoading } = useQuery<
+    Category[]
+  >({
     queryKey: ["/api/categories"],
   });
+
   const { t } = useTranslation();
+
+  const excludedCategories = ["before_and_after", "facebook_posts_image"];
+  const categoryOrder = [
+    "Bat Mitsva",
+    "Horses",
+    "Kids",
+    "Femininity",
+    "Yoga",
+    "Modeling",
+    "Artful Nude",
+  ];
+  const allowedCategories = categoryOrder.filter(
+    (cat) => !excludedCategories.includes(cat.toLowerCase()),
+  );
+
+  // Override the firstPhoto for specific categories
+  const processedCategories = categories?.map((category) => {
+    const categoryPath = category.name.replace(/\s+/g, "_");
+    const defaultImage = `/attached_assets/galleries/${categoryPath}/001.jpeg`;
+    const defaultThumb = `/attached_assets/galleries/${categoryPath}/001-thumb.jpeg`;
+
+    // Category image configuration with ranges
+    // Fixed images for each category with multiple path fallbacks
+    const customImages: Record<string, { img: string; thumb: string }> = {
+      "Bat Mitsva": {
+        img: `/attached_assets/galleries/Bat_Mitsva/001.jpeg`,
+        thumb: `/attached_assets/galleries/Bat_Mitsva/001-thumb.jpeg`,
+      },
+      Horses: {
+        img: `/attached_assets/galleries/Horses/058.jpeg`,
+        thumb: `/attached_assets/galleries/Horses/058-thumb.jpeg`,
+      },
+      Kids: {
+        img: `/attached_assets/galleries/Kids/021.jpeg`,
+        thumb: `/attached_assets/galleries/Kids/021-thumb.jpeg`,
+      },
+      Femininity: {
+        img: `/attached_assets/galleries/Femininity/014.jpeg`,
+        thumb: `/attached_assets/galleries/Femininity/014-thumb.jpeg`,
+      },
+      Yoga: {
+        img: `/attached_assets/galleries/Yoga/064.jpeg`,
+        thumb: `/attached_assets/galleries/Yoga/064-thumb.jpeg`,
+      },
+      Modeling: {
+        img: `/attached_assets/galleries/Modeling/010.jpeg`,
+        thumb: `/attached_assets/galleries/Modeling/010-thumb.jpeg`,
+      },
+      "Artful Nude": {
+        img: `/attached_assets/galleries/Artful_Nude/023.jpeg`,
+        thumb: `/attached_assets/galleries/Artful_Nude/023-thumb.jpeg`,
+      },
+    };
+
+    const imageConfig = customImages[category.name] || {
+      img: defaultImage,
+      thumb: defaultThumb,
+    };
+
+    return {
+      ...category,
+      firstPhoto: {
+        ...category.firstPhoto,
+        imageUrl: imageConfig.img,
+        thumbnailUrl: imageConfig.thumb,
+      },
+    };
+    return category;
+  });
+
+  const filteredCategories =
+    processedCategories
+      ?.filter((category) => categoryOrder.includes(category.name))
+      .sort(
+        (a, b) => categoryOrder.indexOf(a.name) - categoryOrder.indexOf(b.name),
+      ) || [];
+
+  useEffect(() => {
+    // Preload the first category image
+    if (filteredCategories?.[0]?.firstPhoto?.imageUrl) {
+      const link = document.createElement("link");
+      link.rel = "preload";
+      link.as = "image";
+      link.href = filteredCategories[0].firstPhoto.imageUrl;
+      document.head.appendChild(link);
+    }
+  }, [filteredCategories]);
+
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -29,133 +120,241 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const excludedCategories = ["before_and_after", "facebook_posts_image"];
-  const categoryOrder = [
-    "Bat Mitsva",
-    "Horses",
-    "Kids",
-    "Femininity",
-    "Yoga",
-    "Modeling",
-    "Artful Nude",
-  ];
-
-  const filteredCategories = categories
-    ?.filter((category) => !excludedCategories.includes(category.name.toLowerCase()))
-    .sort((a, b) => categoryOrder.indexOf(a.name) - categoryOrder.indexOf(b.name)) || [];
-
   return (
-    <div className="min-h-screen">
-      <section className="relative h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background via-background/95 to-background/90">
-        <div className="absolute inset-0 bg-[url('/attached_assets/black_background2.jpeg')] bg-cover bg-center opacity-20" />
-
+    <div className="min-h-screen pt-16">
+      {/* Hero Section */}
+      <section className="relative">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative z-10 container mx-auto px-4 text-center"
+          className="relative container mx-auto px-4 pt-8 pb-8 flex flex-col justify-center items-center"
         >
-          <motion.h1 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-4xl md:text-6xl font-cormorant mb-6 bg-clip-text text-transparent bg-gradient-to-r from-[#FF9500] to-[#FF5A00]"
-          >
-            {t("home.title")}
-          </motion.h1>
-
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto"
-          >
-            {t("home.subtitle")}
-          </motion.p>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="flex justify-center gap-6 mb-12"
-          >
-            <Link href="/before-and-after">
-              <Button variant="ghost" size="lg" className="group relative overflow-hidden rounded-full bg-[#FF9500]/10 hover:bg-[#FF9500]/20">
-                <span className="absolute inset-0 bg-gradient-to-r from-[#FF9500]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <SplitSquareVertical className="mr-2 h-5 w-5" />
-                {language === 'he' ? 'לפני ואחרי' : 'Before & After'}
-              </Button>
-            </Link>
-
-            <Link href="/gallery">
-              <Button variant="ghost" size="lg" className="group relative overflow-hidden rounded-full bg-[#FF9500]/10 hover:bg-[#FF9500]/20">
-                <span className="absolute inset-0 bg-gradient-to-r from-[#FF9500]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <Camera className="mr-2 h-5 w-5" />
-                {language === 'he' ? 'גלריה' : 'Gallery'}
-              </Button>
-            </Link>
-
-            <Link href="/sessions">
-              <Button variant="ghost" size="lg" className="group relative overflow-hidden rounded-full bg-[#FF9500]/10 hover:bg-[#FF9500]/20">
-                <span className="absolute inset-0 bg-gradient-to-r from-[#FF9500]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <Aperture className="mr-2 h-5 w-5" />
-                {language === 'he' ? 'סדנאות' : 'Sessions'}
-              </Button>
-            </Link>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-          >
+          <div className="flex justify-center gap-12 mb-8">
+            <div className="relative">
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{
+                  scale: [0, 1.05, 1],
+                  opacity: [0, 0.8, 1],
+                  backgroundColor: ["#E67E00", "#E67E00", "#E67E00"],
+                }}
+                transition={{
+                  duration: 0.8,
+                  times: [0, 0.4, 1],
+                  ease: [0.34, 1.56, 0.64, 1],
+                }}
+                whileTap={{
+                  scale: 0.9,
+                  transition: {
+                    duration: 0.3,
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 17,
+                  },
+                }}
+                className="absolute inset-0 rounded-full -z-10 shadow-lg"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(circle at 30% 30%, rgb(255 255 255 / 0.1), transparent)",
+                }}
+              />
+              <Link href="/before-and-after">
+                <button className="p-4 rounded-full hover:bg-accent transition-colors text-white">
+                  <SplitSquareVertical className="w-6 h-6" />
+                </button>
+              </Link>
+            </div>
+            <div className="relative">
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{
+                  scale: [0, 1.05, 1],
+                  opacity: [0, 0.8, 1],
+                  backgroundColor: ["#E67E00", "#E67E00", "#E67E00"],
+                }}
+                transition={{
+                  duration: 0.8,
+                  times: [0, 0.4, 1],
+                  ease: [0.34, 1.56, 0.64, 1],
+                }}
+                whileTap={{
+                  scale: 0.9,
+                  transition: {
+                    duration: 0.3,
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 17,
+                  },
+                }}
+                className="absolute inset-0 rounded-full -z-10 shadow-lg"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(circle at 30% 30%, rgb(255 255 255 / 0.1), transparent)",
+                }}
+              />
+              <Link href="/gallery">
+                <button className="p-4 rounded-full hover:bg-accent transition-colors text-white">
+                  <Camera className="w-6 h-6" />
+                </button>
+              </Link>
+            </div>
+            <div className="relative">
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{
+                  scale: [0, 1.05, 1],
+                  opacity: [0, 0.8, 1],
+                  backgroundColor: ["#E67E00", "#E67E00", "#E67E00"],
+                }}
+                transition={{
+                  duration: 0.8,
+                  times: [0, 0.4, 1],
+                  ease: [0.34, 1.56, 0.64, 1],
+                }}
+                whileTap={{
+                  scale: 0.9,
+                  transition: {
+                    duration: 0.3,
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 17,
+                  },
+                }}
+                className="absolute inset-0 rounded-full -z-10 shadow-lg"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(circle at 30% 30%, rgb(255 255 255 / 0.1), transparent)",
+                }}
+              />
+              <Link href="/sessions">
+                <button className="p-4 rounded-full hover:bg-accent transition-colors text-white">
+                  <Aperture className="w-6 h-6" />
+                </button>
+              </Link>
+            </div>
+          </div>
+          <div className="max-w-3xl mx-auto text-center space-y-6">
+            <h1
+              className="font-bold font-cormorant text-2xl md:text-4xl text-center"
+            >
+              {t("home.title")}
+            </h1>
+            <p className="text-lg">
+              <span className="text-gray-400">{t("home.subtitle")}</span>
+            </p>
             <SocialLinks />
-          </motion.div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2"
-        >
-          <div className="animate-bounce">
-            <ArrowUp className="h-6 w-6 text-muted-foreground" />
           </div>
         </motion.div>
       </section>
 
-      <section className="py-20 bg-gradient-to-b from-background to-background/80">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {filteredCategories.map((category, index) => (
+      {/* Gallery Categories Section */}
+      <section className="container mx-auto px-4 pt-2">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-4"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full mx-auto">
+            {filteredCategories?.map((category, index) => (
               <motion.div
                 key={category.id}
-                initial={{ opacity: 0, scale: 0.95 }}
+                initial={{ opacity: 0, y: 50, scale: 0.95 }}
                 whileInView={{
                   opacity: 1,
+                  y: 0,
                   scale: 1,
-                  transition: { delay: index * 0.1, duration: 0.5 }
+                  transition: {
+                    duration: 0.6,
+                    delay: index * 0.15,
+                    ease: "easeOut",
+                  },
                 }}
                 viewport={{ once: true, margin: "-50px" }}
                 whileHover={{ scale: 1.02 }}
               >
-                <Link href={`/gallery?category=${encodeURIComponent(category.name)}`}>
-                  <Card className="overflow-hidden bg-card/50 backdrop-blur-sm border border-white/10">
+                <Link
+                  href={`/gallery?category=${encodeURIComponent(category.name)}`}
+                >
+                  <Card className="cursor-pointer overflow-hidden">
                     <CardContent className="p-0">
-                      <AspectRatio ratio={4/3}>
-                        <div className="relative w-full h-full group">
+                      <AspectRatio ratio={4 / 3} className="bg-muted">
+                        <div className="relative w-full h-full">
                           <img
-                            src={category.firstPhoto?.imageUrl}
+                            src={
+                              category.firstPhoto?.imageUrl ||
+                              `/attached_assets/galleries/${category.name.replace(/\s+/g, "_")}/${String(1).padStart(3, "0")}.jpeg`
+                            }
                             alt={category.name}
-                            className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                            className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
+                            decoding="async"
+                            style={{
+                              objectPosition: "center center",
+                              WebkitBackfaceVisibility: "hidden",
+                              WebkitTransform: "translate3d(0, 0, 0)",
+                              opacity: "0",
+                              background: "rgba(0,0,0,0.05)",
+                              transition: "opacity 0.3s ease-in-out",
+                            }}
+                            onLoad={(e) => {
+                              const img = e.target as HTMLImageElement;
+                              img.style.opacity = "1";
+                              img.style.background = "transparent";
+                              if (img.naturalHeight > img.naturalWidth) {
+                                img.style.objectPosition = "center 50%";
+                              }
+                            }}
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              const retryCount = Number(target.dataset.retryCount || "0");
+                              const maxRetries = 5;
+                              const fileName = target.src.split("/").pop()?.split("?")[0];
+                              const categoryPath = category.name.replace(/\s+/g, "_");
+                              const paths = [
+                                `/assets/galleries/${categoryPath}/${fileName}`,
+                                `/assets/galleries/${categoryPath}/${fileName?.replace(".jpeg", "-thumb.jpeg")}`,
+                                `/attached_assets/galleries/${categoryPath}/${fileName}`,
+                                `/attached_assets/facebook_posts_image/${categoryPath}/${fileName?.replace(".jpeg", ".jpg")}`,
+                                `/public/assets/galleries/${categoryPath}/${fileName}`,
+                                `/assets/${categoryPath}/${String(1).padStart(3, "0")}.jpeg`,
+                              ].filter(Boolean);
+                              
+                              if (retryCount < maxRetries) {
+                                console.log(`Retrying image load (${retryCount + 1}/${maxRetries}):`, target.src);
+                                target.dataset.retryCount = String(retryCount + 1);
+                                
+                                // Try next path in sequence
+                                const pathIndex = Math.min(Math.floor(retryCount / 2), paths.length - 1);
+                                const nextPath = paths[pathIndex];
+                                
+                                setTimeout(() => {
+                                  const timestamp = Date.now();
+                                  target.src = `${nextPath}?t=${timestamp}&retry=${retryCount + 1}`;
+                                }, Math.min(retryCount * 1000, 3000));
+                              } else {
+                                console.error("Failed to load image after all retries:", target.src);
+                                target.onerror = null;
+                                target.style.opacity = "0.7";
+                                target.style.background = "rgba(0,0,0,0.1)";
+                                // Set a data attribute to track failed loads
+                                target.dataset.loadFailed = "true";
+                              }
+                            }}
+                            loading={
+                              index === 0
+                                ? "eager"
+                                : index < 6
+                                  ? "eager"
+                                  : "lazy"
+                            }
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            fetchpriority={index === 0 ? "high" : "auto"}
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-100 group-hover:opacity-90 transition-opacity" />
-                          <div className="absolute bottom-0 left-0 right-0 p-6">
-                            <h3 className="text-xl font-semibold text-white">{category.name}</h3>
+                          <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent">
+                            <div className="absolute bottom-0 left-0 right-0 p-4">
+                              <h3 className="text-xl font-semibold text-white">
+                                {category.name}
+                              </h3>
+                            </div>
                           </div>
                         </div>
                       </AspectRatio>
@@ -164,22 +363,29 @@ export default function Home() {
                 </Link>
               </motion.div>
             ))}
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
       </section>
 
+      {/* Contact Button */}
+      {!categoriesLoading && categories?.length > 0 && (
+        <section className="container mx-auto px-4 pb-16 pt-6 text-center">
+          <Link href="/contact">
+            <Button className="bg-white hover:bg-gray-100 text-gray-800 text-lg px-8 py-6 border border-gray-300 shadow-sm hover:shadow-md transition-all">
+              Contact Me
+            </Button>
+          </Link>
+        </section>
+      )}
       <motion.button
-        className={`fixed bottom-6 right-6 p-4 rounded-full bg-[#FF9500] text-black shadow-lg transition-all ${
+        className={`fixed bottom-6 right-6 p-3 rounded-full bg-[#FF9500] text-black shadow-lg transition-all ${
           scrollY > 200 ? "opacity-100 scale-100" : "opacity-0 scale-90"
         }`}
         onClick={scrollToTop}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        style={{
-          backgroundImage: "radial-gradient(circle at 30% 30%, rgb(255 255 255 / 0.1), transparent)"
-        }}
       >
-        <ArrowUp className="h-6 w-6" />
+        <ArrowUp className="h-5 w-5" />
       </motion.button>
     </div>
   );
