@@ -298,41 +298,58 @@ export default function Home() {
                               if (img.naturalHeight > img.naturalWidth) {
                                 img.style.objectPosition = "center 50%";
                               }
+                              // Clear retry count on successful load
+                              delete img.dataset.retryCount;
                             }}
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
                               const retryCount = Number(target.dataset.retryCount || "0");
                               const maxRetries = 5;
-                              const fileName = target.src.split("/").pop()?.split("?")[0];
                               const categoryPath = category.name.replace(/\s+/g, "_");
-                              const paths = [
-                                `/assets/galleries/${categoryPath}/${fileName}`,
-                                `/assets/galleries/${categoryPath}/${fileName?.replace(".jpeg", "-thumb.jpeg")}`,
-                                `/attached_assets/galleries/${categoryPath}/${fileName}`,
-                                `/attached_assets/facebook_posts_image/${categoryPath}/${fileName?.replace(".jpeg", ".jpg")}`,
-                                `/public/assets/galleries/${categoryPath}/${fileName}`,
-                                `/assets/${categoryPath}/${String(1).padStart(3, "0")}.jpeg`,
-                              ].filter(Boolean);
+                              
+                              // Define all possible image paths and formats
+                              const getPaths = (format: string) => [
+                                `/attached_assets/galleries/${categoryPath}/${String(1).padStart(3, "0")}${format}`,
+                                `/attached_assets/facebook_posts_image/${categoryPath}/1${format}`,
+                                `/assets/galleries/${categoryPath}/${String(1).padStart(3, "0")}${format}`,
+                                `/public/assets/galleries/${categoryPath}/${String(1).padStart(3, "0")}${format}`,
+                              ];
+
+                              const allPaths = [
+                                ...getPaths(".jpeg"),
+                                ...getPaths(".jpg"),
+                                ...getPaths("-thumb.jpeg"),
+                                ...getPaths("-thumb.jpg"),
+                              ];
 
                               if (retryCount < maxRetries) {
-                                console.log(`Retrying image load (${retryCount + 1}/${maxRetries}):`, target.src);
                                 target.dataset.retryCount = String(retryCount + 1);
-
-                                // Try next path in sequence
-                                const pathIndex = Math.min(Math.floor(retryCount / 2), paths.length - 1);
-                                const nextPath = paths[pathIndex];
-
-                                setTimeout(() => {
-                                  const timestamp = Date.now();
-                                  target.src = `${nextPath}?t=${timestamp}&retry=${retryCount + 1}`;
-                                }, Math.min(retryCount * 1000, 3000));
+                                const nextPath = allPaths[retryCount % allPaths.length];
+                                
+                                // Preload next image before setting src
+                                const preloadImg = new Image();
+                                preloadImg.onload = () => {
+                                  target.src = preloadImg.src;
+                                };
+                                preloadImg.onerror = () => {
+                                  // If preload fails, try next path immediately
+                                  setTimeout(() => {
+                                    const timestamp = Date.now();
+                                    target.src = `${nextPath}?t=${timestamp}&retry=${retryCount + 1}`;
+                                  }, Math.min(retryCount * 500, 1500));
+                                };
+                                
+                                const timestamp = Date.now();
+                                preloadImg.src = `${nextPath}?t=${timestamp}&retry=${retryCount + 1}`;
                               } else {
-                                console.error("Failed to load image after all retries:", target.src);
+                                // After all retries, show fallback state
                                 target.onerror = null;
                                 target.style.opacity = "0.7";
                                 target.style.background = "rgba(0,0,0,0.1)";
-                                // Set a data attribute to track failed loads
                                 target.dataset.loadFailed = "true";
+                                
+                                // Try loading a smaller thumbnail as last resort
+                                target.src = `/attached_assets/facebook_posts_image/${categoryPath}/1.jpg`;
                               }
                             }}
                             loading={
