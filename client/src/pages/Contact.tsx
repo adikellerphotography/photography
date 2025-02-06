@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
 import { Button } from "@/components/ui/button";
@@ -9,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Phone, Mail, MapPin, Send, ArrowUp } from "lucide-react";
 import { IL } from 'country-flag-icons/react/3x2';
-import { SiWhatsapp } from "react-icons/si";
 
 export default function Contact() {
   const { t } = useTranslation();
@@ -51,47 +49,17 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen pt-20" dir={dir}>
-      <div className="flex justify-center mb-0">
+      <div className="flex justify-center mb-8">
         <img 
           src="/assets/my_site_logo.png"
           alt="Site Logo"
-          className="w-[35%] md:w-[35%] w-[60%] animate-fadeIn"
+          className="w-[35%] md:w-[25%] animate-fadeIn"
         />
       </div>
-      <div
-        className="container mx-auto px-4 py-2"
-      >
+      <div className="container mx-auto px-4 py-2">
         <div className="max-w-3xl mx-auto">
-          <div className="flex flex-col items-center mb-8">
-            <div className="w-64 bg-muted/70 relative overflow-hidden shine-container" onClick={(e) => {
-              const el = e.currentTarget;
-              el.classList.add('shine-effect');
-              setTimeout(() => el.classList.remove('shine-effect'), 1000);
-            }}>
-              <div className="shine-overlay"></div>
-              <img 
-                src="assets/AK_white_line.jpg" 
-                alt="Adi Keller Photography"
-                className="transition-opacity duration-700 ease-in-out opacity-0 mix-blend-plus-lighter"
-                onLoad={(e) => {
-                  const img = e.target as HTMLImageElement;
-                  img.classList.remove('opacity-0');
-                  img.classList.add('opacity-100');
-                }}
-                onError={(e) => {
-                  const img = e.target as HTMLImageElement;
-                  img.src = 'assets/my_logo.png';
-                }}
-                style={{
-                  WebkitBackfaceVisibility: 'hidden',
-                  WebkitTransform: 'translate3d(0, 0, 0)'
-                }}
-              />
-            </div>
-          </div>
-
           <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 ${isRTL ? 'text-right' : ''}`}>
-            <Card className="bg-muted/50">
+            <Card className="bg-muted/50 backdrop-blur-sm border border-white/10">
               <CardContent className="pt-6 space-y-4">
                 <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
                   <span className="text-xl font-semibold">{isRTL ? 'עדי קלר' : 'Adi Keller'}</span>
@@ -115,7 +83,7 @@ export default function Contact() {
               </CardContent>
             </Card>
 
-            <Card className="bg-muted/50">
+            <Card className="bg-muted/50 backdrop-blur-sm border border-white/10">
               <CardContent className="pt-6">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <Input
@@ -140,7 +108,10 @@ export default function Contact() {
                     required
                     className={`min-h-[120px] ${isRTL ? 'text-right placeholder:text-right' : ''}`}
                   />
-                  <Button type="submit" className={`w-full bg-gray-100 hover:bg-gray-200 text-gray-800 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <Button 
+                    type="submit" 
+                    className={`w-full bg-gray-100 hover:bg-gray-200 text-gray-800 ${isRTL ? 'flex-row-reverse' : ''}`}
+                  >
                     <Send className="w-4 h-4 mx-2" />
                     {isRTL ? "שלח הודעה" : "Send Message"}
                   </Button>
