@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
 import { LuCamera, LuLightbulb, LuImage, LuWand } from "react-icons/lu";
+import { ArrowUp } from "lucide-react";
 import { useState, useEffect } from 'react'; // Added imports
 import { ArrowUp } from "lucide-react";
 

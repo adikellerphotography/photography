@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
@@ -9,7 +9,6 @@ import type { Category } from "@/lib/types";
 import SocialLinks from "@/components/SocialLinks";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
-import { useEffect, useState } from "react";
 import { Camera, Aperture, SplitSquareVertical, ArrowUp } from "lucide-react";
 
 export default function Home() {
