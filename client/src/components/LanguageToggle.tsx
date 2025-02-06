@@ -13,10 +13,12 @@ export default function LanguageToggle() {
       className="w-10 h-10 relative"
       title={language === "en" ? "Switch to Hebrew" : "Switch to English"}
     >
-      <GlobeIcon className={`absolute h-[1.2rem] w-[1.2rem] transition-all duration-300 ${language === "en" ? "rotate-0 scale-100" : "rotate-90 scale-0"}`} />
-      <span className={`absolute h-[1.2rem] w-[1.2rem] transition-all duration-300 font-bold text-sm ${language === "en" ? "rotate-90 scale-0" : "rotate-0 scale-100"}`}>
-        HE
-      </span>
+      <div className={`absolute transition-all duration-300 ${language === "en" ? "rotate-0 scale-100" : "rotate-90 scale-0"}`}>
+        <span className="fi fi-us text-lg"></span>
+      </div>
+      <div className={`absolute transition-all duration-300 ${language === "en" ? "rotate-90 scale-0" : "rotate-0 scale-100"}`}>
+        <IL className="h-[1.2rem] w-[1.2rem]" />
+      </div>
       <span className="sr-only">
         {language === "en" ? "Switch to Hebrew" : "Switch to English"}
       </span>
