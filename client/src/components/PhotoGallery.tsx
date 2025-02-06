@@ -25,8 +25,17 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const constructImagePath = (photo: Photo, isThumb = false): string => {
     if (!photo?.imageUrl) return '';
     const basePath = `/attached_assets/galleries/${category?.replace(/\s+/g, '_')}`;
-    const fileName = isThumb ? photo.imageUrl.replace('.jpeg', '-thumb.jpeg') : photo.imageUrl;
-    return `${basePath}/${fileName}`;
+    const fileName = photo.imageUrl;
+    
+    // Try different paths in sequence if image fails to load
+    const paths = [
+      `${basePath}/${fileName}`,
+      `${basePath}/${fileName.replace('.jpeg', isThumb ? '-thumb.jpeg' : '.jpeg')}`,
+      `/assets/galleries/${category?.replace(/\s+/g, '_')}/${fileName}`,
+      `/public/assets/galleries/${category?.replace(/\s+/g, '_')}/${fileName}`
+    ];
+    
+    return paths[0]; // Start with first path
   };
 
   const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({
@@ -264,6 +273,26 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                         decoding={index < 6 ? "sync" : "async"}
                         fetchpriority={index < 6 ? "high" : "low"}
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          const retryCount = Number(target.dataset.retryCount || "0");
+                          const maxRetries = 3;
+                          
+                          if (retryCount < maxRetries) {
+                            target.dataset.retryCount = String(retryCount + 1);
+                            const paths = [
+                              `/attached_assets/galleries/${category?.replace(/\s+/g, '_')}/${photo.imageUrl}`,
+                              `/assets/galleries/${category?.replace(/\s+/g, '_')}/${photo.imageUrl}`,
+                              `/public/assets/galleries/${category?.replace(/\s+/g, '_')}/${photo.imageUrl}`
+                            ];
+                            const nextPath = paths[retryCount];
+                            if (nextPath) {
+                              setTimeout(() => {
+                                target.src = `${nextPath}?retry=${retryCount + 1}`;
+                              }, Math.min(retryCount * 1000, 3000));
+                            }
+                          }
+                        }}
                       />
                     </>
                   )}
