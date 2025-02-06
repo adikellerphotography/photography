@@ -1,7 +1,6 @@
-
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/hooks/use-language";
-import { Flag } from "lucide-react";
+import { GlobeIcon } from "lucide-react";
 
 export default function LanguageToggle() {
   const { language, setLanguage } = useLanguage();
@@ -18,7 +17,7 @@ export default function LanguageToggle() {
         <span className="fi fi-us text-lg"></span>
       </div>
       <div className={`absolute transition-all duration-300 ${language === "en" ? "rotate-90 scale-0" : "rotate-0 scale-100"}`}>
-        <Flag className="h-[1.2rem] w-[1.2rem]" />
+        <IL className="h-[1.2rem] w-[1.2rem]" />
       </div>
       <span className="sr-only">
         {language === "en" ? "Switch to Hebrew" : "Switch to English"}
