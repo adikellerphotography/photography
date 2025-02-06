@@ -53,7 +53,7 @@ export default function Contact() {
         <img 
           src="/attached_assets/my_site_logo.png"
           alt="Site Logo"
-          className="w-[35%] md:w-[25%] animate-fadeIn"
+          className="w-[70%] md:w-[50%] animate-fadeIn"
         />
       </div>
       <div className="container mx-auto px-4 py-2">
