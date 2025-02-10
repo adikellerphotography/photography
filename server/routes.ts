@@ -80,7 +80,15 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
 
     const categoryPath = getCategoryPath(decodedCategory);
     const dirPath = path.join(process.cwd(), 'attached_assets', 'galleries', categoryPath);
-    let results = [];
+    let results: Array<{
+      id: number;
+      title: string;
+      category: string;
+      imageUrl: string;
+      thumbnailUrl: string;
+      displayOrder: number;
+      likesCount: number;
+    }> = [];
 
     try {
       const files = await fs.readdir(dirPath);
