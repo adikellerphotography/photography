@@ -21,39 +21,22 @@ const configureStaticFiles = (app: Express) => {
   const assetsPath = path.join(process.cwd(), 'attached_assets');
   app.use('/attached_assets', express.static(assetsPath, {
     setHeaders: (res, filePath) => {
-      // Set proper content types
       if (filePath.toLowerCase().endsWith('.jpg') || filePath.toLowerCase().endsWith('.jpeg')) {
         res.setHeader('Content-Type', 'image/jpeg');
       } else if (filePath.toLowerCase().endsWith('.png')) {
         res.setHeader('Content-Type', 'image/png');
       }
-      
-      // Common headers for both production and development
-      res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
-      res.setHeader('Access-Control-Allow-Origin', '*');
-      res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-      res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-      res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
-      res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
-      
-      // Cache control based on environment
-      if (process.env.NODE_ENV === 'production') {
-        res.setHeader('Cache-Control', 'public, max-age=31536000');
-      } else {
-        res.setHeader('Cache-Control', 'no-store');
-        res.setHeader('Pragma', 'no-cache');
-      }
-      
-      // Common headers
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
       res.setHeader('Accept-Ranges', 'bytes');
       res.setHeader('Vary', 'Accept-Encoding');
+      res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+      res.setHeader('Access-Control-Allow-Origin', '*');
     },
-    etag: true,
+    maxAge: 31536000000,
     lastModified: true,
-    maxAge: process.env.NODE_ENV === 'production' ? '1y' : 0,
+    etag: true,
     fallthrough: true,
-    redirect: false,
-    immutable: process.env.NODE_ENV === 'production'
+    redirect: false
   }));
 };
 
@@ -80,15 +63,7 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
 
     const categoryPath = getCategoryPath(decodedCategory);
     const dirPath = path.join(process.cwd(), 'attached_assets', 'galleries', categoryPath);
-    let results: Array<{
-      id: number;
-      title: string;
-      category: string;
-      imageUrl: string;
-      thumbnailUrl: string;
-      displayOrder: number;
-      likesCount: number;
-    }> = [];
+    let results = [];
 
     try {
       const files = await fs.readdir(dirPath);
@@ -348,52 +323,29 @@ export function registerRoutes(app: Express): Server {
   app.get('/api/photos/:category/:filename', async (req, res) => {
     try {
       const { category, filename } = req.params;
-      const noWatermark = req.query.no_watermark === 'true';
-
-      // Enhanced path resolution with multiple fallbacks
-      const categoryVariations = [
-        category,
-        category.replace(/\s+/g, '_'),
-        category.toLowerCase(),
-        category.replace(/\s+/g, '_').toLowerCase(),
-        `${category}_`,
-        category.replace(/\s+/g, '')
-      ];
-
-      const baseDirectories = [
-        'attached_assets',
-        'attached_assets/facebook_posts_image'
-      ];
-
-      const fileVariations = [
-        filename,
-        filename.toLowerCase(),
-        filename.replace('.jpeg', '.jpg'),
-        filename.replace(/\d+\.jpeg$/, (match) => match.padStart(7, '0'))
-      ];
-
-      const possiblePaths = [];
-      for (const baseDir of baseDirectories) {
-        for (const cat of categoryVariations) {
-          for (const file of fileVariations) {
-            possiblePaths.push(path.join(process.cwd(), baseDir, cat, file));
-          }
-        }
-      }
-
-      let imagePath;
-      for (const p of possiblePaths) {
+      const categoryPath = category.replace(/\s+/g, '_');
+      const imagePath = path.join(process.cwd(), 'attached_assets', 'galleries', categoryPath, filename);
+      
+      try {
+        await fs.access(imagePath, fs.constants.R_OK);
+        res.type('image/jpeg')
+           .header('Cache-Control', 'public, max-age=31536000')
+           .header('Access-Control-Allow-Origin', '*')
+           .header('Cross-Origin-Resource-Policy', 'cross-origin')
+           .sendFile(imagePath);
+      } catch (err) {
+        // Fallback to facebook_posts_image directory
+        const fbImagePath = path.join(process.cwd(), 'attached_assets', 'facebook_posts_image', categoryPath, filename.replace('.jpeg', '.jpg'));
         try {
-          await fs.access(p, fs.constants.R_OK);
-          imagePath = p;
-          break;
-        } catch (err) {
-          continue;
+          await fs.access(fbImagePath, fs.constants.R_OK);
+          res.type('image/jpeg')
+             .header('Cache-Control', 'public, max-age=31536000')
+             .header('Access-Control-Allow-Origin', '*')
+             .header('Cross-Origin-Resource-Policy', 'cross-origin')
+             .sendFile(fbImagePath);
+        } catch {
+          res.status(404).send('Image not found');
         }
-      }
-
-      if (!imagePath) {
-        return res.status(404).send('Image not found');
       }
 
 

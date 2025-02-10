@@ -119,7 +119,6 @@ export default function Gallery() {
   const categoryOrder = [
     "Bat Mitsva",
     "Horses",
-    "Family",
     "Kids",
     "Femininity", 
     "Yoga",
@@ -213,7 +212,7 @@ export default function Gallery() {
       return filteredPhotos;
     },
     staleTime: Infinity,
-    //cacheTime: Infinity,  Removed as per user message
+    cacheTime: Infinity,
   });
 
   const scrollY = window.scrollY;

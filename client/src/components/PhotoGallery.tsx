@@ -26,7 +26,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     if (!photo?.imageUrl) return '';
     const basePath = `/attached_assets/galleries/${category?.replace(/\s+/g, '_')}`;
     const fileName = photo.imageUrl;
-
+    
     // Try different paths in sequence if image fails to load
     const paths = [
       `${basePath}/${fileName}`,
@@ -34,7 +34,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       `/assets/galleries/${category?.replace(/\s+/g, '_')}/${fileName}`,
       `/public/assets/galleries/${category?.replace(/\s+/g, '_')}/${fileName}`
     ];
-
+    
     return paths[0]; // Start with first path
   };
 
@@ -276,44 +276,21 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           const retryCount = Number(target.dataset.retryCount || "0");
-                          const maxRetries = 5;
-                          const categoryPath = category?.replace(/\s+/g, '_');
-                          const fileName = photo.imageUrl;
-
-                          // Comprehensive path fallbacks with cache busting
-                          const paths = [
-                            `/attached_assets/galleries/${categoryPath}/${fileName}`,
-                            `/attached_assets/galleries/${categoryPath}/${fileName.replace('.jpeg', '.jpg')}`,
-                            `/attached_assets/galleries/${categoryPath}/${fileName.replace('.jpg', '.jpeg')}`,
-                            `/attached_assets/facebook_posts_image/${categoryPath}/${fileName}`,
-                            `/assets/galleries/${categoryPath}/${fileName}`
-                          ].filter(Boolean);
-
+                          const maxRetries = 3;
+                          
                           if (retryCount < maxRetries) {
-                            console.log(`Retrying image load (${retryCount + 1}/${maxRetries}):`, target.src);
                             target.dataset.retryCount = String(retryCount + 1);
-
-                            const pathIndex = retryCount % paths.length;
-                            const nextPath = paths[pathIndex];
-                            const cacheBuster = `?v=${Date.now()}&r=${retryCount}`;
-
-                            // Clear browser cache for this image
-                            const img = new Image();
-                            img.onload = () => {
-                              target.src = `${nextPath}${cacheBuster}`;
-                            };
-                            img.onerror = () => {
+                            const paths = [
+                              `/attached_assets/galleries/${category?.replace(/\s+/g, '_')}/${photo.imageUrl}`,
+                              `/assets/galleries/${category?.replace(/\s+/g, '_')}/${photo.imageUrl}`,
+                              `/public/assets/galleries/${category?.replace(/\s+/g, '_')}/${photo.imageUrl}`
+                            ];
+                            const nextPath = paths[retryCount];
+                            if (nextPath) {
                               setTimeout(() => {
-                                target.src = `${nextPath}${cacheBuster}`;
+                                target.src = `${nextPath}?retry=${retryCount + 1}`;
                               }, Math.min(retryCount * 1000, 3000));
-                            };
-                            img.src = `${nextPath}${cacheBuster}`;
-                          } else {
-                            console.error("Failed to load image after all retries:", target.src);
-                            target.onerror = null;
-                            target.style.opacity = "0.7";
-                            target.style.background = "rgba(0,0,0,0.1)";
-                            target.dataset.loadFailed = "true";
+                            }
                           }
                         }}
                       />

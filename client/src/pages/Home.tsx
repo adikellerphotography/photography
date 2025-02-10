@@ -25,7 +25,6 @@ export default function Home() {
   const categoryOrder = [
     "Bat Mitsva",
     "Horses",
-    "Family",
     "Kids",
     "Femininity",
     "Yoga",
@@ -39,43 +38,39 @@ export default function Home() {
   // Override the firstPhoto for specific categories
   const processedCategories = categories?.map((category) => {
     const categoryPath = category.name.replace(/\s+/g, "_");
-    const defaultImage = `/attached_assets/galleries/${categoryPath}/001.jpeg`;
-    const defaultThumb = `/attached_assets/galleries/${categoryPath}/001-thumb.jpeg`;
+    const defaultImage = `/api/photos/${encodeURIComponent(categoryPath)}/001.jpeg`;
+    const defaultThumb = `/api/photos/${encodeURIComponent(categoryPath)}/001-thumb.jpeg`;
 
     // Category image configuration with ranges
     // Fixed images for each category with multiple path fallbacks
     const customImages: Record<string, { img: string; thumb: string }> = {
       "Bat Mitsva": {
-        img: `/attached_assets/galleries/Bat_Mitsva/001.jpeg`,
-        thumb: `/attached_assets/galleries/Bat_Mitsva/001-thumb.jpeg`,
+        img: `/api/photos/${encodeURIComponent("Bat_Mitsva")}/001.jpeg`,
+        thumb: `/api/photos/${encodeURIComponent("Bat_Mitsva")}/001-thumb.jpeg`,
       },
       Horses: {
-        img: `/attached_assets/galleries/Horses/058.jpeg`,
-        thumb: `/attached_assets/galleries/Horses/058-thumb.jpeg`,
-      },
-      Family: {
-        img: `/attached_assets/galleries/Family/016.jpeg`,
-        thumb: `/attached_assets/galleries/Family/016.jpeg`,
+        img: `/api/photos/${encodeURIComponent("Horses")}/058.jpeg`,
+        thumb: `/api/photos/${encodeURIComponent("Horses")}/058-thumb.jpeg`,
       },
       Kids: {
-        img: `/attached_assets/galleries/Kids/021.jpeg`,
-        thumb: `/attached_assets/galleries/Kids/021-thumb.jpeg`,
+        img: `/api/photos/${encodeURIComponent("Kids")}/021.jpeg`,
+        thumb: `/api/photos/${encodeURIComponent("Kids")}/021-thumb.jpeg`,
       },
       Femininity: {
-        img: `/attached_assets/galleries/Femininity/014.jpeg`,
-        thumb: `/attached_assets/galleries/Femininity/014-thumb.jpeg`,
+        img: `/api/photos/${encodeURIComponent("Femininity")}/014.jpeg`,
+        thumb: `/api/photos/${encodeURIComponent("Femininity")}/014-thumb.jpeg`,
       },
       Yoga: {
-        img: `/attached_assets/galleries/Yoga/064.jpeg`,
-        thumb: `/attached_assets/galleries/Yoga/064-thumb.jpeg`,
+        img: `/api/photos/${encodeURIComponent("Yoga")}/064.jpeg`,
+        thumb: `/api/photos/${encodeURIComponent("Yoga")}/064-thumb.jpeg`,
       },
       Modeling: {
-        img: `/attached_assets/galleries/Modeling/010.jpeg`,
-        thumb: `/attached_assets/galleries/Modeling/010-thumb.jpeg`,
+        img: `/api/photos/${encodeURIComponent("Modeling")}/010.jpeg`,
+        thumb: `/api/photos/${encodeURIComponent("Modeling")}/010-thumb.jpeg`,
       },
       "Artful Nude": {
-        img: `/attached_assets/galleries/Artful_Nude/023.jpeg`,
-        thumb: `/attached_assets/galleries/Artful_Nude/023-thumb.jpeg`,
+        img: `/api/photos/${encodeURIComponent("Artful_Nude")}/023.jpeg`,
+        thumb: `/api/photos/${encodeURIComponent("Artful_Nude")}/023-thumb.jpeg`,
       },
     };
 
@@ -92,7 +87,6 @@ export default function Home() {
         thumbnailUrl: imageConfig.thumb,
       },
     };
-    return category;
   });
 
   const filteredCategories =
@@ -285,10 +279,7 @@ export default function Home() {
                       <AspectRatio ratio={4 / 3} className="bg-muted">
                         <div className="relative w-full h-full">
                           <img
-                            src={
-                              category.firstPhoto?.imageUrl ||
-                              `/attached_assets/galleries/${category.name.replace(/\s+/g, "_")}/${String(1).padStart(3, "0")}.jpeg`
-                            }
+                            src={`/attached_assets/galleries/${category.name.replace(/\s+/g, "_")}/${String(1).padStart(3, "0")}.jpeg`}
                             alt={category.name}
                             className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
                             decoding="async"
@@ -307,42 +298,75 @@ export default function Home() {
                               if (img.naturalHeight > img.naturalWidth) {
                                 img.style.objectPosition = "center 50%";
                               }
+                              // Clear retry count on successful load
+                              delete img.dataset.retryCount;
                             }}
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
                               const retryCount = Number(target.dataset.retryCount || "0");
-                              const maxRetries = 5;
-                              const fileName = target.src.split("/").pop()?.split("?")[0];
+                              const maxRetries = 3;
                               const categoryPath = category.name.replace(/\s+/g, "_");
-                              
-                              // Ensure consistent path format
-                              const basePath = `/attached_assets/galleries/${categoryPath}`;
-                              const paths = [
-                                `${basePath}/${fileName}`,
-                                `${basePath}/${fileName?.replace(".jpeg", ".jpg")}`,
-                                `${basePath}/${fileName?.replace(".jpg", ".jpeg")}`,
-                                `/attached_assets/facebook_posts_image/${categoryPath}/${fileName}`,
-                              ].filter(Boolean);
-                              
+
+                              const getFallbackPaths = () => {
+                                // Primary paths for full resolution
+                                const primaryPaths = [
+                                  `/attached_assets/galleries/${categoryPath}/${String(1).padStart(3, "0")}.jpeg`,
+                                  `/attached_assets/facebook_posts_image/${categoryPath}/1.jpg`,
+                                  `/assets/galleries/${categoryPath}/${String(1).padStart(3, "0")}.jpeg`,
+                                ];
+
+                                // Thumbnail paths as fallbacks
+                                const thumbnailPaths = [
+                                  `/attached_assets/galleries/${categoryPath}/${String(1).padStart(3, "0")}-thumb.jpeg`,
+                                  `/attached_assets/facebook_posts_image/${categoryPath}/1-thumb.jpg`,
+                                ];
+
+                                // Alternative formats
+                                const altFormatPaths = [
+                                  `/attached_assets/galleries/${categoryPath}/001.jpg`,
+                                  `/assets/galleries/${categoryPath}/001.jpg`,
+                                  `/attached_assets/facebook_posts_image/${categoryPath}/1.jpeg`,
+                                ];
+
+                                return [...primaryPaths, ...thumbnailPaths, ...altFormatPaths];
+                              };
+
+                              const paths = getFallbackPaths();
+
                               if (retryCount < maxRetries) {
-                                console.log(`Retrying image load (${retryCount + 1}/${maxRetries}):`, target.src);
                                 target.dataset.retryCount = String(retryCount + 1);
-                                
                                 const pathIndex = retryCount % paths.length;
                                 const nextPath = paths[pathIndex];
+                                const timestamp = Date.now();
+
+                                // Create a new image for preloading
+                                const preloadImg = new Image();
                                 
-                                // Clear browser cache for this image
-                                const cacheBuster = `?v=${Date.now()}`;
-                                setTimeout(() => {
-                                  target.src = `${nextPath}${cacheBuster}`;
-                                }, Math.min(retryCount * 1000, 3000));
+                                preloadImg.onload = () => {
+                                  target.src = preloadImg.src;
+                                  target.style.opacity = "1";
+                                };
+
+                                preloadImg.onerror = () => {
+                                  // Try next path after short delay
+                                  const delay = Math.min(retryCount * 300, 1000);
+                                  setTimeout(() => {
+                                    target.src = `${nextPath}?t=${timestamp}&r=${retryCount}`;
+                                  }, delay);
+                                };
+
+                                // Start preloading
+                                preloadImg.src = `${nextPath}?t=${timestamp}&r=${retryCount}`;
                               } else {
-                                console.error("Failed to load image after all retries:", target.src);
+                                // Final fallback - try direct Facebook post image
                                 target.onerror = null;
                                 target.style.opacity = "0.7";
-                                target.style.background = "rgba(0,0,0,0.1)";
-                                // Set a data attribute to track failed loads
+                                target.style.background = "rgba(0,0,0,0.05)";
                                 target.dataset.loadFailed = "true";
+                                
+                                // Last resort - try the facebook posts image directly
+                                const lastResortPath = `/attached_assets/facebook_posts_image/${categoryPath}/1.jpg`;
+                                target.src = `${lastResortPath}?final=true`;
                               }
                             }}
                             loading={
@@ -353,7 +377,7 @@ export default function Home() {
                                   : "lazy"
                             }
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                            fetchPriority={index === 0 ? "high" : "auto"}
+                            fetchpriority={index === 0 ? "high" : "auto"}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent">
                             <div className="absolute bottom-0 left-0 right-0 p-4">
@@ -374,7 +398,7 @@ export default function Home() {
       </section>
 
       {/* Contact Button */}
-      {!categoriesLoading && categories && categories.length > 0 && (
+      {!categoriesLoading && categories?.length > 0 && (
         <section className="container mx-auto px-4 pb-16 pt-6 text-center">
           <Link href="/contact">
             <Button className="bg-white hover:bg-gray-100 text-gray-800 text-lg px-8 py-6 border border-gray-300 shadow-sm hover:shadow-md transition-all">

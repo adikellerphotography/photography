@@ -75,15 +75,28 @@ const initializeServer = async () => {
 
     if (process.env.NODE_ENV === "production") {
       serveStatic(app);
-      app.use('/assets', express.static(path.join(process.cwd(), 'public', 'assets'))); //This line was already present.
-      app.use('/attached_assets', express.static(path.join(process.cwd(), 'attached_assets'))); //Added this line
+      // Configure static file serving with proper headers
+      const staticOptions = {
+        maxAge: '1y',
+        etag: true,
+        lastModified: true,
+        setHeaders: (res: express.Response) => {
+          res.setHeader('Cache-Control', 'public, max-age=31536000');
+          res.setHeader('Access-Control-Allow-Origin', '*');
+          res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+        }
+      };
+      
+      app.use('/assets', express.static(path.join(process.cwd(), 'attached_assets', 'galleries'), staticOptions));
+      app.use('/assets/before_and_after', express.static(path.join(process.cwd(), 'attached_assets', 'before_and_after'), staticOptions));
+      app.use('/assets/facebook_posts_image', express.static(path.join(process.cwd(), 'attached_assets', 'facebook_posts_image'), staticOptions));
       log("🚀 Running in production mode");
     } else {
       await setupVite(app, server);
       log("🛠️ Running in development mode");
     }
 
-    const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+    const PORT = parseInt(process.env.PORT || "5000", 10);
 
     server.listen(PORT, "0.0.0.0", () => {
       log(`✨ Server running on port ${PORT}`);
