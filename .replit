@@ -7,8 +7,8 @@ channel = "stable-24_05"
 
 [deployment]
 deploymentTarget = "gce"
-build = ["sh", "-c", "npm run build"]
-run = ["sh", "-c", "node server/index.js"]
+build = ["sh", "-c", "npx tsc --project tsconfig.json"]
+run = ["sh", "-c", "node dist/server/index.js"]
 
 [[ports]]
 localPort = 3000
