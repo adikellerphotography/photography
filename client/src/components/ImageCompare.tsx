@@ -147,7 +147,7 @@ export default function ImageCompare({
         onError={handleImageError}
         loading={priority || isMobile ? "eager" : "lazy"}
         decoding={priority || isMobile ? "sync" : "async"}
-        fetchpriority={priority || isMobile ? "high" : "low"}
+        fetchPriority={priority || isMobile ? "high" : "low"}
       />
 
       <div
