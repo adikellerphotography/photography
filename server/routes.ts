@@ -33,12 +33,14 @@ const configureStaticFiles = (app: Express) => {
       res.setHeader('Access-Control-Allow-Origin', '*');
       res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
       res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+      res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+      res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
       
       // Cache control based on environment
       if (process.env.NODE_ENV === 'production') {
         res.setHeader('Cache-Control', 'public, max-age=31536000');
       } else {
-        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Cache-Control', 'no-store');
         res.setHeader('Pragma', 'no-cache');
       }
       
