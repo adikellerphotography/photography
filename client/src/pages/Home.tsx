@@ -314,26 +314,27 @@ export default function Home() {
                               const maxRetries = 5;
                               const fileName = target.src.split("/").pop()?.split("?")[0];
                               const categoryPath = category.name.replace(/\s+/g, "_");
+                              
+                              // Ensure consistent path format
+                              const basePath = `/attached_assets/galleries/${categoryPath}`;
                               const paths = [
-                                `/assets/galleries/${categoryPath}/${fileName}`,
-                                `/assets/galleries/${categoryPath}/${fileName?.replace(".jpeg", "-thumb.jpeg")}`,
-                                `/attached_assets/galleries/${categoryPath}/${fileName}`,
-                                `/attached_assets/facebook_posts_image/${categoryPath}/${fileName?.replace(".jpeg", ".jpg")}`,
-                                `/public/assets/galleries/${categoryPath}/${fileName}`,
-                                `/assets/${categoryPath}/${String(1).padStart(3, "0")}.jpeg`,
+                                `${basePath}/${fileName}`,
+                                `${basePath}/${fileName?.replace(".jpeg", ".jpg")}`,
+                                `${basePath}/${fileName?.replace(".jpg", ".jpeg")}`,
+                                `/attached_assets/facebook_posts_image/${categoryPath}/${fileName}`,
                               ].filter(Boolean);
                               
                               if (retryCount < maxRetries) {
                                 console.log(`Retrying image load (${retryCount + 1}/${maxRetries}):`, target.src);
                                 target.dataset.retryCount = String(retryCount + 1);
                                 
-                                // Try next path in sequence
-                                const pathIndex = Math.min(Math.floor(retryCount / 2), paths.length - 1);
+                                const pathIndex = retryCount % paths.length;
                                 const nextPath = paths[pathIndex];
                                 
+                                // Clear browser cache for this image
+                                const cacheBuster = `?v=${Date.now()}`;
                                 setTimeout(() => {
-                                  const timestamp = Date.now();
-                                  target.src = `${nextPath}?t=${timestamp}&retry=${retryCount + 1}`;
+                                  target.src = `${nextPath}${cacheBuster}`;
                                 }, Math.min(retryCount * 1000, 3000));
                               } else {
                                 console.error("Failed to load image after all retries:", target.src);

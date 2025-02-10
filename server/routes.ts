@@ -26,15 +26,20 @@ const configureStaticFiles = (app: Express) => {
       } else if (filePath.toLowerCase().endsWith('.png')) {
         res.setHeader('Content-Type', 'image/png');
       }
-      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      // Force no-cache in development, aggressive caching in production
+      if (process.env.NODE_ENV === 'production') {
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      } else {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      }
       res.setHeader('Accept-Ranges', 'bytes');
       res.setHeader('Vary', 'Accept-Encoding');
       res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
       res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Pragma', 'no-cache');
     },
-    maxAge: 31536000000,
-    lastModified: true,
     etag: true,
+    lastModified: true,
     fallthrough: true,
     redirect: false
   }));
