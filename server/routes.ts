@@ -21,27 +21,38 @@ const configureStaticFiles = (app: Express) => {
   const assetsPath = path.join(process.cwd(), 'attached_assets');
   app.use('/attached_assets', express.static(assetsPath, {
     setHeaders: (res, filePath) => {
+      // Set proper content types
       if (filePath.toLowerCase().endsWith('.jpg') || filePath.toLowerCase().endsWith('.jpeg')) {
         res.setHeader('Content-Type', 'image/jpeg');
       } else if (filePath.toLowerCase().endsWith('.png')) {
         res.setHeader('Content-Type', 'image/png');
       }
-      // Force no-cache in development, aggressive caching in production
+      
+      // Production optimized headers
       if (process.env.NODE_ENV === 'production') {
         res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+        res.setHeader('Timing-Allow-Origin', '*');
+        res.setHeader('X-Content-Type-Options', 'nosniff');
       } else {
+        // Development headers
         res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
       }
+      
+      // Common headers
       res.setHeader('Accept-Ranges', 'bytes');
       res.setHeader('Vary', 'Accept-Encoding');
-      res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
-      res.setHeader('Access-Control-Allow-Origin', '*');
-      res.setHeader('Pragma', 'no-cache');
     },
     etag: true,
     lastModified: true,
+    maxAge: process.env.NODE_ENV === 'production' ? '1y' : 0,
     fallthrough: true,
-    redirect: false
+    redirect: false,
+    immutable: process.env.NODE_ENV === 'production'
   }));
 };
 
