@@ -28,17 +28,16 @@ const configureStaticFiles = (app: Express) => {
         res.setHeader('Content-Type', 'image/png');
       }
       
-      // Production optimized headers
+      // Common headers for both production and development
+      res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+      
+      // Cache control based on environment
       if (process.env.NODE_ENV === 'production') {
-        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-        res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-        res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-        res.setHeader('Timing-Allow-Origin', '*');
-        res.setHeader('X-Content-Type-Options', 'nosniff');
+        res.setHeader('Cache-Control', 'public, max-age=31536000');
       } else {
-        // Development headers
         res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
         res.setHeader('Pragma', 'no-cache');
       }
