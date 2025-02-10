@@ -25,6 +25,7 @@ export default function Home() {
   const categoryOrder = [
     "Bat Mitsva",
     "Horses",
+    "Family",
     "Kids",
     "Femininity",
     "Yoga",
@@ -51,6 +52,10 @@ export default function Home() {
       Horses: {
         img: `/attached_assets/galleries/Horses/058.jpeg`,
         thumb: `/attached_assets/galleries/Horses/058-thumb.jpeg`,
+      },
+      Family: {
+        img: `/attached_assets/galleries/Family/016.jpeg`,
+        thumb: `/attached_assets/galleries/Family/016.jpeg`,
       },
       Kids: {
         img: `/attached_assets/galleries/Kids/021.jpeg`,
