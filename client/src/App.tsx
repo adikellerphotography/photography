@@ -5,7 +5,7 @@ import { ThemeProvider } from "@/hooks/use-theme";
 import { LanguageProvider } from "@/hooks/use-language";
 import Navbar from "@/components/Navbar";
 import BackgroundPattern from "@/components/BackgroundPattern";
-import Home from "@/pages/Home";
+import Home from "@/pages/home";
 import Gallery from "@/pages/Gallery";
 import BeforeAndAfter from "@/pages/BeforeAndAfter";
 import About from "@/pages/About";

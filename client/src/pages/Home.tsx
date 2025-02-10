@@ -353,7 +353,7 @@ export default function Home() {
                                   : "lazy"
                             }
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                            fetchpriority={index === 0 ? "high" : "auto"}
+                            fetchPriority={index === 0 ? "high" : "auto"}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent">
                             <div className="absolute bottom-0 left-0 right-0 p-4">
@@ -374,7 +374,7 @@ export default function Home() {
       </section>
 
       {/* Contact Button */}
-      {!categoriesLoading && categories?.length > 0 && (
+      {!categoriesLoading && categories && categories.length > 0 && (
         <section className="container mx-auto px-4 pb-16 pt-6 text-center">
           <Link href="/contact">
             <Button className="bg-white hover:bg-gray-100 text-gray-800 text-lg px-8 py-6 border border-gray-300 shadow-sm hover:shadow-md transition-all">
