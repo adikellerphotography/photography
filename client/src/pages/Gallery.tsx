@@ -119,6 +119,7 @@ export default function Gallery() {
   const categoryOrder = [
     "Bat Mitsva",
     "Horses",
+    "Family",
     "Kids",
     "Femininity", 
     "Yoga",
