@@ -213,7 +213,7 @@ export default function Gallery() {
       return filteredPhotos;
     },
     staleTime: Infinity,
-    cacheTime: Infinity,
+    //cacheTime: Infinity,  Removed as per user message
   });
 
   const scrollY = window.scrollY;
