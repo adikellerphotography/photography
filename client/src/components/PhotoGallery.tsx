@@ -202,16 +202,24 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ 
                 opacity: 1, 
-                scale: 1,
-                boxShadow: selectedIndex === index && !selectedPhoto ? "0 0 20px rgba(255, 149, 0, 0.5)" : "none",
+                scale: selectedIndex === index && !selectedPhoto ? [1, 1.02, 1] : 1,
+                filter: selectedIndex === index && !selectedPhoto ? ['none', 'brightness(1.1)', 'none'] : 'none',
               }}
               transition={{
-                duration: 0.5,
+                duration: selectedIndex === index && !selectedPhoto ? 1.2 : 0.5,
                 delay: Math.min(index * 0.1, 1),
                 ease: [0.34, 1.56, 0.64, 1],
+                scale: {
+                  times: [0, 0.5, 1],
+                  ease: "easeInOut"
+                },
+                filter: {
+                  times: [0, 0.5, 1],
+                  ease: "easeInOut"
+                }
               }}
               className={`relative overflow-hidden rounded-lg cursor-pointer group ${
-                selectedIndex === index && !selectedPhoto ? 'ring-2 ring-[#FF9500] ring-offset-2 ring-offset-background' : ''
+                selectedIndex === index && !selectedPhoto ? 'ring-1 ring-[#FF9500]/50' : ''
               }`}
               onClick={() => {
                 if (isLoaded) {
