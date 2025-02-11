@@ -25,6 +25,7 @@ export default function Home() {
   const categoryOrder = [
     "Bat Mitsva",
     "Horses",
+    "Family",
     "Kids",
     "Femininity",
     "Yoga",

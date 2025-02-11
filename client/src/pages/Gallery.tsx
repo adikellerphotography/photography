@@ -119,6 +119,7 @@ export default function Gallery() {
   const categoryOrder = [
     "Bat Mitsva",
     "Horses",
+    "Family",
     "Kids",
     "Femininity", 
     "Yoga",
@@ -333,33 +334,33 @@ export default function Gallery() {
                   transition={{ type: "spring", stiffness: 200, damping: 25 }}
                   className="relative"
                 >
-                <motion.div
-                  initial={{
-                    opacity: 0,
-                    x: swipeDirection === "left" ? 300 : -300,
-                  }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{
-                    opacity: 0,
-                    x: touchStartX && touchStartX - (currentX || 0) > 0 ? -300 : 300,
-                    transition: {
-                      duration: 0.2,
-                    },
-                  }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 200,
-                    damping: 25,
-                    mass: 1,
-                  }}
-                >
-                  <Card>
-                    <CardContent className="pt-6">
-                      <PhotoGallery category={category.name} photos={photos} />
-                    </CardContent>
-                  </Card>
+                  <motion.div
+                    initial={{
+                      opacity: 0,
+                      x: swipeDirection === "left" ? 300 : -300,
+                    }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{
+                      opacity: 0,
+                      x: touchStartX && touchStartX - (currentX || 0) > 0 ? -300 : 300,
+                      transition: {
+                        duration: 0.2,
+                      },
+                    }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 200,
+                      damping: 25,
+                      mass: 1,
+                    }}
+                  >
+                    <Card>
+                      <CardContent className="pt-6">
+                        <PhotoGallery category={category.name} photos={photos} />
+                      </CardContent>
+                    </Card>
+                  </motion.div>
                 </motion.div>
-              </motion.div>
               )
             ))}
           </AnimatePresence>
