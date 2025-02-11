@@ -202,11 +202,11 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ 
                 opacity: 1, 
-                scale: selectedIndex === index && !selectedPhoto ? [1, 1.02, 1] : 1,
-                filter: selectedIndex === index && !selectedPhoto ? ['none', 'brightness(1.1)', 'none'] : 'none',
+                scale: selectedIndex === index && selectedPhoto === null && loadedImages.has(mainPath) ? [1, 1.02, 1] : 1,
+                filter: selectedIndex === index && selectedPhoto === null && loadedImages.has(mainPath) ? ['none', 'brightness(1.1)', 'none'] : 'none',
               }}
               transition={{
-                duration: selectedIndex === index && !selectedPhoto ? 1.2 : 0.5,
+                duration: selectedIndex === index && selectedPhoto === null && loadedImages.has(mainPath) ? 1.2 : 0.5,
                 delay: Math.min(index * 0.1, 1),
                 ease: [0.34, 1.56, 0.64, 1],
                 scale: {
@@ -219,7 +219,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 }
               }}
               className={`relative overflow-hidden rounded-lg cursor-pointer group ${
-                selectedIndex === index && !selectedPhoto ? 'ring-1 ring-[#FF9500]/50' : ''
+                selectedIndex === index && selectedPhoto === null && loadedImages.has(mainPath) ? 'ring-1 ring-[#FF9500]/50' : ''
               }`}
               onClick={() => {
                 if (isLoaded) {
