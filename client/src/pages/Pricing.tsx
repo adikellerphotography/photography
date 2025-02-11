@@ -94,12 +94,12 @@ export default function Pricing() {
                 className="flex"
               >
                 <Button
-                  variant="outline"
-                  className="w-[200px] mx-auto h-auto py-2 px-3 flex flex-col gap-1 bg-white/5 hover:bg-white/10 rounded-lg shadow-sm hover:shadow-md transition-all border-none"
+                  variant="ghost"
+                  className="group w-[240px] mx-auto h-auto py-4 px-5 flex flex-col gap-2 bg-gradient-to-br from-white/5 to-white/10 hover:from-white/10 hover:to-white/20 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/10 hover:border-[#E67E00]/30"
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
-                  <h3 className="text-sm font-medium text-[#E67E00]">{pkg.name}</h3>
-                  <p className="text-xs font-light text-muted-foreground">{pkg.price}</p>
+                  <h3 className="text-base font-semibold text-[#E67E00] group-hover:text-[#E67E00] transition-colors">{pkg.name}</h3>
+                  <p className="text-sm font-medium text-muted-foreground group-hover:text-white/90 transition-colors">{pkg.price}</p>
                 </Button>
               </motion.div>
             ))}
