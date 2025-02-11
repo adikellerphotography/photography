@@ -98,12 +98,9 @@ export default function Pricing() {
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
                   <div className="absolute inset-0 w-1/3 bg-[#E67E00] transition-all duration-300 group-hover:w-[30%]"></div>
-                  <div className="relative flex items-center justify-between px-6 w-full h-full">
+                  <div className="relative flex items-center justify-center px-6 w-full h-full">
                     <span className="text-base font-medium text-[#E67E00] group-hover:text-[#E67E00] z-10">{pkg.name}</span>
-                    <div className="flex items-center gap-2">
-                      {pkg.icon && <pkg.icon className="w-5 h-5 text-white z-10" />}
-                      <span className="text-sm font-medium text-neutral-600">{pkg.price}</span>
-                    </div>
+                    {pkg.icon && <pkg.icon className="w-5 h-5 text-white z-10 ml-2" />}
                   </div>
                 </Button>
               </motion.div>
