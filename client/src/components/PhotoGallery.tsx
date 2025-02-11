@@ -200,27 +200,13 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               key={`${photo.id}-${index}`}
               ref={(el) => (photoRefs.current[index] = el)}
               initial={{ opacity: 0, scale: 0.97 }}
-              animate={{ 
-                opacity: 1, 
-                scale: selectedIndex === index && selectedPhoto === null && loadedImages.has(mainPath) ? [1, 1.02, 1] : 1,
-                filter: selectedIndex === index && selectedPhoto === null && loadedImages.has(mainPath) ? ['none', 'brightness(1.1)', 'none'] : 'none',
-              }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{
-                duration: selectedIndex === index && selectedPhoto === null && loadedImages.has(mainPath) ? 1.2 : 0.5,
+                duration: 0.5,
                 delay: Math.min(index * 0.1, 1),
                 ease: [0.34, 1.56, 0.64, 1],
-                scale: {
-                  times: [0, 0.5, 1],
-                  ease: "easeInOut"
-                },
-                filter: {
-                  times: [0, 0.5, 1],
-                  ease: "easeInOut"
-                }
               }}
-              className={`relative overflow-hidden rounded-lg cursor-pointer group ${
-                selectedIndex === index && selectedPhoto === null && loadedImages.has(mainPath) ? 'ring-1 ring-[#FF9500]/50' : ''
-              }`}
+              className="relative overflow-hidden rounded-lg cursor-pointer group"
               onClick={() => {
                 if (isLoaded) {
                   setSelectedPhoto(photo);
