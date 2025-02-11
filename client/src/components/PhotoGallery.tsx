@@ -262,31 +262,17 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       <Dialog
         open={!!selectedPhoto}
         onOpenChange={(open) => {
-          if (!open) {
-            setSelectedPhoto(null);
-            const photoEl = photoRefs.current[selectedIndex];
-            let isScrolling: NodeJS.Timeout;
-            
-            const highlightPhoto = () => {
-              if (photoEl) {
-                photoEl.classList.add("opacity-90", "scale-102", "z-10", "shadow-lg", "transition-all", "duration-500");
-                setTimeout(() => {
-                  photoEl.classList.remove("opacity-90", "scale-102", "z-10", "shadow-lg", "transition-all", "duration-500");
-                }, 1500);
-              }
-            };
-
-            const handleScroll = () => {
-              clearTimeout(isScrolling);
-              isScrolling = setTimeout(() => {
-                document.removeEventListener('scroll', handleScroll);
-                highlightPhoto();
-              }, 100);
-            };
-
-            document.addEventListener('scroll', handleScroll);
+          if (!open) setSelectedPhoto(null);
+          const photoEl = photoRefs.current[selectedIndex];
+          setTimeout(() => {
             photoEl?.scrollIntoView({ behavior: "smooth", block: "center" });
-          }
+            if (photoEl) {
+              photoEl.classList.add("scale-[1.02]", "brightness-105", "shadow-[0_0_15px_rgba(255,255,255,0.2)]", "transition-all", "duration-700", "ease-in-out");
+              setTimeout(() => {
+                photoEl.classList.remove("scale-[1.02]", "brightness-105", "shadow-[0_0_15px_rgba(255,255,255,0.2)]", "transition-all", "duration-700", "ease-in-out");
+              }, 1500);
+            }
+          }, 100);
         }}
       >
         <DialogContent
