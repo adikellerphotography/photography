@@ -95,22 +95,11 @@ export default function Pricing() {
               >
                 <Button
                   variant="outline"
-                  className="w-full max-w-[300px] mx-auto h-auto py-4 px-6 flex flex-col gap-3 bg-white/5 hover:bg-white/10 rounded-lg shadow-sm hover:shadow-md transition-all border-none"
+                  className="w-[200px] mx-auto h-auto py-2 px-3 flex flex-col gap-1 bg-white/5 hover:bg-white/10 rounded-lg shadow-sm hover:shadow-md transition-all border-none"
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
-                  <h3 className="text-lg font-medium text-[#E67E00]">{pkg.name}</h3>
-                  <p className="text-base font-semibold text-muted-foreground">{pkg.price}</p>
-                  <div className="border-t border-[#E67E00]/20 pt-3">
-                    <p className="text-sm text-muted-foreground mb-2">{pkg.description}</p>
-                    <ul className="text-xs text-muted-foreground space-y-1">
-                      {pkg.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-center gap-2">
-                          <span className="text-[#E67E00]">•</span>
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <h3 className="text-sm font-medium text-[#E67E00]">{pkg.name}</h3>
+                  <p className="text-xs font-light text-muted-foreground">{pkg.price}</p>
                 </Button>
               </motion.div>
             ))}
