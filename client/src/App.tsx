@@ -45,8 +45,7 @@ function Router() {
         <Route path="/before-and-after" component={BeforeAndAfter} />
         <Route path="/sessions" component={Sessions} />
 <Route path="/reflection" component={ReflectionProject} />
-        <Route path="/pricing" component={Pricing} />
-        <Route path="/pricing/:category" component={Pricing} />
+        <Route path="/pricing/*" component={Pricing} />
         <Route path="/info" component={Info} />
         <Route path="/workshop" component={GuidingAndMentoring} />
         <Route path="/about" component={About} />
