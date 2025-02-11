@@ -97,7 +97,7 @@ export default function Pricing() {
                   className="group relative w-[220px] mx-auto h-12 overflow-hidden bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
-                  <div className="absolute inset-0 w-1/2 bg-[#E67E00] transition-all duration-300 group-hover:w-[45%]"></div>
+                  <div className="absolute inset-0 w-1/3 bg-[#E67E00] transition-all duration-300 group-hover:w-[30%]"></div>
                   <div className="relative flex items-center justify-between px-6 w-full h-full">
                     <span className="text-base font-medium text-[#E67E00] group-hover:text-[#E67E00] z-10">{pkg.name}</span>
                     <div className="flex items-center gap-2">
