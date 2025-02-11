@@ -64,13 +64,10 @@ export default function Pricing() {
 
   const handlePackageSelect = (packageName: string) => {
     setSelectedPackage(packageName);
-    const urlSlug = packageName.toLowerCase().replace(/\s+/g, '-');
-    setLocation(`/pricing/${urlSlug}`);
   };
 
   const handleClosePackage = () => {
     setSelectedPackage(null);
-    setLocation('/pricing');
   };
 
   const selectedPackageDetails = packages.find(pkg => pkg.name === selectedPackage);
