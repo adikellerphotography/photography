@@ -22,20 +22,20 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const galleryRef = useRef<HTMLDivElement>(null);
   const imageCache = useRef<Record<string, HTMLImageElement>>({});
 
-  const constructImagePath = (photo: Photo, isThumb = false): string => {
-    if (!photo?.imageUrl) return '';
-    const basePath = `/attached_assets/galleries/${category?.replace(/\s+/g, '_')}`;
+  const getImagePaths = (photo: Photo, isThumb = false): string[] => {
+    if (!photo?.imageUrl) return [];
     const fileName = photo.imageUrl;
-    
-    // Try different paths in sequence if image fails to load
-    const paths = [
-      `${basePath}/${fileName}`,
-      `${basePath}/${fileName.replace('.jpeg', isThumb ? '-thumb.jpeg' : '.jpeg')}`,
-      `/assets/galleries/${category?.replace(/\s+/g, '_')}/${fileName}`,
-      `/public/assets/galleries/${category?.replace(/\s+/g, '_')}/${fileName}`
+    const baseFileName = fileName.replace(/\.(jpeg|jpg)$/, '');
+    const categoryPath = category?.replace(/\s+/g, '_');
+
+    return [
+      `/attached_assets/galleries/${categoryPath}/${fileName}`,
+      `/attached_assets/galleries/${categoryPath}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
+      `/assets/galleries/${categoryPath}/${fileName}`,
+      `/assets/galleries/${categoryPath}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
+      `/public/assets/galleries/${categoryPath}/${fileName}`,
+      `/public/assets/galleries/${categoryPath}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`
     ];
-    
-    return paths[0]; // Start with first path
   };
 
   const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({
@@ -59,81 +59,63 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const preloadImage = async (photo: Photo): Promise<void> => {
     if (!photo.imageUrl) return;
 
-    const path = constructImagePath(photo);
-    const thumbPath = constructImagePath(photo, true);
-
-    if (loadedImages.has(path) || failedImages.has(path)) return;
-
+    const paths = getImagePaths(photo);
+    const thumbPaths = getImagePaths(photo, true);
+    const allPaths = [...paths, ...thumbPaths];
     const timestamp = Date.now();
-    const retryCount = retryAttempts[path] || 0;
-    const urlWithCache = `${path}?t=${timestamp}&r=${retryCount}`;
-    const thumbUrlWithCache = `${thumbPath}?t=${timestamp}&r=${retryCount}`;
+    const retryCount = retryAttempts[paths[0]] || 0;
+
+    if (loadedImages.has(paths[0]) || failedImages.has(paths[0])) return;
 
     try {
-      const [img, thumbImg] = [new Image(), new Image()];
-      imageCache.current[path] = img;
+      const img = new Image();
+      imageCache.current[paths[0]] = img;
 
-      // First load thumbnail
       await new Promise<void>((resolve, reject) => {
-        const timeoutId = setTimeout(() => {
-          thumbImg.src = '';
-          resolve(); // Don't reject on thumb timeout, continue to main image
-        }, 5000);
+        let currentPathIndex = 0;
+        const maxAttempts = allPaths.length;
+        let timeoutId: NodeJS.Timeout;
 
-        thumbImg.onload = () => {
-          clearTimeout(timeoutId);
-          setLoadedImages(prev => new Set(prev).add(thumbPath));
-          resolve();
-        };
-
-        thumbImg.onerror = () => {
-          clearTimeout(timeoutId);
-          resolve(); // Continue even if thumb fails
-        };
-
-        thumbImg.src = thumbUrlWithCache;
-      });
-
-      // Then load main image
-      await new Promise<void>((resolve, reject) => {
-        const timeoutId = setTimeout(() => {
-          img.src = '';
-          if (retryCount < 5) {
-            setRetryAttempts(prev => ({ ...prev, [path]: retryCount + 1 }));
-            reject(new Error('Timeout loading image'));
-          } else {
-            setFailedImages(prev => new Set(prev).add(path));
-            reject(new Error(`Max retries reached for: ${path}`));
+        const tryNextPath = () => {
+          if (currentPathIndex >= maxAttempts) {
+            clearTimeout(timeoutId);
+            reject(new Error('All paths failed'));
+            return;
           }
-        }, 20000);
 
-        img.onload = () => {
-          clearTimeout(timeoutId);
-          setLoadedImages(prev => new Set(prev).add(path));
-          resolve();
+          const currentPath = allPaths[currentPathIndex];
+          const urlWithCache = `${currentPath}?t=${timestamp}&r=${retryCount}`;
+
+          img.onload = () => {
+            clearTimeout(timeoutId);
+            setLoadedImages(prev => new Set(prev).add(paths[0]));
+            resolve();
+          };
+
+          img.onerror = () => {
+            clearTimeout(timeoutId);
+            currentPathIndex++;
+            tryNextPath();
+          };
+
+          timeoutId = setTimeout(() => {
+            img.src = '';
+            currentPathIndex++;
+            tryNextPath();
+          }, 5000);
+
+          img.src = urlWithCache;
         };
 
-        img.onerror = () => {
-          clearTimeout(timeoutId);
-          if (retryCount < 5) {
-            setRetryAttempts(prev => ({ ...prev, [path]: retryCount + 1 }));
-            // Try alternative path formats
-            const altPaths = [
-              path,
-              path.replace('.jpeg', '.jpg'),
-              `/assets/${photo.category.replace(/\s+/g, "_")}/${photo.imageUrl}`
-            ];
-            img.src = `${altPaths[retryCount % altPaths.length]}?t=${timestamp}&r=${retryCount}`;
-          } else {
-            setFailedImages(prev => new Set(prev).add(path));
-            reject(new Error(`Max retries reached for: ${path}`));
-          }
-        };
-
-        img.src = urlWithCache;
+        tryNextPath();
       });
     } catch (error) {
-      console.error(`Error loading image ${path}:`, error);
+      console.error(`Error loading image for ${photo.imageUrl}:`, error);
+      if (retryCount < 3) {
+        setRetryAttempts(prev => ({ ...prev, [paths[0]]: retryCount + 1 }));
+      } else {
+        setFailedImages(prev => new Set(prev).add(paths[0]));
+      }
     }
   };
 
@@ -178,7 +160,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       return newSet;
     });
     setRetryAttempts(prev => ({ ...prev, [path]: 0 }));
-    const photo = photos.find(p => constructImagePath(p) === path);
+    const photo = photos.find(p => getImagePaths(p)[0] === path);
     if (photo) {
       preloadImage(photo);
     }
@@ -207,9 +189,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     <div className="space-y-8" ref={galleryRef}>
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-background/50">
         {photos.map((photo, index) => {
-          const path = constructImagePath(photo);
-          const isLoaded = loadedImages.has(path);
-          const hasFailed = failedImages.has(path);
+          const paths = getImagePaths(photo);
+          const mainPath = paths[0];
+          const isLoaded = loadedImages.has(mainPath);
+          const hasFailed = failedImages.has(mainPath);
 
           return (
             <motion.div
@@ -247,7 +230,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                         size="sm"
                         onClick={(e) => {
                           e.stopPropagation();
-                          retryImage(path);
+                          retryImage(mainPath);
                         }}
                       >
                         <RefreshCw className="w-4 h-4 mr-2" />
@@ -255,46 +238,17 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                       </Button>
                     </div>
                   ) : (
-                    <>
-                      {!isLoaded && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-muted/10">
-                          <div className="animate-spin">
-                            <RefreshCw className="w-6 h-6 text-muted-foreground" />
-                          </div>
-                        </div>
-                      )}
-                      <img
-                        src={constructImagePath(photo)}
-                        alt={photo.title || "Gallery image"}
-                        className={`relative w-full h-full transition-all duration-500 ${
-                          isLoaded ? 'opacity-100 group-hover:scale-110' : 'opacity-0'
-                        } object-cover`}
-                        loading={index < 6 ? "eager" : "lazy"}
-                        decoding={index < 6 ? "sync" : "async"}
-                        fetchpriority={index < 6 ? "high" : "low"}
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          const retryCount = Number(target.dataset.retryCount || "0");
-                          const maxRetries = 3;
-                          
-                          if (retryCount < maxRetries) {
-                            target.dataset.retryCount = String(retryCount + 1);
-                            const paths = [
-                              `/attached_assets/galleries/${category?.replace(/\s+/g, '_')}/${photo.imageUrl}`,
-                              `/assets/galleries/${category?.replace(/\s+/g, '_')}/${photo.imageUrl}`,
-                              `/public/assets/galleries/${category?.replace(/\s+/g, '_')}/${photo.imageUrl}`
-                            ];
-                            const nextPath = paths[retryCount];
-                            if (nextPath) {
-                              setTimeout(() => {
-                                target.src = `${nextPath}?retry=${retryCount + 1}`;
-                              }, Math.min(retryCount * 1000, 3000));
-                            }
-                          }
-                        }}
-                      />
-                    </>
+                    <img
+                      src={mainPath}
+                      alt={photo.title || "Gallery image"}
+                      className={`relative w-full h-full transition-all duration-500 ${
+                        isLoaded ? 'opacity-100 group-hover:scale-110' : 'opacity-0'
+                      } object-cover`}
+                      loading={index < 6 ? "eager" : "lazy"}
+                      decoding={index < 6 ? "sync" : "async"}
+                      fetchpriority={index < 6 ? "high" : "low"}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
                   )}
                 </div>
               </AspectRatio>
@@ -349,7 +303,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
-                src={constructImagePath(selectedPhoto)}
+                src={getImagePaths(selectedPhoto)[0]}
                 alt={selectedPhoto.title || ""}
                 className="max-w-full max-h-[85vh] w-auto h-auto object-contain rounded-lg shadow-2xl"
                 loading="eager"
