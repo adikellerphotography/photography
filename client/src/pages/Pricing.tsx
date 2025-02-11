@@ -106,7 +106,7 @@ export default function Pricing() {
           </div>
 
           <Dialog open={!!selectedPackage} onOpenChange={() => handleClosePackage()}>
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-w-2xl fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-background/95 backdrop-blur-sm">
               <DialogHeader className="flex flex-row items-center justify-between">
                 <DialogTitle>{selectedPackageDetails?.name}</DialogTitle>
                 <Button variant="ghost" size="icon" onClick={() => setLocation('/')}>
