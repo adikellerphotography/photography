@@ -49,28 +49,28 @@ export default function Home() {
         thumb: `/api/photos/${encodeURIComponent("Bat_Mitsva")}/001-thumb.jpeg`,
       },
       Horses: {
-        img: `/api/photos/${encodeURIComponent("Horses")}/058.jpeg`,
-        thumb: `/api/photos/${encodeURIComponent("Horses")}/058-thumb.jpeg`,
+        img: `/api/photos/${encodeURIComponent("Horses")}/030.jpeg`,
+        thumb: `/api/photos/${encodeURIComponent("Horses")}/030-thumb.jpeg`,
       },
       Kids: {
-        img: `/api/photos/${encodeURIComponent("Kids")}/021.jpeg`,
-        thumb: `/api/photos/${encodeURIComponent("Kids")}/021-thumb.jpeg`,
+        img: `/api/photos/${encodeURIComponent("Kids")}/014.jpeg`,
+        thumb: `/api/photos/${encodeURIComponent("Kids")}/014-thumb.jpeg`,
       },
       Femininity: {
-        img: `/api/photos/${encodeURIComponent("Femininity")}/014.jpeg`,
-        thumb: `/api/photos/${encodeURIComponent("Femininity")}/014-thumb.jpeg`,
+        img: `/api/photos/${encodeURIComponent("Femininity")}/001.jpeg`,
+        thumb: `/api/photos/${encodeURIComponent("Femininity")}/001-thumb.jpeg`,
       },
       Yoga: {
-        img: `/api/photos/${encodeURIComponent("Yoga")}/064.jpeg`,
-        thumb: `/api/photos/${encodeURIComponent("Yoga")}/064-thumb.jpeg`,
+        img: `/api/photos/${encodeURIComponent("Yoga")}/041.jpeg`,
+        thumb: `/api/photos/${encodeURIComponent("Yoga")}/041-thumb.jpeg`,
       },
       Modeling: {
-        img: `/api/photos/${encodeURIComponent("Modeling")}/010.jpeg`,
-        thumb: `/api/photos/${encodeURIComponent("Modeling")}/010-thumb.jpeg`,
+        img: `/api/photos/${encodeURIComponent("Modeling")}/001.jpeg`,
+        thumb: `/api/photos/${encodeURIComponent("Modeling")}/001-thumb.jpeg`,
       },
       "Artful Nude": {
-        img: `/api/photos/${encodeURIComponent("Artful_Nude")}/023.jpeg`,
-        thumb: `/api/photos/${encodeURIComponent("Artful_Nude")}/023-thumb.jpeg`,
+        img: `/api/photos/${encodeURIComponent("Artful_Nude")}/001.jpeg`,
+        thumb: `/api/photos/${encodeURIComponent("Artful_Nude")}/001-thumb.jpeg`,
       },
     };
 
