@@ -16,9 +16,9 @@ export default function Navbar() {
   const navigationItems = [
     { href: "/", label: language === "en" ? "Home" : "בית", icon: Home },
     { href: "/gallery", label: language === "en" ? "Gallery" : "גלריה", icon: Image },
-    { href: "/before-and-after", label: language === "en" ? "Before & After" : "לפני ואחרי", icon: FlipHorizontal },
+    { href: "/before-and-after", label: language === "en" ? "Before & After" : "לפני ואחרי", icon: SplitSquareVertical },
     { href: "/sessions", label: language === "en" ? "My Sessions" : "גלריות", icon: Aperture },
-    { href: "/reflection", label: language === "en" ? "Reflection Project" : "פרויקט השתקפות", icon: SplitSquareVertical },
+{ href: "/reflection", label: language === "en" ? "Reflection Project" : "פרויקט השתקפות", icon: FlipHorizontal },
     { href: "/info", label: language === "en" ? "Guidelines" : "מידע על הצילומים", icon: FileText },
     { href: "/pricing", label: language === "en" ? "Pricing" : "מחירים", icon: Banknote },
     { href: "/workshop", label: language === "en" ? "Workshop" : "סדנאות", icon: GraduationCap },

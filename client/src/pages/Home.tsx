@@ -207,7 +207,7 @@ export default function Home() {
               />
               <Link href="/before-and-after">
                 <button className="p-4 rounded-full hover:bg-accent transition-colors text-white">
-                  <AspectRatio ratio={1} className="w-6 h-6"/> {/* Replaced icon */}
+                  <SplitSquareVertical className="w-6 h-6" />
                 </button>
               </Link>
             </div>
