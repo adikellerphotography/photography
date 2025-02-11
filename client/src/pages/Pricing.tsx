@@ -1,6 +1,8 @@
+
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, Home } from "lucide-react";
+import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -10,8 +12,18 @@ import { useTranslation } from "@/hooks/use-translation";
 export default function Pricing() {
   const { language } = useLanguage();
   const { t } = useTranslation();
-  const [showNirDialog, setShowNirDialog] = React.useState(false);
+  const [location, setLocation] = useLocation();
+  const [, params] = useRoute("/pricing/:category");
   const [scrollY, setScrollY] = React.useState(0);
+  const [selectedPackage, setSelectedPackage] = React.useState<string | null>(null);
+  const [showNirDialog, setShowNirDialog] = React.useState(false);
+  const [showAnastasiaDialog, setShowAnastasiaDialog] = React.useState(false);
+
+  React.useEffect(() => {
+    if (params?.category) {
+      setSelectedPackage(decodeURIComponent(params.category));
+    }
+  }, [params]);
 
   React.useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -22,7 +34,6 @@ export default function Pricing() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-  const [showAnastasiaDialog, setShowAnastasiaDialog] = React.useState(false);
 
   const packages = [
     {
@@ -48,14 +59,21 @@ export default function Pricing() {
       price: t("pricing.purim.price"),
       description: t("pricing.purim.description"),
       features: t("pricing.purim.features")
-    },
-    {
-      name: t("pricing.additional.name"),
-      price: t("pricing.additional.price"),
-      description: t("pricing.additional.description"),
-      features: t("pricing.additional.features")
     }
   ];
+
+  const handlePackageSelect = (packageName: string) => {
+    setSelectedPackage(packageName);
+    const urlSlug = packageName.toLowerCase().replace(/\s+/g, '-');
+    setLocation(`/pricing/${urlSlug}`);
+  };
+
+  const handleClosePackage = () => {
+    setSelectedPackage(null);
+    setLocation('/pricing');
+  };
+
+  const selectedPackageDetails = packages.find(pkg => pkg.name === selectedPackage);
 
   return (
     <div className="min-h-screen pt-8">
@@ -69,70 +87,55 @@ export default function Pricing() {
             {t("pricing.title")}
           </h1>
 
-          <div className={`grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto w-[85%] md:w-full ${language === 'he' ? 'text-right' : ''}`}>
-            {packages.filter(pkg => pkg.name !== t("pricing.additional.name")).map((pkg, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {packages.map((pkg, index) => (
               <motion.div
                 key={pkg.name}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
+                className="flex"
               >
-                <Card className="backdrop-blur-sm bg-gray-100/5 border border-white/10 hover:border-white/20 transition-all">
-                  <CardHeader className="space-y-2 pb-4">
-                    <CardTitle className="text-xl font-semibold text-[#E67E00]">{pkg.name}</CardTitle>
-                    <div className="flex">
-                      <div className={`h-[1px] w-12 bg-gradient-to-r from-[#E67E00] to-amber-300 ${language === 'he' ? 'mr-0 ml-auto' : ''}`}></div>
-                    </div>
-                    <p className={`text-2xl font-light tracking-tight ${language === 'he' ? 'text-right' : ''}`}>{pkg.price}</p>
-                    <p className="text-sm text-muted-foreground/80 font-light">{pkg.description}</p>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-1.5 text-sm">
-                      {pkg.features.map((feature: string) => (
-                        <li key={feature} className={`flex items-center ${language === 'he' ? 'flex-row-reverse text-right' : ''}`}>
-                          <span className={`text-[#E67E00] text-xs ${language === 'he' ? 'ml-2' : 'mr-2'}`}>◆</span>
-                          <span className="font-light">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
+                <Button
+                  variant="outline"
+                  className="w-full h-auto p-6 flex flex-col gap-4 hover:bg-[#E67E00]/10"
+                  onClick={() => handlePackageSelect(pkg.name)}
+                >
+                  <h3 className="text-xl font-semibold text-[#E67E00]">{pkg.name}</h3>
+                  <p className="text-2xl font-light">{pkg.price}</p>
+                  <p className="text-sm text-muted-foreground">{pkg.description}</p>
+                </Button>
               </motion.div>
             ))}
-
-            {/* Additional Information Section */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="md:col-span-2"
-            >
-              <Card className="backdrop-blur-sm bg-gray-100/5 border border-white/10 hover:border-white/20 transition-all h-full">
-                <CardHeader className="space-y-2 pb-4">
-                  <CardTitle className="text-xl font-semibold text-[#E67E00]">
-                    {t("pricing.additional.name")}
-                  </CardTitle>
-                  <div className="flex">
-                    <div className={`h-[1px] w-12 bg-gradient-to-r from-[#E67E00] to-amber-300 ${language === 'he' ? 'mr-0 ml-auto' : ''}`}></div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-1.5">
-                    {packages.find(pkg => pkg.name === t("pricing.additional.name"))?.features.map((feature: string) => (
-                      <li key={feature} className={`flex items-center ${language === 'he' ? 'flex-row-reverse text-right' : ''}`}>
-                        <span className={`text-[#E67E00] text-xs ${language === 'he' ? 'ml-2' : 'mr-2'}`}>◆</span>
-                        <span className="font-light">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            </motion.div>
           </div>
+
+          <Dialog open={!!selectedPackage} onOpenChange={() => handleClosePackage()}>
+            <DialogContent className="max-w-2xl">
+              <DialogHeader className="flex flex-row items-center justify-between">
+                <DialogTitle>{selectedPackageDetails?.name}</DialogTitle>
+                <Button variant="ghost" size="icon" onClick={() => setLocation('/')}>
+                  <Home className="h-5 w-5" />
+                </Button>
+              </DialogHeader>
+              <div className="space-y-4">
+                <p className="text-lg font-light">{selectedPackageDetails?.price}</p>
+                <p className="text-muted-foreground">{selectedPackageDetails?.description}</p>
+                <div className="space-y-2">
+                  {selectedPackageDetails?.features.map((feature: string) => (
+                    <div key={feature} className={`flex items-center ${language === 'he' ? 'flex-row-reverse text-right' : ''}`}>
+                      <span className={`text-[#E67E00] text-xs ${language === 'he' ? 'ml-2' : 'mr-2'}`}>◆</span>
+                      <span className="font-light">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
 
           {/* Albums Section */}
           <div className="mt-16">
             <h2 className="text-3xl font-bold mb-8 text-center text-[#E67E00]">
-              {t("pricing.albums.title") || "Albums"}
+              {t("pricing.albums.title")}
             </h2>
             <Card className="backdrop-blur-sm bg-gray-100/5 border border-white/10 hover:border-white/20 transition-all">
               <CardHeader className="space-y-2 pb-4">
@@ -148,55 +151,31 @@ export default function Pricing() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                  <Card className="group hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-amber-50/5 to-orange-50/5 backdrop-blur-sm border border-white/20">
-                    <CardHeader className="text-center">
-                      <CardTitle className={`text-2xl ${language === 'he' ? 'font-bold' : 'font-serif'}`}>{language === 'he' ? 'אנסטסיה כץ' : 'Anastasia Katsz'}</CardTitle>
-                      <div className="w-16 h-1 bg-gradient-to-r from-amber-500 to-orange-500 mx-auto my-2 rounded-full"></div>
-                      <p className="text-sm text-muted-foreground italic">
-                        {language === 'he' ? 'מעצב גרפי' : 'Album Designer'}
-                      </p>
-                      <p className="text-sm text-muted-foreground mt-2 group-hover:text-[#E67E00] transition-colors">
-                        <a href="tel:0546335594" className="flex items-center justify-center gap-2">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                          054-633-5594
-                        </a>
-                      </p>
-                    </CardHeader>
-                    <CardContent className="pt-4">
-                      <Button 
-                        variant="outline" 
-                        className="w-full group-hover:bg-gradient-to-r from-amber-500 to-orange-500 group-hover:text-white transition-all duration-300"
-                        onClick={() => setShowAnastasiaDialog(true)}
-                      >
-                        {language === 'he' ? 'טבלת מחירים' : 'View Pricing'}
-                      </Button>
-                    </CardContent>
-                  </Card>
+                  <Button
+                    variant="outline"
+                    className="w-full p-6 flex flex-col gap-4 hover:bg-[#E67E00]/10"
+                    onClick={() => setShowAnastasiaDialog(true)}
+                  >
+                    <h3 className={`text-xl ${language === 'he' ? 'font-bold' : 'font-serif'}`}>
+                      {language === 'he' ? 'אנסטסיה כץ' : 'Anastasia Katsz'}
+                    </h3>
+                    <p className="text-sm text-muted-foreground italic">
+                      {language === 'he' ? 'מעצב גרפי' : 'Album Designer'}
+                    </p>
+                  </Button>
 
-                  <Card className="group hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-amber-50/5 to-orange-50/5 backdrop-blur-sm border border-white/20">
-                    <CardHeader className="text-center">
-                      <CardTitle className={`text-2xl ${language === 'he' ? 'font-bold' : 'font-serif'}`}>{language === 'he' ? 'ניר גיל' : 'Nir Gil'}</CardTitle>
-                      <div className="w-16 h-1 bg-gradient-to-r from-amber-500 to-orange-500 mx-auto my-2 rounded-full"></div>
-                      <p className="text-sm text-muted-foreground italic">
-                        {language === 'he' ? 'מעצב גרפי' : 'Album Designer'}
-                      </p>
-                      <p className="text-sm text-muted-foreground mt-2 group-hover:text-[#E67E00] transition-colors">
-                        <a href="tel:0547982299" className="flex items-center justify-center gap-2">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                          054-798-2299
-                        </a>
-                      </p>
-                    </CardHeader>
-                    <CardContent className="pt-4">
-                      <Button 
-                        variant="outline" 
-                        className="w-full group-hover:bg-gradient-to-r from-amber-500 to-orange-500 group-hover:text-white transition-all duration-300"
-                        onClick={() => setShowNirDialog(true)}
-                      >
-                        {language === 'he' ? 'טבלת מחירים' : 'View Pricing'}
-                      </Button>
-                    </CardContent>
-                  </Card>
+                  <Button
+                    variant="outline"
+                    className="w-full p-6 flex flex-col gap-4 hover:bg-[#E67E00]/10"
+                    onClick={() => setShowNirDialog(true)}
+                  >
+                    <h3 className={`text-xl ${language === 'he' ? 'font-bold' : 'font-serif'}`}>
+                      {language === 'he' ? 'ניר גיל' : 'Nir Gil'}
+                    </h3>
+                    <p className="text-sm text-muted-foreground italic">
+                      {language === 'he' ? 'מעצב גרפי' : 'Album Designer'}
+                    </p>
+                  </Button>
                 </div>
               </CardContent>
             </Card>
