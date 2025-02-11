@@ -262,32 +262,31 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       <Dialog
         open={!!selectedPhoto}
         onOpenChange={(open) => {
-          if (!open) setSelectedPhoto(null);
-          const photoEl = photoRefs.current[selectedIndex];
-          const highlightPhoto = () => {
-            if (photoEl) {
-              photoEl.classList.add("opacity-90", "scale-102", "z-10", "shadow-lg", "transition-all", "duration-500");
-              setTimeout(() => {
-                photoEl.classList.remove("opacity-90", "scale-102", "z-10", "shadow-lg", "transition-all", "duration-500");
-              }, 1500);
-            }
-          };
+          if (!open) {
+            setSelectedPhoto(null);
+            const photoEl = photoRefs.current[selectedIndex];
+            let isScrolling: NodeJS.Timeout;
+            
+            const highlightPhoto = () => {
+              if (photoEl) {
+                photoEl.classList.add("opacity-90", "scale-102", "z-10", "shadow-lg", "transition-all", "duration-500");
+                setTimeout(() => {
+                  photoEl.classList.remove("opacity-90", "scale-102", "z-10", "shadow-lg", "transition-all", "duration-500");
+                }, 1500);
+              }
+            };
 
-          const scrollListener = () => {
-            clearTimeout(window.scrollTimeout);
-            window.scrollTimeout = setTimeout(() => {
-              highlightPhoto();
-              document.removeEventListener('scroll', scrollListener);
-            }, 150);
-          };
+            const handleScroll = () => {
+              clearTimeout(isScrolling);
+              isScrolling = setTimeout(() => {
+                document.removeEventListener('scroll', handleScroll);
+                highlightPhoto();
+              }, 100);
+            };
 
-          photoEl?.scrollIntoView({ behavior: "smooth", block: "center" });
-          document.addEventListener('scroll', scrollListener);
-          setTimeout(() => {
-            if (document.documentElement.scrollTop === 0) {
-              highlightPhoto();
-            }
-          }, 100);
+            document.addEventListener('scroll', handleScroll);
+            photoEl?.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
         }}
       >
         <DialogContent
