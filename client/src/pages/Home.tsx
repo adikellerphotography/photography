@@ -45,32 +45,32 @@ export default function Home() {
     // Fixed images for each category with multiple path fallbacks
     const customImages: Record<string, { img: string; thumb: string }> = {
       "Bat Mitsva": {
-        img: `/api/photos/${encodeURIComponent("Bat_Mitsva")}/001.jpeg`,
-        thumb: `/api/photos/${encodeURIComponent("Bat_Mitsva")}/001-thumb.jpeg`,
+        img: `/attached_assets/galleries/Bat_Mitsva/001.jpeg`,
+        thumb: `/attached_assets/galleries/Bat_Mitsva/001-thumb.jpeg`,
       },
       Horses: {
-        img: `/api/photos/${encodeURIComponent("Horses")}/030.jpeg`,
-        thumb: `/api/photos/${encodeURIComponent("Horses")}/030-thumb.jpeg`,
+        img: `/attached_assets/galleries/Horses/030.jpeg`,
+        thumb: `/attached_assets/galleries/Horses/030-thumb.jpeg`,
       },
       Kids: {
-        img: `/api/photos/${encodeURIComponent("Kids")}/014.jpeg`,
-        thumb: `/api/photos/${encodeURIComponent("Kids")}/014-thumb.jpeg`,
+        img: `/attached_assets/galleries/Kids/014.jpeg`,
+        thumb: `/attached_assets/galleries/Kids/014-thumb.jpeg`,
       },
       Femininity: {
-        img: `/api/photos/${encodeURIComponent("Femininity")}/001.jpeg`,
-        thumb: `/api/photos/${encodeURIComponent("Femininity")}/001-thumb.jpeg`,
+        img: `/attached_assets/galleries/Femininity/001.jpeg`,
+        thumb: `/attached_assets/galleries/Femininity/001-thumb.jpeg`,
       },
       Yoga: {
-        img: `/api/photos/${encodeURIComponent("Yoga")}/041.jpeg`,
-        thumb: `/api/photos/${encodeURIComponent("Yoga")}/041-thumb.jpeg`,
+        img: `/attached_assets/galleries/Yoga/041.jpeg`,
+        thumb: `/attached_assets/galleries/Yoga/041-thumb.jpeg`,
       },
       Modeling: {
-        img: `/api/photos/${encodeURIComponent("Modeling")}/001.jpeg`,
-        thumb: `/api/photos/${encodeURIComponent("Modeling")}/001-thumb.jpeg`,
+        img: `/attached_assets/galleries/Modeling/001.jpeg`,
+        thumb: `/attached_assets/galleries/Modeling/001-thumb.jpeg`,
       },
       "Artful Nude": {
-        img: `/api/photos/${encodeURIComponent("Artful_Nude")}/001.jpeg`,
-        thumb: `/api/photos/${encodeURIComponent("Artful_Nude")}/001-thumb.jpeg`,
+        img: `/attached_assets/galleries/Artful_Nude/001.jpeg`,
+        thumb: `/attached_assets/galleries/Artful_Nude/001-thumb.jpeg`,
       },
     };
 
