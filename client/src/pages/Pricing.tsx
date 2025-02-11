@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowUp, Home } from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -9,8 +9,8 @@ import { useLanguage } from "@/hooks/use-language";
 import { useTranslation } from "@/hooks/use-translation";
 
 export default function Pricing() {
-  const { category } = useParams();
-  const navigate = useNavigate();
+  const [location, setLocation] = useLocation();
+  const category = location.split('/').pop();
   const { language } = useLanguage();
   const { t } = useTranslation();
   const [showNirDialog, setShowNirDialog] = React.useState(false);
@@ -70,12 +70,12 @@ export default function Pricing() {
   const handlePackageSelect = (packageName: string) => {
     setSelectedPackage(packageName);
     const urlSlug = packageName.toLowerCase().replace(/\s+/g, '-');
-    navigate(`/pricing/${urlSlug}`, { replace: true });
+    setLocation(`/pricing/${urlSlug}`);
   };
 
   const handleClosePackage = () => {
     setSelectedPackage(null);
-    navigate('/pricing', { replace: true });
+    setLocation('/pricing');
   };
 
   const selectedPackageDetails = packages.find(pkg => pkg.name === selectedPackage);
@@ -86,7 +86,7 @@ export default function Pricing() {
         <DialogContent className="max-w-2xl">
           <DialogHeader className="flex flex-row items-center justify-between">
             <DialogTitle>{selectedPackageDetails?.name}</DialogTitle>
-            <Button variant="ghost" size="icon" onClick={() => navigate('/')}>
+            <Button variant="ghost" size="icon" onClick={() => setLocation('/')}>
               <Home className="h-5 w-5" />
             </Button>
           </DialogHeader>
