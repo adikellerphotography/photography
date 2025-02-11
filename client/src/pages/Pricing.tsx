@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, Home, PartyPopper, Users, Baby, Sparkles } from "lucide-react";
+import { ArrowUp, Home } from "lucide-react";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -39,29 +39,25 @@ export default function Pricing() {
       name: t("pricing.batMitzvah.name"),
       price: t("pricing.batMitzvah.price"),
       description: t("pricing.batMitzvah.description"),
-      features: t("pricing.batMitzvah.features"),
-      icon: PartyPopper
+      features: t("pricing.batMitzvah.features")
     },
     {
       name: t("pricing.family.name"),
       price: t("pricing.family.price"),
       description: t("pricing.family.description"),
-      features: t("pricing.family.features"),
-      icon: Users
+      features: t("pricing.family.features")
     },
     {
       name: t("pricing.kids.name"),
       price: t("pricing.kids.price"),
       description: t("pricing.kids.description"),
-      features: t("pricing.kids.features"),
-      icon: Baby
+      features: t("pricing.kids.features")
     },
     {
       name: t("pricing.purim.name"),
       price: t("pricing.purim.price"),
       description: t("pricing.purim.description"),
-      features: t("pricing.purim.features"),
-      icon: Sparkles
+      features: t("pricing.purim.features")
     }
   ];
 
