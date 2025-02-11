@@ -36,14 +36,14 @@ export default function Home() {
   );
 
   // Override the firstPhoto for specific categories
+  // Category image configuration with ranges
+  // Fixed images for each category with multiple path fallbacks
+  const customImages: Record<string, { img: string; thumb: string }> = {
+    
   const processedCategories = categories?.map((category) => {
     const categoryPath = category.name.replace(/\s+/g, "_");
     const defaultImage = `/api/photos/${encodeURIComponent(categoryPath)}/001.jpeg`;
     const defaultThumb = `/api/photos/${encodeURIComponent(categoryPath)}/001-thumb.jpeg`;
-
-    // Category image configuration with ranges
-    // Fixed images for each category with multiple path fallbacks
-    const customImages: Record<string, { img: string; thumb: string }> = {
       "Bat Mitsva": {
         img: `/attached_assets/galleries/Bat_Mitsva/001.jpeg`,
         thumb: `/attached_assets/galleries/Bat_Mitsva/001-thumb.jpeg`,
@@ -279,7 +279,7 @@ export default function Home() {
                       <AspectRatio ratio={4 / 3} className="bg-muted">
                         <div className="relative w-full h-full">
                           <img
-                            src={customImages[category.name].img}
+                            src={category.firstPhoto.imageUrl}
                             alt={category.name}
                             className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
                             decoding="async"
