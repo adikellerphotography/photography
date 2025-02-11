@@ -73,10 +73,13 @@ export default function Home() {
     const categoryPath = category.name.replace(/\s+/g, "_");
     const defaultImage = `/api/photos/${encodeURIComponent(categoryPath)}/001.jpeg`;
     const defaultThumb = `/api/photos/${encodeURIComponent(categoryPath)}/001-thumb.jpeg`;
+
+    const customImagePaths = {
+      "Bat Mitsva": {
         img: `/attached_assets/galleries/Bat_Mitsva/001.jpeg`,
-        thumb: `/attached_assets/galleries/Bat_Mitsva/001-thumb.jpeg`,
+        thumb: `/attached_assets/galleries/Bat_Mitsva/001-thumb.jpeg`
       },
-      Horses: {
+      "Horses": {
         img: `/attached_assets/galleries/Horses/030.jpeg`,
         thumb: `/attached_assets/galleries/Horses/030-thumb.jpeg`,
       },
