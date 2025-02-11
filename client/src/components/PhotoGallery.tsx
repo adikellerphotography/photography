@@ -200,13 +200,19 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
               key={`${photo.id}-${index}`}
               ref={(el) => (photoRefs.current[index] = el)}
               initial={{ opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
+              animate={{ 
+                opacity: 1, 
+                scale: 1,
+                boxShadow: selectedIndex === index && !selectedPhoto ? "0 0 20px rgba(255, 149, 0, 0.5)" : "none",
+              }}
               transition={{
                 duration: 0.5,
                 delay: Math.min(index * 0.1, 1),
                 ease: [0.34, 1.56, 0.64, 1],
               }}
-              className="relative overflow-hidden rounded-lg cursor-pointer group"
+              className={`relative overflow-hidden rounded-lg cursor-pointer group ${
+                selectedIndex === index && !selectedPhoto ? 'ring-2 ring-[#FF9500] ring-offset-2 ring-offset-background' : ''
+              }`}
               onClick={() => {
                 if (isLoaded) {
                   setSelectedPhoto(photo);
