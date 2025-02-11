@@ -74,41 +74,53 @@ export default function Home() {
     },
   };
 
+  const customImagePaths = {
+    "Bat Mitsva": {
+      img: `/attached_assets/galleries/Bat_Mitsva/001.jpeg`,
+      thumb: `/attached_assets/galleries/Bat_Mitsva/001-thumb.jpeg`,
+    },
+    Horses: {
+      img: `/attached_assets/galleries/Horses/030.jpeg`,
+      thumb: `/attached_assets/galleries/Horses/030-thumb.jpeg`,
+    },
+    Family: {
+      img: `/attached_assets/galleries/Family/016.jpeg`,
+      thumb: `/attached_assets/galleries/Family/016-thumb.jpeg`,
+    },
+    Kids: {
+      img: `/attached_assets/galleries/Kids/014.jpeg`,
+      thumb: `/attached_assets/galleries/Kids/014-thumb.jpeg`,
+    },
+    Femininity: {
+      img: `/attached_assets/galleries/Femininity/001.jpeg`,
+      thumb: `/attached_assets/galleries/Femininity/001-thumb.jpeg`,
+    },
+    Yoga: {
+      img: `/attached_assets/galleries/Yoga/041.jpeg`,
+      thumb: `/attached_assets/galleries/Yoga/041-thumb.jpeg`,
+    },
+    Modeling: {
+      img: `/attached_assets/galleries/Modeling/001.jpeg`,
+      thumb: `/attached_assets/galleries/Modeling/001-thumb.jpeg`,
+    },
+    "Artful Nude": {
+      img: `/attached_assets/galleries/Artful_Nude/001.jpeg`,
+      thumb: `/attached_assets/galleries/Artful_Nude/001-thumb.jpeg`,
+    },
+  };
+
+  const getFallbackPaths = (categoryPath: string) => {
+    return [
+      `/attached_assets/galleries/${categoryPath}/016.jpeg`,
+      `/assets/galleries/${categoryPath}/016.jpeg`,
+      `/attached_assets/facebook_posts_image/${categoryPath}/1.jpg`,
+    ];
+  };
+
   const processedCategories = categories?.map((category) => {
     const categoryPath = category.name.replace(/\s+/g, "_");
     const defaultImage = `/api/photos/${encodeURIComponent(categoryPath)}/001.jpeg`;
     const defaultThumb = `/api/photos/${encodeURIComponent(categoryPath)}/001-thumb.jpeg`;
-
-    const customImagePaths = {
-      "Bat Mitsva": {
-        img: `/attached_assets/galleries/Bat_Mitsva/001.jpeg`,
-        thumb: `/attached_assets/galleries/Bat_Mitsva/001-thumb.jpeg`,
-      },
-      Horses: {
-        img: `/attached_assets/galleries/Horses/030.jpeg`,
-        thumb: `/attached_assets/galleries/Horses/030-thumb.jpeg`,
-      },
-      Kids: {
-        img: `/attached_assets/galleries/Kids/014.jpeg`,
-        thumb: `/attached_assets/galleries/Kids/014-thumb.jpeg`,
-      },
-      Femininity: {
-        img: `/attached_assets/galleries/Femininity/001.jpeg`,
-        thumb: `/attached_assets/galleries/Femininity/001-thumb.jpeg`,
-      },
-      Yoga: {
-        img: `/attached_assets/galleries/Yoga/041.jpeg`,
-        thumb: `/attached_assets/galleries/Yoga/041-thumb.jpeg`,
-      },
-      Modeling: {
-        img: `/attached_assets/galleries/Modeling/001.jpeg`,
-        thumb: `/attached_assets/galleries/Modeling/001-thumb.jpeg`,
-      },
-      "Artful Nude": {
-        img: `/attached_assets/galleries/Artful_Nude/001.jpeg`,
-        thumb: `/attached_assets/galleries/Artful_Nude/001-thumb.jpeg`,
-      },
-    };
 
     const imageConfig = customImages[category.name] || {
       img: defaultImage,
@@ -346,75 +358,17 @@ export default function Home() {
                                 "_",
                               );
 
-                              const getFallbackPaths = () => {
-                                // Primary paths for full resolution
-                                const primaryPaths = [
-                                  `/attached_assets/galleries/${categoryPath}/${String(1).padStart(3, "0")}.jpeg`,
-                                  `/attached_assets/facebook_posts_image/${categoryPath}/1.jpg`,
-                                  `/assets/galleries/${categoryPath}/${String(1).padStart(3, "0")}.jpeg`,
-                                ];
-
-                                // Thumbnail paths as fallbacks
-                                const thumbnailPaths = [
-                                  `/attached_assets/galleries/${categoryPath}/${String(1).padStart(3, "0")}-thumb.jpeg`,
-                                  `/attached_assets/facebook_posts_image/${categoryPath}/1-thumb.jpg`,
-                                ];
-
-                                // Alternative formats
-                                const altFormatPaths = [
-                                  `/attached_assets/galleries/${categoryPath}/001.jpg`,
-                                  `/assets/galleries/${categoryPath}/001.jpg`,
-                                  `/attached_assets/facebook_posts_image/${categoryPath}/1.jpeg`,
-                                ];
-
-                                return [
-                                  ...primaryPaths,
-                                  ...thumbnailPaths,
-                                  ...altFormatPaths,
-                                ];
-                              };
-
-                              const paths = getFallbackPaths();
-
                               if (retryCount < maxRetries) {
                                 target.dataset.retryCount = String(
                                   retryCount + 1,
                                 );
-                                const pathIndex = retryCount % paths.length;
-                                const nextPath = paths[pathIndex];
-                                const timestamp = Date.now();
-
-                                // Create a new image for preloading
-                                const preloadImg = new Image();
-
-                                preloadImg.onload = () => {
-                                  target.src = preloadImg.src;
-                                  target.style.opacity = "1";
-                                };
-
-                                preloadImg.onerror = () => {
-                                  // Try next path after short delay
-                                  const delay = Math.min(
-                                    retryCount * 300,
-                                    1000,
-                                  );
+                                const paths = getFallbackPaths(categoryPath);
+                                const nextPath = paths[retryCount];
+                                if (nextPath) {
                                   setTimeout(() => {
-                                    target.src = `${nextPath}?t=${timestamp}&r=${retryCount}`;
-                                  }, delay);
-                                };
-
-                                // Start preloading
-                                preloadImg.src = `${nextPath}?t=${timestamp}&r=${retryCount}`;
-                              } else {
-                                // Final fallback - try direct Facebook post image
-                                target.onerror = null;
-                                target.style.opacity = "0.7";
-                                target.style.background = "rgba(0,0,0,0.05)";
-                                target.dataset.loadFailed = "true";
-
-                                // Last resort - try the facebook posts image directly
-                                const lastResortPath = `/attached_assets/facebook_posts_image/${categoryPath}/1.jpg`;
-                                target.src = `${lastResortPath}?final=true`;
+                                    target.src = `${nextPath}?retry=${retryCount + 1}`;
+                                  }, Math.min(retryCount * 1000, 3000));
+                                }
                               }
                             }}
                             loading={
