@@ -113,16 +113,27 @@ export default function Pricing() {
                   <Home className="h-5 w-5" />
                 </Button>
               </DialogHeader>
-              <div className="space-y-4">
-                <p className="text-lg font-light">{selectedPackageDetails?.price}</p>
-                <p className="text-muted-foreground">{selectedPackageDetails?.description}</p>
-                <div className="space-y-2">
-                  {selectedPackageDetails?.features.map((feature: string) => (
-                    <div key={feature} className={`flex items-center ${language === 'he' ? 'flex-row-reverse text-right' : ''}`}>
-                      <span className={`text-[#E67E00] text-xs ${language === 'he' ? 'ml-2' : 'mr-2'}`}>◆</span>
-                      <span className="font-light">{feature}</span>
-                    </div>
-                  ))}
+              <div className="space-y-6">
+                <div className="border-b border-[#E67E00]/20 pb-4">
+                  <p className="text-xl font-semibold text-[#E67E00] mb-2">{t("pricing.price")}</p>
+                  <p className="text-lg">{selectedPackageDetails?.price}</p>
+                </div>
+                
+                <div className="border-b border-[#E67E00]/20 pb-4">
+                  <p className="text-xl font-semibold text-[#E67E00] mb-2">{t("pricing.description")}</p>
+                  <p className="text-muted-foreground leading-relaxed">{selectedPackageDetails?.description}</p>
+                </div>
+
+                <div>
+                  <p className="text-xl font-semibold text-[#E67E00] mb-3">{t("pricing.includes")}</p>
+                  <div className="space-y-2">
+                    {selectedPackageDetails?.features.map((feature: string) => (
+                      <div key={feature} className={`flex items-center ${language === 'he' ? 'flex-row-reverse text-right' : ''}`}>
+                        <span className={`text-[#E67E00] text-xs ${language === 'he' ? 'ml-2' : 'mr-2'}`}>◆</span>
+                        <span className="font-light">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </DialogContent>
