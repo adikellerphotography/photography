@@ -269,7 +269,44 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
           </VisuallyHidden>
 
           {selectedPhoto && (
-            <div className="relative w-full h-full flex items-center justify-center">
+            <div 
+              className="relative w-full h-full flex items-center justify-center"
+              onTouchStart={(e) => {
+                const touch = e.touches[0];
+                e.currentTarget.dataset.touchStartX = touch.clientX.toString();
+              }}
+              onTouchMove={(e) => {
+                const touch = e.touches[0];
+                const startX = Number(e.currentTarget.dataset.touchStartX);
+                const currentX = touch.clientX;
+                const diff = startX - currentX;
+
+                if (Math.abs(diff) > 50) {
+                  e.currentTarget.dataset.shouldSwipe = 'true';
+                }
+              }}
+              onTouchEnd={(e) => {
+                if (e.currentTarget.dataset.shouldSwipe === 'true') {
+                  const startX = Number(e.currentTarget.dataset.touchStartX);
+                  const endX = e.changedTouches[0].clientX;
+                  const diff = startX - endX;
+
+                  if (diff > 0) {
+                    // Swipe left - next photo
+                    const newIndex = (selectedIndex + 1) % photos.length;
+                    setSelectedIndex(newIndex);
+                    setSelectedPhoto(photos[newIndex]);
+                  } else {
+                    // Swipe right - previous photo
+                    const newIndex = selectedIndex === 0 ? photos.length - 1 : selectedIndex - 1;
+                    setSelectedIndex(newIndex);
+                    setSelectedPhoto(photos[newIndex]);
+                  }
+                }
+                e.currentTarget.dataset.touchStartX = '';
+                e.currentTarget.dataset.shouldSwipe = 'false';
+              }}
+            >
               <Button
                 className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 transition-colors"
                 variant="ghost"
