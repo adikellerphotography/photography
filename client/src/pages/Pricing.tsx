@@ -1,4 +1,3 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowUp, Home } from "lucide-react";
@@ -95,10 +94,13 @@ export default function Pricing() {
               >
                 <Button
                   variant="ghost"
-                  className="group w-[240px] mx-auto h-auto py-4 px-5 flex flex-col gap-2 bg-gradient-to-br from-white/5 to-white/10 hover:from-white/10 hover:to-white/20 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/10 hover:border-[#E67E00]/30"
+                  className="group w-[220px] mx-auto h-auto py-3 px-4 flex flex-col gap-2 bg-gradient-to-br from-white/5 to-white/10 hover:from-white/10 hover:to-white/20 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/10 hover:border-[#E67E00]/30"
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
-                  <h3 className="text-base font-semibold text-[#E67E00] group-hover:text-[#E67E00] transition-colors">{pkg.name}</h3>
+                  <div className="relative">
+                    {pkg.icon && <pkg.icon className="w-5 h-5 mb-2 text-[#E67E00] group-hover:text-amber-200 transition-all duration-500" />}
+                    <h3 className="text-base font-semibold text-[#E67E00] group-hover:text-[#E67E00] transition-colors">{pkg.name}</h3>
+                  </div>
                   <p className="text-sm font-medium text-muted-foreground group-hover:text-white/90 transition-colors">{pkg.price}</p>
                 </Button>
               </motion.div>
@@ -118,7 +120,7 @@ export default function Pricing() {
                   <p className="text-xl font-semibold text-[#E67E00] mb-2">{t("pricing.price")}</p>
                   <p className="text-lg">{selectedPackageDetails?.price}</p>
                 </div>
-                
+
                 <div className="border-b border-[#E67E00]/20 pb-4">
                   <p className="text-xl font-semibold text-[#E67E00] mb-2">{t("pricing.description")}</p>
                   <p className="text-muted-foreground leading-relaxed">{selectedPackageDetails?.description}</p>
