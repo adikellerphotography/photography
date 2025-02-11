@@ -95,18 +95,11 @@ export default function Pricing() {
               >
                 <Button
                   variant="ghost"
-                  className="group relative w-[260px] mx-auto h-auto py-5 px-6 flex flex-col gap-3 overflow-hidden bg-gradient-to-br from-black/40 to-black/60 hover:from-[#E67E00]/20 hover:to-[#E67E00]/40 rounded-2xl shadow-lg hover:shadow-[#E67E00]/20 hover:shadow-2xl transition-all duration-500 border border-white/5 hover:border-[#E67E00]/50"
+                  className="group w-[240px] mx-auto h-auto py-4 px-5 flex flex-col gap-2 bg-gradient-to-br from-white/5 to-white/10 hover:from-white/10 hover:to-white/20 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/10 hover:border-[#E67E00]/30"
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#E67E00]/0 via-[#E67E00]/5 to-[#E67E00]/0 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-1000" />
-                  <div className="absolute -inset-1 bg-gradient-to-r from-[#E67E00]/0 via-[#E67E00]/10 to-[#E67E00]/0 opacity-0 group-hover:opacity-100 animate-shimmer" />
-                  <div className="relative">
-                    <h3 className="text-lg font-semibold bg-gradient-to-r from-white to-white group-hover:from-[#E67E00] group-hover:to-amber-200 bg-clip-text text-transparent transition-all duration-500">{pkg.name}</h3>
-                    <p className="text-sm font-medium text-white/70 group-hover:text-white/90 mt-1 transition-colors">{pkg.price}</p>
-                    <div className="absolute right-0 top-1/2 -translate-y-1/2 opacity-0 transform translate-x-full group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-500">
-                      <span className="text-[#E67E00]">→</span>
-                    </div>
-                  </div>
+                  <h3 className="text-base font-semibold text-[#E67E00] group-hover:text-[#E67E00] transition-colors">{pkg.name}</h3>
+                  <p className="text-sm font-medium text-muted-foreground group-hover:text-white/90 transition-colors">{pkg.price}</p>
                 </Button>
               </motion.div>
             ))}
