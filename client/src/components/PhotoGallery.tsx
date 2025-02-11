@@ -268,14 +268,28 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
         <DialogContent
           onEscapeKeyDown={() => {
             setSelectedPhoto(null);
+            const photoEl = photoRefs.current[selectedIndex];
             setTimeout(() => {
-              photoRefs.current[selectedIndex]?.scrollIntoView({ behavior: "smooth", block: "center" });
+              photoEl?.scrollIntoView({ behavior: "smooth", block: "center" });
+              if (photoEl) {
+                photoEl.classList.add("ring-4", "ring-[#FF9500]", "ring-offset-2", "ring-offset-background", "scale-105", "z-10");
+                setTimeout(() => {
+                  photoEl.classList.remove("ring-4", "ring-[#FF9500]", "ring-offset-2", "ring-offset-background", "scale-105", "z-10");
+                }, 2000);
+              }
             }, 100);
           }}
           onInteractOutside={() => {
             setSelectedPhoto(null);
+            const photoEl = photoRefs.current[selectedIndex];
             setTimeout(() => {
-              photoRefs.current[selectedIndex]?.scrollIntoView({ behavior: "smooth", block: "center" });
+              photoEl?.scrollIntoView({ behavior: "smooth", block: "center" });
+              if (photoEl) {
+                photoEl.classList.add("ring-4", "ring-[#FF9500]", "ring-offset-2", "ring-offset-background", "scale-105", "z-10");
+                setTimeout(() => {
+                  photoEl.classList.remove("ring-4", "ring-[#FF9500]", "ring-offset-2", "ring-offset-background", "scale-105", "z-10");
+                }, 2000);
+              }
             }, 100);
           }}
           className="max-w-[95vw] max-h-[95vh] p-0 border-none bg-black/80 shadow-xl backdrop-blur-sm"
