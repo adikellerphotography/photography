@@ -263,19 +263,31 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
         open={!!selectedPhoto}
         onOpenChange={(open) => {
           if (!open) setSelectedPhoto(null);
+          const photoEl = photoRefs.current[selectedIndex];
+          setTimeout(() => {
+            photoEl?.scrollIntoView({ behavior: "smooth", block: "center" });
+            if (photoEl) {
+              photoEl.classList.add("scale-[1.02]", "brightness-105", "shadow-[0_0_15px_rgba(255,255,255,0.2)]", "transition-all", "duration-700", "ease-in-out");
+              setTimeout(() => {
+                photoEl.classList.remove("scale-[1.02]", "brightness-105", "shadow-[0_0_15px_rgba(255,255,255,0.2)]", "transition-all", "duration-700", "ease-in-out");
+              }, 1500);
+            }
+          }, 100);
         }}
       >
         <DialogContent
           onEscapeKeyDown={() => {
             setSelectedPhoto(null);
+            const photoEl = photoRefs.current[selectedIndex];
             setTimeout(() => {
-              photoRefs.current[selectedIndex]?.scrollIntoView({ behavior: "smooth", block: "center" });
+              photoEl?.scrollIntoView({ behavior: "smooth", block: "center" });
             }, 100);
           }}
           onInteractOutside={() => {
             setSelectedPhoto(null);
+            const photoEl = photoRefs.current[selectedIndex];
             setTimeout(() => {
-              photoRefs.current[selectedIndex]?.scrollIntoView({ behavior: "smooth", block: "center" });
+              photoEl?.scrollIntoView({ behavior: "smooth", block: "center" });
             }, 100);
           }}
           className="max-w-[95vw] max-h-[95vh] p-0 border-none bg-black/80 shadow-xl backdrop-blur-sm"
