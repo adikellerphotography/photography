@@ -264,13 +264,28 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
         onOpenChange={(open) => {
           if (!open) setSelectedPhoto(null);
           const photoEl = photoRefs.current[selectedIndex];
-          setTimeout(() => {
-            photoEl?.scrollIntoView({ behavior: "smooth", block: "center" });
+          const highlightPhoto = () => {
             if (photoEl) {
-              photoEl.classList.add("scale-[1.02]", "brightness-105", "shadow-[0_0_15px_rgba(255,255,255,0.2)]", "transition-all", "duration-700", "ease-in-out");
+              photoEl.classList.add("opacity-90", "scale-102", "z-10", "shadow-lg", "transition-all", "duration-500");
               setTimeout(() => {
-                photoEl.classList.remove("scale-[1.02]", "brightness-105", "shadow-[0_0_15px_rgba(255,255,255,0.2)]", "transition-all", "duration-700", "ease-in-out");
+                photoEl.classList.remove("opacity-90", "scale-102", "z-10", "shadow-lg", "transition-all", "duration-500");
               }, 1500);
+            }
+          };
+
+          const scrollListener = () => {
+            clearTimeout(window.scrollTimeout);
+            window.scrollTimeout = setTimeout(() => {
+              highlightPhoto();
+              document.removeEventListener('scroll', scrollListener);
+            }, 150);
+          };
+
+          photoEl?.scrollIntoView({ behavior: "smooth", block: "center" });
+          document.addEventListener('scroll', scrollListener);
+          setTimeout(() => {
+            if (document.documentElement.scrollTop === 0) {
+              highlightPhoto();
             }
           }, 100);
         }}
