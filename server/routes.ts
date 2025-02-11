@@ -274,6 +274,14 @@ export function registerRoutes(app: Express): Server {
   // Configure static file serving  - Enhanced for better caching
   configureStaticFiles(app);
 
+  // Version endpoint for cache busting
+  app.get('/version', (_req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.json({ version: Date.now().toString() });
+  });
+
   // Add download endpoint - simple file serve
   app.get('/download/:category/:filename', async (req, res) => {
     try {
@@ -289,37 +297,9 @@ export function registerRoutes(app: Express): Server {
   // API Routes
   app.get("/api/photos", getPhotos);
   app.get("/api/categories", getCategories);
-  app.get("/api/before-after", async (_req, res) => {
-    try {
-      const beforeAfterPath = path.join(process.cwd(), 'attached_assets', 'before_and_after');
-      const files = await fs.readdir(beforeAfterPath);
-
-      const imageSets = [];
-      let id = 0;
-
-      for (let i = 0; i < 29; i++) {
-        const beforeFile = `${i}-1 Large.jpeg`;
-        const afterFile = `${i}-2 Large.jpeg`;
-
-        if (files.includes(beforeFile) && files.includes(afterFile)) {
-          imageSets.push({
-            id: id++,
-            title: `Before & After ${id}`,
-            beforeImage: `/attached_assets/before_and_after/${beforeFile}`,
-            afterImage: `/attached_assets/before_and_after/${afterFile}`
-          });
-        }
-      }
-
-      res.json(imageSets);
-    } catch (error) {
-      console.error('Error fetching before/after images:', error);
-      res.status(500).json({ error: "Failed to fetch before/after images" });
-    }
-  });
+  app.get("/api/before-after", getBeforeAfterSets);
   app.post("/api/photos/scan", scanPhotos);
   app.post("/api/photos/:id/like", togglePhotoLike);
-
   app.get('/api/photos/:category/:filename', async (req, res) => {
     try {
       const { category, filename } = req.params;
@@ -347,8 +327,6 @@ export function registerRoutes(app: Express): Server {
           res.status(404).send('Image not found');
         }
       }
-
-
       const exists = await fs.access(imagePath).then(() => true).catch(() => false);
       if (!exists) {
         return res.status(404).send('Image not found');
