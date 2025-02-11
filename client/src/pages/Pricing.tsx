@@ -94,14 +94,17 @@ export default function Pricing() {
               >
                 <Button
                   variant="ghost"
-                  className="group w-[220px] mx-auto h-auto py-3 px-4 flex flex-col gap-2 bg-gradient-to-br from-white/5 to-white/10 hover:from-white/10 hover:to-white/20 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/10 hover:border-[#E67E00]/30"
+                  className="group relative w-[220px] mx-auto h-12 overflow-hidden bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
-                  <div className="relative">
-                    {pkg.icon && <pkg.icon className="w-5 h-5 mb-2 text-[#E67E00] group-hover:text-amber-200 transition-all duration-500" />}
-                    <h3 className="text-base font-semibold text-[#E67E00] group-hover:text-[#E67E00] transition-colors">{pkg.name}</h3>
+                  <div className="absolute inset-0 w-1/2 bg-[#E67E00] transition-all duration-300 group-hover:w-[45%]"></div>
+                  <div className="relative flex items-center justify-between px-6 w-full h-full">
+                    <span className="text-base font-medium text-[#E67E00] group-hover:text-[#E67E00] z-10">{pkg.name}</span>
+                    <div className="flex items-center gap-2">
+                      {pkg.icon && <pkg.icon className="w-5 h-5 text-white z-10" />}
+                      <span className="text-sm font-medium text-neutral-600">{pkg.price}</span>
+                    </div>
                   </div>
-                  <p className="text-sm font-medium text-muted-foreground group-hover:text-white/90 transition-colors">{pkg.price}</p>
                 </Button>
               </motion.div>
             ))}
