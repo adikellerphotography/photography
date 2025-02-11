@@ -21,6 +21,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [retryAttempts, setRetryAttempts] = useState<Record<string, number>>({});
   const galleryRef = useRef<HTMLDivElement>(null);
   const imageCache = useRef<Record<string, HTMLImageElement>>({});
+  const photoRefs = useRef<HTMLDivElement[]>([]);
 
   const getImagePaths = (photo: Photo, isThumb = false): string[] => {
     if (!photo?.imageUrl) return [];
@@ -197,6 +198,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
           return (
             <motion.div
               key={`${photo.id}-${index}`}
+              ref={(el) => (photoRefs.current[index] = el)}
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{
@@ -263,13 +265,27 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
           if (!open) setSelectedPhoto(null);
         }}
       >
-        <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 border-none bg-black/80 shadow-xl backdrop-blur-sm">
+        <DialogContent
+          onEscapeKeyDown={() => {
+            setSelectedPhoto(null);
+            setTimeout(() => {
+              photoRefs.current[selectedIndex]?.scrollIntoView({ behavior: "smooth", block: "center" });
+            }, 100);
+          }}
+          onInteractOutside={() => {
+            setSelectedPhoto(null);
+            setTimeout(() => {
+              photoRefs.current[selectedIndex]?.scrollIntoView({ behavior: "smooth", block: "center" });
+            }, 100);
+          }}
+          className="max-w-[95vw] max-h-[95vh] p-0 border-none bg-black/80 shadow-xl backdrop-blur-sm"
+        >
           <VisuallyHidden>
             <h2>Image Preview</h2>
           </VisuallyHidden>
 
           {selectedPhoto && (
-            <div 
+            <div
               className="relative w-full h-full flex items-center justify-center"
               onTouchStart={(e) => {
                 const touch = e.touches[0];
@@ -282,11 +298,11 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 const diff = startX - currentX;
 
                 if (Math.abs(diff) > 50) {
-                  e.currentTarget.dataset.shouldSwipe = 'true';
+                  e.currentTarget.dataset.shouldSwipe = "true";
                 }
               }}
               onTouchEnd={(e) => {
-                if (e.currentTarget.dataset.shouldSwipe === 'true') {
+                if (e.currentTarget.dataset.shouldSwipe === "true") {
                   const startX = Number(e.currentTarget.dataset.touchStartX);
                   const endX = e.changedTouches[0].clientX;
                   const diff = startX - endX;
@@ -303,8 +319,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                     setSelectedPhoto(photos[newIndex]);
                   }
                 }
-                e.currentTarget.dataset.touchStartX = '';
-                e.currentTarget.dataset.shouldSwipe = 'false';
+                e.currentTarget.dataset.touchStartX = "";
+                e.currentTarget.dataset.shouldSwipe = "false";
               }}
             >
               <Button
