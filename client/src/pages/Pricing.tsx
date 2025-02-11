@@ -1,7 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, Home } from "lucide-react";
-import { useLocation } from "wouter";
+import { ArrowUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -9,24 +8,10 @@ import { useLanguage } from "@/hooks/use-language";
 import { useTranslation } from "@/hooks/use-translation";
 
 export default function Pricing() {
-  const [location, setLocation] = useLocation();
-  const category = location.split('/').pop();
   const { language } = useLanguage();
   const { t } = useTranslation();
   const [showNirDialog, setShowNirDialog] = React.useState(false);
   const [scrollY, setScrollY] = React.useState(0);
-  const [selectedPackage, setSelectedPackage] = React.useState<string | null>(null);
-
-  React.useEffect(() => {
-    if (category) {
-      const matchedPackage = packages.find(pkg => 
-        pkg.name.toLowerCase().replace(/\s+/g, '-') === category.toLowerCase()
-      );
-      if (matchedPackage) {
-        setSelectedPackage(matchedPackage.name);
-      }
-    }
-  }, [category]);
 
   React.useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -37,7 +22,6 @@ export default function Pricing() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
   const [showAnastasiaDialog, setShowAnastasiaDialog] = React.useState(false);
 
   const packages = [
@@ -64,49 +48,17 @@ export default function Pricing() {
       price: t("pricing.purim.price"),
       description: t("pricing.purim.description"),
       features: t("pricing.purim.features")
+    },
+    {
+      name: t("pricing.additional.name"),
+      price: t("pricing.additional.price"),
+      description: t("pricing.additional.description"),
+      features: t("pricing.additional.features")
     }
   ];
 
-  const handlePackageSelect = (packageName: string) => {
-    setSelectedPackage(packageName);
-    const urlSlug = packageName.toLowerCase().replace(/\s+/g, '-');
-    setLocation(`/pricing/${urlSlug}`);
-  };
-
-  const handleClosePackage = () => {
-    setSelectedPackage(null);
-    setLocation('/pricing');
-  };
-
-  const selectedPackageDetails = packages.find(pkg => pkg.name === selectedPackage);
-
   return (
     <div className="min-h-screen pt-8">
-      <Dialog open={!!selectedPackage} onOpenChange={() => handleClosePackage()}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader className="flex flex-row items-center justify-between">
-            <DialogTitle>{selectedPackageDetails?.name}</DialogTitle>
-            <Button variant="ghost" size="icon" onClick={() => setLocation('/')}>
-              <Home className="h-5 w-5" />
-            </Button>
-          </DialogHeader>
-          {selectedPackageDetails && (
-            <div className="p-4">
-              <h2 className="text-2xl font-bold mb-4">{selectedPackageDetails.price}</h2>
-              <p className="text-muted-foreground mb-4">{selectedPackageDetails.description}</p>
-              <ul className="space-y-2">
-                {selectedPackageDetails.features.map((feature: string, index: number) => (
-                  <li key={index} className="flex items-center">
-                    <span className="mr-2">•</span>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
-
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -118,17 +70,14 @@ export default function Pricing() {
           </h1>
 
           <div className={`grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto w-[85%] md:w-full ${language === 'he' ? 'text-right' : ''}`}>
-            {packages.map((pkg, index) => (
+            {packages.filter(pkg => pkg.name !== t("pricing.additional.name")).map((pkg, index) => (
               <motion.div
                 key={pkg.name}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card 
-                  className="backdrop-blur-sm bg-gray-100/5 border border-white/10 hover:border-white/20 transition-all cursor-pointer"
-                  onClick={() => handlePackageSelect(pkg.name)}
-                >
+                <Card className="backdrop-blur-sm bg-gray-100/5 border border-white/10 hover:border-white/20 transition-all">
                   <CardHeader className="space-y-2 pb-4">
                     <CardTitle className="text-xl font-semibold text-[#E67E00]">{pkg.name}</CardTitle>
                     <div className="flex">
@@ -150,6 +99,34 @@ export default function Pricing() {
                 </Card>
               </motion.div>
             ))}
+
+            {/* Additional Information Section */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="md:col-span-2"
+            >
+              <Card className="backdrop-blur-sm bg-gray-100/5 border border-white/10 hover:border-white/20 transition-all h-full">
+                <CardHeader className="space-y-2 pb-4">
+                  <CardTitle className="text-xl font-semibold text-[#E67E00]">
+                    {t("pricing.additional.name")}
+                  </CardTitle>
+                  <div className="flex">
+                    <div className={`h-[1px] w-12 bg-gradient-to-r from-[#E67E00] to-amber-300 ${language === 'he' ? 'mr-0 ml-auto' : ''}`}></div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-1.5">
+                    {packages.find(pkg => pkg.name === t("pricing.additional.name"))?.features.map((feature: string) => (
+                      <li key={feature} className={`flex items-center ${language === 'he' ? 'flex-row-reverse text-right' : ''}`}>
+                        <span className={`text-[#E67E00] text-xs ${language === 'he' ? 'ml-2' : 'mr-2'}`}>◆</span>
+                        <span className="font-light">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
 
           {/* Albums Section */}
