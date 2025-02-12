@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, X, Crown, Horseshoe, Users2, Heart, Sparkles, Lotus, Camera, Palette } from "lucide-react";
+import { ArrowUp, X, Crown, Trophy, Users2, Heart, Sparkles, Lotus, Camera, Palette } from "lucide-react";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -166,7 +166,7 @@ export default function Pricing() {
                   <div className="relative flex items-center justify-start w-full h-full">
                     <span className="absolute left-[calc(12%)] transform -translate-x-1/2 text-white z-10">
                       {pkg.name === "Bat/Bar Mitzvah" && <Crown size={24} />}
-                      {pkg.name === "Horses" && <Horseshoe size={24} />}
+                      {pkg.name === "Horses" && <Trophy size={24} />}
                       {pkg.name === "Family" && <Users2 size={24} />}
                       {pkg.name === "Kids" && <Heart size={24} />}
                       {pkg.name === "Femininity" && <Sparkles size={24} />}
