@@ -74,14 +74,7 @@ export default function Home() {
     },
   };
 
-  // We can remove customImagePaths since it's redundant with customImages
-  const getFallbackPaths = (categoryPath: string) => {
-    return [
-      `/attached_assets/galleries/${categoryPath}/016.jpeg`,
-      `/assets/galleries/${categoryPath}/016.jpeg`,
-    ];
-  };
-
+  // Fallback paths for images
   const getFallbackPaths = (categoryPath: string) => {
     return [
       `/attached_assets/galleries/${categoryPath}/016.jpeg`,
