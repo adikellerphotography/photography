@@ -183,13 +183,13 @@ export default function Pricing() {
           <Dialog open={!!selectedPackage} onOpenChange={() => handleClosePackage()}>
             <DialogContent className="max-w-2xl fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-gray-100/95 dark:bg-gray-800/95 backdrop-blur-sm">
               <DialogHeader className="flex flex-row items-center justify-between">
+                <DialogTitle>{selectedPackageDetails?.name}</DialogTitle>
                 <div className="flex items-center gap-2">
-                  <DialogTitle>{selectedPackageDetails?.name}</DialogTitle>
                   <LanguageToggle />
+                  <Button variant="ghost" size="icon" onClick={() => handleClosePackage()}>
+                    <X className="h-5 w-5" />
+                  </Button>
                 </div>
-                <Button variant="ghost" size="icon" onClick={() => handleClosePackage()}>
-                  <X className="h-5 w-5" />
-                </Button>
               </DialogHeader>
               <div className="space-y-6">
                 <div className="border-b border-[#E67E00]/20 pb-4">
