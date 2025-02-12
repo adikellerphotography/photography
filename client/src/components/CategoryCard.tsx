@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
-import { RiStarLine, RiEquestrianLine, RiGroupLine, RiEmojiStickerLine, RiVipDiamondLine, RiMentalHealthLine, RiCameraLensLine, RiPaintBrushLine } from '@remixicon/react';
+import { User, Horse, Users, Baby, Heart, Yoga, PersonStanding, Paintbrush } from "lucide-react";
 
 interface CategoryCardProps {
   name: string;
@@ -24,21 +24,21 @@ export default function CategoryCard({ name, description, imageUrl, thumbnailUrl
     switch (categoryName) {
       case "Bat Mitsva":
       case "Bar Mitsva":
-        return <RiStarLine {...iconProps} />;
+        return <User {...iconProps} />;
       case "Horses":
-        return <RiEquestrianLine {...iconProps} />;
+        return <Horse {...iconProps} />;
       case "Family":
-        return <RiGroupLine {...iconProps} />;
+        return <Users {...iconProps} />;
       case "Kids":
-        return <RiEmojiStickerLine {...iconProps} />;
+        return <Baby {...iconProps} />;
       case "Femininity":
-        return <RiVipDiamondLine {...iconProps} />;
+        return <Heart {...iconProps} />;
       case "Yoga":
-        return <RiMentalHealthLine {...iconProps} />;
+        return <Yoga {...iconProps} />;
       case "Modeling":
-        return <RiCameraLensLine {...iconProps} />;
+        return <PersonStanding {...iconProps} />;
       case "Artful Nude":
-        return <RiPaintBrushLine {...iconProps} />;
+        return <Paintbrush {...iconProps} />;
       default:
         return null;
     }
