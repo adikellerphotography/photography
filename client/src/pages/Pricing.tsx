@@ -212,32 +212,32 @@ export default function Pricing() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                   <Button
                     variant="outline"
-                    className="group relative w-full p-8 flex flex-col gap-4 overflow-hidden border-[#E67E00]/20 hover:border-[#E67E00]/40"
+                    className="group relative w-full p-10 flex flex-col gap-4 overflow-hidden border border-[#E67E00]/10 hover:border-[#E67E00]/30 bg-white/5 backdrop-blur-sm transition-all duration-500"
                     onClick={() => setShowAnastasiaDialog(true)}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#E67E00]/0 to-[#E67E00]/5 group-hover:to-[#E67E00]/10 transition-all duration-300" />
-                    <h3 className={`text-lg relative z-10 font-medium ${language === 'he' ? 'font-heebo' : 'font-sans'}`}>
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#E67E00]/0 via-[#E67E00]/5 to-amber-200/10 opacity-0 group-hover:opacity-100 transition-all duration-500" />
+                    <h3 className={`text-xl relative z-10 ${language === 'he' ? 'font-heebo' : 'font-serif'} tracking-wide`}>
                       {language === 'he' ? 'אנסטסיה כץ' : 'Anastasia Katsz'}
                     </h3>
-                    <p className="text-xs text-muted-foreground/80 relative z-10">
+                    <p className="text-sm text-muted-foreground/70 relative z-10 font-light italic">
                       {language === 'he' ? 'מעצב גרפי' : 'Album Designer'}
                     </p>
-                    <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-[#E67E00]/30 to-amber-300/30 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+                    <div className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-[#E67E00]/30 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
                   </Button>
 
                   <Button
                     variant="outline"
-                    className="group relative w-full p-8 flex flex-col gap-4 overflow-hidden border-[#E67E00]/20 hover:border-[#E67E00]/40"
+                    className="group relative w-full p-10 flex flex-col gap-4 overflow-hidden border border-[#E67E00]/10 hover:border-[#E67E00]/30 bg-white/5 backdrop-blur-sm transition-all duration-500"
                     onClick={() => setShowNirDialog(true)}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#E67E00]/0 to-[#E67E00]/5 group-hover:to-[#E67E00]/10 transition-all duration-300" />
-                    <h3 className={`text-lg relative z-10 font-medium ${language === 'he' ? 'font-heebo' : 'font-sans'}`}>
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#E67E00]/0 via-[#E67E00]/5 to-amber-200/10 opacity-0 group-hover:opacity-100 transition-all duration-500" />
+                    <h3 className={`text-xl relative z-10 ${language === 'he' ? 'font-heebo' : 'font-serif'} tracking-wide`}>
                       {language === 'he' ? 'ניר גיל' : 'Nir Gil'}
                     </h3>
-                    <p className="text-xs text-muted-foreground/80 relative z-10">
+                    <p className="text-sm text-muted-foreground/70 relative z-10 font-light italic">
                       {language === 'he' ? 'מעצב גרפי' : 'Album Designer'}
                     </p>
-                    <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-[#E67E00]/30 to-amber-300/30 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+                    <div className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-[#E67E00]/30 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
                   </Button>
                 </div>
               </CardContent>
