@@ -92,6 +92,10 @@ export const translations = {
     },
     pricing: {
       title: "Photography Packages",
+      price: "Price",
+      description: "Description",
+      includes: "Package Includes",
+      serviceDetails: "Service Details",
       albums: {
         title: "Fine Art Albums",
         description:
@@ -277,6 +281,10 @@ export const translations = {
     },
     pricing: {
       title: "חבילות צילום",
+      price: "מחיר",
+      description: "תיאור",
+      includes: "כולל בחבילה",
+      serviceDetails: "פרטי השירות",
       albums: {
         title: "אלבומים",
         description:
