@@ -139,7 +139,7 @@ export default function Pricing() {
                     {pkg.icon && <pkg.icon className="w-6 h-6 text-white" />}
                   </div>
                   <div className="relative flex items-center justify-start w-full h-full">
-                    <span className="pl-[calc(48px+1rem)] text-base font-medium text-black z-10">{pkg.name}</span>
+                    <span className="pl-[calc(48px+1rem)] text-base font-medium text-black z-10">{t(pkg.name)}</span>
                   </div>
                 </Button>
               </motion.div>

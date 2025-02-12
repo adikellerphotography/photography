@@ -285,6 +285,15 @@ export const translations = {
       description: "תיאור",
       includes: "כולל בחבילה",
       serviceDetails: "פרטי השירות",
+      "Bat Mitsva": "בת מצווה",
+      "Bar Mitsva": "בר מצווה",
+      "Horses": "סוסים",
+      "Kids": "ילדים",
+      "Family": "משפחה", 
+      "Femininity": "נשיות",
+      "Yoga": "יוגה",
+      "Modeling": "דוגמנות",
+      "Artful Nude": "עירום אומנותי",
       packages: {
         batMitzvah: {
           description: "צילומי בת/בר מצווה חוויתיים",
