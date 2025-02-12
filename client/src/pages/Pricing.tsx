@@ -40,7 +40,6 @@ export default function Pricing() {
       name: "Bat/Bar Mitzvah",
       price: "2000₪",
       description: "Experiential photography session",
-      icon: RiVipCrownLine,
       features: [
         "3 hours session (before sunset)",
         "2 locations",
@@ -52,7 +51,6 @@ export default function Pricing() {
       name: "Horses",
       price: "1750₪",
       description: "Unique horse photography session",
-      icon: RiEquestrianLine,
       features: [
         "2 hours session",
         "1 location",
@@ -64,7 +62,6 @@ export default function Pricing() {
       name: "Family",
       price: "From 1450₪",
       description: "Family portrait session",
-      icon: RiTeamLine,
       features: [
         "1.5 hours session",
         "1 location",
@@ -76,7 +73,6 @@ export default function Pricing() {
       name: "Kids",
       price: "1450₪",
       description: "Children portrait session",
-      icon: RiEmojiStickerLine,
       features: [
         "1.5 hours session",
         "1 location",
@@ -88,7 +84,6 @@ export default function Pricing() {
       name: "Femininity",
       price: "1450₪",
       description: "Personal portrait session",
-      icon: RiVipDiamondLine,
       features: [
         "1.5 hours session",
         "1 location",
@@ -100,7 +95,6 @@ export default function Pricing() {
       name: "Yoga",
       price: "1450₪",
       description: "Yoga and movement session",
-      icon: RiMentalHealthLine,
       features: [
         "1.5 hours session",
         "1 location",
@@ -112,7 +106,6 @@ export default function Pricing() {
       name: "Modeling",
       price: "1650₪",
       description: "Professional modeling session",
-      icon: RiCameraLensLine,
       features: [
         "2 hours session",
         "1-2 locations",
@@ -124,7 +117,6 @@ export default function Pricing() {
       name: "Artful Nude",
       price: "1850₪",
       description: "Artistic photography session",
-      icon: RiPaintBrushLine,
       features: [
         "2 hours session",
         "Studio setting",
