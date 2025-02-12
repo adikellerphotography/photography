@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, X, Crown, Bike, Users, Baby, Gem, PersonStanding, Camera, Palette, Phone } from "lucide-react";
+import { ArrowUp, X, Crown, Horse, Users, Baby, Gem, PersonStanding, Camera, Palette, Phone } from "lucide-react";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -50,7 +50,7 @@ export default function Pricing() {
         name: "Horses",
         price: "1750₪",
         description: t("pricing.packages.horses.description") || "Horse photography session",
-        icon: Bike,
+        icon: Horse,
         features: t("pricing.packages.horses.features", { returnObjects: true }) || defaultFeatures
       },
       {
