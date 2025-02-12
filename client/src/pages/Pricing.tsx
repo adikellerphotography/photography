@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, X, Crown, Trophy, Users2, Heart, Sparkles, FlowerLotus, Camera, Palette } from "lucide-react";
+import { ArrowUp, X, Crown, Bike, Users, Baby, Gem, PersonStanding, Camera, Palette } from "lucide-react";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -40,6 +40,7 @@ export default function Pricing() {
       name: "Bat/Bar Mitzvah",
       price: "2000₪",
       description: "Experiential photography session",
+      icon: Crown,
       features: [
         "3 hours session (before sunset)",
         "2 locations",
@@ -51,6 +52,7 @@ export default function Pricing() {
       name: "Horses",
       price: "1750₪",
       description: "Unique horse photography session",
+      icon: Bike,
       features: [
         "2 hours session",
         "1 location",
@@ -62,6 +64,7 @@ export default function Pricing() {
       name: "Family",
       price: "From 1450₪",
       description: "Family portrait session",
+      icon: Users,
       features: [
         "1.5 hours session",
         "1 location",
@@ -73,6 +76,7 @@ export default function Pricing() {
       name: "Kids",
       price: "1450₪",
       description: "Children portrait session",
+      icon: Baby,
       features: [
         "1.5 hours session",
         "1 location",
@@ -84,6 +88,7 @@ export default function Pricing() {
       name: "Femininity",
       price: "1450₪",
       description: "Personal portrait session",
+      icon: Gem,
       features: [
         "1.5 hours session",
         "1 location",
@@ -95,6 +100,7 @@ export default function Pricing() {
       name: "Yoga",
       price: "1450₪",
       description: "Yoga and movement session",
+      icon: PersonStanding,
       features: [
         "1.5 hours session",
         "1 location",
@@ -106,6 +112,7 @@ export default function Pricing() {
       name: "Modeling",
       price: "1650₪",
       description: "Professional modeling session",
+      icon: Camera,
       features: [
         "2 hours session",
         "1-2 locations",
@@ -117,6 +124,7 @@ export default function Pricing() {
       name: "Artful Nude",
       price: "1850₪",
       description: "Artistic photography session",
+      icon: Palette,
       features: [
         "2 hours session",
         "Studio setting",
@@ -164,16 +172,7 @@ export default function Pricing() {
                 >
                   <div className="absolute inset-0 w-1/3 bg-[#E67E00] transition-all duration-300 group-hover:w-[30%]"></div>
                   <div className="relative flex items-center justify-start w-full h-full">
-                    <span className="absolute left-[calc(12%)] transform -translate-x-1/2 text-white z-10">
-                      {pkg.name === "Bat/Bar Mitzvah" && <Crown size={24} />}
-                      {pkg.name === "Horses" && <Trophy size={24} />}
-                      {pkg.name === "Family" && <Users2 size={24} />}
-                      {pkg.name === "Kids" && <Heart size={24} />}
-                      {pkg.name === "Femininity" && <Sparkles size={24} />}
-                      {pkg.name === "Yoga" && <FlowerLotus size={24} />}
-                      {pkg.name === "Modeling" && <Camera size={24} />}
-                      {pkg.name === "Artful Nude" && <Palette size={24} />}
-                    </span>
+                    {pkg.icon && <pkg.icon className="absolute left-[calc(12%)] transform -translate-x-1/2 w-9 h-9 text-white z-10" />}
                     <span className="pl-[calc(33%+8px)] text-base font-medium text-black z-10">{pkg.name}</span>
                   </div>
                 </Button>

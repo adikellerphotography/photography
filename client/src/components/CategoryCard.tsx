@@ -4,16 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
-import { 
-  UilSparkle, 
-  UilHorse, 
-  UilUsersAlt, 
-  UilChild, 
-  UilFlower, 
-  UilYinYang, 
-  UilCamera, 
-  UilBrush 
-} from '@iconscout/react-unicons';
+import { RiStarLine, RiEquestrianLine, RiGroupLine, RiEmojiStickerLine, RiVipDiamondLine, RiMentalHealthLine, RiCameraLensLine, RiPaintBrushLine } from '@remixicon/react';
 
 interface CategoryCardProps {
   name: string;
@@ -33,21 +24,21 @@ export default function CategoryCard({ name, description, imageUrl, thumbnailUrl
     switch (categoryName) {
       case "Bat Mitsva":
       case "Bar Mitsva":
-        return <UilSparkle {...iconProps} />;
+        return <RiStarLine {...iconProps} />;
       case "Horses":
-        return <UilHorse {...iconProps} />;
+        return <RiEquestrianLine {...iconProps} />;
       case "Family":
-        return <UilUsersAlt {...iconProps} />;
+        return <RiGroupLine {...iconProps} />;
       case "Kids":
-        return <UilChild {...iconProps} />;
+        return <RiEmojiStickerLine {...iconProps} />;
       case "Femininity":
-        return <UilFlower {...iconProps} />;
+        return <RiVipDiamondLine {...iconProps} />;
       case "Yoga":
-        return <UilYinYang {...iconProps} />;
+        return <RiMentalHealthLine {...iconProps} />;
       case "Modeling":
-        return <UilCamera {...iconProps} />;
+        return <RiCameraLensLine {...iconProps} />;
       case "Artful Nude":
-        return <UilBrush {...iconProps} />;
+        return <RiPaintBrushLine {...iconProps} />;
       default:
         return null;
     }
