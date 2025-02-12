@@ -94,13 +94,13 @@ export default function Pricing() {
               >
                 <Button
                   variant="ghost"
-                  className={`group relative w-[150px] mx-auto h-8 overflow-hidden bg-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300`}
+                  className="group relative w-[220px] mx-auto h-12 overflow-hidden bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
                   <div className="absolute inset-0 w-1/3 bg-[#E67E00] transition-all duration-300 group-hover:w-[30%]"></div>
-                  <div className="relative flex items-center justify-center px-3 w-full h-full">
-                    <span className="text-xs font-medium text-[#E67E00] group-hover:text-[#E67E00] z-10">{pkg.name}</span>
-                    {/* {pkg.icon && <pkg.icon className="w-3.5 h-3.5 text-white z-10 ml-1.5 opacity-80" />} */}
+                  <div className="relative flex items-center justify-center px-6 w-full h-full">
+                    <span className="text-base font-medium text-[#E67E00] group-hover:text-[#E67E00] z-10">{pkg.name}</span>
+                    {pkg.icon && <pkg.icon className="w-5 h-5 text-white z-10 ml-2" />}
                   </div>
                 </Button>
               </motion.div>
