@@ -195,19 +195,24 @@ export default function Pricing() {
           </Dialog>
 
           {/* Albums Section */}
-          <div className="mt-16">
-            <h2 className="text-3xl font-bold mb-8 text-center text-[#E67E00]">
-              {t("pricing.albums.title")}
-            </h2>
-            <Card className="backdrop-blur-sm bg-gray-100/5 border border-white/10 hover:border-white/20 transition-all">
-              <CardHeader className="space-y-2 pb-4">
-                <CardTitle className="text-xl font-semibold text-[#E67E00]">
+          <div className="mt-24 mb-16">
+            <div className="relative">
+              <h2 className="text-4xl font-bold mb-12 text-center">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#E67E00] to-amber-400">
                   {t("pricing.albums.title")}
-                </CardTitle>
-                <div className="flex">
-                  <div className={`h-[1px] w-12 bg-gradient-to-r from-[#E67E00] to-amber-300 ${language === 'he' ? 'mr-0 ml-auto' : ''}`}></div>
+                </span>
+              </h2>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-[#E67E00]/10 rounded-full blur-xl -z-10" />
+            </div>
+            <Card className="backdrop-blur-md bg-white/5 dark:bg-gray-950/50 border border-[#E67E00]/20 hover:border-[#E67E00]/30 transition-all shadow-lg">
+              <CardHeader className="space-y-4 pb-6">
+                <div className={`flex items-center gap-4 ${language === 'he' ? 'flex-row-reverse' : ''}`}>
+                  <div className="h-10 w-1 bg-gradient-to-b from-[#E67E00] to-amber-300 rounded-full" />
+                  <CardTitle className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-[#E67E00] to-amber-300">
+                    {t("pricing.albums.title")}
+                  </CardTitle>
                 </div>
-                <p className={`text-sm text-muted-foreground/80 font-light ${language === 'he' ? 'text-right' : 'text-left'}`}>
+                <p className={`text-base leading-relaxed text-muted-foreground ${language === 'he' ? 'text-right' : 'text-left'}`}>
                   {t("pricing.albums.description")}
                 </p>
               </CardHeader>
@@ -215,28 +220,32 @@ export default function Pricing() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                   <Button
                     variant="outline"
-                    className="w-full p-6 flex flex-col gap-4 hover:bg-[#E67E00]/10"
+                    className="group relative w-full p-8 flex flex-col gap-4 overflow-hidden border-[#E67E00]/20 hover:border-[#E67E00]/40"
                     onClick={() => setShowAnastasiaDialog(true)}
                   >
-                    <h3 className={`text-xl ${language === 'he' ? 'font-bold' : 'font-serif'}`}>
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#E67E00]/0 to-[#E67E00]/5 group-hover:to-[#E67E00]/10 transition-all duration-300" />
+                    <h3 className={`text-2xl relative z-10 ${language === 'he' ? 'font-bold' : 'font-serif'}`}>
                       {language === 'he' ? 'אנסטסיה כץ' : 'Anastasia Katsz'}
                     </h3>
-                    <p className="text-sm text-muted-foreground italic">
+                    <p className="text-sm text-muted-foreground/80 italic relative z-10">
                       {language === 'he' ? 'מעצב גרפי' : 'Album Designer'}
                     </p>
+                    <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-[#E67E00]/30 to-amber-300/30 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
                   </Button>
 
                   <Button
                     variant="outline"
-                    className="w-full p-6 flex flex-col gap-4 hover:bg-[#E67E00]/10"
+                    className="group relative w-full p-8 flex flex-col gap-4 overflow-hidden border-[#E67E00]/20 hover:border-[#E67E00]/40"
                     onClick={() => setShowNirDialog(true)}
                   >
-                    <h3 className={`text-xl ${language === 'he' ? 'font-bold' : 'font-serif'}`}>
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#E67E00]/0 to-[#E67E00]/5 group-hover:to-[#E67E00]/10 transition-all duration-300" />
+                    <h3 className={`text-2xl relative z-10 ${language === 'he' ? 'font-bold' : 'font-serif'}`}>
                       {language === 'he' ? 'ניר גיל' : 'Nir Gil'}
                     </h3>
-                    <p className="text-sm text-muted-foreground italic">
+                    <p className="text-sm text-muted-foreground/80 italic relative z-10">
                       {language === 'he' ? 'מעצב גרפי' : 'Album Designer'}
                     </p>
+                    <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-[#E67E00]/30 to-amber-300/30 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
                   </Button>
                 </div>
               </CardContent>
