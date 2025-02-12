@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useLanguage } from "@/hooks/use-language";
 import { useTranslation } from "@/hooks/use-translation";
+import LanguageToggle from "@/components/LanguageToggle";
 
 export default function Pricing() {
   const { language } = useLanguage();
@@ -180,9 +181,12 @@ export default function Pricing() {
           </div>
 
           <Dialog open={!!selectedPackage} onOpenChange={() => handleClosePackage()}>
-            <DialogContent className="max-w-2xl fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-background/95 backdrop-blur-sm">
+            <DialogContent className="max-w-2xl fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-gray-100/95 dark:bg-gray-800/95 backdrop-blur-sm">
               <DialogHeader className="flex flex-row items-center justify-between">
-                <DialogTitle>{selectedPackageDetails?.name}</DialogTitle>
+                <div className="flex items-center gap-2">
+                  <DialogTitle>{selectedPackageDetails?.name}</DialogTitle>
+                  <LanguageToggle />
+                </div>
                 <Button variant="ghost" size="icon" onClick={() => handleClosePackage()}>
                   <X className="h-5 w-5" />
                 </Button>
