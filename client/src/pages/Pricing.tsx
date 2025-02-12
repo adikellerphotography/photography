@@ -37,56 +37,56 @@ export default function Pricing() {
 
   const getPackages = () => [
     {
-      name: t("categories.Bat Mitsva"),
+      name: "Bat Mitsva",
       price: "2000₪",
       description: t("pricing.packages.batMitzvah.description"),
       icon: Crown,
       features: t("pricing.packages.batMitzvah.features", { returnObjects: true })
     },
     {
-      name: t("categories.Horses"),
+      name: "Horses",
       price: "1750₪",
       description: t("pricing.packages.horses.description"),
       icon: Bike,
       features: t("pricing.packages.horses.features", { returnObjects: true })
     },
     {
-      name: t("categories.Family"),
+      name: "Family",
       price: "From 1450₪",
       description: t("pricing.packages.family.description"),
       icon: Users,
       features: t("pricing.packages.family.features", { returnObjects: true })
     },
     {
-      name: t("categories.Kids"),
+      name: "Kids",
       price: "1450₪",
       description: t("pricing.packages.kids.description"),
       icon: Baby,
       features: t("pricing.packages.kids.features", { returnObjects: true })
     },
     {
-      name: t("categories.Femininity"),
+      name: "Femininity",
       price: "1450₪",
       description: t("pricing.packages.femininity.description"),
       icon: Gem,
       features: t("pricing.packages.femininity.features", { returnObjects: true })
     },
     {
-      name: t("categories.Yoga"),
+      name: "Yoga",
       price: "1450₪",
       description: t("pricing.packages.yoga.description"),
       icon: PersonStanding,
       features: t("pricing.packages.yoga.features", { returnObjects: true })
     },
     {
-      name: t("categories.Modeling"),
+      name: "Modeling",
       price: "1650₪",
       description: t("pricing.packages.modeling.description"),
       icon: Camera,
       features: t("pricing.packages.modeling.features", { returnObjects: true })
     },
     {
-      name: t("categories.Artful Nude"),
+      name: "Artful Nude",
       price: "1850₪",
       description: t("pricing.packages.artfulNude.description"),
       icon: Palette,
