@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, X, Crown, Trophy, Users2, Heart, Sparkles, Lotus, Camera, Palette } from "lucide-react";
+import { ArrowUp, X, Crown, Trophy, Users2, Heart, Sparkles, FlowerLotus, Camera, Palette } from "lucide-react";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -170,7 +170,7 @@ export default function Pricing() {
                       {pkg.name === "Family" && <Users2 size={24} />}
                       {pkg.name === "Kids" && <Heart size={24} />}
                       {pkg.name === "Femininity" && <Sparkles size={24} />}
-                      {pkg.name === "Yoga" && <Lotus size={24} />}
+                      {pkg.name === "Yoga" && <FlowerLotus size={24} />}
                       {pkg.name === "Modeling" && <Camera size={24} />}
                       {pkg.name === "Artful Nude" && <Palette size={24} />}
                     </span>
