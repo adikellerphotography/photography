@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, X, Crown, Bike, Users, Baby, Gem, PersonStanding, Camera, Palette, Phone } from "lucide-react";
+import { ArrowUp, X, Crown, Users, Baby, Gem, PersonStanding, Camera, Palette, Phone } from "lucide-react";
+import { Horse } from "@phosphor-icons/react";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
