@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, X, Crown, Users, Baby, Gem, PersonStanding, Camera, Palette, Phone, HardHat } from "lucide-react";
+import { PiArrowUpBold, PiXBold, PiCrownBold, PiUsersBold, PiBabyCarriageBold, PiGemBold, PiPersonStanding, PiCameraBold, PiPaletteBold, PiPhoneBold, PiHorseFill } from "react-icons/ph"; 
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -43,56 +43,56 @@ export default function Pricing() {
         name: "Bat Mitsva",
         price: "2000₪",
         description: t("pricing.packages.batMitzvah.description") || "Experiential photography session",
-        icon: Crown,
+        icon: PiCrownBold, 
         features: t("pricing.packages.batMitzvah.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Horses",
         price: "1750₪",
         description: t("pricing.packages.horses.description") || "Horse photography session",
-        icon: HardHat,
+        icon: PiHorseFill, 
         features: t("pricing.packages.horses.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Family",
         price: "From 1450₪",
         description: t("pricing.packages.family.description") || "Family photography session",
-        icon: Users,
+        icon: PiUsersBold, 
         features: t("pricing.packages.family.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Kids",
         price: "1450₪",
         description: t("pricing.packages.kids.description") || "Kids photography session",
-        icon: Baby,
+        icon: PiBabyCarriageBold, 
         features: t("pricing.packages.kids.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Femininity",
         price: "1450₪",
         description: t("pricing.packages.femininity.description") || "Feminine photography session",
-        icon: Gem,
+        icon: PiGemBold, 
         features: t("pricing.packages.femininity.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Yoga",
         price: "1450₪",
         description: t("pricing.packages.yoga.description") || "Yoga photography session",
-        icon: PersonStanding,
+        icon: PiPersonStanding, 
         features: t("pricing.packages.yoga.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Modeling",
         price: "1650₪",
         description: t("pricing.packages.modeling.description") || "Modeling photography session",
-        icon: Camera,
+        icon: PiCameraBold, 
         features: t("pricing.packages.modeling.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Artful Nude",
         price: "1850₪",
         description: t("pricing.packages.artfulNude.description") || "Artistic nude photography session",
-        icon: Palette,
+        icon: PiPaletteBold, 
         features: t("pricing.packages.artfulNude.features", { returnObjects: true }) || defaultFeatures
       }
     ];
@@ -153,7 +153,7 @@ export default function Pricing() {
                 <div className="flex items-center gap-2">
                   <LanguageToggle />
                   <Button variant="ghost" size="icon" onClick={() => handleClosePackage()}>
-                    <X className="h-5 w-5" />
+                    <PiXBold className="h-5 w-5" />
                   </Button>
                 </div>
               </DialogHeader>
@@ -219,9 +219,9 @@ export default function Pricing() {
                       <div className="w-12 h-[1px] mx-auto bg-gradient-to-r from-[#E67E00]/30 via-[#E67E00] to-[#E67E00]/30" />
                       <p className="text-gray-400 text-sm uppercase tracking-wider">Album Designer</p>
                     </div>
-                    
+
                     <a href="tel:054-633-5594" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
-                      <Phone className="w-4 h-4" />
+                      <PiPhoneBold className="w-4 h-4" />
                       <span className="text-sm">054-633-5594</span>
                     </a>
 
@@ -243,9 +243,9 @@ export default function Pricing() {
                       <div className="w-12 h-[1px] mx-auto bg-gradient-to-r from-[#E67E00]/30 via-[#E67E00] to-[#E67E00]/30" />
                       <p className="text-gray-400 text-sm uppercase tracking-wider">Album Designer</p>
                     </div>
-                    
+
                     <a href="tel:054-798-2299" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
-                      <Phone className="w-4 h-4" />
+                      <PiPhoneBold className="w-4 h-4" />
                       <span className="text-sm">054-798-2299</span>
                     </a>
 
@@ -332,7 +332,7 @@ export default function Pricing() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
       >
-        <ArrowUp className="h-5 w-5" />
+        <PiArrowUpBold className="h-5 w-5" />
       </motion.button>
     </div>
   );
