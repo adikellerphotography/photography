@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { PiArrowUpBold, PiXBold, PiCrownBold, PiUsersBold, PiBabyCarriageBold, PiGemBold, PiPersonStanding, PiCameraBold, PiPaletteBold, PiPhoneBold, PiHorseFill } from "react-icons/ph"; 
+import { ArrowUpBold as PiArrowUpBold, XBold as PiXBold, CrownBold as PiCrownBold, UsersBold as PiUsersBold, BabyCarriageBold as PiBabyCarriageBold, GemBold as PiGemBold, PersonStandingBold as PiPersonStanding, CameraBold as PiCameraBold, PaletteBold as PiPaletteBold, PhoneBold as PiPhoneBold, HorseBold as PiHorseFill } from "@phosphor-icons/react"; 
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
