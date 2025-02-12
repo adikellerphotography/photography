@@ -227,7 +227,7 @@ export default function Pricing() {
                       <div className="w-12 h-[1px] mx-auto bg-gradient-to-r from-[#E67E00]/30 via-[#E67E00] to-[#E67E00]/30" />
                       <p className="text-gray-400 text-sm uppercase tracking-wider">Album Designer</p>
                     </div>
-
+                    
                     <a href="tel:054-633-5594" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
                       <Phone className="w-4 h-4" />
                       <span className="text-sm">054-633-5594</span>
@@ -251,7 +251,7 @@ export default function Pricing() {
                       <div className="w-12 h-[1px] mx-auto bg-gradient-to-r from-[#E67E00]/30 via-[#E67E00] to-[#E67E00]/30" />
                       <p className="text-gray-400 text-sm uppercase tracking-wider">Album Designer</p>
                     </div>
-
+                    
                     <a href="tel:054-798-2299" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
                       <Phone className="w-4 h-4" />
                       <span className="text-sm">054-798-2299</span>
