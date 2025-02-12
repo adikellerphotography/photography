@@ -132,19 +132,20 @@ export default function Pricing() {
               >
                 <Button
                   variant="ghost"
-                  className="group relative w-[220px] mx-auto h-12 overflow-hidden bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                  className="group relative w-[220px] mx-auto h-12 overflow-hidden bg-white rounded-full shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-110 hover:-translate-y-1"
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
                   <div 
-                    className="absolute left-0 top-0 bottom-0 aspect-square h-full bg-[#E67E00] rounded-full transition-all duration-500 group-hover:scale-[1.8] group-hover:translate-x-4 group-hover:opacity-90 group-active:scale-95"
+                    className="absolute left-0 top-0 bottom-0 aspect-square h-full bg-[#E67E00] rounded-full transition-all duration-700 ease-in-out group-hover:scale-[2.5] group-hover:translate-x-12 group-hover:opacity-90 group-active:scale-90"
                     style={{
                       backgroundImage: 'radial-gradient(circle, #FF9500, #E67E00)',
+                      boxShadow: '0 0 20px rgba(230, 126, 0, 0.3)'
                     }}
                   >
-                    <div className="absolute inset-0 bg-white/20 rounded-full scale-0 group-hover:scale-100 transition-transform duration-500 opacity-0 group-hover:opacity-100" />
+                    <div className="absolute inset-0 bg-white/30 rounded-full scale-0 group-hover:scale-100 transition-transform duration-700 opacity-0 group-hover:opacity-100 animate-pulse" />
                   </div>
-                  <div className="relative flex items-center justify-start w-full h-full group-hover:translate-x-2 transition-transform duration-300">
-                    <span className="pl-[calc(48px+1rem)] text-base font-medium text-black group-hover:text-white transition-colors duration-300 z-10">{t(pkg.name)}</span>
+                  <div className="relative flex items-center justify-start w-full h-full group-hover:translate-x-4 transition-transform duration-500 ease-in-out">
+                    <span className="pl-[calc(48px+1rem)] text-base font-medium text-black group-hover:text-white transition-colors duration-500">{t(pkg.name)}</span>
                   </div>
                 </Button>
               </motion.div>
