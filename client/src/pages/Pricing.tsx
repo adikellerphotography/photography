@@ -37,7 +37,7 @@ export default function Pricing() {
 
   const getPackages = () => {
     const defaultFeatures = ["1.5 hours session", "1 location", "25 edited photos", "All raw material included"];
-    
+
     return [
       {
         name: "Bat Mitsva",
@@ -93,9 +93,10 @@ export default function Pricing() {
         price: "1850₪",
         description: t("pricing.packages.artfulNude.description") || "Artistic nude photography session",
         icon: Palette,
-      features: t("pricing.packages.artfulNude.features", { returnObjects: true })
-    }
-  ];
+        features: t("pricing.packages.artfulNude.features", { returnObjects: true }) || defaultFeatures
+      }
+    ];
+  };
 
   const handlePackageSelect = (packageName: string) => {
     setSelectedPackage(packageName);
