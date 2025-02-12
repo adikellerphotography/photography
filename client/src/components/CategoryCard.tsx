@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
-import { User, Horse, Users, Baby, Heart, Yoga, PersonStanding, Paintbrush } from "lucide-react";
+import { Sparkles, HorseshoeIcon, Hearts, Child, Flower2, Lotus, Camera, Palette } from "lucide-react";
 
 interface CategoryCardProps {
   name: string;
@@ -24,21 +24,21 @@ export default function CategoryCard({ name, description, imageUrl, thumbnailUrl
     switch (categoryName) {
       case "Bat Mitsva":
       case "Bar Mitsva":
-        return <User {...iconProps} />;
+        return <Sparkles {...iconProps} />;
       case "Horses":
-        return <Horse {...iconProps} />;
+        return <HorseshoeIcon {...iconProps} />;
       case "Family":
-        return <Users {...iconProps} />;
+        return <Hearts {...iconProps} />;
       case "Kids":
-        return <Baby {...iconProps} />;
+        return <Child {...iconProps} />;
       case "Femininity":
-        return <Heart {...iconProps} />;
+        return <Flower2 {...iconProps} />;
       case "Yoga":
-        return <Yoga {...iconProps} />;
+        return <Lotus {...iconProps} />;
       case "Modeling":
-        return <PersonStanding {...iconProps} />;
+        return <Camera {...iconProps} />;
       case "Artful Nude":
-        return <Paintbrush {...iconProps} />;
+        return <Palette {...iconProps} />;
       default:
         return null;
     }
