@@ -171,6 +171,7 @@ export default function Pricing() {
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
                   <div className="absolute inset-0 w-1/3 bg-[#E67E00] transition-all duration-300 group-hover:w-[30%]"></div>
+                  <div className="absolute inset-0 bg-white translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
                   <div className="relative flex items-center justify-start w-full h-full">
                     {pkg.icon && <pkg.icon className="absolute left-[calc(12%)] transform -translate-x-1/2 w-9 h-9 text-white z-10" />}
                     <span className="pl-[calc(33%+8px)] text-base font-medium text-black z-10">{pkg.name}</span>
