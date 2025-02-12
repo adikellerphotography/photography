@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, Home, Users, Gallop, Heart, Baby, Flower2, Lotus, Camera, Brush } from "lucide-react";
+import { ArrowUp, Home, Users, GitFork, Heart, Baby, Flower2, Lotus, Camera, Brush } from "lucide-react";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -164,7 +164,7 @@ export default function Pricing() {
                   <div className="absolute inset-0 w-1/3 bg-[#E67E00] transition-all duration-300 group-hover:w-[30%]">
                     <div className="absolute inset-0 flex items-center justify-center text-white">
                       {pkg.name === "Bat/Bar Mitzvah" && <Users className="w-5 h-5" />}
-                      {pkg.name === "Horses" && <Gallop className="w-5 h-5" />}
+                      {pkg.name === "Horses" && <GitFork className="w-5 h-5" />}
                       {pkg.name === "Family" && <Heart className="w-5 h-5" />}
                       {pkg.name === "Kids" && <Baby className="w-5 h-5" />}
                       {pkg.name === "Femininity" && <Flower2 className="w-5 h-5" />}
