@@ -1,7 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, X, Crown, Users, Baby, Gem, PersonStanding, Camera, Palette, Phone } from "lucide-react";
-import { Horse as HorseIcon } from "@phosphor-icons/react";
+import { ArrowUp, X, Crown, Users, Baby, Gem, PersonStanding, Camera, Palette, Phone, HardHat } from "lucide-react";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -51,7 +50,7 @@ export default function Pricing() {
         name: "Horses",
         price: "1750₪",
         description: t("pricing.packages.horses.description") || "Horse photography session",
-        icon: HorseIcon,
+        icon: HardHat,
         features: t("pricing.packages.horses.features", { returnObjects: true }) || defaultFeatures
       },
       {
