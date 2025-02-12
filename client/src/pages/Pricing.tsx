@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, Home } from "lucide-react";
+import { ArrowUp, Home, User, Horse, Users, Baby, Heart, Yoga, PersonStanding, Paintbrush } from "lucide-react";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -39,6 +39,7 @@ export default function Pricing() {
       name: "Bat/Bar Mitzvah",
       price: "2000₪",
       description: "Experiential photography session",
+      icon: User,
       features: [
         "3 hours session (before sunset)",
         "2 locations",
@@ -50,6 +51,7 @@ export default function Pricing() {
       name: "Horses",
       price: "1750₪",
       description: "Unique horse photography session",
+      icon: Horse,
       features: [
         "2 hours session",
         "1 location",
@@ -61,6 +63,7 @@ export default function Pricing() {
       name: "Family",
       price: "From 1450₪",
       description: "Family portrait session",
+      icon: Users,
       features: [
         "1.5 hours session",
         "1 location",
@@ -72,6 +75,7 @@ export default function Pricing() {
       name: "Kids",
       price: "1450₪",
       description: "Children portrait session",
+      icon: Baby,
       features: [
         "1.5 hours session",
         "1 location",
@@ -83,6 +87,7 @@ export default function Pricing() {
       name: "Femininity",
       price: "1450₪",
       description: "Personal portrait session",
+      icon: Heart,
       features: [
         "1.5 hours session",
         "1 location",
@@ -94,6 +99,7 @@ export default function Pricing() {
       name: "Yoga",
       price: "1450₪",
       description: "Yoga and movement session",
+      icon: Yoga,
       features: [
         "1.5 hours session",
         "1 location",
@@ -105,6 +111,7 @@ export default function Pricing() {
       name: "Modeling",
       price: "1650₪",
       description: "Professional modeling session",
+      icon: PersonStanding,
       features: [
         "2 hours session",
         "1-2 locations",
@@ -116,6 +123,7 @@ export default function Pricing() {
       name: "Artful Nude",
       price: "1850₪",
       description: "Artistic photography session",
+      icon: Paintbrush,
       features: [
         "2 hours session",
         "Studio setting",
