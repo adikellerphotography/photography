@@ -196,14 +196,6 @@ export default function Pricing() {
 
           {/* Albums Section */}
           <div className="mt-24 mb-16">
-            <div className="relative">
-              <h2 className="text-4xl font-bold mb-12 text-center">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#E67E00] to-amber-400">
-                  {t("pricing.albums.title")}
-                </span>
-              </h2>
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-[#E67E00]/10 rounded-full blur-xl -z-10" />
-            </div>
             <Card className="backdrop-blur-md bg-white/5 dark:bg-gray-950/50 border border-[#E67E00]/20 hover:border-[#E67E00]/30 transition-all shadow-lg">
               <CardHeader className="space-y-4 pb-6">
                 <div className={`flex items-center gap-4 ${language === 'he' ? 'flex-row-reverse' : ''}`}>
