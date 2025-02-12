@@ -100,11 +100,19 @@ export default function Pricing() {
 
   const handlePackageSelect = (packageName: string) => {
     setSelectedPackage(packageName);
+    setLocation(`/pricing/${encodeURIComponent(packageName)}`);
   };
 
   const handleClosePackage = () => {
     setSelectedPackage(null);
+    setLocation('/pricing');
   };
+
+  React.useEffect(() => {
+    if (params?.category) {
+      setSelectedPackage(decodeURIComponent(params.category));
+    }
+  }, [params]);
 
   const selectedPackageDetails = getPackages().find(pkg => pkg.name === selectedPackage);
   const features = Array.isArray(selectedPackageDetails?.features) ? selectedPackageDetails.features : [];
