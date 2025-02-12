@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, Home, Crown, Sparkles, Users, Baby, Gem, Lotus, Camera, Palette } from "lucide-react";
+import { ArrowUp, Home, Crown, Sparkles, Users, Baby, Gem, FlowerLotus, Camera, Palette } from "lucide-react";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -99,7 +99,7 @@ export default function Pricing() {
       name: "Yoga",
       price: "1450₪",
       description: "Yoga and movement session",
-      icon: Lotus,
+      icon: FlowerLotus,
       features: [
         "1.5 hours session",
         "1 location",
