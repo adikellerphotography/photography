@@ -132,13 +132,19 @@ export default function Pricing() {
               >
                 <Button
                   variant="ghost"
-                  className="group relative w-[220px] mx-auto h-12 overflow-hidden bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="group relative w-[220px] mx-auto h-12 overflow-hidden bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
-                  <div className="absolute left-0 top-0 bottom-0 aspect-square h-full bg-[#E67E00] rounded-full transition-all duration-300">
+                  <div 
+                    className="absolute left-0 top-0 bottom-0 aspect-square h-full bg-[#E67E00] rounded-full transition-all duration-500 group-hover:scale-[1.8] group-hover:translate-x-4 group-hover:opacity-90 group-active:scale-95"
+                    style={{
+                      backgroundImage: 'radial-gradient(circle, #FF9500, #E67E00)',
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-white/20 rounded-full scale-0 group-hover:scale-100 transition-transform duration-500 opacity-0 group-hover:opacity-100" />
                   </div>
-                  <div className="relative flex items-center justify-start w-full h-full">
-                    <span className="pl-[calc(48px+1rem)] text-base font-medium text-black z-10">{t(pkg.name)}</span>
+                  <div className="relative flex items-center justify-start w-full h-full group-hover:translate-x-2 transition-transform duration-300">
+                    <span className="pl-[calc(48px+1rem)] text-base font-medium text-black group-hover:text-white transition-colors duration-300 z-10">{t(pkg.name)}</span>
                   </div>
                 </Button>
               </motion.div>
