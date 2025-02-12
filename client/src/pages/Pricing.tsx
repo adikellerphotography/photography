@@ -210,49 +210,51 @@ export default function Pricing() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                  <div className="bg-[#1A1A1A] rounded-3xl p-8 flex flex-col items-center space-y-6">
+                  <div className="bg-gradient-to-br from-[#1A1A1A] to-[#111] rounded-3xl p-6 flex flex-col items-center space-y-4 shadow-xl">
                     <div className="space-y-2 text-center">
-                      <h3 className="text-3xl font-bold text-white">
+                      <h3 className="text-2xl font-light text-white tracking-wide">
                         {language === 'he' ? 'אנסטסיה כץ' : 'Anastasia Katsz'}
                       </h3>
-                      <div className="w-16 h-1 mx-auto bg-[#E67E00]" />
-                      <p className="text-gray-400 text-lg">Album Designer</p>
+                      <div className="w-12 h-[1px] mx-auto bg-gradient-to-r from-[#E67E00]/30 via-[#E67E00] to-[#E67E00]/30" />
+                      <p className="text-gray-400 text-sm uppercase tracking-wider">Album Designer</p>
                     </div>
                     
                     <a href="tel:054-633-5594" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
-                      <Phone className="w-5 h-5" />
-                      <span className="text-lg">054-633-5594</span>
+                      <Phone className="w-4 h-4" />
+                      <span className="text-sm">054-633-5594</span>
                     </a>
 
                     <Button
                       variant="outline"
-                      className="w-full py-6 text-lg border-[#333] hover:border-[#E67E00] text-white bg-[#111] hover:bg-[#222] transition-all"
+                      className="w-full py-2 text-sm border-[#333] hover:border-[#E67E00] text-white bg-black/50 hover:bg-black transition-all backdrop-blur-sm tracking-wide group relative overflow-hidden"
                       onClick={() => setShowAnastasiaDialog(true)}
                     >
-                      View Pricing
+                      <span className="relative z-10">View Pricing</span>
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#E67E00]/0 via-[#E67E00]/10 to-[#E67E00]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500" />
                     </Button>
                   </div>
 
-                  <div className="bg-[#1A1A1A] rounded-3xl p-8 flex flex-col items-center space-y-6">
+                  <div className="bg-gradient-to-br from-[#1A1A1A] to-[#111] rounded-3xl p-6 flex flex-col items-center space-y-4 shadow-xl">
                     <div className="space-y-2 text-center">
-                      <h3 className="text-3xl font-bold text-white">
+                      <h3 className="text-2xl font-light text-white tracking-wide">
                         {language === 'he' ? 'ניר גיל' : 'Nir Gil'}
                       </h3>
-                      <div className="w-16 h-1 mx-auto bg-[#E67E00]" />
-                      <p className="text-gray-400 text-lg">Album Designer</p>
+                      <div className="w-12 h-[1px] mx-auto bg-gradient-to-r from-[#E67E00]/30 via-[#E67E00] to-[#E67E00]/30" />
+                      <p className="text-gray-400 text-sm uppercase tracking-wider">Album Designer</p>
                     </div>
                     
                     <a href="tel:054-798-2299" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
-                      <Phone className="w-5 h-5" />
-                      <span className="text-lg">054-798-2299</span>
+                      <Phone className="w-4 h-4" />
+                      <span className="text-sm">054-798-2299</span>
                     </a>
 
                     <Button
                       variant="outline"
-                      className="w-full py-6 text-lg border-[#333] hover:border-[#E67E00] text-white bg-[#111] hover:bg-[#222] transition-all"
+                      className="w-full py-2 text-sm border-[#333] hover:border-[#E67E00] text-white bg-black/50 hover:bg-black transition-all backdrop-blur-sm tracking-wide group relative overflow-hidden"
                       onClick={() => setShowNirDialog(true)}
                     >
-                      View Pricing
+                      <span className="relative z-10">View Pricing</span>
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#E67E00]/0 via-[#E67E00]/10 to-[#E67E00]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500" />
                     </Button>
                   </div>
                 </div>
