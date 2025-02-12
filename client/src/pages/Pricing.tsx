@@ -1,7 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, X } from "lucide-react";
-import { GiCrownedSkull, GiHorseHead, GiPeople, GiChild, GiDiamond, GiLotusFlower, GiCameraFlash, GiPaintBrush } from 'react-icons/gi';
+import { ArrowUp, X, Crown, Horse, Users, Baby, Diamond, Flower2, Camera, Brush } from "lucide-react";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -174,14 +173,14 @@ export default function Pricing() {
                   <div className="absolute inset-0 w-1/3 bg-[#E67E00] transition-all duration-300 group-hover:w-[30%]"></div>
                   <div className="relative flex items-center justify-start w-full h-full">
                     <span className="absolute left-[calc(12%)] transform -translate-x-1/2 text-white z-10">
-                      {pkg.name === "Bat/Bar Mitzvah" && <GiCrownedSkull size={24} />}
-                      {pkg.name === "Horses" && <GiHorseHead size={24} />}
-                      {pkg.name === "Family" && <GiPeople size={24} />}
-                      {pkg.name === "Kids" && <GiChild size={24} />}
-                      {pkg.name === "Femininity" && <GiDiamond size={24} />}
-                      {pkg.name === "Yoga" && <GiLotusFlower size={24} />}
-                      {pkg.name === "Modeling" && <GiCameraFlash size={24} />}
-                      {pkg.name === "Artful Nude" && <GiPaintBrush size={24} />}
+                      {pkg.name === "Bat/Bar Mitzvah" && <Crown size={24} />}
+                      {pkg.name === "Horses" && <Horse size={24} />}
+                      {pkg.name === "Family" && <Users size={24} />}
+                      {pkg.name === "Kids" && <Baby size={24} />}
+                      {pkg.name === "Femininity" && <Diamond size={24} />}
+                      {pkg.name === "Yoga" && <Flower2 size={24} />}
+                      {pkg.name === "Modeling" && <Camera size={24} />}
+                      {pkg.name === "Artful Nude" && <Brush size={24} />}
                     </span>
                     <span className="pl-[calc(33%+8px)] text-base font-medium text-black z-10">{pkg.name}</span>
                   </div>
