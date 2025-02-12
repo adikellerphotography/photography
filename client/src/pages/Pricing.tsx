@@ -94,13 +94,17 @@ export default function Pricing() {
               >
                 <Button
                   variant="ghost"
-                  className="group relative w-[220px] mx-auto h-12 overflow-hidden bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                  className={`group relative w-[180px] mx-auto h-10 overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300
+                    ${pkg.name === t("pricing.batMitzvah.name") ? 'bg-gradient-to-r from-pink-500 to-purple-500' : ''}
+                    ${pkg.name === t("pricing.family.name") ? 'bg-gradient-to-r from-green-500 to-teal-500' : ''}
+                    ${pkg.name === t("pricing.kids.name") ? 'bg-gradient-to-r from-blue-500 to-cyan-500' : ''}
+                    ${pkg.name === t("pricing.purim.name") ? 'bg-gradient-to-r from-orange-500 to-yellow-500' : ''}
+                  `}
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
-                  <div className="absolute inset-0 w-1/3 bg-[#E67E00] transition-all duration-300 group-hover:w-[30%]"></div>
-                  <div className="relative flex items-center justify-center px-6 w-full h-full">
-                    <span className="text-base font-medium text-[#E67E00] group-hover:text-[#E67E00] z-10">{pkg.name}</span>
-                    {pkg.icon && <pkg.icon className="w-5 h-5 text-white z-10 ml-2" />}
+                  <div className="relative flex items-center justify-center px-4 w-full h-full">
+                    <span className="text-sm font-medium text-white z-10">{pkg.name}</span>
+                    {pkg.icon && <pkg.icon className="w-4 h-4 text-white z-10 ml-2 opacity-80" />}
                   </div>
                 </Button>
               </motion.div>
