@@ -181,8 +181,8 @@ export default function Pricing() {
           </div>
 
           <Dialog open={!!selectedPackage} onOpenChange={() => handleClosePackage()}>
-            <DialogContent className="max-w-2xl fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-gray-100/95 dark:bg-gray-800/95 backdrop-blur-sm">
-              <DialogHeader className="flex flex-row items-center justify-between">
+            <DialogContent className="w-[90vw] max-h-[90vh] overflow-y-auto fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-gray-100/95 dark:bg-gray-800/95 backdrop-blur-sm">
+              <DialogHeader className="flex flex-row items-center justify-between sticky top-0 bg-gray-100/95 dark:bg-gray-800/95 z-10 pb-4">
                 <DialogTitle>{selectedPackageDetails?.name}</DialogTitle>
                 <div className="flex items-center gap-2">
                   <LanguageToggle />
@@ -191,7 +191,7 @@ export default function Pricing() {
                   </Button>
                 </div>
               </DialogHeader>
-              <div className="space-y-6">
+              <div className="space-y-6 overflow-y-auto">
                 <div className="border-b border-[#E67E00]/20 pb-4">
                   <p className="text-xl font-semibold text-[#E67E00] mb-2">{t("pricing.price")}</p>
                   <p className="text-lg">{selectedPackageDetails?.price}</p>
@@ -209,6 +209,25 @@ export default function Pricing() {
                       <div key={feature} className={`flex items-center ${language === 'he' ? 'flex-row-reverse text-right' : ''}`}>
                         <span className={`text-[#E67E00] text-xs ${language === 'he' ? 'ml-2' : 'mr-2'}`}>◆</span>
                         <span className="font-light">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="border-t border-[#E67E00]/20 pt-4">
+                  <p className="text-xl font-semibold text-[#E67E00] mb-3">{t("pricing.serviceDetails") || "Service Details"}</p>
+                  <div className="space-y-2">
+                    {[
+                      "Bespoke album design available upon request",
+                      "Location service: 150₪ (30-60min) or 250₪ (60min+)",
+                      "Extended session (30min): 300₪ with curated edits",
+                      "Extended session (60min): 500₪ with full editing suite",
+                      "Horse photoshoots: 350₪/30min (may vary by farm)",
+                      "Preference for Friday afternoon sessions"
+                    ].map((detail) => (
+                      <div key={detail} className={`flex items-center ${language === 'he' ? 'flex-row-reverse text-right' : ''}`}>
+                        <span className={`text-[#E67E00] text-xs ${language === 'he' ? 'ml-2' : 'mr-2'}`}>◆</span>
+                        <span className="font-light">{detail}</span>
                       </div>
                     ))}
                   </div>
