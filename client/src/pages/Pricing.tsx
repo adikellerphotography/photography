@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUpBold as PiArrowUpBold, XBold as PiXBold, CrownBold as PiCrownBold, UsersBold as PiUsersBold, BabyCarriageBold as PiBabyCarriageBold, GemBold as PiGemBold, PersonStandingBold as PiPersonStanding, CameraBold as PiCameraBold, PaletteBold as PiPaletteBold, PhoneBold as PiPhoneBold, HorseBold as PiHorseFill } from "@phosphor-icons/react"; 
+import { ArrowUp, X, Crown, Users, Baby, Gem, PersonStanding, Camera, Palette, Phone, Horse } from "lucide-react"; 
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -43,56 +43,56 @@ export default function Pricing() {
         name: "Bat Mitsva",
         price: "2000₪",
         description: t("pricing.packages.batMitzvah.description") || "Experiential photography session",
-        icon: PiCrownBold, 
+        icon: Crown, 
         features: t("pricing.packages.batMitzvah.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Horses",
         price: "1750₪",
         description: t("pricing.packages.horses.description") || "Horse photography session",
-        icon: PiHorseFill, 
+        icon: Horse, 
         features: t("pricing.packages.horses.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Family",
         price: "From 1450₪",
         description: t("pricing.packages.family.description") || "Family photography session",
-        icon: PiUsersBold, 
+        icon: Users, 
         features: t("pricing.packages.family.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Kids",
         price: "1450₪",
         description: t("pricing.packages.kids.description") || "Kids photography session",
-        icon: PiBabyCarriageBold, 
+        icon: Baby, 
         features: t("pricing.packages.kids.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Femininity",
         price: "1450₪",
         description: t("pricing.packages.femininity.description") || "Feminine photography session",
-        icon: PiGemBold, 
+        icon: Gem, 
         features: t("pricing.packages.femininity.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Yoga",
         price: "1450₪",
         description: t("pricing.packages.yoga.description") || "Yoga photography session",
-        icon: PiPersonStanding, 
+        icon: PersonStanding, 
         features: t("pricing.packages.yoga.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Modeling",
         price: "1650₪",
         description: t("pricing.packages.modeling.description") || "Modeling photography session",
-        icon: PiCameraBold, 
+        icon: Camera, 
         features: t("pricing.packages.modeling.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Artful Nude",
         price: "1850₪",
         description: t("pricing.packages.artfulNude.description") || "Artistic nude photography session",
-        icon: PiPaletteBold, 
+        icon: Palette, 
         features: t("pricing.packages.artfulNude.features", { returnObjects: true }) || defaultFeatures
       }
     ];
@@ -332,7 +332,7 @@ export default function Pricing() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
       >
-        <PiArrowUpBold className="h-5 w-5" />
+        <ArrowUp className="h-5 w-5" />
       </motion.button>
     </div>
   );
