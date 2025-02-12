@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, Home, Crown, Sparkles, Users, Baby, Gem, Flower2, Camera, Palette } from "lucide-react";
+import { ArrowUp, X, Crown, Sparkles, Users, Baby, Gem, Flower2, Camera, Palette } from "lucide-react";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -183,8 +183,8 @@ export default function Pricing() {
             <DialogContent className="max-w-2xl fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-background/95 backdrop-blur-sm">
               <DialogHeader className="flex flex-row items-center justify-between">
                 <DialogTitle>{selectedPackageDetails?.name}</DialogTitle>
-                <Button variant="ghost" size="icon" onClick={() => setLocation('/')}>
-                  <Home className="h-5 w-5" />
+                <Button variant="ghost" size="icon" onClick={() => handleClosePackage()}>
+                  <X className="h-5 w-5" />
                 </Button>
               </DialogHeader>
               <div className="space-y-6">
