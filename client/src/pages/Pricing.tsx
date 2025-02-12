@@ -216,10 +216,10 @@ export default function Pricing() {
                     onClick={() => setShowAnastasiaDialog(true)}
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-[#E67E00]/0 to-[#E67E00]/5 group-hover:to-[#E67E00]/10 transition-all duration-300" />
-                    <h3 className={`text-2xl relative z-10 ${language === 'he' ? 'font-bold' : 'font-serif'}`}>
+                    <h3 className={`text-lg relative z-10 font-medium ${language === 'he' ? 'font-heebo' : 'font-sans'}`}>
                       {language === 'he' ? 'אנסטסיה כץ' : 'Anastasia Katsz'}
                     </h3>
-                    <p className="text-sm text-muted-foreground/80 italic relative z-10">
+                    <p className="text-xs text-muted-foreground/80 relative z-10">
                       {language === 'he' ? 'מעצב גרפי' : 'Album Designer'}
                     </p>
                     <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-[#E67E00]/30 to-amber-300/30 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
@@ -231,10 +231,10 @@ export default function Pricing() {
                     onClick={() => setShowNirDialog(true)}
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-[#E67E00]/0 to-[#E67E00]/5 group-hover:to-[#E67E00]/10 transition-all duration-300" />
-                    <h3 className={`text-2xl relative z-10 ${language === 'he' ? 'font-bold' : 'font-serif'}`}>
+                    <h3 className={`text-lg relative z-10 font-medium ${language === 'he' ? 'font-heebo' : 'font-sans'}`}>
                       {language === 'he' ? 'ניר גיל' : 'Nir Gil'}
                     </h3>
-                    <p className="text-sm text-muted-foreground/80 italic relative z-10">
+                    <p className="text-xs text-muted-foreground/80 relative z-10">
                       {language === 'he' ? 'מעצב גרפי' : 'Album Designer'}
                     </p>
                     <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-[#E67E00]/30 to-amber-300/30 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
