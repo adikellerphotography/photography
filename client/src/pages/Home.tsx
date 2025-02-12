@@ -69,44 +69,17 @@ export default function Home() {
       thumb: `/attached_assets/galleries/Modeling/010-thumb.jpeg`,
     },
     "Artful Nude": {
-      img: `/attached_assets/galleries/Artful_Nude/023.jpeg`,
+      img: `/attached_assets/galleries/Artful_Nude/023.jpeg`, 
       thumb: `/attached_assets/galleries/Artful_Nude/023-thumb.jpeg`,
     },
   };
 
-  const customImagePaths = {
-    "Bat Mitsva": {
-      img: `/attached_assets/galleries/Bat_Mitsva/001.jpeg`,
-      thumb: `/attached_assets/galleries/Bat_Mitsva/001-thumb.jpeg`,
-    },
-    Horses: {
-      img: `/attached_assets/galleries/Horses/030.jpeg`,
-      thumb: `/attached_assets/galleries/Horses/030-thumb.jpeg`,
-    },
-    Family: {
-      img: `/attached_assets/galleries/Family/016.jpeg`,
-      thumb: `/attached_assets/galleries/Family/016-thumb.jpeg`,
-    },
-    Kids: {
-      img: `/attached_assets/galleries/Kids/014.jpeg`,
-      thumb: `/attached_assets/galleries/Kids/014-thumb.jpeg`,
-    },
-    Femininity: {
-      img: `/attached_assets/galleries/Femininity/001.jpeg`,
-      thumb: `/attached_assets/galleries/Femininity/001-thumb.jpeg`,
-    },
-    Yoga: {
-      img: `/attached_assets/galleries/Yoga/041.jpeg`,
-      thumb: `/attached_assets/galleries/Yoga/041-thumb.jpeg`,
-    },
-    Modeling: {
-      img: `/attached_assets/galleries/Modeling/001.jpeg`,
-      thumb: `/attached_assets/galleries/Modeling/001-thumb.jpeg`,
-    },
-    "Artful Nude": {
-      img: `/attached_assets/galleries/Artful_Nude/001.jpeg`,
-      thumb: `/attached_assets/galleries/Artful_Nude/001-thumb.jpeg`,
-    },
+  // We can remove customImagePaths since it's redundant with customImages
+  const getFallbackPaths = (categoryPath: string) => {
+    return [
+      `/attached_assets/galleries/${categoryPath}/016.jpeg`,
+      `/assets/galleries/${categoryPath}/016.jpeg`,
+    ];
   };
 
   const getFallbackPaths = (categoryPath: string) => {
