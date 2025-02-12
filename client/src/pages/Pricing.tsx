@@ -266,7 +266,7 @@ export default function Pricing() {
                 <DialogTitle>{language === 'he' ? 'ניר גיל - מחירון אלבומים' : 'Nir Gil - Album Pricing'}</DialogTitle>
               </DialogHeader>
               <div className="relative">
-                <img src="/assets/nir_gil.jpg" alt="Nir Gil Album Pricing" className="w-full" />
+                <img src="/attached_assets/nir_gil.jpg" alt="Nir Gil Album Pricing" className="w-full" />
                 <Button
                   variant="outline"
                   size="icon"
@@ -296,7 +296,7 @@ export default function Pricing() {
                 <DialogTitle>{language === 'he' ? 'אנסטסיה כץ - מחירון אלבומים' : 'Anastasia Katsz - Album Pricing'}</DialogTitle>
               </DialogHeader>
               <div className="relative">
-                <img src="/assets/anastasia_katz.jpg" alt="Anastasia Album Pricing" className="w-full" />
+                <img src="/attached_assets/anastasia_katz.jpg" alt="Anastasia Album Pricing" className="w-full" />
                 <Button
                   variant="outline"
                   size="icon"
