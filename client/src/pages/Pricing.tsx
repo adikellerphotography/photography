@@ -164,6 +164,7 @@ export default function Pricing() {
                   <div className="absolute inset-0 w-1/3 bg-[#E67E00] transition-all duration-300 group-hover:w-[30%]"></div>
                   <div className="relative flex items-center justify-start pl-[calc(33%+8px)] w-full h-full">
                     <span className="text-base font-medium text-black z-10">{pkg.name}</span>
+                    {pkg.icon && <pkg.icon className="w-5 h-5 text-white z-10 ml-2" />}
                   </div>
                 </Button>
               </motion.div>
