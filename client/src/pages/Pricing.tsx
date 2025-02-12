@@ -136,9 +136,9 @@ export default function Pricing() {
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
                   <div className="absolute inset-0 w-1/3 bg-[#E67E00] transition-all duration-300 group-hover:w-[30%]"></div>
-                  <div className={`relative flex items-center ${language === 'he' ? 'justify-end' : 'justify-start'} w-full h-full`}>
-                    {pkg.icon && <pkg.icon className={`absolute ${language === 'he' ? 'right-[calc(12%)] translate-x-1/2' : 'left-[calc(12%)] -translate-x-1/2'} w-9 h-9 text-white z-10`} />}
-                    <span className={`${language === 'he' ? 'pr-[calc(33%+8px)]' : 'pl-[calc(33%+8px)]'} text-base font-medium text-black z-10`}>{t(`categories.${pkg.name}`)}</span>
+                  <div className="relative flex items-center justify-start w-full h-full">
+                    {pkg.icon && <pkg.icon className="absolute left-[calc(12%)] transform -translate-x-1/2 w-9 h-9 text-white z-10" />}
+                    <span className="pl-[calc(33%+8px)] text-base font-medium text-black z-10">{t(`categories.${pkg.name}`)}</span>
                   </div>
                 </Button>
               </motion.div>
