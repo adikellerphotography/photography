@@ -210,35 +210,51 @@ export default function Pricing() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                  <Button
-                    variant="outline"
-                    className="group relative w-full p-10 flex flex-col gap-4 overflow-hidden border border-[#E67E00]/10 hover:border-[#E67E00]/30 bg-white/5 backdrop-blur-sm transition-all duration-500"
-                    onClick={() => setShowAnastasiaDialog(true)}
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#E67E00]/0 via-[#E67E00]/5 to-amber-200/10 opacity-0 group-hover:opacity-100 transition-all duration-500" />
-                    <h3 className={`text-xl relative z-10 ${language === 'he' ? 'font-heebo' : 'font-serif'} tracking-wide`}>
-                      {language === 'he' ? 'אנסטסיה כץ' : 'Anastasia Katsz'}
-                    </h3>
-                    <p className="text-sm text-muted-foreground/70 relative z-10 font-light italic">
-                      {language === 'he' ? 'מעצב גרפי' : 'Album Designer'}
-                    </p>
-                    <div className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-[#E67E00]/30 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
-                  </Button>
+                  <div className="bg-[#1A1A1A] rounded-3xl p-8 flex flex-col items-center space-y-6">
+                    <div className="space-y-2 text-center">
+                      <h3 className="text-3xl font-bold text-white">
+                        {language === 'he' ? 'אנסטסיה כץ' : 'Anastasia Katsz'}
+                      </h3>
+                      <div className="w-16 h-1 mx-auto bg-[#E67E00]" />
+                      <p className="text-gray-400 text-lg">Album Designer</p>
+                    </div>
+                    
+                    <a href="tel:054-633-5594" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
+                      <Phone className="w-5 h-5" />
+                      <span className="text-lg">054-633-5594</span>
+                    </a>
 
-                  <Button
-                    variant="outline"
-                    className="group relative w-full p-10 flex flex-col gap-4 overflow-hidden border border-[#E67E00]/10 hover:border-[#E67E00]/30 bg-white/5 backdrop-blur-sm transition-all duration-500"
-                    onClick={() => setShowNirDialog(true)}
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#E67E00]/0 via-[#E67E00]/5 to-amber-200/10 opacity-0 group-hover:opacity-100 transition-all duration-500" />
-                    <h3 className={`text-xl relative z-10 ${language === 'he' ? 'font-heebo' : 'font-serif'} tracking-wide`}>
-                      {language === 'he' ? 'ניר גיל' : 'Nir Gil'}
-                    </h3>
-                    <p className="text-sm text-muted-foreground/70 relative z-10 font-light italic">
-                      {language === 'he' ? 'מעצב גרפי' : 'Album Designer'}
-                    </p>
-                    <div className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-[#E67E00]/30 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
-                  </Button>
+                    <Button
+                      variant="outline"
+                      className="w-full py-6 text-lg border-[#333] hover:border-[#E67E00] text-white bg-[#111] hover:bg-[#222] transition-all"
+                      onClick={() => setShowAnastasiaDialog(true)}
+                    >
+                      View Pricing
+                    </Button>
+                  </div>
+
+                  <div className="bg-[#1A1A1A] rounded-3xl p-8 flex flex-col items-center space-y-6">
+                    <div className="space-y-2 text-center">
+                      <h3 className="text-3xl font-bold text-white">
+                        {language === 'he' ? 'ניר גיל' : 'Nir Gil'}
+                      </h3>
+                      <div className="w-16 h-1 mx-auto bg-[#E67E00]" />
+                      <p className="text-gray-400 text-lg">Album Designer</p>
+                    </div>
+                    
+                    <a href="tel:054-798-2299" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
+                      <Phone className="w-5 h-5" />
+                      <span className="text-lg">054-798-2299</span>
+                    </a>
+
+                    <Button
+                      variant="outline"
+                      className="w-full py-6 text-lg border-[#333] hover:border-[#E67E00] text-white bg-[#111] hover:bg-[#222] transition-all"
+                      onClick={() => setShowNirDialog(true)}
+                    >
+                      View Pricing
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
