@@ -138,7 +138,7 @@ export default function Pricing() {
                   <div 
                     className="absolute left-0 top-0 bottom-0 w-full h-full transition-all duration-300"
                     style={{
-                      background: 'linear-gradient(to right, #E67E00 0%, #FF9500 30%, rgba(255, 255, 255, 0) 100%)',
+                      background: 'linear-gradient(to right, #E67E00 0%, #FF9500 15%, rgba(255, 255, 255, 0) 50%)',
                       borderRadius: '9999px'
                     }}
                   >
