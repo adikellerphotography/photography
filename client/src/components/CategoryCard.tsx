@@ -4,7 +4,16 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
-import { Icon } from '@iconify/react';
+import { 
+  UilSparkle, 
+  UilHorse, 
+  UilUsersAlt, 
+  UilChild, 
+  UilFlower, 
+  UilYinYang, 
+  UilCamera, 
+  UilBrush 
+} from '@iconscout/react-unicons';
 
 interface CategoryCardProps {
   name: string;
@@ -24,21 +33,21 @@ export default function CategoryCard({ name, description, imageUrl, thumbnailUrl
     switch (categoryName) {
       case "Bat Mitsva":
       case "Bar Mitsva":
-        return <Icon icon="mdi:star-four-points" {...iconProps} />;
+        return <UilSparkle {...iconProps} />;
       case "Horses":
-        return <Icon icon="mdi:horse-variant" {...iconProps} />;
+        return <UilHorse {...iconProps} />;
       case "Family":
-        return <Icon icon="mdi:account-group" {...iconProps} />;
+        return <UilUsersAlt {...iconProps} />;
       case "Kids":
-        return <Icon icon="mdi:baby-face" {...iconProps} />;
+        return <UilChild {...iconProps} />;
       case "Femininity":
-        return <Icon icon="mdi:flower" {...iconProps} />;
+        return <UilFlower {...iconProps} />;
       case "Yoga":
-        return <Icon icon="mdi:meditation" {...iconProps} />;
+        return <UilYinYang {...iconProps} />;
       case "Modeling":
-        return <Icon icon="mdi:camera-iris" {...iconProps} />;
+        return <UilCamera {...iconProps} />;
       case "Artful Nude":
-        return <Icon icon="mdi:palette" {...iconProps} />;
+        return <UilBrush {...iconProps} />;
       default:
         return null;
     }
