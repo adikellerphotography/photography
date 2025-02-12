@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
-import { Sparkles, HorseshoeIcon, Hearts, Child, Flower2, Lotus, Camera, Palette } from "lucide-react";
+import { RiStarLine, RiEquestrianLine, RiGroupLine, RiEmojiStickerLine, RiVipDiamondLine, RiMentalHealthLine, RiCameraLensLine, RiPaintBrushLine } from '@remixicon/react';
 
 interface CategoryCardProps {
   name: string;
@@ -24,21 +24,21 @@ export default function CategoryCard({ name, description, imageUrl, thumbnailUrl
     switch (categoryName) {
       case "Bat Mitsva":
       case "Bar Mitsva":
-        return <Sparkles {...iconProps} />;
+        return <RiStarLine {...iconProps} />;
       case "Horses":
-        return <HorseshoeIcon {...iconProps} />;
+        return <RiEquestrianLine {...iconProps} />;
       case "Family":
-        return <Hearts {...iconProps} />;
+        return <RiGroupLine {...iconProps} />;
       case "Kids":
-        return <Child {...iconProps} />;
+        return <RiEmojiStickerLine {...iconProps} />;
       case "Femininity":
-        return <Flower2 {...iconProps} />;
+        return <RiVipDiamondLine {...iconProps} />;
       case "Yoga":
-        return <Lotus {...iconProps} />;
+        return <RiMentalHealthLine {...iconProps} />;
       case "Modeling":
-        return <Camera {...iconProps} />;
+        return <RiCameraLensLine {...iconProps} />;
       case "Artful Nude":
-        return <Palette {...iconProps} />;
+        return <RiPaintBrushLine {...iconProps} />;
       default:
         return null;
     }
