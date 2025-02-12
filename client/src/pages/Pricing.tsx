@@ -102,7 +102,7 @@ export default function Pricing() {
     setSelectedPackage(null);
   };
 
-  const selectedPackageDetails = packages.find(pkg => pkg.name === selectedPackage);
+  const selectedPackageDetails = getPackages().find(pkg => pkg.name === selectedPackage);
 
   return (
     <div className="min-h-screen pt-8">
