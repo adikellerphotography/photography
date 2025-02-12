@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
-import { User, Horse, Users, Baby, Heart, Yoga, PersonStanding, Paintbrush } from "lucide-react";
+import { Icon } from '@iconify/react';
 
 interface CategoryCardProps {
   name: string;
@@ -24,21 +24,21 @@ export default function CategoryCard({ name, description, imageUrl, thumbnailUrl
     switch (categoryName) {
       case "Bat Mitsva":
       case "Bar Mitsva":
-        return <User {...iconProps} />;
+        return <Icon icon="mdi:star-four-points" {...iconProps} />;
       case "Horses":
-        return <Horse {...iconProps} />;
+        return <Icon icon="mdi:horse-variant" {...iconProps} />;
       case "Family":
-        return <Users {...iconProps} />;
+        return <Icon icon="mdi:account-group" {...iconProps} />;
       case "Kids":
-        return <Baby {...iconProps} />;
+        return <Icon icon="mdi:baby-face" {...iconProps} />;
       case "Femininity":
-        return <Heart {...iconProps} />;
+        return <Icon icon="mdi:flower" {...iconProps} />;
       case "Yoga":
-        return <Yoga {...iconProps} />;
+        return <Icon icon="mdi:meditation" {...iconProps} />;
       case "Modeling":
-        return <PersonStanding {...iconProps} />;
+        return <Icon icon="mdi:camera-iris" {...iconProps} />;
       case "Artful Nude":
-        return <Paintbrush {...iconProps} />;
+        return <Icon icon="mdi:palette" {...iconProps} />;
       default:
         return null;
     }
