@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, X, Crown, Bike, Users, Baby, Gem, PersonStanding, Camera, Palette, Phone } from "lucide-react";
+import { ArrowUp, X, Phone } from "lucide-react";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -43,56 +43,48 @@ export default function Pricing() {
         name: "Bat Mitsva",
         price: "2000₪",
         description: t("pricing.packages.batMitzvah.description") || "Experiential photography session",
-        icon: Crown,
         features: t("pricing.packages.batMitzvah.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Horses",
         price: "1750₪",
         description: t("pricing.packages.horses.description") || "Horse photography session",
-        icon: Bike,
         features: t("pricing.packages.horses.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Family",
         price: "From 1450₪",
         description: t("pricing.packages.family.description") || "Family photography session",
-        icon: Users,
         features: t("pricing.packages.family.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Kids",
         price: "1450₪",
         description: t("pricing.packages.kids.description") || "Kids photography session",
-        icon: Baby,
         features: t("pricing.packages.kids.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Femininity",
         price: "1450₪",
         description: t("pricing.packages.femininity.description") || "Feminine photography session",
-        icon: Gem,
         features: t("pricing.packages.femininity.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Yoga",
         price: "1450₪",
         description: t("pricing.packages.yoga.description") || "Yoga photography session",
-        icon: PersonStanding,
         features: t("pricing.packages.yoga.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Modeling",
         price: "1650₪",
         description: t("pricing.packages.modeling.description") || "Modeling photography session",
-        icon: Camera,
         features: t("pricing.packages.modeling.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Artful Nude",
         price: "1850₪",
         description: t("pricing.packages.artfulNude.description") || "Artistic nude photography session",
-        icon: Palette,
         features: t("pricing.packages.artfulNude.features", { returnObjects: true }) || defaultFeatures
       }
     ];
@@ -143,8 +135,7 @@ export default function Pricing() {
                   className="group relative w-[220px] mx-auto h-12 overflow-hidden bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
-                  <div className="absolute left-0 top-0 bottom-0 aspect-square h-full bg-[#E67E00] rounded-full transition-all duration-300 flex items-center justify-center">
-                    {pkg.icon && <pkg.icon className="w-6 h-6 text-white" />}
+                  <div className="absolute left-0 top-0 bottom-0 aspect-square h-full bg-[#E67E00] rounded-full transition-all duration-300">
                   </div>
                   <div className="relative flex items-center justify-start w-full h-full">
                     <span className="pl-[calc(48px+1rem)] text-base font-medium text-black z-10">{t(pkg.name)}</span>
