@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, X, Crown, Bike, Users, Baby, Gem, PersonStanding, Camera, Palette } from "lucide-react";
+import { ArrowUp, X } from "lucide-react";
+import { RiVipCrownLine, RiEquestrianLine, RiTeamLine, RiEmojiStickerLine, RiVipDiamondLine, RiMentalHealthLine, RiCameraLensLine, RiPaintBrushLine } from '@remixicon/react';
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -40,7 +41,7 @@ export default function Pricing() {
       name: "Bat/Bar Mitzvah",
       price: "2000₪",
       description: "Experiential photography session",
-      icon: Crown,
+      icon: RiVipCrownLine,
       features: [
         "3 hours session (before sunset)",
         "2 locations",
@@ -52,7 +53,7 @@ export default function Pricing() {
       name: "Horses",
       price: "1750₪",
       description: "Unique horse photography session",
-      icon: Bike,
+      icon: RiEquestrianLine,
       features: [
         "2 hours session",
         "1 location",
@@ -64,7 +65,7 @@ export default function Pricing() {
       name: "Family",
       price: "From 1450₪",
       description: "Family portrait session",
-      icon: Users,
+      icon: RiTeamLine,
       features: [
         "1.5 hours session",
         "1 location",
@@ -76,7 +77,7 @@ export default function Pricing() {
       name: "Kids",
       price: "1450₪",
       description: "Children portrait session",
-      icon: Baby,
+      icon: RiEmojiStickerLine,
       features: [
         "1.5 hours session",
         "1 location",
@@ -88,7 +89,7 @@ export default function Pricing() {
       name: "Femininity",
       price: "1450₪",
       description: "Personal portrait session",
-      icon: Gem,
+      icon: RiVipDiamondLine,
       features: [
         "1.5 hours session",
         "1 location",
@@ -100,7 +101,7 @@ export default function Pricing() {
       name: "Yoga",
       price: "1450₪",
       description: "Yoga and movement session",
-      icon: PersonStanding,
+      icon: RiMentalHealthLine,
       features: [
         "1.5 hours session",
         "1 location",
@@ -112,7 +113,7 @@ export default function Pricing() {
       name: "Modeling",
       price: "1650₪",
       description: "Professional modeling session",
-      icon: Camera,
+      icon: RiCameraLensLine,
       features: [
         "2 hours session",
         "1-2 locations",
@@ -124,7 +125,7 @@ export default function Pricing() {
       name: "Artful Nude",
       price: "1850₪",
       description: "Artistic photography session",
-      icon: Palette,
+      icon: RiPaintBrushLine,
       features: [
         "2 hours session",
         "Studio setting",
