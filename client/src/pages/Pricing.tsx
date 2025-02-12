@@ -35,61 +35,64 @@ export default function Pricing() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const getPackages = () => [
-    {
-      name: "Bat Mitsva",
-      price: "2000₪",
-      description: t("pricing.packages.batMitzvah.description"),
-      icon: Crown,
-      features: t("pricing.packages.batMitzvah.features", { returnObjects: true })
-    },
-    {
-      name: "Horses",
-      price: "1750₪",
-      description: t("pricing.packages.horses.description"),
-      icon: Bike,
-      features: t("pricing.packages.horses.features", { returnObjects: true })
-    },
-    {
-      name: "Family",
-      price: "From 1450₪",
-      description: t("pricing.packages.family.description"),
-      icon: Users,
-      features: t("pricing.packages.family.features", { returnObjects: true })
-    },
-    {
-      name: "Kids",
-      price: "1450₪",
-      description: t("pricing.packages.kids.description"),
-      icon: Baby,
-      features: t("pricing.packages.kids.features", { returnObjects: true })
-    },
-    {
-      name: "Femininity",
-      price: "1450₪",
-      description: t("pricing.packages.femininity.description"),
-      icon: Gem,
-      features: t("pricing.packages.femininity.features", { returnObjects: true })
-    },
-    {
-      name: "Yoga",
-      price: "1450₪",
-      description: t("pricing.packages.yoga.description"),
-      icon: PersonStanding,
-      features: t("pricing.packages.yoga.features", { returnObjects: true })
-    },
-    {
-      name: "Modeling",
-      price: "1650₪",
-      description: t("pricing.packages.modeling.description"),
-      icon: Camera,
-      features: t("pricing.packages.modeling.features", { returnObjects: true })
-    },
-    {
-      name: "Artful Nude",
-      price: "1850₪",
-      description: t("pricing.packages.artfulNude.description"),
-      icon: Palette,
+  const getPackages = () => {
+    const defaultFeatures = ["1.5 hours session", "1 location", "25 edited photos", "All raw material included"];
+    
+    return [
+      {
+        name: "Bat Mitsva",
+        price: "2000₪",
+        description: t("pricing.packages.batMitzvah.description") || "Experiential photography session",
+        icon: Crown,
+        features: t("pricing.packages.batMitzvah.features", { returnObjects: true }) || defaultFeatures
+      },
+      {
+        name: "Horses",
+        price: "1750₪",
+        description: t("pricing.packages.horses.description") || "Horse photography session",
+        icon: Bike,
+        features: t("pricing.packages.horses.features", { returnObjects: true }) || defaultFeatures
+      },
+      {
+        name: "Family",
+        price: "From 1450₪",
+        description: t("pricing.packages.family.description") || "Family photography session",
+        icon: Users,
+        features: t("pricing.packages.family.features", { returnObjects: true }) || defaultFeatures
+      },
+      {
+        name: "Kids",
+        price: "1450₪",
+        description: t("pricing.packages.kids.description") || "Kids photography session",
+        icon: Baby,
+        features: t("pricing.packages.kids.features", { returnObjects: true }) || defaultFeatures
+      },
+      {
+        name: "Femininity",
+        price: "1450₪",
+        description: t("pricing.packages.femininity.description") || "Feminine photography session",
+        icon: Gem,
+        features: t("pricing.packages.femininity.features", { returnObjects: true }) || defaultFeatures
+      },
+      {
+        name: "Yoga",
+        price: "1450₪",
+        description: t("pricing.packages.yoga.description") || "Yoga photography session",
+        icon: PersonStanding,
+        features: t("pricing.packages.yoga.features", { returnObjects: true }) || defaultFeatures
+      },
+      {
+        name: "Modeling",
+        price: "1650₪",
+        description: t("pricing.packages.modeling.description") || "Modeling photography session",
+        icon: Camera,
+        features: t("pricing.packages.modeling.features", { returnObjects: true }) || defaultFeatures
+      },
+      {
+        name: "Artful Nude",
+        price: "1850₪",
+        description: t("pricing.packages.artfulNude.description") || "Artistic nude photography session",
+        icon: Palette,
       features: t("pricing.packages.artfulNude.features", { returnObjects: true })
     }
   ];
