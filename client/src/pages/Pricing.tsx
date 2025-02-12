@@ -35,102 +35,62 @@ export default function Pricing() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const packages = [
+  const getPackages = () => [
     {
-      name: "Bat/Bar Mitzvah",
+      name: t("categories.Bat Mitsva"),
       price: "2000₪",
-      description: "Experiential photography session",
+      description: t("pricing.packages.batMitzvah.description"),
       icon: Crown,
-      features: [
-        "3 hours session (before sunset)",
-        "2 locations",
-        "40 edited photos",
-        "All raw material included",
-      ]
+      features: t("pricing.packages.batMitzvah.features", { returnObjects: true })
     },
     {
-      name: "Horses",
+      name: t("categories.Horses"),
       price: "1750₪",
-      description: "Unique horse photography session",
+      description: t("pricing.packages.horses.description"),
       icon: Bike,
-      features: [
-        "2 hours session",
-        "1 location",
-        "30 edited photos",
-        "All raw material included",
-      ]
+      features: t("pricing.packages.horses.features", { returnObjects: true })
     },
     {
-      name: "Family",
+      name: t("categories.Family"),
       price: "From 1450₪",
-      description: "Family portrait session",
+      description: t("pricing.packages.family.description"),
       icon: Users,
-      features: [
-        "1.5 hours session",
-        "1 location",
-        "25 edited photos",
-        "All raw material included",
-      ]
+      features: t("pricing.packages.family.features", { returnObjects: true })
     },
     {
-      name: "Kids",
+      name: t("categories.Kids"),
       price: "1450₪",
-      description: "Children portrait session",
+      description: t("pricing.packages.kids.description"),
       icon: Baby,
-      features: [
-        "1.5 hours session",
-        "1 location",
-        "25 edited photos",
-        "All raw material included",
-      ]
+      features: t("pricing.packages.kids.features", { returnObjects: true })
     },
     {
-      name: "Femininity",
+      name: t("categories.Femininity"),
       price: "1450₪",
-      description: "Personal portrait session",
+      description: t("pricing.packages.femininity.description"),
       icon: Gem,
-      features: [
-        "1.5 hours session",
-        "1 location",
-        "25 edited photos",
-        "All raw material included",
-      ]
+      features: t("pricing.packages.femininity.features", { returnObjects: true })
     },
     {
-      name: "Yoga",
+      name: t("categories.Yoga"),
       price: "1450₪",
-      description: "Yoga and movement session",
+      description: t("pricing.packages.yoga.description"),
       icon: PersonStanding,
-      features: [
-        "1.5 hours session",
-        "1 location",
-        "25 edited photos",
-        "All raw material included",
-      ]
+      features: t("pricing.packages.yoga.features", { returnObjects: true })
     },
     {
-      name: "Modeling",
+      name: t("categories.Modeling"),
       price: "1650₪",
-      description: "Professional modeling session",
+      description: t("pricing.packages.modeling.description"),
       icon: Camera,
-      features: [
-        "2 hours session",
-        "1-2 locations",
-        "30 edited photos",
-        "All raw material included",
-      ]
+      features: t("pricing.packages.modeling.features", { returnObjects: true })
     },
     {
-      name: "Artful Nude",
+      name: t("categories.Artful Nude"),
       price: "1850₪",
-      description: "Artistic photography session",
+      description: t("pricing.packages.artfulNude.description"),
       icon: Palette,
-      features: [
-        "2 hours session",
-        "Studio setting",
-        "30 edited photos",
-        "All raw material included",
-      ]
+      features: t("pricing.packages.artfulNude.features", { returnObjects: true })
     }
   ];
 
