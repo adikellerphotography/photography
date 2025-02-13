@@ -122,11 +122,3 @@
     display: none;  /* Chrome, Safari and Opera */
   }
 }
-
-.clip-path-teardrop {
-  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
-}
-
-.clip-path-teardrop {
-  clip-path: path('M0 0a24 24 0 1 1 0 48 24 24 0 0 1 0-48zm24 0l48 24-48 24V0z');
-}
