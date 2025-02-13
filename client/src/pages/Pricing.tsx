@@ -137,14 +137,14 @@ export default function Pricing() {
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
                   <div className="absolute left-0 top-0 bottom-0 h-full w-[25%] bg-[#E67E00] flex items-center justify-center">
-                    {pkg.name === "Bat Mitsva" && <FaUserTie className="w-5 h-5 text-white" />}
-                    {pkg.name === "Horses" && <FaHorse className="w-5 h-5 text-white" />}
-                    {pkg.name === "Family" && <FaPeopleGroup className="w-5 h-5 text-white" />}
-                    {pkg.name === "Kids" && <FaChild className="w-5 h-5 text-white" />}
-                    {pkg.name === "Femininity" && <FaHeart className="w-5 h-5 text-white" />}
-                    {pkg.name === "Yoga" && <FaPerson className="w-5 h-5 text-white" />}
-                    {pkg.name === "Modeling" && <FaPersonRunning className="w-5 h-5 text-white" />}
-                    {pkg.name === "Artful Nude" && <FaPalette className="w-5 h-5 text-white" />}
+                    {pkg.name === "Bat Mitsva" && <FaUserTie className="w-7 h-7 text-white" />}
+                    {pkg.name === "Horses" && <FaHorse className="w-7 h-7 text-white" />}
+                    {pkg.name === "Family" && <FaPeopleGroup className="w-7 h-7 text-white" />}
+                    {pkg.name === "Kids" && <FaChild className="w-7 h-7 text-white" />}
+                    {pkg.name === "Femininity" && <FaHeart className="w-7 h-7 text-white" />}
+                    {pkg.name === "Yoga" && <FaPerson className="w-7 h-7 text-white" />}
+                    {pkg.name === "Modeling" && <FaPersonRunning className="w-7 h-7 text-white" />}
+                    {pkg.name === "Artful Nude" && <FaPalette className="w-7 h-7 text-white" />}
                   </div>
                   <div className="relative flex items-center justify-start w-full h-full">
                     <span className="pl-[calc(25%+1rem)] text-base font-medium text-black">{t(pkg.name)}</span>
