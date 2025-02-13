@@ -130,5 +130,5 @@
 }
 
 .clip-path-teardrop {
-  clip-path: path('M0 0a24 24 0 1 1 0 48 24 24 0 0 1 0-48zm24 0l120 24-120 24V0z');
+  clip-path: path('M24 0A24 24 0 1 0 24 48 24 24 0 0 0 24 0M24 0L48 24 24 48V0');
 }
