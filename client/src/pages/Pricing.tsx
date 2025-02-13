@@ -135,12 +135,10 @@ export default function Pricing() {
                   className="group relative w-[220px] mx-auto h-12 overflow-hidden bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
-                  <div className="absolute left-0 top-0 bottom-0 w-20 h-full">
-                    <div className="absolute left-0 top-0 bottom-0 w-12 h-full">
-                      <div className="absolute left-0 top-0 bottom-0 w-12 h-full bg-[#E67E00] rounded-full"></div>
-                    </div>
-                    <div className="absolute left-6 top-0 w-14 h-full">
-                      <div className="absolute right-0 top-0 bottom-0 w-0 h-0 border-l-[28px] border-y-[24px] border-y-transparent border-l-[#E67E00]"></div>
+                  <div className="absolute left-0 top-0 bottom-0 aspect-square h-full">
+                    <div className="absolute left-0 top-0 bottom-0 w-12 h-full bg-[#E67E00] rounded-full"></div>
+                    <div className="absolute left-6 top-0 bottom-0 w-10 h-full overflow-hidden">
+                      <div className="absolute left-0 top-0 w-full h-full bg-[#E67E00] rounded-r-full"></div>
                     </div>
                   </div>
                   <div className="relative flex items-center justify-start w-full h-full">
