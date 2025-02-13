@@ -104,36 +104,68 @@ export const translations = {
       batMitzvah: {
         name: "Bat/Bar Mitzvah",
         price: "2000₪",
-        description: "Experiential photography session",
-        features: [
-          "3 hours session (before sunset)",
-          "2 locations",
-          "40 edited photos",
-          "All raw material included",
-        ],
+        description: {
+          en: "Experiential photography session",
+          he: "צילומי בת/בר מצווה חוויתיים"
+        },
+        features: {
+          en: [
+            "3 hours session (before sunset)",
+            "2 locations",
+            "40 edited photos",
+            "All raw material included",
+          ],
+          he: [
+            "צילום 3 שעות (לפני השקיעה)",
+            "2 לוקיישנים",
+            "40 תמונות ערוכות",
+            "כולל את כל חומר הגלם",
+          ]
+        }
       },
       family: {
         name: "Family/Feminine/Yoga",
         price: "From 1450₪",
-        description:
-          "Up to 10 people: 1450₪, Up to 15 people: 1550₪, Up to 20 people: 1650₪",
-        features: [
-          "1.5 hours session (before sunset)",
-          "1 location",
-          "25 edited photos",
-          "All raw material included",
-        ],
+        description: {
+          en: "Up to 10 people: 1450₪, Up to 15 people: 1550₪, Up to 20 people: 1650₪",
+          he: "עד 10 אנשים: 1450₪, עד 15 אנשים: 1550₪, עד 20 אנשים: 1650₪"
+        },
+        features: {
+          en: [
+            "1.5 hours session (before sunset)",
+            "1 location",
+            "25 edited photos",
+            "All raw material included",
+          ],
+          he: [
+            "צילום שעה וחצי (לפני השקיעה)",
+            "לוקיישן אחד",
+            "25 תמונות ערוכות",
+            "כולל את כל חומר הגלם",
+          ]
+        }
       },
       kids: {
         name: "Kids Photography",
         price: "1450₪",
-        description: "Perfect for children portraits",
-        features: [
-          "1.5 hours session (before sunset)",
-          "1 location",
-          "25 edited photos",
-          "All raw material included",
-        ],
+        description: {
+          en: "Perfect for children portraits",
+          he: "מושלם לצילומי ילדים"
+        },
+        features: {
+          en: [
+            "1.5 hours session (before sunset)",
+            "1 location",
+            "25 edited photos",
+            "All raw material included",
+          ],
+          he: [
+            "צילום שעה וחצי (לפני השקיעה)",
+            "לוקיישן אחד",
+            "25 תמונות ערוכות",
+            "כולל את כל חומר הגלם",
+          ]
+        }
       },
       guidingAndMentoring: {
         title: "Guiding and Mentoring",
@@ -157,26 +189,50 @@ export const translations = {
       purim: {
         name: "Purim Photography",
         price: "450₪",
-        description: "Capture the Purim celebration",
-        features: [
-          "0.5 hour session (before sunset)",
-          "1 location",
-          "12 edited photos",
-          "All raw material included",
-        ],
+        description: {
+          en: "Capture the Purim celebration",
+          he: "סשן צילומי פורים"
+        },
+        features: {
+          en: [
+            "0.5 hour session (before sunset)",
+            "1 location",
+            "12 edited photos",
+            "All raw material included",
+          ],
+          he: [
+            "צילום חצי שעה (לפני השקיעה)",
+            "לוקיישן אחד",
+            "12 תמונות ערוכות",
+            "כולל את כל חומר הגלם",
+          ]
+        }
       },
       additional: {
         name: "Service Details",
         price: "",
-        description: "Refined Photography Experience",
-        features: [
-          "Bespoke album design available upon request",
-          "Location service: 150₪ (30-60min) or 250₪ (60min+)",
-          "Extended session (30min): 300₪ with curated edits",
-          "Extended session (60min): 500₪ with full editing suite",
-          "Horse photoshoots: 350₪/30min (may vary by farm)",
-          "Preference for Friday afternoon sessions",
-        ],
+        description: {
+          en: "Refined Photography Experience",
+          he: "פרטי מחיר חשובים"
+        },
+        features: {
+          en: [
+            "Bespoke album design available upon request",
+            "Location service: 150₪ (30-60min) or 250₪ (60min+)",
+            "Extended session (30min): 300₪ with curated edits",
+            "Extended session (60min): 500₪ with full editing suite",
+            "Horse photoshoots: 350₪/30min (may vary by farm)",
+            "Preference for Friday afternoon sessions",
+          ],
+          he: [
+            "עיצוב אלבום מותאם אישית זמין לפי בקשה",
+            "נסיעות: 150₪ (30-60 דקות) או 250₪ (מעל שעה)",
+            "תוספת חצי שעת צילום: 300₪ כולל עריכה",
+            "הארכת צילום (60 דקות): 500₪ כולל עריכה מלאה",
+            "צילומי סוסים: 350₪ לחצי שעה (עשוי להשתנות בהתאם לחווה)",
+            "עדיפות לצילומים בשישי אחה״צ",
+          ]
+        }
       },
     },
     gallery: {
@@ -296,76 +352,132 @@ export const translations = {
       "Artful Nude": "עירום אומנותי",
       packages: {
         batMitzvah: {
-          description: "צילומי בת/בר מצווה חוויתיים",
-          features: [
-            "צילום 3 שעות (לפני השקיעה)",
-            "2 לוקיישנים",
-            "40 תמונות ערוכות",
-            "כולל את כל חומר הגלם"
-          ]
+          description: {
+            en: "Experiential photography session",
+            he: "חבילת צילומי בת מצווה"
+          },
+          features: {
+            en: [
+              "3 hours session (before sunset)",
+              "2 locations",
+              "40 edited photos",
+              "All raw material included",
+              "Professional makeup artist available (additional cost)"
+            ],
+            he: [
+              "צילום 3 שעות (לפני השקיעה)",
+              "2 לוקיישנים",
+              "40 תמונות ערוכות",
+              "כולל את כל חומר הגלם",
+              "אפשרות למאפרת מקצועית (בתוספת תשלום)"
+            ]
+          }
         },
         horses: {
-          description: "צילומי סוסים ייחודיים",
-          features: [
-            "צילום שעתיים",
-            "לוקיישן אחד",
-            "30 תמונות ערוכות",
-            "כולל את כל חומר הגלם"
-          ]
+          description: {
+            en: "Horse photography session",
+            he: "חבילת צילומי סוסים"
+          },
+          features: {
+            en: [
+              "1.5 hours session",
+              "1 location",
+              "25 edited photos",
+              "All raw material included",
+              "Farm location fee may apply"
+            ],
+            he: [
+              "צילומים באורך שעה וחצי",
+              "לוקיישן אחד",
+              "25 תמונות ערוכות",
+              "כל החומר הגולמי",
+              "ייתכן תשלום נוסף לחווה"
+            ]
+          }
         },
         family: {
-          description: "צילומי משפחה",
-          features: [
-            "צילום שעה וחצי (לפני השקיעה)",
-            "לוקיישן אחד",
-            "25 תמונות ערוכות",
-            "כולל את כל חומר הגלם"
-          ]
+          description: {
+            en: "Family Photography Session",
+            he: "צילומי משפחה"
+          },
+          features: {
+            en: [
+              "1.5 hours session (before sunset)",
+              "1 location",
+              "25 edited photos",
+              "All raw material included",
+            ],
+            he: [
+              "צילום שעה וחצי (לפני השקיעה)",
+              "לוקיישן אחד",
+              "25 תמונות ערוכות",
+              "כולל את כל חומר הגלם"
+            ]
+          }
         },
         kids: {
-          description: "צילומי ילדים",
-          features: [
-            "צילום שעה וחצי (לפני השקיעה)",
-            "לוקיישן אחד",
-            "25 תמונות ערוכות",
-            "כולל את כל חומר הגלם"
-          ]
+          description: {
+            en: "Kids Photography Session",
+            he: "צילומי ילדים"
+          },
+          features: {
+            en: [
+              "1.5 hours session (before sunset)",
+              "1 location",
+              "25 edited photos",
+              "All raw material included",
+            ],
+            he: [
+              "צילום שעה וחצי (לפני השקיעה)",
+              "לוקיישן אחד",
+              "25 תמונות ערוכות",
+              "כולל את כל חומר הגלם"
+            ]
+          }
         },
-        femininity: {
-          description: "צילומי נשיות",
-          features: [
-            "צילום שעה וחצי (לפני השקיעה)",
-            "לוקיישן אחד",
-            "25 תמונות ערוכות",
-            "כולל את כל חומר הגלם"
-          ]
+        purim: {
+          description: {
+            en: "Purim Photography Session",
+            he: "צילומי פורים"
+          },
+          features: {
+            en: [
+              "0.5 hour session (before sunset)",
+              "1 location",
+              "12 edited photos",
+              "All raw material included",
+            ],
+            he: [
+              "צילום חצי שעה (לפני השקיעה)",
+              "לוקיישן אחד",
+              "12 תמונות ערוכות",
+              "כולל את כל חומר הגלם"
+            ]
+          }
         },
-        yoga: {
-          description: "צילומי יוגה ותנועה",
-          features: [
-            "צילום שעה וחצי (לפני השקיעה)",
-            "לוקיישן אחד",
-            "25 תמונות ערוכות",
-            "כולל את כל חומר הגלם"
-          ]
-        },
-        modeling: {
-          description: "צילומי דוגמנות מקצועיים",
-          features: [
-            "צילום שעתיים",
-            "1-2 לוקיישנים",
-            "30 תמונות ערוכות",
-            "כולל את כל חומר הגלם"
-          ]
-        },
-        artfulNude: {
-          description: "צילום אומנותי",
-          features: [
-            "צילום שעתיים",
-            "סטודיו",
-            "30 תמונות ערוכות",
-            "כולל את כל חומר הגלם"
-          ]
+        additional: {
+          description: {
+            en: "Additional Services",
+            he: "פרטי השירות"
+          },
+          features: {
+            en: [
+              "Bespoke album design available upon request",
+              "Location service: 150₪ (30-60min) or 250₪ (60min+)",
+              "Extended session (30min): 300₪ with curated edits",
+              "Extended session (60min): 500₪ with full editing suite",
+              "Horse photoshoots: 350₪/30min (may vary by farm)",
+              "Preference for Friday afternoon sessions",
+            ],
+            he: [
+              "עיצוב אלבום מותאם אישית זמין לפי בקשה",
+              "נסיעות: 150₪ (30-60 דקות) או 250₪ (מעל שעה)",
+              "תוספת חצי שעת צילום: 300₪ כולל עריכה",
+              "הארכת צילום (60 דקות): 500₪ כולל עריכה מלאה",
+              "צילומי סוסים: 350₪ לחצי שעה (עשוי להשתנות בהתאם לחווה)",
+              "עדיפות לצילומים בשישי אחה״צ",
+            ]
+          }
         }
       },
       albums: {
@@ -373,83 +485,7 @@ export const translations = {
         description:
           "אני משתף פעולה עם מעצבים מומחים המתמחים ביצירת אלבומי תמונות מרהיבים ואיכותיים המותאמים לסיפור הייחודי שלך. השירות שלנו כולל הדפסה מקצועית ומשלוח ישיר, המבטיח חוויה חלקה השומרת על הזכרונות היקרים שלך בצורה יפה.",
       },
-      batMitzvah: {
-        name: "בת/בר מצווה",
-        price: "2000₪",
-        description: "צילומי אירוע מיוחד",
-        features: [
-          "צילום 3 שעות (לפני השקיעה)",
-          "2 לוקיישנים",
-          "40 תמונות ערוכות",
-          "כולל את כל חומר הגלם",
-        ],
-      },
-      family: {
-        name: "משפחה/נשיות/יוגה",
-        price: "החל מ-1450₪",
-        description:
-          "עד 10 אנשים: 1450₪, עד 15 אנשים: 1550₪, עד 20 אנשים: 1650₪",
-        features: [
-          "צילום שעה וחצי (לפני השקיעה)",
-          "לוקיישן אחד",
-          "25 תמונות ערוכות",
-          "כולל את כל חומר הגלם",
-        ],
-      },
-      kids: {
-        name: "צילומי ילדים",
-        price: "1450₪",
-        description: "מושלם לצילומי ילדים",
-        features: [
-          "צילום שעה וחצי (לפני השקיעה)",
-          "לוקיישן אחד",
-          "25 תמונות ערוכות",
-          "כולל את כל חומר הגלם",
-        ],
-      },
-      guidingAndMentoring: {
-        title: "ליווי והדרכה",
-        generalInfo: "מידע כללי",
-        price: "מחיר",
-        topics: "נושאי הלימוד",
-        bonus: "בונוס",
-        class1: {
-          title: "סדנה מעשית בשטח",
-        },
-        class2: {
-          title: "לייטרום",
-        },
-        class3: {
-          title: "פוטושופ בסיסי",
-        },
-        class4: {
-          title: "פוטושופ מתקדם",
-        },
-      },
-      purim: {
-        name: "צילומי פורים",
-        price: "450₪",
-        description: "סשן צילומי פורים",
-        features: [
-          "צילום חצי שעה (לפני השקיעה)",
-          "לוקיישן אחד",
-          "12 תמונות ערוכות",
-          "כולל את כל חומר הגלם",
-        ],
-      },
-      additional: {
-        name: "מידע נוסף",
-        price: "",
-        description: "פרטי מחיר חשובים",
-        features: [
-          "עיצוב אלבום מותאם אישית זמין לפי בקשה",
-          "נסיעות: 150₪ (30-60 דקות) או 250₪ (מעל שעה)",
-          "תוספת חצי שעת צילום: 300₪ כולל עריכה",
-          "הארכת צילום (60 דקות): 500₪ כולל עריכה מלאה",
-          "צילומי סוסים: 350₪ לחצי שעה (עשוי להשתנות בהתאם לחווה)",
-          "עדיפות לצילומים בשישי אחה״צ",
-        ],
-      },
+      
     },
     gallery: {
       noPhotos: "לא נמצאו תמונות בקטגוריה זו",
