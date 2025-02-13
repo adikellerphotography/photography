@@ -135,10 +135,10 @@ export default function Pricing() {
                   className="group relative w-[220px] mx-auto h-12 overflow-hidden bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
-                  <div className="absolute left-0 top-0 bottom-0 h-full w-[35%] bg-[#E67E00]">
+                  <div className="absolute left-0 top-0 bottom-0 h-full w-[25%] bg-[#E67E00]">
                   </div>
                   <div className="relative flex items-center justify-start w-full h-full">
-                    <span className="pl-[calc(35%+1rem)] text-base font-medium text-black">{t(pkg.name)}</span>
+                    <span className="pl-[calc(25%+1rem)] text-base font-medium text-black">{t(pkg.name)}</span>
                   </div>
                 </Button>
               </motion.div>
