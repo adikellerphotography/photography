@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, X, UserSquare2, HorseshoeIcon, Users, Baby, Heart, Running, Palette, Yoga } from "lucide-react";
+import { ArrowUp, X, UserSquare2, Horse2Icon, Users, Baby, Heart, Running, Palette, Yoga } from "lucide-react";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -138,7 +138,7 @@ export default function Pricing() {
                 >
                   <div className="absolute left-0 top-0 bottom-0 h-full w-[25%] bg-[#E67E00] flex items-center justify-center">
                     {pkg.name === "Bat Mitsva" && <UserSquare2 className="w-7 h-7 text-white" />}
-                    {pkg.name === "Horses" && <HorseshoeIcon className="w-7 h-7 text-white" />}
+                    {pkg.name === "Horses" && <Horse2Icon className="w-7 h-7 text-white" />}
                     {pkg.name === "Family" && <Users className="w-7 h-7 text-white" />}
                     {pkg.name === "Kids" && <Baby className="w-7 h-7 text-white" />}
                     {pkg.name === "Femininity" && <Heart className="w-7 h-7 text-white" />}
