@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowUp, X, Phone } from "lucide-react";
-import { FaUserTie, FaHorse, FaPeopleGroup, FaChild, FaHeart, FaPersonRunning, FaPalette, FaPersonYoga } from "react-icons/fa6";
+import { FaUserTie, FaHorse, FaPeopleGroup, FaChild, FaHeart, FaPersonRunning, FaPalette, FaYoga } from "react-icons/fa6";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -142,7 +142,7 @@ export default function Pricing() {
                     {pkg.name === "Family" && <FaPeopleGroup className="w-5 h-5 text-white" />}
                     {pkg.name === "Kids" && <FaChild className="w-5 h-5 text-white" />}
                     {pkg.name === "Femininity" && <FaHeart className="w-5 h-5 text-white" />}
-                    {pkg.name === "Yoga" && <FaPersonYoga className="w-5 h-5 text-white" />}
+                    {pkg.name === "Yoga" && <FaYoga className="w-5 h-5 text-white" />}
                     {pkg.name === "Modeling" && <FaPersonRunning className="w-5 h-5 text-white" />}
                     {pkg.name === "Artful Nude" && <FaPalette className="w-5 h-5 text-white" />}
                   </div>
