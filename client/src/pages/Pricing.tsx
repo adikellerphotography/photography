@@ -135,10 +135,10 @@ export default function Pricing() {
                   className="group relative w-[220px] mx-auto h-12 overflow-hidden bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
-                  <div className="absolute left-0 top-0 bottom-0 h-full flex items-center">
+                  <div className="absolute left-0 top-0 bottom-0 h-full aspect-[1.5] flex items-center">
                     <div className="h-full aspect-square rounded-full bg-[#E67E00]"></div>
                     <div className="h-full aspect-square relative">
-                      <div className="absolute inset-0 scale-x-75 origin-left bg-[#E67E00] clip-path-teardrop"></div>
+                      <div className="absolute inset-0 bg-[#E67E00] clip-path-teardrop"></div>
                     </div>
                   </div>
                   <div className="relative flex items-center justify-start w-full h-full">
