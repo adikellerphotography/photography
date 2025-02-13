@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, X, Phone, UserSquare2, Horse2, Users, Baby, Heart, Running, Palette, Yoga } from "lucide-react";
+import { ArrowUp, X,  UserSquare2, Horse2, Users, Baby, Heart, Running, Palette, Yoga } from "lucide-react";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { useLanguage } from "@/hooks/use-language";
 import { useTranslation } from "@/hooks/use-translation";
 import LanguageToggle from "@/components/LanguageToggle";
+import { RiPhoneLine } from "react-icons/ri"; // Added import for RiPhoneLine
 
 export default function Pricing() {
   const { language } = useLanguage();
@@ -228,7 +229,7 @@ export default function Pricing() {
                     </div>
 
                     <a href="tel:054-633-5594" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
-                      <Phone className="w-4 h-4" />
+                      <RiPhoneLine className="w-4 h-4" /> {/* Replaced Phone icon */}
                       <span className="text-sm">054-633-5594</span>
                     </a>
 
@@ -252,7 +253,7 @@ export default function Pricing() {
                     </div>
 
                     <a href="tel:054-798-2299" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
-                      <Phone className="w-4 h-4" />
+                      <RiPhoneLine className="w-4 h-4" /> {/* Replaced Phone icon */}
                       <span className="text-sm">054-798-2299</span>
                     </a>
 
