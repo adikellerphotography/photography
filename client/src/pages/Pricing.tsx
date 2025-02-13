@@ -137,8 +137,8 @@ export default function Pricing() {
                 >
                   <div className="absolute left-0 top-0 bottom-0 aspect-square h-full">
                     <div className="absolute left-0 top-0 bottom-0 w-12 h-full bg-[#E67E00] rounded-full"></div>
-                    <div className="absolute left-6 top-0 bottom-0 w-16 h-full overflow-hidden">
-                      <div className="absolute left-0 top-0 w-full h-full bg-[#E67E00] clip-path-teardrop"></div>
+                    <div className="absolute left-6 top-0 bottom-0 w-12 h-full">
+                      <div className="absolute left-0 top-0 w-0 h-0 border-y-[24px] border-l-[32px] border-y-transparent border-l-[#E67E00]"></div>
                     </div>
                   </div>
                   <div className="relative flex items-center justify-start w-full h-full">
