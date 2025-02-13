@@ -155,7 +155,7 @@ export default function Pricing() {
           </div>
 
           <Dialog open={!!selectedPackage} onOpenChange={() => handleClosePackage()}>
-            <DialogContent className="w-[90vw] max-h-[90vh] overflow-y-auto fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-gray-100/95 dark:bg-gray-800/95 backdrop-blur-sm">
+            <DialogContent className="w-[90vw] max-h-[90vh] overflow-y-auto fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-gray-100/95 dark:bg-gray-800/95 backdrop-blur-sm animate-in zoom-in-95 duration-300 ease-out">
               <DialogHeader className="flex flex-row items-center justify-between sticky top-0 bg-gray-100/95 dark:bg-gray-800/95 z-10 pb-4">
                 <DialogTitle>{selectedPackageDetails?.name}</DialogTitle>
                 <div className="flex items-center gap-2">
@@ -166,9 +166,12 @@ export default function Pricing() {
                 </div>
               </DialogHeader>
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ 
+                  duration: 0.3,
+                  ease: [0.16, 1, 0.3, 1]
+                }}
                 className={`space-y-6 overflow-y-auto ${language === 'he' ? 'text-right' : ''}`}
               >
                 <div className="border-b border-[#E67E00]/20 pb-4">
