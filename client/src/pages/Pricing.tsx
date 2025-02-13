@@ -136,8 +136,6 @@ export default function Pricing() {
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
                   <div className="absolute left-0 top-0 bottom-0 aspect-square h-full bg-[#E67E00] rounded-full transition-all duration-300">
-                    <div className="absolute top-1/2 left-1/2 -translate-y-1/2 w-0 h-0 border-t-[10px] border-b-[10px] border-l-[14px] border-t-transparent border-b-transparent border-l-[#E67E00]">
-                    </div>
                   </div>
                   <div className="relative flex items-center justify-start w-full h-full">
                     <span className="pl-[calc(48px+1rem)] text-base font-medium text-black z-10">{t(pkg.name)}</span>
