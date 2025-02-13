@@ -182,7 +182,7 @@ export default function Pricing() {
                 <div className="border-t border-[#E67E00]/20 pt-4">
                   <p className="text-xl font-semibold text-[#E67E00] mb-3">{t("pricing.serviceDetails") || "Service Details"}</p>
                   <div className="space-y-2">
-                    {translations.additional.features.map((detail) => (
+                    {t("pricing.additional.features", { returnObjects: true })[language === 'he' ? 'he' : 'en'].map((detail) => (
                       <div key={detail} className={`flex items-start ${language === 'he' ? 'flex-row-reverse text-right' : ''}`}>
                         <span className={`text-[#E67E00] text-xs ${language === 'he' ? 'ml-2' : 'mr-2'} mt-1`}>◆</span>
                         <span className="font-light">{detail}</span>
@@ -218,7 +218,7 @@ export default function Pricing() {
                       <div className="w-12 h-[1px] mx-auto bg-gradient-to-r from-[#E67E00]/30 via-[#E67E00] to-[#E67E00]/30" />
                       <p className="text-gray-400 text-sm uppercase tracking-wider">Album Designer</p>
                     </div>
-                    
+
                     <a href="tel:054-633-5594" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
                       <Phone className="w-4 h-4" />
                       <span className="text-sm">054-633-5594</span>
@@ -242,7 +242,7 @@ export default function Pricing() {
                       <div className="w-12 h-[1px] mx-auto bg-gradient-to-r from-[#E67E00]/30 via-[#E67E00] to-[#E67E00]/30" />
                       <p className="text-gray-400 text-sm uppercase tracking-wider">Album Designer</p>
                     </div>
-                    
+
                     <a href="tel:054-798-2299" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
                       <Phone className="w-4 h-4" />
                       <span className="text-sm">054-798-2299</span>

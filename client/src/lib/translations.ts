@@ -209,23 +209,30 @@ export const translations = {
         }
       },
       additional: {
-        features: [
-          "Bespoke album design available upon request",
-          "Location service: 150₪ (30-60min) or 250₪ (60min+)",
-          "Extended session (30min): 300₪ with curated edits", 
-          "Extended session (60min): 500₪ with full editing suite",
-          "Horse photoshoots: 350₪/30min (may vary by farm)",
-          "Preference for Friday afternoon sessions"
-        ],
         name: "Service Details",
         price: "",
         description: {
           en: "Refined Photography Experience",
           he: "פרטי מחיר חשובים"
         },
+        features: {
+          en: [
+            "Bespoke album design available upon request",
+            "Location service: 150₪ (30-60min) or 250₪ (60min+)",
+            "Extended session (30min): 300₪ with curated edits", 
+            "Extended session (60min): 500₪ with full editing suite",
+            "Horse photoshoots: 350₪/30min (may vary by farm)",
+            "Preference for Friday afternoon sessions"
+          ],
+          he: [
             "עיצוב אלבום מותאם אישית זמין לפי בקשה",
             "נסיעות: 150₪ (30-60 דקות) או 250₪ (מעל שעה)",
             "תוספת חצי שעת צילום: 300₪ כולל עריכה",
+            "הארכת צילום (60 דקות): 500₪ כולל עריכה מלאה",
+            "צילומי סוסים: 350₪ לחצי שעה (עשוי להשתנות בהתאם לחווה)",
+            "עדיפות לצילומים בשישי אחה״צ"
+          ]
+        }
             "הארכת צילום (60 דקות): 500₪ כולל עריכה מלאה",
             "צילומי סוסים: 350₪ לחצי שעה (עשוי להשתנות בהתאם לחווה)",
             "עדיפות לצילומים בשישי אחה״צ",
