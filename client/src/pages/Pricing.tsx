@@ -340,7 +340,3 @@ export default function Pricing() {
     </div>
   );
 }
-
-.clip-path-teardrop {
-  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
-}
