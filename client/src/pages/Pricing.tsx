@@ -165,7 +165,12 @@ export default function Pricing() {
                   </Button>
                 </div>
               </DialogHeader>
-              <div className={`space-y-6 overflow-y-auto ${language === 'he' ? 'text-right' : ''}`}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className={`space-y-6 overflow-y-auto ${language === 'he' ? 'text-right' : ''}`}
+              >
                 <div className="border-b border-[#E67E00]/20 pb-4">
                   <p className="text-xl font-semibold text-[#E67E00] mb-2">{t("pricing.price")}</p>
                   <p className="text-lg">{selectedPackageDetails?.price}</p>
@@ -199,7 +204,7 @@ export default function Pricing() {
                     ))}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </DialogContent>
           </Dialog>
 
