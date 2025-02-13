@@ -122,7 +122,3 @@
     display: none;  /* Chrome, Safari and Opera */
   }
 }
-
-.clip-path-teardrop {
-  clip-path: polygon(0 0, 0% 100%, 140% 50%);
-}
