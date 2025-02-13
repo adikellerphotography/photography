@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, X, UserSquare2, HandMetal, Users, Baby, Heart, Run, Palette, Yoga } from "lucide-react";
+import { ArrowUp, X, UserSquare2, HandMetal, Users, Baby, Heart, RunningIcon, Palette, Yoga } from "lucide-react";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -143,7 +143,7 @@ export default function Pricing() {
                     {pkg.name === "Kids" && <Baby className="w-7 h-7 text-white" />}
                     {pkg.name === "Femininity" && <Heart className="w-7 h-7 text-white" />}
                     {pkg.name === "Yoga" && <Yoga className="w-7 h-7 text-white" />}
-                    {pkg.name === "Modeling" && <Run className="w-7 h-7 text-white" />}
+                    {pkg.name === "Modeling" && <RunningIcon className="w-7 h-7 text-white" />}
                     {pkg.name === "Artful Nude" && <Palette className="w-7 h-7 text-white" />}
                   </div>
                   <div className="relative flex items-center justify-start w-full h-full">
