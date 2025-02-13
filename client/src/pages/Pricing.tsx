@@ -171,7 +171,7 @@ export default function Pricing() {
                   <p className="text-xl font-semibold text-[#E67E00] mb-3">{t("pricing.includes")}</p>
                   <div className="space-y-2">
                     {features.map((feature: string) => (
-                      <div key={feature} className={`flex items-center ${language === 'he' ? 'flex-row-reverse text-right' : ''}`}>
+                      <div key={feature} className={`flex items-start ${language === 'he' ? 'flex-row-reverse text-right' : ''}`}>
                         <span className={`text-[#E67E00] text-xs ${language === 'he' ? 'ml-2' : 'mr-2'}`}>◆</span>
                         <span className="font-light">{feature}</span>
                       </div>
