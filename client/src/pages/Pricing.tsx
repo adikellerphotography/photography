@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, X, UserSquare2, HandMetal, Users, Baby, Heart, Person, Palette, Yoga } from "lucide-react";
+import { ArrowUp, X, User2, HandMetal, Users, Baby, Heart, PersonStanding, Palette, PersonStanding as YogaIcon } from "lucide-react";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -137,13 +137,13 @@ export default function Pricing() {
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
                   <div className="absolute left-0 top-0 bottom-0 h-full w-[25%] bg-[#E67E00] flex items-center justify-center">
-                    {pkg.name === "Bat Mitsva" && <UserSquare2 className="w-7 h-7 text-white" />}
+                    {pkg.name === "Bat Mitsva" && <User2 className="w-7 h-7 text-white" />}
                     {pkg.name === "Horses" && <HandMetal className="w-7 h-7 text-white" />}
                     {pkg.name === "Family" && <Users className="w-7 h-7 text-white" />}
                     {pkg.name === "Kids" && <Baby className="w-7 h-7 text-white" />}
                     {pkg.name === "Femininity" && <Heart className="w-7 h-7 text-white" />}
-                    {pkg.name === "Yoga" && <Yoga className="w-7 h-7 text-white" />}
-                    {pkg.name === "Modeling" && <Person className="w-7 h-7 text-white" />}
+                    {pkg.name === "Yoga" && <YogaIcon className="w-7 h-7 text-white" />}
+                    {pkg.name === "Modeling" && <PersonStanding className="w-7 h-7 text-white" />}
                     {pkg.name === "Artful Nude" && <Palette className="w-7 h-7 text-white" />}
                   </div>
                   <div className="relative flex items-center justify-start w-full h-full">
