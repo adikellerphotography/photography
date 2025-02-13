@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, X, User2, HandMetal, Users, Baby, Heart, PersonStanding, Palette, PersonStanding as YogaIcon } from "lucide-react";
+import { ArrowUp, X, Phone, UserSquare2, Horse2, Users, Baby, Heart, Running, Palette, Yoga } from "lucide-react";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { useLanguage } from "@/hooks/use-language";
 import { useTranslation } from "@/hooks/use-translation";
 import LanguageToggle from "@/components/LanguageToggle";
-import { RiPhoneLine } from "react-icons/ri"; // Added import for RiPhoneLine
 
 export default function Pricing() {
   const { language } = useLanguage();
@@ -137,13 +136,13 @@ export default function Pricing() {
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
                   <div className="absolute left-0 top-0 bottom-0 h-full w-[25%] bg-[#E67E00] flex items-center justify-center">
-                    {pkg.name === "Bat Mitsva" && <User2 className="w-7 h-7 text-white" />}
-                    {pkg.name === "Horses" && <HandMetal className="w-7 h-7 text-white" />}
+                    {pkg.name === "Bat Mitsva" && <UserSquare2 className="w-7 h-7 text-white" />}
+                    {pkg.name === "Horses" && <Horse2 className="w-7 h-7 text-white" />}
                     {pkg.name === "Family" && <Users className="w-7 h-7 text-white" />}
                     {pkg.name === "Kids" && <Baby className="w-7 h-7 text-white" />}
                     {pkg.name === "Femininity" && <Heart className="w-7 h-7 text-white" />}
-                    {pkg.name === "Yoga" && <YogaIcon className="w-7 h-7 text-white" />}
-                    {pkg.name === "Modeling" && <PersonStanding className="w-7 h-7 text-white" />}
+                    {pkg.name === "Yoga" && <Yoga className="w-7 h-7 text-white" />}
+                    {pkg.name === "Modeling" && <Running className="w-7 h-7 text-white" />}
                     {pkg.name === "Artful Nude" && <Palette className="w-7 h-7 text-white" />}
                   </div>
                   <div className="relative flex items-center justify-start w-full h-full">
@@ -229,7 +228,7 @@ export default function Pricing() {
                     </div>
 
                     <a href="tel:054-633-5594" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
-                      <RiPhoneLine className="w-4 h-4" /> {/* Replaced Phone icon */}
+                      <Phone className="w-4 h-4" />
                       <span className="text-sm">054-633-5594</span>
                     </a>
 
@@ -253,7 +252,7 @@ export default function Pricing() {
                     </div>
 
                     <a href="tel:054-798-2299" className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
-                      <RiPhoneLine className="w-4 h-4" /> {/* Replaced Phone icon */}
+                      <Phone className="w-4 h-4" />
                       <span className="text-sm">054-798-2299</span>
                     </a>
 
