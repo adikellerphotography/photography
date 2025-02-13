@@ -182,7 +182,7 @@ export default function Pricing() {
                 <div className="border-t border-[#E67E00]/20 pt-4">
                   <p className="text-xl font-semibold text-[#E67E00] mb-3">{t("pricing.serviceDetails") || "Service Details"}</p>
                   <div className="space-y-2">
-                    {t("pricing.additional.features", { returnObjects: true }).map((detail) => (
+                    {translations.additional.features.map((detail) => (
                       <div key={detail} className={`flex items-start ${language === 'he' ? 'flex-row-reverse text-right' : ''}`}>
                         <span className={`text-[#E67E00] text-xs ${language === 'he' ? 'ml-2' : 'mr-2'} mt-1`}>◆</span>
                         <span className="font-light">{detail}</span>
