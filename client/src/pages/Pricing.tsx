@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, X, Phone } from "lucide-react";
+import { ArrowUp, X, Phone, User, Horse, Users, Baby, Heart, PersonStanding, Paintbrush } from "lucide-react";
+import { Yoga } from "@/components/ui/icons";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -135,7 +136,15 @@ export default function Pricing() {
                   className="group relative w-[220px] mx-auto h-12 overflow-hidden bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
-                  <div className="absolute left-0 top-0 bottom-0 h-full w-[25%] bg-[#E67E00]">
+                  <div className="absolute left-0 top-0 bottom-0 h-full w-[25%] bg-[#E67E00] flex items-center justify-center">
+                    {pkg.name === "Bat Mitsva" && <User className="w-5 h-5 text-white" />}
+                    {pkg.name === "Horses" && <Horse className="w-5 h-5 text-white" />}
+                    {pkg.name === "Family" && <Users className="w-5 h-5 text-white" />}
+                    {pkg.name === "Kids" && <Baby className="w-5 h-5 text-white" />}
+                    {pkg.name === "Femininity" && <Heart className="w-5 h-5 text-white" />}
+                    {pkg.name === "Yoga" && <Yoga className="w-5 h-5 text-white" />}
+                    {pkg.name === "Modeling" && <PersonStanding className="w-5 h-5 text-white" />}
+                    {pkg.name === "Artful Nude" && <Paintbrush className="w-5 h-5 text-white" />}
                   </div>
                   <div className="relative flex items-center justify-start w-full h-full">
                     <span className="pl-[calc(25%+1rem)] text-base font-medium text-black">{t(pkg.name)}</span>
