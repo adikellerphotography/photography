@@ -135,7 +135,13 @@ export default function Pricing() {
                   className="group relative w-[220px] mx-auto h-12 overflow-hidden bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
-                  <div className="absolute left-0 top-0 bottom-0 aspect-square h-full bg-[#E67E00] rounded-full transition-all duration-300">
+                  <div className="absolute left-0 top-0 bottom-0 h-full w-16 transition-all duration-300">
+                    <div className="absolute left-0 top-0 bottom-0 w-12 h-full">
+                      <div className="absolute left-0 top-0 bottom-0 w-12 h-full bg-[#E67E00] rounded-full"></div>
+                    </div>
+                    <div className="absolute left-6 top-0 bottom-0 w-10 h-full">
+                      <div className="w-0 h-0 border-t-[24px] border-b-[24px] border-l-[16px] border-t-transparent border-b-transparent border-l-[#E67E00] absolute top-1/2 -translate-y-1/2"></div>
+                    </div>
                   </div>
                   <div className="relative flex items-center justify-start w-full h-full">
                     <span className="pl-[calc(48px+1rem)] text-base font-medium text-black z-10">{t(pkg.name)}</span>
