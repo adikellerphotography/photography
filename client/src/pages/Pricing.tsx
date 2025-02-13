@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, X, Phone, UserSquare2, Horse2, Users, Baby, Heart, Running, Palette, Yoga } from "lucide-react";
+import { ArrowUp, X, Phone } from "lucide-react";
+import { FaUserTie, FaHorse, FaPeopleGroup, FaChild, FaHeart, FaPersonRunning, FaPalette, FaPerson } from "react-icons/fa6";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -136,14 +137,14 @@ export default function Pricing() {
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
                   <div className="absolute left-0 top-0 bottom-0 h-full w-[25%] bg-[#E67E00] flex items-center justify-center">
-                    {pkg.name === "Bat Mitsva" && <UserSquare2 className="w-7 h-7 text-white" />}
-                    {pkg.name === "Horses" && <Horse2 className="w-7 h-7 text-white" />}
-                    {pkg.name === "Family" && <Users className="w-7 h-7 text-white" />}
-                    {pkg.name === "Kids" && <Baby className="w-7 h-7 text-white" />}
-                    {pkg.name === "Femininity" && <Heart className="w-7 h-7 text-white" />}
-                    {pkg.name === "Yoga" && <Yoga className="w-7 h-7 text-white" />}
-                    {pkg.name === "Modeling" && <Running className="w-7 h-7 text-white" />}
-                    {pkg.name === "Artful Nude" && <Palette className="w-7 h-7 text-white" />}
+                    {pkg.name === "Bat Mitsva" && <FaUserTie className="w-7 h-7 text-white" />}
+                    {pkg.name === "Horses" && <FaHorse className="w-7 h-7 text-white" />}
+                    {pkg.name === "Family" && <FaPeopleGroup className="w-7 h-7 text-white" />}
+                    {pkg.name === "Kids" && <FaChild className="w-7 h-7 text-white" />}
+                    {pkg.name === "Femininity" && <FaHeart className="w-7 h-7 text-white" />}
+                    {pkg.name === "Yoga" && <FaPerson className="w-7 h-7 text-white" />}
+                    {pkg.name === "Modeling" && <FaPersonRunning className="w-7 h-7 text-white" />}
+                    {pkg.name === "Artful Nude" && <FaPalette className="w-7 h-7 text-white" />}
                   </div>
                   <div className="relative flex items-center justify-start w-full h-full">
                     <span className="pl-[calc(25%+1rem)] text-base font-medium text-black">{t(pkg.name)}</span>
