@@ -41,36 +41,36 @@ export default function Home() {
   // Fixed images for each category from galleries folder
   const customImages: Record<string, { img: string; thumb: string }> = {
     "Bat Mitsva": {
-      img: `/api/photos/Bat_Mitsva/001.jpeg`,
-      thumb: `/api/photos/Bat_Mitsva/001-thumb.jpeg`,
+      img: `/attached_assets/galleries/Bat_Mitsva/001.jpeg`,
+      thumb: `/attached_assets/galleries/Bat_Mitsva/001-thumb.jpeg`,
     },
     Horses: {
-      img: `/api/photos/Horses/058.jpeg`,
-      thumb: `/api/photos/Horses/058-thumb.jpeg`,
+      img: `/attached_assets/galleries/Horses/058.jpeg`,
+      thumb: `/attached_assets/galleries/Horses/058-thumb.jpeg`,
     },
     Kids: {
-      img: `/api/photos/Kids/021.jpeg`,
-      thumb: `/api/photos/Kids/021-thumb.jpeg`,
+      img: `/attached_assets/galleries/Kids/021.jpeg`,
+      thumb: `/attached_assets/galleries/Kids/021-thumb.jpeg`,
     },
     Family: {
-      img: `/api/photos/Family/016.jpeg`,
-      thumb: `/api/photos/Family/016-thumb.jpeg`,
+      img: `/attached_assets/galleries/Family/016.jpeg`,
+      thumb: `/attached_assets/galleries/Family/016-thumb.jpeg`,
     },
     Femininity: {
-      img: `/api/photos/Femininity/014.jpeg`,
-      thumb: `/api/photos/Femininity/014-thumb.jpeg`,
+      img: `/attached_assets/galleries/Femininity/014.jpeg`,
+      thumb: `/attached_assets/galleries/Femininity/014-thumb.jpeg`,
     },
     Yoga: {
-      img: `/api/photos/Yoga/064.jpeg`,
-      thumb: `/api/photos/Yoga/064-thumb.jpeg`,
+      img: `/attached_assets/galleries/Yoga/064.jpeg`,
+      thumb: `/attached_assets/galleries/Yoga/064-thumb.jpeg`,
     },
     Modeling: {
-      img: `/api/photos/Modeling/010.jpeg`,
-      thumb: `/api/photos/Modeling/010-thumb.jpeg`,
+      img: `/attached_assets/galleries/Modeling/010.jpeg`,
+      thumb: `/attached_assets/galleries/Modeling/010-thumb.jpeg`,
     },
     "Artful Nude": {
-      img: `/api/photos/Artful_Nude/023.jpeg`,
-      thumb: `/api/photos/Artful_Nude/023-thumb.jpeg`,
+      img: `/attached_assets/galleries/Artful_Nude/023.jpeg`,
+      thumb: `/attached_assets/galleries/Artful_Nude/023-thumb.jpeg`,
     },
   };
 
