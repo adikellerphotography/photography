@@ -341,10 +341,6 @@ export function registerRoutes(app: Express): Server {
       console.error('Error serving image:', error);
       res.status(500).send('Error processing image');
     }
-    } catch (error) {
-      console.error('Error serving image:', error);
-      res.status(500).send('Error processing image');
-    }
   });
 
   app.get("/api/sessions/:category", async (req, res) => {
