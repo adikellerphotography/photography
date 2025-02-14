@@ -28,14 +28,11 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     const fileName = photo.imageUrl;
     const baseFileName = fileName.replace(/\.(jpeg|jpg)$/, '');
     const categoryPath = category?.replace(/\s+/g, '_');
-
+    
+    // Use the API endpoint as the primary source
     return [
-      `/attached_assets/galleries/${categoryPath}/${fileName}`,
-      `/attached_assets/galleries/${categoryPath}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
-      `/assets/galleries/${categoryPath}/${fileName}`,
-      `/assets/galleries/${categoryPath}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
-      `/public/assets/galleries/${categoryPath}/${fileName}`,
-      `/public/assets/galleries/${categoryPath}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`
+      `/api/photos/${encodeURIComponent(categoryPath)}/${fileName}`,
+      `/api/photos/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`
     ];
   };
 

@@ -305,41 +305,47 @@ export function registerRoutes(app: Express): Server {
   app.get('/api/photos/:category/:filename', async (req, res) => {
     try {
       const { category, filename } = req.params;
-      const categoryPath = category.replace(/\s+/g, '_');
-      
-      // Try galleries path first
-      const imagePath = path.join(process.cwd(), 'attached_assets', 'galleries', categoryPath, filename);
-      const fbImagePath = path.join(process.cwd(), 'attached_assets', 'facebook_posts_image', categoryPath, filename.replace('.jpeg', '.jpg'));
+      const categoryPath = decodeURIComponent(category).replace(/\s+/g, '_');
       
       const commonHeaders = {
         'Cache-Control': 'public, max-age=31536000, immutable',
         'Access-Control-Allow-Origin': '*',
         'Cross-Origin-Resource-Policy': 'cross-origin',
-        'Content-Type': 'image/jpeg'
+        'Content-Type': 'image/jpeg',
+        'Vary': 'Accept-Encoding'
       };
 
-      try {
-        await fs.access(imagePath, fs.constants.R_OK);
-        res.set(commonHeaders).sendFile(imagePath);
-        return;
-      } catch (err) {
-        console.log(`Gallery image not found: ${imagePath}, trying facebook folder...`);
+      // Define all possible paths
+      const paths = [
+        path.join(process.cwd(), 'attached_assets', 'galleries', categoryPath, filename),
+        path.join(process.cwd(), 'attached_assets', 'facebook_posts_image', categoryPath, filename.replace(/\.jpeg$/, '.jpg')),
+        path.join(process.cwd(), 'public', 'assets', 'galleries', categoryPath, filename)
+      ];
+
+      // Try all paths
+      for (const imagePath of paths) {
         try {
-          await fs.access(fbImagePath, fs.constants.R_OK);
-          res.set(commonHeaders).sendFile(fbImagePath);
-          return;
-        } catch {
-          console.log(`Facebook image not found: ${fbImagePath}`);
-          res.status(404).json({ 
-            error: 'Image not found',
-            paths: [imagePath, fbImagePath]
-          });
-          return;
+          await fs.access(imagePath, fs.constants.R_OK);
+          console.log('Serving image from:', imagePath);
+          return res.set(commonHeaders).sendFile(imagePath);
+        } catch (err) {
+          continue;
         }
       }
+
+      // If no image was found, return 404
+      console.log('Image not found in any location:', paths);
+      return res.status(404).json({ 
+        error: 'Image not found',
+        attempted_paths: paths
+      });
+
     } catch (error) {
       console.error('Error serving image:', error);
-      res.status(500).send('Error processing image');
+      res.status(500).json({ 
+        error: 'Error processing image',
+        details: error.message 
+      });
     }
   });
 
