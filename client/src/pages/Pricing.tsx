@@ -1,7 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, X, Phone, Flower, Crown, User2 } from "lucide-react";
-import { FaHorse, FaPeopleGroup, FaChild, FaHeart, FaPalette, FaPerson } from "react-icons/fa6";
+import { ArrowUp } from "lucide-react";
+import { Crown, Phone, X } from "@phosphor-icons/react";
+import { Horse, Users, Baby, Heart, Palette, Person, FlowerLotus } from "@phosphor-icons/react";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -137,14 +138,14 @@ export default function Pricing() {
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
                   <div className="absolute left-0 top-0 bottom-0 h-full w-[25%] bg-[#E67E00] flex items-center justify-center">
-                    {pkg.name === "Bat Mitsva" && <Crown className="w-7 h-7 text-white" />}
-                    {pkg.name === "Horses" && <FaHorse className="w-7 h-7 text-white" />}
-                    {pkg.name === "Family" && <FaPeopleGroup className="w-7 h-7 text-white" />}
-                    {pkg.name === "Kids" && <FaChild className="w-7 h-7 text-white" />}
-                    {pkg.name === "Femininity" && <FaHeart className="w-7 h-7 text-white" />}
-                    {pkg.name === "Yoga" && <Flower className="w-7 h-7 text-white" />}
-                    {pkg.name === "Modeling" && <User2 className="w-7 h-7 text-white" />}
-                    {pkg.name === "Artful Nude" && <FaPalette className="w-7 h-7 text-white" />}
+                    {pkg.name === "Bat Mitsva" && <Crown weight="duotone" className="w-7 h-7 text-white" />}
+                    {pkg.name === "Horses" && <Horse weight="duotone" className="w-7 h-7 text-white" />}
+                    {pkg.name === "Family" && <Users weight="duotone" className="w-7 h-7 text-white" />}
+                    {pkg.name === "Kids" && <Baby weight="duotone" className="w-7 h-7 text-white" />}
+                    {pkg.name === "Femininity" && <Heart weight="duotone" className="w-7 h-7 text-white" />}
+                    {pkg.name === "Yoga" && <FlowerLotus weight="duotone" className="w-7 h-7 text-white" />}
+                    {pkg.name === "Modeling" && <Person weight="duotone" className="w-7 h-7 text-white" />}
+                    {pkg.name === "Artful Nude" && <Palette weight="duotone" className="w-7 h-7 text-white" />}
                   </div>
                   <div className="relative flex items-center justify-start w-full h-full">
                     <span className="pl-[calc(25%+1rem)] text-base font-medium text-black">{language === 'he' ? t(`categories.${pkg.name}`) : pkg.name}</span>
