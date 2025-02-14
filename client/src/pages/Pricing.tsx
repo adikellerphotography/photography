@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, X, Phone, Flower } from "lucide-react";
-import { FaUserTie, FaHorse, FaPeopleGroup, FaChild, FaHeart, FaPersonRunning, FaPalette, FaPerson } from "react-icons/fa6";
+import { ArrowUp, X, Phone, Flower, Crown } from "lucide-react";
+import { FaHorse, FaPeopleGroup, FaChild, FaHeart, FaPersonRunning, FaPalette, FaPerson } from "react-icons/fa6";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -137,7 +137,7 @@ export default function Pricing() {
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
                   <div className="absolute left-0 top-0 bottom-0 h-full w-[25%] bg-[#E67E00] flex items-center justify-center">
-                    {pkg.name === "Bat Mitsva" && <FaUserTie className="w-7 h-7 text-white" />}
+                    {pkg.name === "Bat Mitsva" && <Crown className="w-7 h-7 text-white" />}
                     {pkg.name === "Horses" && <FaHorse className="w-7 h-7 text-white" />}
                     {pkg.name === "Family" && <FaPeopleGroup className="w-7 h-7 text-white" />}
                     {pkg.name === "Kids" && <FaChild className="w-7 h-7 text-white" />}
