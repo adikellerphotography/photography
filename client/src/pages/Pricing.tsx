@@ -147,7 +147,7 @@ export default function Pricing() {
                     {pkg.name === "Artful Nude" && <FaPalette className="w-7 h-7 text-white" />}
                   </div>
                   <div className="relative flex items-center justify-start w-full h-full">
-                    <span className="pl-[calc(25%+1rem)] text-base font-medium text-black">{t(pkg.name)}</span>
+                    <span className="pl-[calc(25%+1rem)] text-base font-medium text-black">{t(`pricing.packages.${pkg.name.toLowerCase().replace(/ /g, '')}.name`)}</span>
                   </div>
                 </Button>
               </motion.div>
@@ -157,7 +157,7 @@ export default function Pricing() {
           <Dialog open={!!selectedPackage} onOpenChange={() => handleClosePackage()}>
             <DialogContent className="w-[90vw] max-h-[90vh] overflow-y-auto fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-gray-100/95 dark:bg-gray-800/95 backdrop-blur-sm animate-in zoom-in-95 duration-300 ease-out">
               <DialogHeader className="flex flex-row items-center justify-between sticky top-0 bg-gray-100/95 dark:bg-gray-800/95 z-10 pb-4">
-                <DialogTitle>{selectedPackageDetails?.name}</DialogTitle>
+                <DialogTitle>{t(`pricing.packages.${selectedPackageDetails?.name.toLowerCase().replace(/ /g, '')}.name`)}</DialogTitle>
                 <div className="flex items-center gap-2">
                   <LanguageToggle />
                   <Button variant="ghost" size="icon" onClick={() => handleClosePackage()}>
