@@ -365,7 +365,7 @@ export function registerRoutes(app: Express): Server {
       };
 
       const folderName = categoryMappings[category] || category.toLowerCase().replace(' ', '_');
-      const dirPath = path.join(process.cwd(), 'attached_assets', 'facebook_posts_image', folderName);
+      const dirPath = path.join(process.cwd(), 'attached_assets', 'galleries', folderName);
 
       try {
         const files = await fs.readdir(dirPath);
