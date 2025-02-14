@@ -246,7 +246,7 @@ export default function Pricing() {
                       className="w-full py-2 text-sm border-[#333] hover:border-[#E67E00] text-white bg-black/50 hover:bg-black transition-all backdrop-blur-sm tracking-wide group relative overflow-hidden"
                       onClick={() => setShowAnastasiaDialog(true)}
                     >
-                      <span className="relative z-10">{t("pricing.buttons.viewPricing")}</span>
+                      <span className="relative z-10">View Pricing</span>
                       <div className="absolute inset-0 bg-gradient-to-r from-[#E67E00]/0 via-[#E67E00]/10 to-[#E67E00]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500" />
                     </Button>
                   </div>
@@ -270,7 +270,7 @@ export default function Pricing() {
                       className="w-full py-2 text-sm border-[#333] hover:border-[#E67E00] text-white bg-black/50 hover:bg-black transition-all backdrop-blur-sm tracking-wide group relative overflow-hidden"
                       onClick={() => setShowNirDialog(true)}
                     >
-                      <span className="relative z-10">{t("pricing.buttons.viewPricing")}</span>
+                      <span className="relative z-10">View Pricing</span>
                       <div className="absolute inset-0 bg-gradient-to-r from-[#E67E00]/0 via-[#E67E00]/10 to-[#E67E00]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500" />
                     </Button>
                   </div>
