@@ -41,36 +41,36 @@ export default function Home() {
   // Fixed images for each category from galleries folder
   const customImages: Record<string, { img: string; thumb: string }> = {
     "Bat Mitsva": {
-      img: `/assets/galleries/Bat_Mitsva/001.jpeg`,
-      thumb: `/assets/galleries/Bat_Mitsva/001-thumb.jpeg`,
+      img: `/api/photos/Bat_Mitsva/001.jpeg`,
+      thumb: `/api/photos/Bat_Mitsva/001-thumb.jpeg`,
     },
     Horses: {
-      img: `/assets/galleries/Horses/058.jpeg`,
-      thumb: `/assets/galleries/Horses/058-thumb.jpeg`,
+      img: `/api/photos/Horses/058.jpeg`,
+      thumb: `/api/photos/Horses/058-thumb.jpeg`,
     },
     Kids: {
-      img: `/assets/galleries/Kids/021.jpeg`,
-      thumb: `/assets/galleries/Kids/021-thumb.jpeg`,
+      img: `/api/photos/Kids/021.jpeg`,
+      thumb: `/api/photos/Kids/021-thumb.jpeg`,
     },
     Family: {
-      img: `/assets/galleries/Family/016.jpeg`,
-      thumb: `/assets/galleries/Family/016-thumb.jpeg`,
+      img: `/api/photos/Family/016.jpeg`,
+      thumb: `/api/photos/Family/016-thumb.jpeg`,
     },
     Femininity: {
-      img: `/assets/galleries/Femininity/014.jpeg`,
-      thumb: `/assets/galleries/Femininity/014-thumb.jpeg`,
+      img: `/api/photos/Femininity/014.jpeg`,
+      thumb: `/api/photos/Femininity/014-thumb.jpeg`,
     },
     Yoga: {
-      img: `/assets/galleries/Yoga/064.jpeg`,
-      thumb: `/assets/galleries/Yoga/064-thumb.jpeg`,
+      img: `/api/photos/Yoga/064.jpeg`,
+      thumb: `/api/photos/Yoga/064-thumb.jpeg`,
     },
     Modeling: {
-      img: `/assets/galleries/Modeling/010.jpeg`,
-      thumb: `/assets/galleries/Modeling/010-thumb.jpeg`,
+      img: `/api/photos/Modeling/010.jpeg`,
+      thumb: `/api/photos/Modeling/010-thumb.jpeg`,
     },
     "Artful Nude": {
-      img: `/assets/galleries/Artful_Nude/023.jpeg`,
-      thumb: `/assets/galleries/Artful_Nude/023-thumb.jpeg`,
+      img: `/api/photos/Artful_Nude/023.jpeg`,
+      thumb: `/api/photos/Artful_Nude/023-thumb.jpeg`,
     },
   };
 
