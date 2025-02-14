@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowUp, X, Phone, Yoga } from "lucide-react";
+import { ArrowUp, X, Phone } from "lucide-react";
+import { Yoga } from "@/components/ui/icons";
 import { FaUserTie, FaHorse, FaPeopleGroup, FaChild, FaHeart, FaPersonRunning, FaPalette } from "react-icons/fa6";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
