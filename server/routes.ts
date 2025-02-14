@@ -334,17 +334,13 @@ export function registerRoutes(app: Express): Server {
             error: 'Image not found',
             paths: [imagePath, fbImagePath]
           });
+          return;
         }
       }
-        return res.status(404).send('Image not found');
-      }
-
-      res.type('image/jpeg').sendFile(imagePath, {
-        headers: {
-          'Cache-Control': 'public, max-age=31536000, immutable', // Added immutable caching
-          'Content-Type': 'image/jpeg'
-        }
-      });
+    } catch (error) {
+      console.error('Error serving image:', error);
+      res.status(500).send('Error processing image');
+    }
     } catch (error) {
       console.error('Error serving image:', error);
       res.status(500).send('Error processing image');
