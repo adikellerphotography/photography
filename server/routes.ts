@@ -49,6 +49,8 @@ const getPhotos = async (req: express.Request, res: express.Response) => {
       return res.status(400).json({ error: "Category parameter is required" });
     }
 
+    console.log('Fetching photos for category:', category);
+
     const decodedCategory = decodeURIComponent(category);
     console.log('Fetching photos for category:', decodedCategory);
 
@@ -304,31 +306,36 @@ export function registerRoutes(app: Express): Server {
     try {
       const { category, filename } = req.params;
       const categoryPath = category.replace(/\s+/g, '_');
-      const imagePath = path.join(process.cwd(), 'attached_assets', 'galleries', categoryPath, filename);
       
+      // Try galleries path first
+      const imagePath = path.join(process.cwd(), 'attached_assets', 'galleries', categoryPath, filename);
+      const fbImagePath = path.join(process.cwd(), 'attached_assets', 'facebook_posts_image', categoryPath, filename.replace('.jpeg', '.jpg'));
+      
+      const commonHeaders = {
+        'Cache-Control': 'public, max-age=31536000, immutable',
+        'Access-Control-Allow-Origin': '*',
+        'Cross-Origin-Resource-Policy': 'cross-origin',
+        'Content-Type': 'image/jpeg'
+      };
+
       try {
         await fs.access(imagePath, fs.constants.R_OK);
-        res.type('image/jpeg')
-           .header('Cache-Control', 'public, max-age=31536000')
-           .header('Access-Control-Allow-Origin', '*')
-           .header('Cross-Origin-Resource-Policy', 'cross-origin')
-           .sendFile(imagePath);
+        res.set(commonHeaders).sendFile(imagePath);
+        return;
       } catch (err) {
-        // Fallback to facebook_posts_image directory
-        const fbImagePath = path.join(process.cwd(), 'attached_assets', 'facebook_posts_image', categoryPath, filename.replace('.jpeg', '.jpg'));
+        console.log(`Gallery image not found: ${imagePath}, trying facebook folder...`);
         try {
           await fs.access(fbImagePath, fs.constants.R_OK);
-          res.type('image/jpeg')
-             .header('Cache-Control', 'public, max-age=31536000')
-             .header('Access-Control-Allow-Origin', '*')
-             .header('Cross-Origin-Resource-Policy', 'cross-origin')
-             .sendFile(fbImagePath);
+          res.set(commonHeaders).sendFile(fbImagePath);
+          return;
         } catch {
-          res.status(404).send('Image not found');
+          console.log(`Facebook image not found: ${fbImagePath}`);
+          res.status(404).json({ 
+            error: 'Image not found',
+            paths: [imagePath, fbImagePath]
+          });
         }
       }
-      const exists = await fs.access(imagePath).then(() => true).catch(() => false);
-      if (!exists) {
         return res.status(404).send('Image not found');
       }
 
