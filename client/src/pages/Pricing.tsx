@@ -138,14 +138,14 @@ export default function Pricing() {
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
                   <div className="absolute left-0 top-0 bottom-0 h-full w-[25%] bg-[#E67E00] flex items-center justify-center">
-                    {pkg.name === "Bat Mitsva" && <Crown weight="duotone" className="w-7 h-7 text-white" />}
-                    {pkg.name === "Horses" && <Horse weight="duotone" className="w-7 h-7 text-white" />}
-                    {pkg.name === "Family" && <Users weight="duotone" className="w-7 h-7 text-white" />}
-                    {pkg.name === "Kids" && <Baby weight="duotone" className="w-7 h-7 text-white" />}
-                    {pkg.name === "Femininity" && <Heart weight="duotone" className="w-7 h-7 text-white" />}
-                    {pkg.name === "Yoga" && <FlowerLotus weight="duotone" className="w-7 h-7 text-white" />}
-                    {pkg.name === "Modeling" && <Camera weight="duotone" className="w-7 h-7 text-white" />}
-                    {pkg.name === "Artful Nude" && <ProhibitInset weight="duotone" className="w-7 h-7 text-white" />}
+                    {pkg.name === "Bat Mitsva" && <Crown weight="bold" className="w-9 h-9 text-white" />}
+                    {pkg.name === "Horses" && <Horse weight="bold" className="w-9 h-9 text-white" />}
+                    {pkg.name === "Family" && <Users weight="bold" className="w-9 h-9 text-white" />}
+                    {pkg.name === "Kids" && <Baby weight="bold" className="w-9 h-9 text-white" />}
+                    {pkg.name === "Femininity" && <Heart weight="bold" className="w-9 h-9 text-white" />}
+                    {pkg.name === "Yoga" && <FlowerLotus weight="bold" className="w-9 h-9 text-white" />}
+                    {pkg.name === "Modeling" && <Camera weight="bold" className="w-9 h-9 text-white" />}
+                    {pkg.name === "Artful Nude" && <ProhibitInset weight="bold" className="w-9 h-9 text-white" />}
                   </div>
                   <div className="relative flex items-center justify-start w-full h-full">
                     <span className="pl-[calc(25%+1rem)] text-base font-medium text-black">{language === 'he' ? t(`categories.${pkg.name}`) : pkg.name}</span>
