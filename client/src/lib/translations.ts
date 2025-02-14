@@ -100,7 +100,7 @@ export const translations = {
         batMitzvah: {
           name: "Bat/Bar Mitzvah",
           price: "2000₪",
-          description: "Experiential photography session",
+          description: "During the photoshoot, we will go through scene by scene to ensure you have a variety of photos. I create this variety using different props, outfit changes, various poses, and more. I bring a foldable changing tent (like a pop-up tent) with me, so the child can feel comfortable changing clothes at any location.",
           features: [
             "3 hours session (before sunset)",
             "2 locations",
@@ -110,7 +110,7 @@ export const translations = {
         },
         horses: {
           name: "Horse Photography",
-          price: "1450₪",
+          price: "350₪ to horse farm + 900₪ for one hour photoshop",
           description: "Horse photography session",
           features: [
             "1.5 hours session",
@@ -123,7 +123,18 @@ export const translations = {
         family: {
           name: "Family/Feminine/Yoga",
           price: "From 1450₪",
-          description: "Up to 10 people: 1450₪, Up to 15 people: 1550₪, Up to 20 people: 1650₪",
+          description: `
+          Up to 10 people: 1450₪<br>
+          Up to 15 people: 1550₪<br>
+          Up to 20 people: 1650₪<br><br>
+
+          In family photoshoots, I incorporate a variety of scenes (everyone together, just the kids, just the parents, etc.), and in each scene, I add diversity with different poses and shooting angles.<br><br>
+
+          Regarding clothing, it's best to maintain a unified theme. For example:<br>
+          - Boys in one color and girls in another<br>
+          - Girls can wear dresses<br>
+          - Shared tones for everyone, such as pastel colors, etc.
+            `,
           features: [
             "1.5 hours session (before sunset)",
             "1 location",
@@ -272,7 +283,7 @@ export const translations = {
         batMitzvah: {
           name: "בת/בר מצווה",
           price: "2000₪",
-          description: "חבילת צילומי בת מצווה",
+          description: "במהלך הצילומים נעבור יחד סצנה אחר סצנה, כדי להבטיח לכם אלבום עשיר ומגוון של תמונות ייחודיות. אני דואג ליצור גיוון באמצעות שימוש באביזרים שונים, החלפת פרטי לבוש, שינויי העמדות ועוד. בנוסף, אני מ.ביא איתי תא הלבשה מתקפל ונוח (בסגנון אוהל נפתח), כך שהילדה תוכל להרגיש בנוח להחליף בגדים בכל לוקיישן שנבחר.",
           features: [
             "צילום 3 שעות (לפני השקיעה)",
             "2 לוקיישנים",
@@ -282,7 +293,7 @@ export const translations = {
         },
         horses: {
           name: "צילומי סוסים",
-          price: "1450₪",
+          price: "350₪ לחוות הסוסים + 900₪ לשעת צילום",
           description: "חבילת צילומי סוסים",
           features: [
             "צילומים באורך שעה וחצי",
@@ -295,7 +306,18 @@ export const translations = {
         family: {
           name: "משפחה/נשיות/יוגה",
           price: "החל מ-1450₪",
-          description: "עד 10 אנשים: 1450₪, עד 15 אנשים: 1550₪, עד 20 אנשים: 1650₪",
+          description: `
+          עד 10 אנשים: 1450₪
+          עד 15 אנשים: 1550₪
+          עד 20 אנשים: 1650₪
+
+          בצילומי משפחה אני משלב סצנות שונות (כולם יחד, רק ילדים או הורים, ...), בכל אחד מהם אני מגוון עם העמדות וזוויות צילום שונות.
+
+          לגבי הלבוש עדיף שיהיה קו מאחד, לדוגמא:
+          - בנים בצבע אחד ובנות בצבע אחר
+          - בנות יכולות להיות עם שמלות
+          - גוונים משותפים לכולם, כמו פסטל וכד'
+            `,
           features: [
             "צילום שעה וחצי (לפני השקיעה)",
             "לוקיישן אחד",
