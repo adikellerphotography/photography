@@ -160,6 +160,15 @@ export const translations = {
         title: "Fine Art Albums",
         description:
           "Each album is a masterpiece of artisanal craftsmanship, featuring museum-quality prints on premium archival paper. Our timeless designs emphasize simplicity and sophistication, preserving your moments with unparalleled elegance. Hand-bound with the finest materials, these albums become cherished family heirlooms.",
+      },
+      buttons: {
+        viewPricing: "View Pricing",
+        downloadPricing: "Download Pricing",
+        viewAlbumPricing: "View Album Pricing",
+        viewMoreDetails: "View More Details",
+        sendMessage: "Send Message",
+        downloadNow: "Download Now",
+        viewNow: "View Now"
       }
     },
     gallery: {
@@ -337,7 +346,11 @@ export const translations = {
       buttons: {
         viewPricing: "צפה במחירון",
         downloadPricing: "הורד מחירון",
-        viewAlbumPricing: "צפה במחירי אלבומים"
+        viewAlbumPricing: "צפה במחירי אלבומים",
+        viewMoreDetails: "פרטים נוספים",
+        sendMessage: "שלח הודעה",
+        downloadNow: "הורד עכשיו",
+        viewNow: "צפה עכשיו"
       }
     },
     gallery: {
