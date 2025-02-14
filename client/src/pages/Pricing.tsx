@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { ArrowUp } from "lucide-react";
 import { Crown, Phone, X } from "@phosphor-icons/react";
-import { Horse, Users, Baby, Heart, Person, FlowerLotus, Figure } from "@phosphor-icons/react";
+import { Horse, Users, Baby, Heart, Palette, Person, FlowerLotus } from "@phosphor-icons/react";
 import { useLocation, useRoute } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -145,7 +145,7 @@ export default function Pricing() {
                     {pkg.name === "Femininity" && <Heart weight="duotone" className="w-7 h-7 text-white" />}
                     {pkg.name === "Yoga" && <FlowerLotus weight="duotone" className="w-7 h-7 text-white" />}
                     {pkg.name === "Modeling" && <Person weight="duotone" className="w-7 h-7 text-white" />}
-                    {pkg.name === "Artful Nude" && <Figure weight="duotone" className="w-7 h-7 text-white" />}
+                    {pkg.name === "Artful Nude" && <Palette weight="duotone" className="w-7 h-7 text-white" />}
                   </div>
                   <div className="relative flex items-center justify-start w-full h-full">
                     <span className="pl-[calc(25%+1rem)] text-base font-medium text-black">{language === 'he' ? t(`categories.${pkg.name}`) : pkg.name}</span>
