@@ -147,7 +147,12 @@ export default function Pricing() {
                     {pkg.name === "Artful Nude" && <FaPalette className="w-7 h-7 text-white" />}
                   </div>
                   <div className="relative flex items-center justify-start w-full h-full">
-                    <span className="pl-[calc(25%+1rem)] text-base font-medium text-black">{t(`pricing.packages.${pkg.name.toLowerCase().replace(/ /g, '')}.name`)}</span>
+                    <span className="pl-[calc(25%+1rem)] text-base font-medium text-black">
+                      {language === 'he' 
+                        ? t(`pricing.packages.${pkg.name.toLowerCase().replace(/ /g, '')}.name_he`)
+                        : t(`pricing.packages.${pkg.name.toLowerCase().replace(/ /g, '')}.name`)
+                      }
+                    </span>
                   </div>
                 </Button>
               </motion.div>
