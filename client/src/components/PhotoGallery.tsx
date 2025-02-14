@@ -29,15 +29,27 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     const baseFileName = fileName.replace(/\.(jpeg|jpg)$/, '');
     const categoryPath = category?.replace(/\s+/g, '_');
 
-    // Try multiple path patterns
+    // Try all possible paths including production paths
     return [
       `/api/photos/${encodeURIComponent(categoryPath)}/${fileName}`,
       `/api/photos/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
-      `/api/photos/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
+      `/assets/${encodeURIComponent(categoryPath)}/${fileName}`,
+      `/assets/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
+      `/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${fileName}`,
+      `/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
       `/galleries/${encodeURIComponent(categoryPath)}/${fileName}`,
       `/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
-      `/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
     ].filter(Boolean);
+  };
+
+  // Add verification function
+  const verifyImageExists = async (url: string): Promise<boolean> => {
+    try {
+      const response = await fetch(url, { method: 'HEAD' });
+      return response.ok;
+    } catch {
+      return false;
+    }
   };
 
   const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({

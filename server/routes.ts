@@ -19,8 +19,8 @@ const getCategoryPath = (categoryName: string) => {
 // Configure static file serving
 const configureStaticFiles = (app: Express) => {
   const assetsPath = path.join(process.cwd(), 'attached_assets');
-  app.use('/attached_assets', express.static(assetsPath, {
-    setHeaders: (res, filePath) => {
+  const staticOptions = {
+    setHeaders: (res: express.Response, filePath: string) => {
       if (filePath.toLowerCase().endsWith('.jpg') || filePath.toLowerCase().endsWith('.jpeg')) {
         res.setHeader('Content-Type', 'image/jpeg');
       } else if (filePath.toLowerCase().endsWith('.png')) {
@@ -31,13 +31,20 @@ const configureStaticFiles = (app: Express) => {
       res.setHeader('Vary', 'Accept-Encoding');
       res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
       res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('X-Content-Type-Options', 'nosniff');
     },
     maxAge: 31536000000,
     lastModified: true,
     etag: true,
     fallthrough: true,
-    redirect: false
-  }));
+    redirect: false,
+    dotfiles: 'ignore'
+  };
+
+  // Serve files from multiple paths to ensure availability
+  app.use('/attached_assets', express.static(assetsPath, staticOptions));
+  app.use('/assets', express.static(path.join(assetsPath, 'galleries'), staticOptions));
+  app.use('/galleries', express.static(path.join(assetsPath, 'galleries'), staticOptions));
 };
 
 // Route handlers
