@@ -306,7 +306,7 @@ export function registerRoutes(app: Express): Server {
     try {
       const { category, filename } = req.params;
       const categoryPath = decodeURIComponent(category).replace(/\s+/g, '_');
-      
+
       const commonHeaders = {
         'Cache-Control': 'public, max-age=31536000, immutable',
         'Access-Control-Allow-Origin': '*',
@@ -315,30 +315,22 @@ export function registerRoutes(app: Express): Server {
         'Vary': 'Accept-Encoding'
       };
 
-      // Define all possible paths
-      const paths = [
-        path.join(process.cwd(), 'attached_assets', 'galleries', categoryPath, filename),
-        path.join(process.cwd(), 'attached_assets', 'facebook_posts_image', categoryPath, filename.replace(/\.jpeg$/, '.jpg')),
-        path.join(process.cwd(), 'public', 'assets', 'galleries', categoryPath, filename)
-      ];
+      // Always use galleries path
+      const imagePath = path.join(process.cwd(), 'attached_assets', 'galleries', categoryPath, filename);
 
-      // Try all paths
-      for (const imagePath of paths) {
-        try {
-          await fs.access(imagePath, fs.constants.R_OK);
-          console.log('Serving image from:', imagePath);
-          return res.set(commonHeaders).sendFile(imagePath);
-        } catch (err) {
-          continue;
-        }
+      try {
+        await fs.access(imagePath, fs.constants.R_OK);
+        console.log('Serving image from:', imagePath);
+        res.set(commonHeaders).sendFile(imagePath);
+        return;
+      } catch (err) {
+        console.log(`Gallery image not found: ${imagePath}`);
+        res.status(404).json({ 
+          error: 'Image not found',
+          path: imagePath
+        });
+        return;
       }
-
-      // If no image was found, return 404
-      console.log('Image not found in any location:', paths);
-      return res.status(404).json({ 
-        error: 'Image not found',
-        attempted_paths: paths
-      });
 
     } catch (error) {
       console.error('Error serving image:', error);
