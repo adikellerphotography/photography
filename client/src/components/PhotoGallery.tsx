@@ -28,16 +28,12 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     const fileName = photo.imageUrl;
     const baseFileName = fileName.replace(/\.(jpeg|jpg)$/, '');
     const categoryPath = category?.replace(/\s+/g, '_');
-
-    // Try multiple path patterns
+    
+    // Use the API endpoint as the primary source
     return [
       `/api/photos/${encodeURIComponent(categoryPath)}/${fileName}`,
-      `/api/photos/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
-      `/api/photos/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
-      `/galleries/${encodeURIComponent(categoryPath)}/${fileName}`,
-      `/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
-      `/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
-    ].filter(Boolean);
+      `/api/photos/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`
+    ];
   };
 
   const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({
@@ -66,10 +62,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     const allPaths = [...paths, ...thumbPaths];
     const timestamp = Date.now();
     const retryCount = retryAttempts[paths[0]] || 0;
-    const maxRetries = 3;
 
-    if (loadedImages.has(paths[0])) return;
-    if (failedImages.has(paths[0]) && retryCount >= maxRetries) return;
+    if (loadedImages.has(paths[0]) || failedImages.has(paths[0])) return;
 
     try {
       const img = new Image();
@@ -77,31 +71,22 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
       await new Promise<void>((resolve, reject) => {
         let currentPathIndex = 0;
-        let currentRetry = 0;
+        const maxAttempts = allPaths.length;
         let timeoutId: NodeJS.Timeout;
 
         const tryNextPath = () => {
-          if (currentPathIndex >= allPaths.length) {
-            if (currentRetry >= maxRetries) {
-              clearTimeout(timeoutId);
-              reject(new Error('All paths and retries failed'));
-              return;
-            }
-            currentRetry++;
-            currentPathIndex = 0;
+          if (currentPathIndex >= maxAttempts) {
+            clearTimeout(timeoutId);
+            reject(new Error('All paths failed'));
+            return;
           }
 
           const currentPath = allPaths[currentPathIndex];
-          const urlWithCache = `${currentPath}?t=${timestamp}&r=${retryCount}-${currentRetry}`;
+          const urlWithCache = `${currentPath}?t=${timestamp}&r=${retryCount}`;
 
           img.onload = () => {
             clearTimeout(timeoutId);
             setLoadedImages(prev => new Set(prev).add(paths[0]));
-            setFailedImages(prev => {
-              const newSet = new Set(prev);
-              newSet.delete(paths[0]);
-              return newSet;
-            });
             resolve();
           };
 
@@ -124,14 +109,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       });
     } catch (error) {
       console.error(`Error loading image for ${photo.imageUrl}:`, error);
-      setRetryAttempts(prev => ({ ...prev, [paths[0]]: retryCount + 1 }));
-      if (retryCount >= maxRetries) {
-        setFailedImages(prev => new Set(prev).add(paths[0]));
+      if (retryCount < 3) {
+        setRetryAttempts(prev => ({ ...prev, [paths[0]]: retryCount + 1 }));
       } else {
-        // Retry after a delay
-        setTimeout(() => {
-          preloadImage(photo);
-        }, Math.min(1000 * Math.pow(2, retryCount), 5000));
+        setFailedImages(prev => new Set(prev).add(paths[0]));
       }
     }
   };
@@ -278,10 +259,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       <Dialog
         open={!!selectedPhoto}
         onOpenChange={(open) => {
-          if (!open) {
-            window.history.pushState(null, '', window.location.pathname);
-            setSelectedPhoto(null);
-          }
+          if (!open) setSelectedPhoto(null);
           const photoEl = photoRefs.current[selectedIndex];
           setTimeout(() => {
             photoEl?.scrollIntoView({ behavior: "smooth", block: "center" });
