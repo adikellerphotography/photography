@@ -28,7 +28,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     const fileName = photo.imageUrl;
     const baseFileName = fileName.replace(/\.(jpeg|jpg)$/, '');
     const categoryPath = category?.replace(/\s+/g, '_');
-    
+
     // Try multiple path patterns
     return [
       `/api/photos/${encodeURIComponent(categoryPath)}/${fileName}`,
@@ -278,7 +278,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       <Dialog
         open={!!selectedPhoto}
         onOpenChange={(open) => {
-          if (!open) setSelectedPhoto(null);
+          if (!open) {
+            window.history.pushState(null, '', window.location.pathname);
+            setSelectedPhoto(null);
+          }
           const photoEl = photoRefs.current[selectedIndex];
           setTimeout(() => {
             photoEl?.scrollIntoView({ behavior: "smooth", block: "center" });
