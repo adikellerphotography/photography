@@ -230,21 +230,14 @@ export const translations = {
       galleryTitle: "גלריות תמונות",
     },
     categories: {
-      "Bat Mitsva": "בת מצווה",
-      "Bar Mitsva": "בר מצווה",
-      "Family": "משפחה",
       "Events": "אירועים",
-      "Portraits": "פורטרטים",
-      "Nature": "טבע",
-      "Wedding": "חתונה",
-      "Modeling": "דוגמנות",
-      "Feminine": "נשיות",
-      "Yoga": "יוגה",
+      "Family": "משפחה",
       "Horses": "סוסים",
-      "Women": "נשים",
       "Kids": "ילדים",
-      "Femininity": "נשיות",
-      "Artful Nude": "עירום אומנותי"
+      "Women": "נשים",
+      "Yoga": "יוגה",
+      "Modeling": "דוגמנות",
+      "Art": "אומנות"
     },
     contact: {
       phone: "מספר טלפון",
