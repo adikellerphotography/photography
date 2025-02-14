@@ -147,12 +147,7 @@ export default function Pricing() {
                     {pkg.name === "Artful Nude" && <FaPalette className="w-7 h-7 text-white" />}
                   </div>
                   <div className="relative flex items-center justify-start w-full h-full">
-                    <span className="pl-[calc(25%+1rem)] text-base font-medium text-black">
-                      {language === 'he' 
-                        ? t(`pricing.packages.${pkg.name.toLowerCase().replace(/ /g, '')}.name_he`)
-                        : t(`pricing.packages.${pkg.name.toLowerCase().replace(/ /g, '')}.name`)
-                      }
-                    </span>
+                    <span className="pl-[calc(25%+1rem)] text-base font-medium text-black">{t(pkg.name)}</span>
                   </div>
                 </Button>
               </motion.div>
@@ -162,7 +157,7 @@ export default function Pricing() {
           <Dialog open={!!selectedPackage} onOpenChange={() => handleClosePackage()}>
             <DialogContent className="w-[90vw] max-h-[90vh] overflow-y-auto fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-gray-100/95 dark:bg-gray-800/95 backdrop-blur-sm animate-in zoom-in-95 duration-300 ease-out">
               <DialogHeader className="flex flex-row items-center justify-between sticky top-0 bg-gray-100/95 dark:bg-gray-800/95 z-10 pb-4">
-                <DialogTitle>{t(`pricing.packages.${selectedPackageDetails?.name.toLowerCase().replace(/ /g, '')}.name`)}</DialogTitle>
+                <DialogTitle>{selectedPackageDetails?.name}</DialogTitle>
                 <div className="flex items-center gap-2">
                   <LanguageToggle />
                   <Button variant="ghost" size="icon" onClick={() => handleClosePackage()}>
@@ -251,7 +246,7 @@ export default function Pricing() {
                       className="w-full py-2 text-sm border-[#333] hover:border-[#E67E00] text-white bg-black/50 hover:bg-black transition-all backdrop-blur-sm tracking-wide group relative overflow-hidden"
                       onClick={() => setShowAnastasiaDialog(true)}
                     >
-                      <span className="relative z-10">{t("pricing.buttons.viewAlbumPricing")}</span>
+                      <span className="relative z-10">View Pricing</span>
                       <div className="absolute inset-0 bg-gradient-to-r from-[#E67E00]/0 via-[#E67E00]/10 to-[#E67E00]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500" />
                     </Button>
                   </div>
@@ -275,7 +270,7 @@ export default function Pricing() {
                       className="w-full py-2 text-sm border-[#333] hover:border-[#E67E00] text-white bg-black/50 hover:bg-black transition-all backdrop-blur-sm tracking-wide group relative overflow-hidden"
                       onClick={() => setShowNirDialog(true)}
                     >
-                      <span className="relative z-10">{t("pricing.buttons.viewAlbumPricing")}</span>
+                      <span className="relative z-10">View Pricing</span>
                       <div className="absolute inset-0 bg-gradient-to-r from-[#E67E00]/0 via-[#E67E00]/10 to-[#E67E00]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500" />
                     </Button>
                   </div>

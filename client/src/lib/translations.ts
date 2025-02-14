@@ -160,15 +160,6 @@ export const translations = {
         title: "Fine Art Albums",
         description:
           "Each album is a masterpiece of artisanal craftsmanship, featuring museum-quality prints on premium archival paper. Our timeless designs emphasize simplicity and sophistication, preserving your moments with unparalleled elegance. Hand-bound with the finest materials, these albums become cherished family heirlooms.",
-      },
-      buttons: {
-        viewPricing: "View Pricing",
-        downloadPricing: "Download Pricing",
-        viewAlbumPricing: "View Album Pricing",
-        viewMoreDetails: "View More Details",
-        sendMessage: "Send Message",
-        downloadNow: "Download Now",
-        viewNow: "View Now"
       }
     },
     gallery: {
@@ -230,14 +221,21 @@ export const translations = {
       galleryTitle: "גלריות תמונות",
     },
     categories: {
-      "Events": "אירועים",
+      "Bat Mitsva": "בת מצווה",
+      "Bar Mitsva": "בר מצווה",
       "Family": "משפחה",
-      "Horses": "סוסים",
-      "Kids": "ילדים",
-      "Women": "נשים",
-      "Yoga": "יוגה",
+      "Events": "אירועים",
+      "Portraits": "פורטרטים",
+      "Nature": "טבע",
+      "Wedding": "חתונה",
       "Modeling": "דוגמנות",
-      "Art": "אומנות"
+      "Feminine": "נשיות",
+      "Yoga": "יוגה",
+      "Horses": "סוסים",
+      "Women": "נשים",
+      "Kids": "ילדים",
+      "Femininity": "נשיות",
+      "Artful Nude": "עירום אומנותי"
     },
     contact: {
       phone: "מספר טלפון",
@@ -335,15 +333,6 @@ export const translations = {
         title: "אלבומים",
         description:
           "אני משתף פעולה עם מעצבים מומחים המתמחים ביצירת אלבומי תמונות מרהיבים ואיכותיים המותאמים לסיפור הייחודי שלך. השירות שלנו כולל הדפסה מקצועית ומשלוח ישיר, המבטיח חוויה חלקה השומרת על הזכרונות היקרים שלך בצורה יפה.",
-      },
-      buttons: {
-        viewPricing: "צפה במחירון",
-        downloadPricing: "הורד מחירון",
-        viewAlbumPricing: "צפה במחירי אלבומים",
-        viewMoreDetails: "פרטים נוספים",
-        sendMessage: "שלח הודעה",
-        downloadNow: "הורד עכשיו",
-        viewNow: "צפה עכשיו"
       }
     },
     gallery: {
