@@ -36,54 +36,6 @@ export const translations = {
     },
   },
   en: {
-    pricing: {
-      packages: {
-        femininity: {
-          name: "Femininity",
-          price: "1450₪",
-          description: "Professional feminine photography session",
-          features: [
-            "1.5 hours session (before sunset)",
-            "1 location",
-            "25 edited photos",
-            "All raw material included"
-          ]
-        },
-        yoga: {
-          name: "Yoga",
-          price: "1450₪",
-          description: "Professional yoga photography session",
-          features: [
-            "1.5 hours session (before sunset)",
-            "1 location",
-            "25 edited photos",
-            "All raw material included"
-          ]
-        },
-        modeling: {
-          name: "Modeling",
-          price: "1650₪",
-          description: "Professional modeling photography session",
-          features: [
-            "1.5 hours session (before sunset)",
-            "1 location",
-            "25 edited photos",
-            "All raw material included"
-          ]
-        },
-        artfulNude: {
-          name: "Artful Nude",
-          price: "1850₪",
-          description: "Artistic nude photography session",
-          features: [
-            "1.5 hours session (before sunset)",
-            "1 location",
-            "25 edited photos",
-            "All raw material included"
-          ]
-        }
-      }
-    },
     nav: {
       home: "Home",
       gallery: "Gallery",
@@ -319,50 +271,6 @@ export const translations = {
       includes: "כולל בחבילה",
       serviceDetails: "פרטי השירות",
       packages: {
-        femininity: {
-          name: "צילומי נשיות",
-          price: "1450₪",
-          description: "צילומי נשיות מקצועיים",
-          features: [
-            "צילום שעה וחצי (לפני השקיעה)",
-            "לוקיישן אחד",
-            "25 תמונות ערוכות",
-            "כולל את כל חומר הגלם"
-          ]
-        },
-        yoga: {
-          name: "צילומי יוגה",
-          price: "1450₪",
-          description: "צילומי יוגה מקצועיים",
-          features: [
-            "צילום שעה וחצי (לפני השקיעה)",
-            "לוקיישן אחד",
-            "25 תמונות ערוכות",
-            "כולל את כל חומר הגלם"
-          ]
-        },
-        modeling: {
-          name: "צילומי דוגמנות",
-          price: "1650₪",
-          description: "צילומי דוגמנות מקצועיים",
-          features: [
-            "צילום שעה וחצי (לפני השקיעה)",
-            "לוקיישן אחד",
-            "25 תמונות ערוכות",
-            "כולל את כל חומר הגלם"
-          ]
-        },
-        artfulNude: {
-          name: "עירום אומנותי",
-          price: "1850₪",
-          description: "צילומי עירום אומנותי",
-          features: [
-            "צילום שעה וחצי (לפני השקיעה)",
-            "לוקיישן אחד",
-            "25 תמונות ערוכות",
-            "כולל את כל חומר הגלם"
-          ]
-        },
         batMitzvah: {
           name: "בת/בר מצווה",
           price: "2000₪",
