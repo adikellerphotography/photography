@@ -34,8 +34,6 @@ export default function Gallery() {
   const [currentX, setCurrentX] = useState<number | null>(null);
   const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(null);
   const [isHorizontalSwipe, setIsHorizontalSwipe] = useState<boolean | null>(null);
-  const [lastScrollPosition, setLastScrollPosition] = useState<number>(0);
-  const galleryRef = useRef<HTMLDivElement>(null);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     const x = e.touches[0].clientX;
@@ -44,7 +42,6 @@ export default function Gallery() {
     setTouchStartY(e.touches[0].clientY);
     setIsHorizontalSwipe(null);
     setSwipeDirection(null);
-    setLastScrollPosition(window.scrollY);
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
@@ -109,14 +106,6 @@ export default function Gallery() {
       setTouchStartX(null);
       setTouchStartY(null);
       setIsHorizontalSwipe(null);
-      
-      // Wait for the new category to render then restore scroll
-      setTimeout(() => {
-        window.scrollTo({
-          top: lastScrollPosition,
-          behavior: 'instant'
-        });
-      }, 100);
     }
   };
 

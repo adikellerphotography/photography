@@ -14,12 +14,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  .clip-path-teardrop {
-    clip-path: polygon(100% 50%, 0 0, 0 100%);
-  }
-}
-
 .shine-container {
   cursor: pointer;
 }
@@ -127,8 +121,4 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;  /* Chrome, Safari and Opera */
   }
-}
-
-.clip-path-teardrop {
-  clip-path: path('M0 0a24 24 0 1 1 0 48 24 24 0 0 1 0-48zm24 0l120 24-120 24V0z');
 }
