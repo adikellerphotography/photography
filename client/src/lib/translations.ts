@@ -161,7 +161,15 @@ export const translations = {
         kids: {
           name: "Kids Photography",
           price: "1450₪",
-          description: "Perfect for children portraits",
+          description: [
+          "During our photography session, we create a wide variety of unique scenes and images with your child",
+              "• Individual portrait shots",
+              "• Family photos with parents and siblings",
+              "• Spontaneous moments of play and laughter",
+              "• Diverse angles and compositions that enhance each moment",
+              "I recommend neutral-colored clothing without prominent prints. It's suggested to bring 2-3 outfit changes to create different looks and add variety to the photos",
+              "We'll coordinate the clothing details before the session to ensure perfect results for you"
+          ],
           features: [
             "1.5 hours session (before sunset)",
             "1 location",
@@ -362,13 +370,13 @@ export const translations = {
           name: "צילומי ילדים",
           price: "1450₪",
           description: [
-            "בסשן הצילומים אנו יוצרים מגוון רחב של תמונות וסצנות ייחודית עם ילדכם:",
-            "צילומי פורטרט אישיים",
-            "צילומים משפחתיים עם ההורים והאחים",
-            "תמונות ספונטניות של משחק וצחוק",
-            "מגוון זוויות וקומפוזיציות שמעצימות את הרגע",
-            "אני ממליץ על בגדים בצבעים נייטרליים, ללא הדפסים בולטים, מומלץ להביא 2-3 חילופי בגדים כדי ליצור מראה שונה ומגוון בתמונות.",
-            "נתאם יחד את פרטי הלבוש לפני הצילומים כדי להבטיח את התוצאה המושלמת עבורכם."
+            "בסשן הצילומים אנו יוצרים מגוון רחב של תמונות וסצנות ייחודית עם ילדכם",
+            "צילומי פורטרט אישיים •",
+            "צילומים משפחתיים עם ההורים והאחים •",
+            "תמונות ספונטניות של משחק וצחוק •",
+            "מגוון זוויות וקומפוזיציות שמעצימות את הרגע •",
+            "אני ממליץ על בגדים בצבעים נייטרליים, ללא הדפסים בולטים, מומלץ להביא 2-3 חילופי בגדים כדי ליצור מראה שונה ומגוון בתמונות",
+            "נתאם יחד את פרטי הלבוש לפני הצילומים כדי להבטיח את התוצאה המושלמת עבורכם"
           ],
           features: [
             "צילום שעה וחצי (לפני השקיעה)",
