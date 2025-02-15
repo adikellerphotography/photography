@@ -121,7 +121,7 @@ export const translations = {
           ]
         },
         family: {
-          name: "Family/Feminine/Yoga",
+          name: "Family",
           price: "From 1450₪",
           description: `
           Up to 10 people: 1450₪<br>
@@ -135,6 +135,28 @@ export const translations = {
           - Girls can wear dresses<br>
           - Shared tones for everyone, such as pastel colors, etc.
             `,
+          features: [
+            "1.5 hours session (before sunset)",
+            "1 location",
+            "25 edited photos",
+            "All raw material included",
+          ]
+        },
+        feminine: {
+          name: "Feminine",
+          price: "1450₪",
+          description: "Professional feminine photography capturing natural beauty and elegance in a comfortable environment",
+          features: [
+            "1.5 hours session (before sunset)",
+            "1 location",
+            "25 edited photos",
+            "All raw material included",
+          ]
+        },
+        yoga: {
+          name: "Yoga",
+          price: "1450₪",
+          description: "Professional yoga photography capturing your practice with attention to form and artistic composition",
           features: [
             "1.5 hours session (before sunset)",
             "1 location",
@@ -304,7 +326,7 @@ export const translations = {
           ]
         },
         family: {
-          name: "משפחה/נשיות/יוגה",
+          name: "משפחה",
           price: "החל מ-1450₪",
           description: `
           עד 10 אנשים: 1450₪
@@ -318,6 +340,28 @@ export const translations = {
           - בנות יכולות להיות עם שמלות
           - גוונים משותפים לכולם, כמו פסטל וכד'
             `,
+          features: [
+            "צילום שעה וחצי (לפני השקיעה)",
+            "לוקיישן אחד",
+            "25 תמונות ערוכות",
+            "כולל את כל חומר הגלם"
+          ]
+        },
+        feminine: {
+          name: "נשיות",
+          price: "1450₪",
+          description: "צילומי נשים מקצועיים התופסים את היופי הטבעי והאלגנטיות בסביבה נוחה",
+          features: [
+            "צילום שעה וחצי (לפני השקיעה)",
+            "לוקיישן אחד",
+            "25 תמונות ערוכות",
+            "כולל את כל חומר הגלם"
+          ]
+        },
+        yoga: {
+          name: "יוגה",
+          price: "1450₪",
+          description: "צילומי יוגה מקצועיים התופסים את התרגול שלכם תוך הקפדה על צורה והרכב אמנותי",
           features: [
             "צילום שעה וחצי (לפני השקיעה)",
             "לוקיישן אחד",
