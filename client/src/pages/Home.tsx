@@ -79,7 +79,7 @@ export default function Home() {
     return [
       `/attached_assets/galleries/${categoryPath}/016.jpeg`,
       `/assets/galleries/${categoryPath}/016.jpeg`,
-      `/attached_assets/facebook_posts_image/${categoryPath}/1.jpg`,
+      `/attached_assets/galleries/${categoryPath}/001.jpeg`,
     ];
   };
 
