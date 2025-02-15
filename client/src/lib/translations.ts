@@ -123,18 +123,12 @@ export const translations = {
         family: {
           name: "Family",
           price: "From 1450₪",
-          description: `
-          Up to 10 people: 1450₪<br>
-          Up to 15 people: 1550₪<br>
-          Up to 20 people: 1650₪<br><br>
-
-          In family photoshoots, I incorporate a variety of scenes (everyone together, just the kids, just the parents, etc.), and in each scene, I add diversity with different poses and shooting angles.<br><br>
-
-          Regarding clothing, it's best to maintain a unified theme. For example:<br>
-          - Boys in one color and girls in another<br>
-          - Girls can wear dresses<br>
-          - Shared tones for everyone, such as pastel colors, etc.
-            `,
+          description: [
+            "Up to 10 people: 1450₪",
+            "Up to 15 people: 1550₪",
+            "Up to 20 people: 1650₪",
+            "In family photoshoots, I incorporate a variety of scenes (everyone together, just the kids, just the parents, etc.), and in each scene, I add diversity with different poses and shooting angles",
+            "Regarding clothing, it's best to maintain a unified theme. For example: - Boys in one color and girls in another - Girls can wear dresses - Shared tones for everyone, such as pastel colors, etc."],
           features: [
             "1.5 hours session (before sunset)",
             "1 location",
