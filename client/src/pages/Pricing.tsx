@@ -182,7 +182,18 @@ export default function Pricing() {
 
                 <div className="border-b border-[#E67E00]/20 pb-4">
                   <p className="text-xl font-semibold text-[#E67E00] mb-2">{t("pricing.description")}</p>
-                  <p className="text-muted-foreground leading-relaxed">{selectedPackageDetails?.description}</p>
+                  <div className="space-y-2">
+                    {Array.isArray(selectedPackageDetails?.description) ? 
+                      selectedPackageDetails.description.map((desc: string) => (
+                        <div key={desc} className="text-muted-foreground">
+                          {desc}
+                        </div>
+                      )) : 
+                      <div className="text-muted-foreground">
+                        {selectedPackageDetails?.description}
+                      </div>
+                    }
+                  </div>
                 </div>
 
                 <div>
