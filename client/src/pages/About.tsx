@@ -5,19 +5,40 @@ import SocialLinks from "@/components/SocialLinks";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, RefreshCw } from "lucide-react";
 import { useState, useEffect } from "react";
 
 export default function About() {
   const { t } = useTranslation();
   const { language } = useLanguage();
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageFailed, setImageFailed] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [scrollY, setScrollY] = useState(0);
+
+  const imagePaths = [
+    "/attached_assets/galleries/profile/IMG_1133.jpeg",
+    "/assets/galleries/profile/IMG_1133.jpeg",
+    "/attached_assets/galleries/profile/IMG_1133.jpg",
+    "/assets/galleries/profile/IMG_1133.jpg",
+  ];
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const loadNextImage = () => {
+    setImageFailed(false);
+    setImageLoaded(false);
+    setCurrentImageIndex((prev) => (prev + 1) % imagePaths.length);
+  };
+
+  useEffect(() => {
+    // Preload the first image
+    const img = new Image();
+    img.src = imagePaths[0];
   }, []);
 
   const scrollToTop = () => {
@@ -32,14 +53,31 @@ export default function About() {
             <AspectRatio ratio={1}>
               <div className="relative w-full h-full overflow-hidden rounded-full">
                 <AnimatePresence mode="wait">
-                  {!imageLoaded && (
+                  {!imageLoaded && !imageFailed && (
                     <motion.div
-                      key="placeholder"
+                      key="loading"
                       initial={{ opacity: 0.5 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="absolute inset-0 bg-muted animate-pulse"
-                    />
+                      className="absolute inset-0 bg-muted flex items-center justify-center"
+                    >
+                      <RefreshCw className="w-8 h-8 text-muted-foreground animate-spin" />
+                    </motion.div>
+                  )}
+                  {imageFailed && (
+                    <motion.div
+                      key="error"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="absolute inset-0 bg-muted flex items-center justify-center"
+                      onClick={loadNextImage}
+                    >
+                      <div className="text-center">
+                        <RefreshCw className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
+                        <span className="text-sm text-muted-foreground">Click to retry</span>
+                      </div>
+                    </motion.div>
                   )}
                   <motion.div
                     initial={{ opacity: 0 }}
@@ -48,15 +86,26 @@ export default function About() {
                     className="w-full h-full"
                   >
                     <img
-                      src="/attached_assets/IMG_1133.jpg"
+                      key={imagePaths[currentImageIndex]}
+                      src={imagePaths[currentImageIndex]}
                       alt="Profile"
                       className="object-cover w-full h-full transform-gpu"
                       width={300}
                       height={300}
                       loading="eager"
                       decoding="async"
-                      fetchpriority="high"
-                      onLoad={() => setImageLoaded(true)}
+                      fetchPriority="high"
+                      onLoad={() => {
+                        setImageLoaded(true);
+                        setImageFailed(false);
+                      }}
+                      onError={() => {
+                        if (currentImageIndex < imagePaths.length - 1) {
+                          loadNextImage();
+                        } else {
+                          setImageFailed(true);
+                        }
+                      }}
                       style={{
                         willChange: 'transform',
                         backfaceVisibility: 'hidden'
