@@ -38,8 +38,27 @@ const configureStaticFiles = (app: Express) => {
     etag: true,
     fallthrough: true,
     redirect: false,
-    dotfiles: 'ignore'
+    dotfiles: 'ignore',
+    index: false
   };
+
+  // Primary path for gallery images
+  app.use('/api/photos/:category/:filename', async (req, res, next) => {
+    try {
+      const { category, filename } = req.params;
+      const categoryPath = decodeURIComponent(category).replace(/\s+/g, '_');
+      const imagePath = path.join(assetsPath, 'galleries', categoryPath, filename);
+      
+      try {
+        await fs.access(imagePath, fs.constants.R_OK);
+        res.sendFile(imagePath, staticOptions);
+      } catch {
+        next();
+      }
+    } catch (error) {
+      next(error);
+    }
+  });
 
   // Serve files from multiple paths to ensure availability
   app.use('/attached_assets', express.static(assetsPath, staticOptions));
