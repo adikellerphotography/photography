@@ -10,21 +10,22 @@ const DEPLOY_VERSION = Date.now().toString();
 const checkForNewDeployment = async () => {
   try {
     const response = await fetch(`/version?v=${DEPLOY_VERSION}`);
+    if (!response.ok) return;
+    
     const { version } = await response.json();
-
-    if (version && version !== DEPLOY_VERSION) {
-      // Clear cache and reload
+    const lastCheck = localStorage.getItem('lastVersionCheck');
+    
+    if (version && version !== DEPLOY_VERSION && (!lastCheck || Date.now() - parseInt(lastCheck) > 300000)) {
+      localStorage.setItem('lastVersionCheck', Date.now().toString());
+      
       if ('caches' in window) {
         await caches.keys().then(cacheNames => {
           return Promise.all(
-            cacheNames.map(cacheName => {
-              return caches.delete(cacheName);
-            })
+            cacheNames.map(cacheName => caches.delete(cacheName))
           );
         });
       }
-
-      // Reload the page to get new version
+      
       window.location.reload();
     }
   } catch (error) {
@@ -35,8 +36,8 @@ const checkForNewDeployment = async () => {
 // Wrapper component to handle version checking
 function AppWrapper() {
   useEffect(() => {
-    // Check for new deployment every minute
-    const interval = setInterval(checkForNewDeployment, 60000);
+    // Check for new deployment every 5 minutes
+    const interval = setInterval(checkForNewDeployment, 300000);
 
     // Cleanup on unmount
     return () => clearInterval(interval);

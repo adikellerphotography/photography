@@ -21,21 +21,42 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [retryAttempts, setRetryAttempts] = useState<Record<string, number>>({});
   const galleryRef = useRef<HTMLDivElement>(null);
   const imageCache = useRef<Record<string, HTMLImageElement>>({});
+  const photoRefs = useRef<HTMLDivElement[]>([]);
 
   const getImagePaths = (photo: Photo, isThumb = false): string[] => {
     if (!photo?.imageUrl) return [];
     const fileName = photo.imageUrl;
     const baseFileName = fileName.replace(/\.(jpeg|jpg)$/, '');
     const categoryPath = category?.replace(/\s+/g, '_');
-
-    return [
-      `/attached_assets/galleries/${categoryPath}/${fileName}`,
-      `/attached_assets/galleries/${categoryPath}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
-      `/assets/galleries/${categoryPath}/${fileName}`,
-      `/assets/galleries/${categoryPath}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
-      `/public/assets/galleries/${categoryPath}/${fileName}`,
-      `/public/assets/galleries/${categoryPath}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`
+    
+    // Generate paths with both jpeg and jpg extensions
+    const paths = [
+      `/api/photos/${encodeURIComponent(categoryPath)}/${fileName}`,
+      `/api/photos/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
+      `/api/photos/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
+      `/assets/${encodeURIComponent(categoryPath)}/${fileName}`,
+      `/assets/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
+      `/assets/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
+      `/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${fileName}`,
+      `/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
+      `/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
+      `/galleries/${encodeURIComponent(categoryPath)}/${fileName}`,
+      `/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
+      `/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
     ];
+
+    // Also try with different casing of extensions
+    return [...paths, ...paths.map(p => p.replace(/\.(jpeg|jpg)$/i, ext => ext.toUpperCase()))].filter(Boolean);
+  };
+
+  // Add verification function
+  const verifyImageExists = async (url: string): Promise<boolean> => {
+    try {
+      const response = await fetch(url, { method: 'HEAD' });
+      return response.ok;
+    } catch {
+      return false;
+    }
   };
 
   const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({
@@ -64,8 +85,11 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     const allPaths = [...paths, ...thumbPaths];
     const timestamp = Date.now();
     const retryCount = retryAttempts[paths[0]] || 0;
+    const maxRetries = 5;
+    const maxTimeout = 8000;
 
-    if (loadedImages.has(paths[0]) || failedImages.has(paths[0])) return;
+    if (loadedImages.has(paths[0])) return;
+    if (failedImages.has(paths[0]) && retryCount >= maxRetries) return;
 
     try {
       const img = new Image();
@@ -73,22 +97,46 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
       await new Promise<void>((resolve, reject) => {
         let currentPathIndex = 0;
-        const maxAttempts = allPaths.length;
+        let currentRetry = 0;
         let timeoutId: NodeJS.Timeout;
 
-        const tryNextPath = () => {
-          if (currentPathIndex >= maxAttempts) {
-            clearTimeout(timeoutId);
-            reject(new Error('All paths failed'));
-            return;
+        const tryNextPath = async () => {
+          if (currentPathIndex >= allPaths.length) {
+            if (currentRetry >= maxRetries) {
+              clearTimeout(timeoutId);
+              reject(new Error('All paths and retries failed'));
+              return;
+            }
+            currentRetry++;
+            currentPathIndex = 0;
           }
 
           const currentPath = allPaths[currentPathIndex];
-          const urlWithCache = `${currentPath}?t=${timestamp}&r=${retryCount}`;
+          // Add cache busting and retry information
+          const urlWithCache = `${currentPath}?t=${timestamp}&r=${retryCount}-${currentRetry}-${Math.random().toString(36).substring(7)}`;
+          
+          // Try to verify the image exists first
+          try {
+            const response = await fetch(currentPath, { method: 'HEAD' });
+            if (!response.ok) {
+              currentPathIndex++;
+              tryNextPath();
+              return;
+            }
+          } catch {
+            currentPathIndex++;
+            tryNextPath();
+            return;
+          }
 
           img.onload = () => {
             clearTimeout(timeoutId);
             setLoadedImages(prev => new Set(prev).add(paths[0]));
+            setFailedImages(prev => {
+              const newSet = new Set(prev);
+              newSet.delete(paths[0]);
+              return newSet;
+            });
             resolve();
           };
 
@@ -98,11 +146,13 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
             tryNextPath();
           };
 
+          // Exponential backoff for timeout
+          const timeout = Math.min(1000 * Math.pow(2, currentRetry), maxTimeout);
           timeoutId = setTimeout(() => {
             img.src = '';
             currentPathIndex++;
             tryNextPath();
-          }, 5000);
+          }, timeout);
 
           img.src = urlWithCache;
         };
@@ -111,10 +161,14 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       });
     } catch (error) {
       console.error(`Error loading image for ${photo.imageUrl}:`, error);
-      if (retryCount < 3) {
-        setRetryAttempts(prev => ({ ...prev, [paths[0]]: retryCount + 1 }));
-      } else {
+      setRetryAttempts(prev => ({ ...prev, [paths[0]]: retryCount + 1 }));
+      if (retryCount >= maxRetries) {
         setFailedImages(prev => new Set(prev).add(paths[0]));
+      } else {
+        // Retry after a delay
+        setTimeout(() => {
+          preloadImage(photo);
+        }, Math.min(1000 * Math.pow(2, retryCount), 5000));
       }
     }
   };
@@ -197,6 +251,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
           return (
             <motion.div
               key={`${photo.id}-${index}`}
+              ref={(el) => (photoRefs.current[index] = el)}
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{
@@ -260,16 +315,82 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       <Dialog
         open={!!selectedPhoto}
         onOpenChange={(open) => {
-          if (!open) setSelectedPhoto(null);
+          if (!open) {
+            window.history.pushState(null, '', window.location.pathname);
+            setSelectedPhoto(null);
+          }
+          const photoEl = photoRefs.current[selectedIndex];
+          setTimeout(() => {
+            photoEl?.scrollIntoView({ behavior: "smooth", block: "center" });
+            if (photoEl) {
+              photoEl.classList.add("scale-[1.02]", "brightness-105", "shadow-[0_0_15px_rgba(255,255,255,0.2)]", "transition-all", "duration-700", "ease-in-out");
+              setTimeout(() => {
+                photoEl.classList.remove("scale-[1.02]", "brightness-105", "shadow-[0_0_15px_rgba(255,255,255,0.2)]", "transition-all", "duration-700", "ease-in-out");
+              }, 1500);
+            }
+          }, 100);
         }}
       >
-        <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 border-none bg-black/80 shadow-xl backdrop-blur-sm">
+        <DialogContent
+          onEscapeKeyDown={() => {
+            setSelectedPhoto(null);
+            const photoEl = photoRefs.current[selectedIndex];
+            setTimeout(() => {
+              photoEl?.scrollIntoView({ behavior: "smooth", block: "center" });
+            }, 100);
+          }}
+          onInteractOutside={() => {
+            setSelectedPhoto(null);
+            const photoEl = photoRefs.current[selectedIndex];
+            setTimeout(() => {
+              photoEl?.scrollIntoView({ behavior: "smooth", block: "center" });
+            }, 100);
+          }}
+          className="max-w-[95vw] max-h-[95vh] p-0 border-none bg-black/80 shadow-xl backdrop-blur-sm"
+        >
           <VisuallyHidden>
             <h2>Image Preview</h2>
           </VisuallyHidden>
 
           {selectedPhoto && (
-            <div className="relative w-full h-full flex items-center justify-center">
+            <div
+              className="relative w-full h-full flex items-center justify-center"
+              onTouchStart={(e) => {
+                const touch = e.touches[0];
+                e.currentTarget.dataset.touchStartX = touch.clientX.toString();
+              }}
+              onTouchMove={(e) => {
+                const touch = e.touches[0];
+                const startX = Number(e.currentTarget.dataset.touchStartX);
+                const currentX = touch.clientX;
+                const diff = startX - currentX;
+
+                if (Math.abs(diff) > 50) {
+                  e.currentTarget.dataset.shouldSwipe = "true";
+                }
+              }}
+              onTouchEnd={(e) => {
+                if (e.currentTarget.dataset.shouldSwipe === "true") {
+                  const startX = Number(e.currentTarget.dataset.touchStartX);
+                  const endX = e.changedTouches[0].clientX;
+                  const diff = startX - endX;
+
+                  if (diff > 0) {
+                    // Swipe left - next photo
+                    const newIndex = (selectedIndex + 1) % photos.length;
+                    setSelectedIndex(newIndex);
+                    setSelectedPhoto(photos[newIndex]);
+                  } else {
+                    // Swipe right - previous photo
+                    const newIndex = selectedIndex === 0 ? photos.length - 1 : selectedIndex - 1;
+                    setSelectedIndex(newIndex);
+                    setSelectedPhoto(photos[newIndex]);
+                  }
+                }
+                e.currentTarget.dataset.touchStartX = "";
+                e.currentTarget.dataset.shouldSwipe = "false";
+              }}
+            >
               <Button
                 className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 transition-colors"
                 variant="ghost"

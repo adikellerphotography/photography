@@ -9,7 +9,7 @@ import type { Category } from "@/lib/types";
 import SocialLinks from "@/components/SocialLinks";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
-import { Camera, Aperture, SplitSquareVertical, ArrowUp } from "lucide-react";
+import { Camera, Aperture, SplitSquareVertical, ArrowUp, FlipHorizontal } from "lucide-react";
 
 export default function Home() {
   const { language } = useLanguage();
@@ -38,7 +38,7 @@ export default function Home() {
 
   // Override the firstPhoto for specific categories
   // Category image configuration with ranges
-  // Fixed images for each category with multiple path fallbacks
+  // Fixed images for each category from galleries folder
   const customImages: Record<string, { img: string; thumb: string }> = {
     "Bat Mitsva": {
       img: `/attached_assets/galleries/Bat_Mitsva/001.jpeg`,
@@ -74,46 +74,12 @@ export default function Home() {
     },
   };
 
-  const customImagePaths = {
-    "Bat Mitsva": {
-      img: `/attached_assets/galleries/Bat_Mitsva/001.jpeg`,
-      thumb: `/attached_assets/galleries/Bat_Mitsva/001-thumb.jpeg`,
-    },
-    Horses: {
-      img: `/attached_assets/galleries/Horses/030.jpeg`,
-      thumb: `/attached_assets/galleries/Horses/030-thumb.jpeg`,
-    },
-    Family: {
-      img: `/attached_assets/galleries/Family/016.jpeg`,
-      thumb: `/attached_assets/galleries/Family/016-thumb.jpeg`,
-    },
-    Kids: {
-      img: `/attached_assets/galleries/Kids/014.jpeg`,
-      thumb: `/attached_assets/galleries/Kids/014-thumb.jpeg`,
-    },
-    Femininity: {
-      img: `/attached_assets/galleries/Femininity/001.jpeg`,
-      thumb: `/attached_assets/galleries/Femininity/001-thumb.jpeg`,
-    },
-    Yoga: {
-      img: `/attached_assets/galleries/Yoga/041.jpeg`,
-      thumb: `/attached_assets/galleries/Yoga/041-thumb.jpeg`,
-    },
-    Modeling: {
-      img: `/attached_assets/galleries/Modeling/001.jpeg`,
-      thumb: `/attached_assets/galleries/Modeling/001-thumb.jpeg`,
-    },
-    "Artful Nude": {
-      img: `/attached_assets/galleries/Artful_Nude/001.jpeg`,
-      thumb: `/attached_assets/galleries/Artful_Nude/001-thumb.jpeg`,
-    },
-  };
-
+  // Fallback paths for images
   const getFallbackPaths = (categoryPath: string) => {
     return [
       `/attached_assets/galleries/${categoryPath}/016.jpeg`,
       `/assets/galleries/${categoryPath}/016.jpeg`,
-      `/attached_assets/facebook_posts_image/${categoryPath}/1.jpg`,
+      `/attached_assets/galleries/${categoryPath}/001.jpeg`,
     ];
   };
 
@@ -207,7 +173,7 @@ export default function Home() {
               />
               <Link href="/before-and-after">
                 <button className="p-4 rounded-full hover:bg-accent transition-colors text-white">
-                  <SplitSquareVertical className="w-6 h-6" />
+                  <FlipHorizontal className="w-6 h-6" />
                 </button>
               </Link>
             </div>

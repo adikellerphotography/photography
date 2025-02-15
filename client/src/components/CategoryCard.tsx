@@ -1,8 +1,10 @@
+
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
+import { User, Horse, Users, Baby, Heart, Yoga, PersonStanding, Paintbrush } from "lucide-react";
 
 interface CategoryCardProps {
   name: string;
@@ -17,8 +19,30 @@ export default function CategoryCard({ name, description, imageUrl, thumbnailUrl
   const displayUrl = thumbnailUrl || imageUrl;
   const translatedName = t(`categories.${name}`);
 
-  // Log props for debugging
-  console.log('CategoryCard props:', { name, displayUrl, translatedName });
+  const getCategoryIcon = (categoryName: string) => {
+    const iconProps = { className: "w-5 h-5 mr-2" };
+    switch (categoryName) {
+      case "Bat Mitsva":
+      case "Bar Mitsva":
+        return <User {...iconProps} />;
+      case "Horses":
+        return <Horse {...iconProps} />;
+      case "Family":
+        return <Users {...iconProps} />;
+      case "Kids":
+        return <Baby {...iconProps} />;
+      case "Femininity":
+        return <Heart {...iconProps} />;
+      case "Yoga":
+        return <Yoga {...iconProps} />;
+      case "Modeling":
+        return <PersonStanding {...iconProps} />;
+      case "Artful Nude":
+        return <Paintbrush {...iconProps} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <Link href={`/gallery?category=${encodeURIComponent(name)}`}>
@@ -59,7 +83,8 @@ export default function CategoryCard({ name, description, imageUrl, thumbnailUrl
           )}
         </AspectRatio>
         <CardContent className={`p-4 ${language === 'he' ? 'rtl' : 'ltr'}`}>
-          <h3 className="text-lg font-semibold group-hover:text-primary transition-colors duration-300">
+          <h3 className="text-lg font-semibold group-hover:text-primary transition-colors duration-300 flex items-center">
+            {getCategoryIcon(name)}
             {translatedName}
           </h3>
           {description && (

@@ -92,94 +92,116 @@ export const translations = {
     },
     pricing: {
       title: "Photography Packages",
+      price: "Price",
+      description: "Description",
+      includes: "Package Includes",
+      serviceDetails: "Service Details",
+      packages: {
+        batMitzvah: {
+          name: "Bat/Bar Mitzvah",
+          price: "2000₪",
+          description: "During the photoshoot, we will go through scene by scene to ensure you have a variety of photos. I create this variety using different props, outfit changes, various poses, and more. I bring a foldable changing tent (like a pop-up tent) with me, so the child can feel comfortable changing clothes at any location.",
+          features: [
+            "3 hours session (before sunset)",
+            "2 locations",
+            "40 edited photos",
+            "All raw material included",
+          ]
+        },
+        horses: {
+          name: "Horse Photography",
+          price: "350₪ to horse farm + 900₪ for one hour photoshoots",
+          description: "Horse photography session",
+          features: [
+            "1.5 hours session",
+            "1 location",
+            "25 edited photos",
+            "All raw material included",
+            "Farm location fee may apply"
+          ]
+        },
+        family: {
+          name: "Family",
+          price: "From 1450₪",
+          description: [
+            "Up to 10 people: 1450₪",
+            "Up to 15 people: 1550₪",
+            "Up to 20 people: 1650₪",
+            "In family photoshoots, I incorporate a variety of scenes (everyone together, just the kids, just the parents, etc.), and in each scene, I add diversity with different poses and shooting angles",
+            "Regarding clothing, it's best to maintain a unified theme. For example: - Boys in one color and girls in another - Girls can wear dresses - Shared tones for everyone, such as pastel colors, etc."],
+          features: [
+            "1.5 hours session (before sunset)",
+            "1 location",
+            "25 edited photos",
+            "All raw material included",
+          ]
+        },
+        feminine: {
+          name: "Feminine",
+          price: "1450₪",
+          description: "Professional feminine photography capturing natural beauty and elegance in a comfortable environment",
+          features: [
+            "1.5 hours session (before sunset)",
+            "1 location",
+            "25 edited photos",
+            "All raw material included",
+          ]
+        },
+        yoga: {
+          name: "Yoga",
+          price: "1450₪",
+          description: "Professional yoga photography capturing your practice with attention to form and artistic composition",
+          features: [
+            "1.5 hours session (before sunset)",
+            "1 location",
+            "25 edited photos",
+            "All raw material included",
+          ]
+        },
+        kids: {
+          name: "Kids Photography",
+          price: "1450₪",
+          description: [
+          "During our photography session, we create a wide variety of unique scenes and images with your child",
+              "• Individual portrait shots",
+              "• Family photos with parents and siblings",
+              "• Spontaneous moments of play and laughter",
+              "• Diverse angles and compositions that enhance each moment",
+              "I recommend neutral-colored clothing without prominent prints. It's suggested to bring 2-3 outfit changes to create different looks and add variety to the photos",
+              "We'll coordinate the clothing details before the session to ensure perfect results for you"
+          ],
+          features: [
+            "1.5 hours session (before sunset)",
+            "1 location",
+            "25 edited photos",
+            "All raw material included",
+          ]
+        },
+        additional: {
+          name: "Service Details",
+          price: "",
+          description: "Refined Photography Experience",
+          features: [
+            "Bespoke album design available upon request",
+            "Location service: 150₪ (30-60min) or 250₪ (60min+)",
+            "Extended session (30min): 300₪ with curated edits",
+            "Extended session (60min): 500₪ with full editing suite",
+            "Horse photoshoots: 350₪/30min (may vary by farm)",
+            "Preference for Friday afternoon sessions"
+          ]
+        }
+      },
       albums: {
         title: "Fine Art Albums",
         description:
           "Each album is a masterpiece of artisanal craftsmanship, featuring museum-quality prints on premium archival paper. Our timeless designs emphasize simplicity and sophistication, preserving your moments with unparalleled elegance. Hand-bound with the finest materials, these albums become cherished family heirlooms.",
-      },
-      batMitzvah: {
-        name: "Bat/Bar Mitzvah",
-        price: "2000₪",
-        description: "Experiential photography session",
-        features: [
-          "3 hours session (before sunset)",
-          "2 locations",
-          "40 edited photos",
-          "All raw material included",
-        ],
-      },
-      family: {
-        name: "Family/Feminine/Yoga",
-        price: "From 1450₪",
-        description:
-          "Up to 10 people: 1450₪, Up to 15 people: 1550₪, Up to 20 people: 1650₪",
-        features: [
-          "1.5 hours session (before sunset)",
-          "1 location",
-          "25 edited photos",
-          "All raw material included",
-        ],
-      },
-      kids: {
-        name: "Kids Photography",
-        price: "1450₪",
-        description: "Perfect for children portraits",
-        features: [
-          "1.5 hours session (before sunset)",
-          "1 location",
-          "25 edited photos",
-          "All raw material included",
-        ],
-      },
-      guidingAndMentoring: {
-        title: "Guiding and Mentoring",
-        generalInfo: "General Information",
-        price: "Price",
-        topics: "Topics covered",
-        bonus: "Bonus",
-        class1: {
-          title: "Practical Field Workshop",
-        },
-        class2: {
-          title: "Lightroom",
-        },
-        class3: {
-          title: "Basic Photoshop",
-        },
-        class4: {
-          title: "Advanced Photoshop",
-        },
-      },
-      purim: {
-        name: "Purim Photography",
-        price: "450₪",
-        description: "Capture the Purim celebration",
-        features: [
-          "0.5 hour session (before sunset)",
-          "1 location",
-          "12 edited photos",
-          "All raw material included",
-        ],
-      },
-      additional: {
-        name: "Service Details",
-        price: "",
-        description: "Refined Photography Experience",
-        features: [
-          "Bespoke album design available upon request",
-          "Location service: 150₪ (30-60min) or 250₪ (60min+)",
-          "Extended session (30min): 300₪ with curated edits",
-          "Extended session (60min): 500₪ with full editing suite",
-          "Horse photoshoots: 350₪/30min (may vary by farm)",
-          "Preference for Friday afternoon sessions",
-        ],
-      },
+      }
     },
     gallery: {
-      noPhotos: "לא נמצאו תמונות בקטגוריה זו",
-      loading: "טוען תמונות נוספות...",
-      photoGalleries: "גלריית תמונות",
-      photoGallery: "גלריית תמונות",
+      noPhotos: "No photos found in this category",
+      loading: "Loading more photos...",
+      photoGalleries: "Photo Galleries",
+      photoGallery: "Photo Gallery",
     },
     common: {
       loading: "Loading...",
@@ -277,88 +299,111 @@ export const translations = {
     },
     pricing: {
       title: "חבילות צילום",
+      price: "מחיר",
+      description: "תיאור",
+      includes: "כולל בחבילה",
+      serviceDetails: "פרטי השירות",
+      packages: {
+        batMitzvah: {
+          name: "בת/בר מצווה",
+          price: "2000₪",
+          description: "במהלך הצילומים נעבור יחד סצנה אחר סצנה, כדי להבטיח לכם אלבום עשיר ומגוון של תמונות ייחודיות. אני דואג ליצור גיוון באמצעות שימוש באביזרים שונים, החלפת פרטי לבוש, שינויי העמדות ועוד. בנוסף, אני מ.ביא איתי תא הלבשה מתקפל ונוח (בסגנון אוהל נפתח), כך שהילדה תוכל להרגיש בנוח להחליף בגדים בכל לוקיישן שנבחר.",
+          features: [
+            "צילום 3 שעות (לפני השקיעה)",
+            "2 לוקיישנים",
+            "45 תמונות ערוכות",
+            "כולל את כל חומר הגלם"
+          ]
+        },
+        horses: {
+          name: "צילומי סוסים",
+          price: "350₪ לחוות הסוסים + 900₪ לשעת צילום",
+          description: "חבילת צילומי סוסים",
+          features: [
+            "צילומים באורך שעה וחצי",
+            "לוקיישן אחד",
+            "25 תמונות ערוכות",
+            "כל החומר הגולמי",
+            "ייתכן תשלום נוסף לחווה"
+          ]
+        },
+        family: {
+          name: "משפחה",
+          price: "החל מ-1450₪",
+          description: [
+"עד 10 אנשים: 1450₪",
+"עד 15 אנשים: 1550₪",
+"עד 20 אנשים: 1650₪",
+"בצילומי משפחה אני משלב סצנות שונות (כולם יחד, רק ילדים או הורים, ...), בכל אחד מהם אני מגוון עם העמדות וזוויות צילום שונות.",
+"לגבי הלבוש עדיף שיהיה קו מאחד, לדוגמא: - בנים בצבע אחד ובנות בצבע אחר - בנות יכולות להיות עם שמלות - גוונים משותפים לכולם, כמו פסטל וכד'"
+            ],
+          features: [
+            "צילום שעה וחצי (לפני השקיעה)",
+            "לוקיישן אחד",
+            "25 תמונות ערוכות",
+            "כולל את כל חומר הגלם"
+          ]
+        },
+        feminine: {
+          name: "נשיות",
+          price: "1450₪",
+          description: "צילומי נשים מקצועיים התופסים את היופי הטבעי והאלגנטיות בסביבה נוחה",
+          features: [
+            "צילום שעה וחצי (לפני השקיעה)",
+            "לוקיישן אחד",
+            "25 תמונות ערוכות",
+            "כולל את כל חומר הגלם"
+          ]
+        },
+        yoga: {
+          name: "יוגה",
+          price: "1450₪",
+          description: "צילומי יוגה מקצועיים התופסים את התרגול שלכם תוך הקפדה על צורה והרכב אמנותי",
+          features: [
+            "צילום שעה וחצי (לפני השקיעה)",
+            "לוקיישן אחד",
+            "25 תמונות ערוכות",
+            "כולל את כל חומר הגלם"
+          ]
+        },
+        kids: {
+          name: "צילומי ילדים",
+          price: "1450₪",
+          description: [
+            "בסשן הצילומים אנו יוצרים מגוון רחב של תמונות וסצנות ייחודית עם ילדכם",
+            "צילומי פורטרט אישיים •",
+            "צילומים משפחתיים עם ההורים והאחים •",
+            "תמונות ספונטניות של משחק וצחוק •",
+            "מגוון זוויות וקומפוזיציות שמעצימות את הרגע •",
+            "אני ממליץ על בגדים בצבעים נייטרליים, ללא הדפסים בולטים, מומלץ להביא 2-3 חילופי בגדים כדי ליצור מראה שונה ומגוון בתמונות",
+            "נתאם יחד את פרטי הלבוש לפני הצילומים כדי להבטיח את התוצאה המושלמת עבורכם"
+          ],
+          features: [
+            "צילום שעה וחצי (לפני השקיעה)",
+            "לוקיישן אחד",
+            "25 תמונות ערוכות",
+            "כולל את כל חומר הגלם"
+          ]
+        },
+        additional: {
+          name: "פרטי השירות",
+          price: "",
+          description: "פרטי מחיר חשובים",
+          features: [
+            "לא כולל אלבום תמונות, עיצוב אלבום מותאם אישית ניתן להזמין ממעצבים גרפיים איתם אני עובד",
+            "נסיעות: -150₪ מעל חצי שעה נסיעה -250₪ מעל שעה נסיעה",
+            "תוספת חצי שעת צילום: 300₪ , המחיר כולל עריכת תמונות ועוד 10 ערוכות",
+            "תוספת שעת צילום: 500₪ ",
+            "צילומים עם סוסים: 350₪ לחצי שעה לחווה (עשוי להשתנות בהתאם לחווה)",
+            "עדיפות לצילומים בשישי אחה״צ"
+          ]
+        }
+      },
       albums: {
         title: "אלבומים",
         description:
           "אני משתף פעולה עם מעצבים מומחים המתמחים ביצירת אלבומי תמונות מרהיבים ואיכותיים המותאמים לסיפור הייחודי שלך. השירות שלנו כולל הדפסה מקצועית ומשלוח ישיר, המבטיח חוויה חלקה השומרת על הזכרונות היקרים שלך בצורה יפה.",
-      },
-      batMitzvah: {
-        name: "בת/בר מצווה",
-        price: "2000₪",
-        description: "צילומי אירוע מיוחד",
-        features: [
-          "צילום 3 שעות (לפני השקיעה)",
-          "2 לוקיישנים",
-          "40 תמונות ערוכות",
-          "כולל את כל חומר הגלם",
-        ],
-      },
-      family: {
-        name: "משפחה/נשיות/יוגה",
-        price: "החל מ-1450₪",
-        description:
-          "עד 10 אנשים: 1450₪, עד 15 אנשים: 1550₪, עד 20 אנשים: 1650₪",
-        features: [
-          "צילום שעה וחצי (לפני השקיעה)",
-          "לוקיישן אחד",
-          "25 תמונות ערוכות",
-          "כולל את כל חומר הגלם",
-        ],
-      },
-      kids: {
-        name: "צילומי ילדים",
-        price: "1450₪",
-        description: "מושלם לצילומי ילדים",
-        features: [
-          "צילום שעה וחצי (לפני השקיעה)",
-          "לוקיישן אחד",
-          "25 תמונות ערוכות",
-          "כולל את כל חומר הגלם",
-        ],
-      },
-      guidingAndMentoring: {
-        title: "ליווי והדרכה",
-        generalInfo: "מידע כללי",
-        price: "מחיר",
-        topics: "נושאי הלימוד",
-        bonus: "בונוס",
-        class1: {
-          title: "סדנה מעשית בשטח",
-        },
-        class2: {
-          title: "לייטרום",
-        },
-        class3: {
-          title: "פוטושופ בסיסי",
-        },
-        class4: {
-          title: "פוטושופ מתקדם",
-        },
-      },
-      purim: {
-        name: "צילומי פורים",
-        price: "450₪",
-        description: "סשן צילומי פורים",
-        features: [
-          "צילום חצי שעה (לפני השקיעה)",
-          "לוקיישן אחד",
-          "12 תמונות ערוכות",
-          "כולל את כל חומר הגלם",
-        ],
-      },
-      additional: {
-        name: "מידע נוסף",
-        price: "",
-        description: "פרטי מחיר חשובים",
-        features: [
-          "מחיר לא כולל אלבום",
-          "נסיעות: 150₪ (מעל חצי שעה) או 250₪ (מעל שעה)",
-          "תוספת חצי שעת צילום: 300₪ (כולל תמונות ערוכות נוספות)",
-          "הארכת צילום (60 דקות): 500₪ כולל עריכה מלאה",
-          "צילומי סוסים: 350₪ לחצי שעה (עשוי להשתנות בהתאם לחווה)",
-          "עדיפות לצילומים בשישי אחה״צ",
-        ],
-      },
+      }
     },
     gallery: {
       noPhotos: "לא נמצאו תמונות בקטגוריה זו",

@@ -6,47 +6,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, Mail, MapPin, Send, ArrowUp, RefreshCw } from "lucide-react";
+import { Phone, Mail, MapPin, Send, ArrowUp } from "lucide-react";
 import { IL } from 'country-flag-icons/react/3x2';
 
 export default function Contact() {
   const { t } = useTranslation();
   const { language } = useLanguage();
   const [scrollY, setScrollY] = useState(0);
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
-  const [retryCount, setRetryCount] = useState(0);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     message: ''
   });
-
-  const getImagePaths = () => [
-    "/attached_assets/my_site_logo.png",
-    "/assets/my_site_logo.png",
-    "/public/assets/my_site_logo.png",
-    "/attached_assets/logos/my_site_logo.png"
-  ];
-
-  const handleImageRetry = () => {
-    setImageError(false);
-    setRetryCount(prev => prev + 1);
-    const paths = getImagePaths();
-    const nextPath = paths[retryCount % paths.length];
-    const img = new Image();
-    img.onload = () => {
-      setImageLoaded(true);
-      setImageError(false);
-    };
-    img.onerror = () => {
-      setImageError(true);
-      if (retryCount < paths.length - 1) {
-        setRetryCount(prev => prev + 1);
-      }
-    };
-    img.src = `${nextPath}?retry=${retryCount}`;
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,49 +43,18 @@ export default function Contact() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Preload image on mount
-  useEffect(() => {
-    handleImageRetry();
-  }, []);
-
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
     <div className="min-h-screen pt-20" dir={dir}>
-      <div className="flex justify-center mb-8 relative">
-        {!imageLoaded && !imageError && (
-          <div className="w-[52.5%] md:w-[37.5%] h-32 bg-muted/10 animate-pulse rounded-lg flex items-center justify-center">
-            <RefreshCw className="w-6 h-6 text-muted-foreground animate-spin" />
-          </div>
-        )}
-        {imageError && (
-          <div className="w-[52.5%] md:w-[37.5%] h-32 bg-muted/10 rounded-lg flex flex-col items-center justify-center gap-2">
-            <p className="text-sm text-muted-foreground">Failed to load image</p>
-            <Button variant="outline" size="sm" onClick={handleImageRetry}>
-              <RefreshCw className="w-4 h-4 mr-2" />
-              Retry
-            </Button>
-          </div>
-        )}
-        {!imageError && (
-          <img 
-            src={getImagePaths()[retryCount % getImagePaths().length]}
-            alt="Site Logo"
-            className={`w-[52.5%] md:w-[37.5%] transition-opacity duration-300 ${
-              imageLoaded ? 'opacity-100' : 'opacity-0'
-            }`}
-            onLoad={() => setImageLoaded(true)}
-            onError={() => {
-              setImageLoaded(false);
-              handleImageRetry();
-            }}
-            loading="eager"
-            decoding="async"
-            fetchPriority="high"
-          />
-        )}
+      <div className="flex justify-center mb-8">
+        <img 
+          src="/attached_assets/my_site_logo.png"
+          alt="Site Logo"
+          className="w-[52.5%] md:w-[37.5%] animate-fadeIn"
+        />
       </div>
       <div className="container mx-auto px-4 py-2">
         <div className="max-w-3xl mx-auto">
