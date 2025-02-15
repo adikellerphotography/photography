@@ -48,22 +48,22 @@ export default function Pricing() {
         features: t("pricing.packages.batMitzvah.features", { returnObjects: true }) || defaultFeatures
       },
       {
-        name: "Horses",
-        price: t("pricing.packages.horses.price"),
-        description: t("pricing.packages.horses.description") || "Horse photography session",
-        features: t("pricing.packages.horses.features", { returnObjects: true }) || defaultFeatures
-      },
-      {
         name: "Family",
         price: t("pricing.packages.family.price"),
         description: t("pricing.packages.family.description") || "Family photography session",
         features: t("pricing.packages.family.features", { returnObjects: true }) || defaultFeatures
       },
       {
-        name: "Femininity",
-        price: t("pricing.packages.feminine.price"),
-        description: t("pricing.packages.feminine.description") || "Feminine photography session",
-        features: t("pricing.packages.feminine.features", { returnObjects: true }) || defaultFeatures
+        name: "Kids",
+        price: t("pricing.packages.kids.price"),
+        description: t("pricing.packages.kids.description") || "Kids photography session",
+        features: t("pricing.packages.kids.features", { returnObjects: true }) || defaultFeatures
+      },
+      {
+        name: "Horses",
+        price: t("pricing.packages.horses.price"),
+        description: t("pricing.packages.horses.description") || "Horse photography session",
+        features: t("pricing.packages.horses.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Yoga",
@@ -72,10 +72,10 @@ export default function Pricing() {
         features: t("pricing.packages.yoga.features", { returnObjects: true }) || defaultFeatures
       },
       {
-        name: "Kids",
-        price: t("pricing.packages.kids.price"),
-        description: t("pricing.packages.kids.description") || "Kids photography session",
-        features: t("pricing.packages.kids.features", { returnObjects: true }) || defaultFeatures
+        name: "Femininity",
+        price: t("pricing.packages.feminine.price"),
+        description: t("pricing.packages.feminine.description") || "Feminine photography session",
+        features: t("pricing.packages.feminine.features", { returnObjects: true }) || defaultFeatures
       }
     ];
   };
