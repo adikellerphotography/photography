@@ -43,51 +43,39 @@ export default function Pricing() {
     return [
       {
         name: "Bat Mitsva",
-        price: "2000₪",
+        price: t("pricing.packages.batMitzvah.price"),
         description: t("pricing.packages.batMitzvah.description") || "Experiential photography session",
         features: t("pricing.packages.batMitzvah.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Horses",
-        price: "1750₪",
+        price: t("pricing.packages.horses.price"),
         description: t("pricing.packages.horses.description") || "Horse photography session",
         features: t("pricing.packages.horses.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Family",
-        price: "From 1450₪",
+        price: t("pricing.packages.family.price"),
         description: t("pricing.packages.family.description") || "Family photography session",
         features: t("pricing.packages.family.features", { returnObjects: true }) || defaultFeatures
       },
       {
-        name: "Kids",
-        price: "1450₪",
-        description: t("pricing.packages.kids.description") || "Kids photography session",
-        features: t("pricing.packages.kids.features", { returnObjects: true }) || defaultFeatures
-      },
-      {
         name: "Femininity",
-        price: "1450₪",
-        description: t("pricing.packages.femininity.description") || "Feminine photography session",
-        features: t("pricing.packages.femininity.features", { returnObjects: true }) || defaultFeatures
+        price: t("pricing.packages.feminine.price"),
+        description: t("pricing.packages.feminine.description") || "Feminine photography session",
+        features: t("pricing.packages.feminine.features", { returnObjects: true }) || defaultFeatures
       },
       {
         name: "Yoga",
-        price: "1450₪",
+        price: t("pricing.packages.yoga.price"),
         description: t("pricing.packages.yoga.description") || "Yoga photography session",
         features: t("pricing.packages.yoga.features", { returnObjects: true }) || defaultFeatures
       },
       {
-        name: "Modeling",
-        price: "1650₪",
-        description: t("pricing.packages.modeling.description") || "Modeling photography session",
-        features: t("pricing.packages.modeling.features", { returnObjects: true }) || defaultFeatures
-      },
-      {
-        name: "Artful Nude",
-        price: "1850₪",
-        description: t("pricing.packages.artfulNude.description") || "Artistic nude photography session",
-        features: t("pricing.packages.artfulNude.features", { returnObjects: true }) || defaultFeatures
+        name: "Kids",
+        price: t("pricing.packages.kids.price"),
+        description: t("pricing.packages.kids.description") || "Kids photography session",
+        features: t("pricing.packages.kids.features", { returnObjects: true }) || defaultFeatures
       }
     ];
   };
