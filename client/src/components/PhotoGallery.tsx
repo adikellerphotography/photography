@@ -28,18 +28,25 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     const fileName = photo.imageUrl;
     const baseFileName = fileName.replace(/\.(jpeg|jpg)$/, '');
     const categoryPath = category?.replace(/\s+/g, '_');
-
-    // Try all possible paths including production paths
-    return [
+    
+    // Generate paths with both jpeg and jpg extensions
+    const paths = [
       `/api/photos/${encodeURIComponent(categoryPath)}/${fileName}`,
       `/api/photos/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
+      `/api/photos/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
       `/assets/${encodeURIComponent(categoryPath)}/${fileName}`,
       `/assets/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
+      `/assets/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
       `/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${fileName}`,
       `/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
+      `/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
       `/galleries/${encodeURIComponent(categoryPath)}/${fileName}`,
       `/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
-    ].filter(Boolean);
+      `/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
+    ];
+
+    // Also try with different casing of extensions
+    return [...paths, ...paths.map(p => p.replace(/\.(jpeg|jpg)$/i, ext => ext.toUpperCase()))].filter(Boolean);
   };
 
   // Add verification function
@@ -78,7 +85,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     const allPaths = [...paths, ...thumbPaths];
     const timestamp = Date.now();
     const retryCount = retryAttempts[paths[0]] || 0;
-    const maxRetries = 3;
+    const maxRetries = 5;
+    const maxTimeout = 8000;
 
     if (loadedImages.has(paths[0])) return;
     if (failedImages.has(paths[0]) && retryCount >= maxRetries) return;
@@ -92,7 +100,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
         let currentRetry = 0;
         let timeoutId: NodeJS.Timeout;
 
-        const tryNextPath = () => {
+        const tryNextPath = async () => {
           if (currentPathIndex >= allPaths.length) {
             if (currentRetry >= maxRetries) {
               clearTimeout(timeoutId);
@@ -104,7 +112,22 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
           }
 
           const currentPath = allPaths[currentPathIndex];
-          const urlWithCache = `${currentPath}?t=${timestamp}&r=${retryCount}-${currentRetry}`;
+          // Add cache busting and retry information
+          const urlWithCache = `${currentPath}?t=${timestamp}&r=${retryCount}-${currentRetry}-${Math.random().toString(36).substring(7)}`;
+          
+          // Try to verify the image exists first
+          try {
+            const response = await fetch(currentPath, { method: 'HEAD' });
+            if (!response.ok) {
+              currentPathIndex++;
+              tryNextPath();
+              return;
+            }
+          } catch {
+            currentPathIndex++;
+            tryNextPath();
+            return;
+          }
 
           img.onload = () => {
             clearTimeout(timeoutId);
@@ -123,11 +146,13 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
             tryNextPath();
           };
 
+          // Exponential backoff for timeout
+          const timeout = Math.min(1000 * Math.pow(2, currentRetry), maxTimeout);
           timeoutId = setTimeout(() => {
             img.src = '';
             currentPathIndex++;
             tryNextPath();
-          }, 5000);
+          }, timeout);
 
           img.src = urlWithCache;
         };
