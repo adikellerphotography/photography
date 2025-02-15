@@ -212,7 +212,7 @@ export default function Pricing() {
           </Dialog>
 
           {/* Albums Section */}
-          <div className="mt-24 mb-16">
+          <div className="mt-12 mb-16">
             <Card className="backdrop-blur-md bg-white/5 dark:bg-gray-950/50 border border-[#E67E00]/20 hover:border-[#E67E00]/30 transition-all shadow-lg">
               <CardHeader className="space-y-4 pb-6">
                 <div className={`flex items-center gap-4 ${language === 'he' ? 'flex-row-reverse' : ''}`}>
