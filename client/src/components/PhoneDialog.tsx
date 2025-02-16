@@ -3,53 +3,16 @@ import { SiWhatsapp } from "react-icons/si";
 import { useTranslation } from "@/hooks/use-translation";
 import { Button } from "@/components/ui/button";
 import { Phone } from "lucide-react";
-import { useState, useEffect } from 'react';
-
-function useHistoryState(key, onClose) {
-  const [state, setState] = useState(null);
-
-  useEffect(() => {
-    const handlePopState = () => {
-      if (state) {
-        onClose();
-        setState(null);
-      }
-    };
-
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, [state, onClose]);
-
-
-  const pushState = () => {
-    setState(true);
-    window.history.pushState({ key }, '');
-  };
-
-  return pushState;
-}
-
 
 export default function PhoneDialog() {
   const { t } = useTranslation();
   const phoneNumber = "054-5667827";
   const whatsappUrl = `https://wa.me/972${phoneNumber.replace(/-/g, '')}`;
-  const [open, setOpen] = useState(false);
-  const pushHistoryState = useHistoryState('phone-dialog', () => {
-    setOpen(false);
-    window.history.replaceState(null, '', window.location.pathname);
-  });
-
-  const handleOpen = () => {
-    setOpen(true);
-    pushHistoryState();
-  };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog>
       <DialogTrigger asChild>
         <button
-          onClick={handleOpen}
           className="text-muted-foreground hover:text-foreground transition-colors"
           aria-label={t("contact.phone")}
         >

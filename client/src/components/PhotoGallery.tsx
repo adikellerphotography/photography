@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import type { Photo } from "@/lib/types";
@@ -13,29 +13,6 @@ interface PhotoGalleryProps {
   category?: string;
 }
 
-const useHistoryState = (key: string, callback: () => void) => {
-  const [historyStack, setHistoryStack] = useState<string[]>([]);
-
-  const pushState = useCallback(() => {
-    setHistoryStack(prev => [...prev, key]);
-  }, [key]);
-
-  useEffect(() => {
-    const handlePopState = () => {
-      if (historyStack.length > 0) {
-        setHistoryStack(prev => prev.slice(0, -1));
-        callback();
-      }
-    }
-
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, [historyStack, callback]);
-
-  return pushState;
-}
-
-
 export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
@@ -45,23 +22,13 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const galleryRef = useRef<HTMLDivElement>(null);
   const imageCache = useRef<Record<string, HTMLImageElement>>({});
   const photoRefs = useRef<HTMLDivElement[]>([]);
-  const [selectedImage, setSelectedImage] = useState<number | null>(null);
-  const pushHistoryState = useHistoryState('gallery-image', () => {
-    setSelectedImage(null);
-    window.history.replaceState(null, '', window.location.pathname);
-  });
-
-  const handleImageClick = (index: number) => {
-    setSelectedImage(index);
-    pushHistoryState();
-  };
 
   const getImagePaths = (photo: Photo, isThumb = false): string[] => {
     if (!photo?.imageUrl) return [];
     const fileName = photo.imageUrl;
     const baseFileName = fileName.replace(/\.(jpeg|jpg)$/, '');
     const categoryPath = category?.replace(/\s+/g, '_');
-
+    
     // Generate paths with both jpeg and jpg extensions
     const paths = [
       `/api/photos/${encodeURIComponent(categoryPath)}/${fileName}`,
@@ -147,7 +114,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
           const currentPath = allPaths[currentPathIndex];
           // Add cache busting and retry information
           const urlWithCache = `${currentPath}?t=${timestamp}&r=${retryCount}-${currentRetry}-${Math.random().toString(36).substring(7)}`;
-
+          
           // Try to verify the image exists first
           try {
             const response = await fetch(currentPath, { method: 'HEAD' });
@@ -293,7 +260,12 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 ease: [0.34, 1.56, 0.64, 1],
               }}
               className="relative overflow-hidden rounded-lg cursor-pointer group"
-              onClick={() => handleImageClick(index)}
+              onClick={() => {
+                if (isLoaded) {
+                  setSelectedPhoto(photo);
+                  setSelectedIndex(index);
+                }
+              }}
             >
               <AspectRatio ratio={4/3}>
                 <div className="relative w-full h-full">
@@ -341,12 +313,13 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       </div>
 
       <Dialog
-        open={!!selectedImage}
+        open={!!selectedPhoto}
         onOpenChange={(open) => {
           if (!open) {
-            setSelectedImage(null);
+            window.history.pushState(null, '', window.location.pathname);
+            setSelectedPhoto(null);
           }
-          const photoEl = photoRefs.current[selectedImage!];
+          const photoEl = photoRefs.current[selectedIndex];
           setTimeout(() => {
             photoEl?.scrollIntoView({ behavior: "smooth", block: "center" });
             if (photoEl) {
@@ -360,15 +333,15 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       >
         <DialogContent
           onEscapeKeyDown={() => {
-            setSelectedImage(null);
-            const photoEl = photoRefs.current[selectedImage!];
+            setSelectedPhoto(null);
+            const photoEl = photoRefs.current[selectedIndex];
             setTimeout(() => {
               photoEl?.scrollIntoView({ behavior: "smooth", block: "center" });
             }, 100);
           }}
           onInteractOutside={() => {
-            setSelectedImage(null);
-            const photoEl = photoRefs.current[selectedImage!];
+            setSelectedPhoto(null);
+            const photoEl = photoRefs.current[selectedIndex];
             setTimeout(() => {
               photoEl?.scrollIntoView({ behavior: "smooth", block: "center" });
             }, 100);
@@ -379,7 +352,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
             <h2>Image Preview</h2>
           </VisuallyHidden>
 
-          {selectedImage !== null && (
+          {selectedPhoto && (
             <div
               className="relative w-full h-full flex items-center justify-center"
               onTouchStart={(e) => {
@@ -404,13 +377,13 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
                   if (diff > 0) {
                     // Swipe left - next photo
-                    const newIndex = (selectedImage + 1) % photos.length;
-                    setSelectedImage(newIndex);
+                    const newIndex = (selectedIndex + 1) % photos.length;
+                    setSelectedIndex(newIndex);
                     setSelectedPhoto(photos[newIndex]);
                   } else {
                     // Swipe right - previous photo
-                    const newIndex = selectedImage === 0 ? photos.length - 1 : selectedImage - 1;
-                    setSelectedImage(newIndex);
+                    const newIndex = selectedIndex === 0 ? photos.length - 1 : selectedIndex - 1;
+                    setSelectedIndex(newIndex);
                     setSelectedPhoto(photos[newIndex]);
                   }
                 }
@@ -424,8 +397,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 size="icon"
                 onClick={(e) => {
                   e.stopPropagation();
-                  const newIndex = selectedImage === 0 ? photos.length - 1 : selectedImage - 1;
-                  setSelectedImage(newIndex);
+                  const newIndex = selectedIndex === 0 ? photos.length - 1 : selectedIndex - 1;
+                  setSelectedIndex(newIndex);
                   setSelectedPhoto(photos[newIndex]);
                 }}
               >
@@ -438,8 +411,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 size="icon"
                 onClick={(e) => {
                   e.stopPropagation();
-                  const newIndex = (selectedImage + 1) % photos.length;
-                  setSelectedImage(newIndex);
+                  const newIndex = (selectedIndex + 1) % photos.length;
+                  setSelectedIndex(newIndex);
                   setSelectedPhoto(photos[newIndex]);
                 }}
               >
@@ -451,8 +424,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
-                src={getImagePaths(photos[selectedImage!])[0]}
-                alt={photos[selectedImage!]?.title || ""}
+                src={getImagePaths(selectedPhoto)[0]}
+                alt={selectedPhoto.title || ""}
                 className="max-w-full max-h-[85vh] w-auto h-auto object-contain rounded-lg shadow-2xl"
                 loading="eager"
                 draggable={false}
