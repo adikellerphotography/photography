@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useHistoryState } from "@/hooks/use-history-state";
 import { ArrowUp } from "lucide-react";
 import { Crown, Phone, X } from "@phosphor-icons/react";
 import { Horse, Users, Baby, Heart, Camera, FlowerLotus, ProhibitInset } from "@phosphor-icons/react";
