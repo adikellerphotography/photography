@@ -6,13 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, Mail, MapPin, Send, ArrowUp } from "lucide-react";
+import { Phone, Mail, MapPin, Send, ArrowUp, Image as ImageIcon } from "lucide-react";
 import { IL } from 'country-flag-icons/react/3x2';
 
 export default function Contact() {
   const { t } = useTranslation();
   const { language } = useLanguage();
   const [scrollY, setScrollY] = useState(0);
+  const [imageError, setImageError] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -47,14 +48,37 @@ export default function Contact() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const handleImageError = () => {
+    // Try alternative paths if the first one fails
+    const img = document.querySelector('#site-logo') as HTMLImageElement;
+    if (img) {
+      const currentSrc = img.src;
+      if (currentSrc.includes('attached_assets')) {
+        img.src = '/assets/my_site_logo.png';
+      } else if (currentSrc.includes('/assets/')) {
+        img.src = '/my_site_logo.png';
+      } else {
+        setImageError(true);
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen pt-20" dir={dir}>
       <div className="flex justify-center mb-8">
-        <img 
-          src="/assets/my_site_logo.png"
-          alt="Site Logo"
-          className="w-[52.5%] md:w-[37.5%] animate-fadeIn"
-        />
+        {!imageError ? (
+          <img 
+            id="site-logo"
+            src="/attached_assets/my_site_logo.png"
+            alt="Site Logo"
+            className="w-[52.5%] md:w-[37.5%] animate-fadeIn"
+            onError={handleImageError}
+          />
+        ) : (
+          <div className="w-[52.5%] md:w-[37.5%] h-32 flex items-center justify-center bg-muted rounded-lg">
+            <ImageIcon className="w-12 h-12 text-muted-foreground" />
+          </div>
+        )}
       </div>
       <div className="container mx-auto px-4 py-2">
         <div className="max-w-3xl mx-auto">
