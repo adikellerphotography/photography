@@ -51,7 +51,7 @@ export default function Contact() {
     <div className="min-h-screen pt-20" dir={dir}>
       <div className="flex justify-center mb-8">
         <img 
-          src="/attached_assets/my_site_logo.png"
+          src="/assets/my_site_logo.png"
           alt="Site Logo"
           className="w-[52.5%] md:w-[37.5%] animate-fadeIn"
         />
