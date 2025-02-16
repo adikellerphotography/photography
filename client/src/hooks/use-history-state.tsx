@@ -1,5 +1,5 @@
 
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 
 type HistoryState = {
   type: string;
@@ -13,16 +13,22 @@ export function useHistoryState(
   id?: string,
   data?: any
 ) {
+  const [isActive, setIsActive] = useState(false);
+
   const pushState = useCallback(() => {
-    const state: HistoryState = { type, id, data };
-    window.history.pushState(state, '', window.location.pathname);
-  }, [type, id, data]);
+    if (!isActive) {
+      const state: HistoryState = { type, id, data };
+      window.history.pushState(state, '', window.location.pathname);
+      setIsActive(true);
+    }
+  }, [type, id, data, isActive]);
 
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
       const state = event.state as HistoryState;
       if (state?.type === type && (!id || state.id === id)) {
         onPop();
+        setIsActive(false);
       }
     };
 

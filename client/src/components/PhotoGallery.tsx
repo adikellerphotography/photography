@@ -46,7 +46,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const imageCache = useRef<Record<string, HTMLImageElement>>({});
   const photoRefs = useRef<HTMLDivElement[]>([]);
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
-  const pushHistoryState = useHistoryState('gallery', () => setSelectedImage(null));
+  const pushHistoryState = useHistoryState('gallery-image', () => {
+    setSelectedImage(null);
+    window.history.replaceState(null, '', window.location.pathname);
+  });
 
   const handleImageClick = (index: number) => {
     setSelectedImage(index);

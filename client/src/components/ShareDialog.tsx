@@ -40,7 +40,10 @@ export default function ShareDialog({ imageUrl, title }: ShareDialogProps) {
   const websiteUrl = window.location.origin;
   const fullImageUrl = `${websiteUrl}${imageUrl}`;
   const [open, setOpen] = useState(false);
-  const pushHistoryState = useHistoryState('share-dialog', () => setOpen(false));
+  const pushHistoryState = useHistoryState('share-dialog', () => {
+    setOpen(false);
+    window.history.replaceState(null, '', window.location.pathname);
+  });
 
   const handleOpen = () => {
     setOpen(true);

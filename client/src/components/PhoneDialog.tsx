@@ -35,7 +35,10 @@ export default function PhoneDialog() {
   const phoneNumber = "054-5667827";
   const whatsappUrl = `https://wa.me/972${phoneNumber.replace(/-/g, '')}`;
   const [open, setOpen] = useState(false);
-  const pushHistoryState = useHistoryState('phone-dialog', () => setOpen(false));
+  const pushHistoryState = useHistoryState('phone-dialog', () => {
+    setOpen(false);
+    window.history.replaceState(null, '', window.location.pathname);
+  });
 
   const handleOpen = () => {
     setOpen(true);
