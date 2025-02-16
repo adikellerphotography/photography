@@ -57,6 +57,8 @@ export default function Contact() {
         img.src = '/assets/my_site_logo.png';
       } else if (currentSrc.includes('/assets/')) {
         img.src = '/my_site_logo.png';
+      } else if (currentSrc.includes('/my_site_logo.png')){
+        img.src = '/fallback-logo.png'; //Add a fallback
       } else {
         setImageError(true);
       }
