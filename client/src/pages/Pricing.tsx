@@ -20,6 +20,21 @@ export default function Pricing() {
   const [selectedPackage, setSelectedPackage] = React.useState<string | null>(null);
   const [showNirDialog, setShowNirDialog] = React.useState(false);
   const [showAnastasiaDialog, setShowAnastasiaDialog] = React.useState(false);
+  
+  const pushPackageHistoryState = useHistoryState('package-dialog', () => {
+    setSelectedPackage(null);
+    setLocation('/pricing');
+  });
+  
+  const pushNirHistoryState = useHistoryState('nir-dialog', () => {
+    setShowNirDialog(false);
+    window.history.replaceState(null, '', window.location.pathname);
+  });
+  
+  const pushAnastasiaHistoryState = useHistoryState('anastasia-dialog', () => {
+    setShowAnastasiaDialog(false);
+    window.history.replaceState(null, '', window.location.pathname);
+  });
 
   React.useEffect(() => {
     if (params?.category) {
@@ -83,6 +98,7 @@ export default function Pricing() {
   const handlePackageSelect = (packageName: string) => {
     setSelectedPackage(packageName);
     setLocation(`/pricing/${encodeURIComponent(packageName)}`);
+    pushPackageHistoryState();
   };
 
   const handleClosePackage = () => {
@@ -244,7 +260,10 @@ export default function Pricing() {
                     <Button
                       variant="outline"
                       className="w-full py-2 text-sm border-[#333] hover:border-[#E67E00] text-white bg-black/50 hover:bg-black transition-all backdrop-blur-sm tracking-wide group relative overflow-hidden"
-                      onClick={() => setShowAnastasiaDialog(true)}
+                      onClick={() => {
+                        setShowAnastasiaDialog(true);
+                        pushAnastasiaHistoryState();
+                      }}
                     >
                       <span className="relative z-10">View Pricing</span>
                       <div className="absolute inset-0 bg-gradient-to-r from-[#E67E00]/0 via-[#E67E00]/10 to-[#E67E00]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500" />
@@ -268,7 +287,10 @@ export default function Pricing() {
                     <Button
                       variant="outline"
                       className="w-full py-2 text-sm border-[#333] hover:border-[#E67E00] text-white bg-black/50 hover:bg-black transition-all backdrop-blur-sm tracking-wide group relative overflow-hidden"
-                      onClick={() => setShowNirDialog(true)}
+                      onClick={() => {
+                        setShowNirDialog(true);
+                        pushNirHistoryState();
+                      }}
                     >
                       <span className="relative z-10">View Pricing</span>
                       <div className="absolute inset-0 bg-gradient-to-r from-[#E67E00]/0 via-[#E67E00]/10 to-[#E67E00]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500" />
