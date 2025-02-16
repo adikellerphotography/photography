@@ -4,6 +4,30 @@ import { Share2 } from "lucide-react";
 import { SiFacebook, SiWhatsapp, SiPinterest } from "react-icons/si";
 import { MdEmail } from "react-icons/md";
 import { useTranslation } from "@/hooks/use-translation";
+import { useState, useEffect } from 'react';
+
+function useHistoryState(key, onClose) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      if (window.history.state && window.history.state.key === key) {
+        onClose();
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [key, onClose]);
+
+  const pushState = () => {
+    setIsOpen(true);
+    window.history.pushState({ key }, '');
+  };
+
+  return pushState;
+}
+
 
 interface ShareDialogProps {
   imageUrl: string;
@@ -15,6 +39,13 @@ export default function ShareDialog({ imageUrl, title }: ShareDialogProps) {
   const currentUrl = window.location.href;
   const websiteUrl = window.location.origin;
   const fullImageUrl = `${websiteUrl}${imageUrl}`;
+  const [open, setOpen] = useState(false);
+  const pushHistoryState = useHistoryState('share-dialog', () => setOpen(false));
+
+  const handleOpen = () => {
+    setOpen(true);
+    pushHistoryState();
+  };
 
   const shareLinks = [
     {
@@ -40,8 +71,8 @@ export default function ShareDialog({ imageUrl, title }: ShareDialogProps) {
   ];
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild onClick={handleOpen}>
         <Button
           variant="outline"
           size="icon"
