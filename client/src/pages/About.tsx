@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import SocialLinks from "@/components/SocialLinks";
@@ -11,7 +11,6 @@ import { useState, useEffect } from "react";
 export default function About() {
   const { t } = useTranslation();
   const { language } = useLanguage();
-  const [imageLoaded, setImageLoaded] = useState(false);
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -31,39 +30,17 @@ export default function About() {
           <div className="mb-12 w-full max-w-[300px] mx-auto">
             <AspectRatio ratio={1}>
               <div className="relative w-full h-full overflow-hidden rounded-full">
-                <AnimatePresence mode="wait">
-                  {!imageLoaded && (
-                    <motion.div
-                      key="placeholder"
-                      initial={{ opacity: 0.5 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="absolute inset-0 bg-muted animate-pulse"
-                    />
-                  )}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: imageLoaded ? 1 : 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="w-full h-full"
-                  >
-                    <img
-                      src="/attached_assets/IMG_1133.jpg"
-                      alt="Profile"
-                      className="object-cover w-full h-full transform-gpu"
-                      width={300}
-                      height={300}
-                      loading="eager"
-                      decoding="async"
-                      fetchpriority="high"
-                      onLoad={() => setImageLoaded(true)}
-                      style={{
-                        willChange: 'transform',
-                        backfaceVisibility: 'hidden'
-                      }}
-                    />
-                  </motion.div>
-                </AnimatePresence>
+                <img
+                  src="/attached_assets/IMG_1133.jpg"
+                  alt="Profile"
+                  className="object-cover w-full h-full"
+                  width={300}
+                  height={300}
+                  loading="eager"
+                  decoding="sync"
+                  fetchpriority="high"
+                  importance="high"
+                />
               </div>
             </AspectRatio>
           </div>
