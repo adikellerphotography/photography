@@ -48,18 +48,34 @@ export default function About() {
                     className="w-full h-full"
                   >
                     <img
+                      id="about-profile"
                       src="/attached_assets/IMG_1133.jpg"
                       alt="Profile"
-                      className="object-cover w-full h-full transform-gpu"
+                      className="object-cover w-full h-full transform-gpu animate-fadeIn"
                       width={300}
                       height={300}
                       loading="eager"
-                      decoding="async"
+                      decoding="sync"
                       fetchpriority="high"
-                      onLoad={() => setImageLoaded(true)}
+                      onError={(e) => {
+                        const img = e.target as HTMLImageElement;
+                        const currentSrc = img.src;
+                        if (currentSrc.includes('attached_assets')) {
+                          img.src = '/assets/IMG_1133.jpg';
+                        } else if (currentSrc.includes('/assets/')) {
+                          img.src = '/IMG_1133.jpg';
+                        }
+                      }}
+                      onLoad={(e) => {
+                        const img = e.target as HTMLImageElement;
+                        img.style.opacity = '1';
+                        setImageLoaded(true);
+                      }}
                       style={{
                         willChange: 'transform',
-                        backfaceVisibility: 'hidden'
+                        backfaceVisibility: 'hidden',
+                        opacity: '0',
+                        transition: 'opacity 0.3s ease-in-out'
                       }}
                     />
                   </motion.div>
