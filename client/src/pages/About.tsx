@@ -33,27 +33,30 @@ export default function About() {
               <div className="relative w-full h-full overflow-hidden rounded-full">
                 <img
                   id="about-profile"
-                  src="/attached_assets/IMG_1133.jpg"
+                  src="/attached_assets/IMG_1133.jpg?quality=60&w=300"
                   alt="Profile"
                   className="object-cover w-full h-full"
                   width={300}
                   height={300}
-                  loading="eager"
-                  decoding="sync"
-                  fetchpriority="high"
+                  loading="lazy"
+                  decoding="async"
                   style={{
-                    transform: 'translate3d(0, 0, 0)',
-                    backfaceVisibility: 'hidden',
-                    perspective: 1000,
-                    WebkitTransform: 'translate3d(0, 0, 0)',
-                    WebkitBackfaceVisibility: 'hidden',
-                    WebkitPerspective: 1000
+                    filter: 'blur(0)',
+                    transition: 'filter 0.3s'
                   }}
                   onError={(e) => {
                     const img = e.target as HTMLImageElement;
                     if (!img.src.includes('/assets/')) {
-                      img.src = '/assets/IMG_1133.jpg';
+                      img.src = '/assets/IMG_1133.jpg?quality=60&w=300';
                     }
+                  }}
+                  onLoadStart={(e) => {
+                    const img = e.target as HTMLImageElement;
+                    img.style.filter = 'blur(10px)';
+                  }}
+                  onLoad={(e) => {
+                    const img = e.target as HTMLImageElement;
+                    img.style.filter = 'blur(0)';
                   }}
                 />
               </div>
