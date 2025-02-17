@@ -290,6 +290,36 @@ export default function Sessions() {
                           alt={`${group.name} session ${link.number}`}
                           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                           loading="lazy"
+                          decoding="async"
+                          onError={(e) => {
+                            const img = e.target as HTMLImageElement;
+                            const retryCount = Number(img.dataset.retryCount || 0);
+                            const maxRetries = 3;
+                            
+                            if (retryCount < maxRetries) {
+                              img.dataset.retryCount = String(retryCount + 1);
+                              // Try alternative paths
+                              const paths = [
+                                `/attached_assets/facebook_posts_image/${group.name.replace(/\s+/g, "_")}/${link.number}.jpg`,
+                                `/attached_assets/facebook_posts_image/${group.name.replace(/\s+/g, "_")}/${link.number}.jpeg`,
+                                `/facebook_posts_image/${group.name.replace(/\s+/g, "_")}/${link.number}.jpg`,
+                                `/assets/facebook_posts_image/${group.name.replace(/\s+/g, "_")}/${link.number}.jpg`
+                              ];
+                              img.src = paths[retryCount];
+                            } else {
+                              img.src = '/my_site_logo.png'; // Fallback image
+                              img.classList.add('opacity-50');
+                            }
+                          }}
+                          onLoad={(e) => {
+                            const img = e.target as HTMLImageElement;
+                            img.classList.add('opacity-100');
+                            delete img.dataset.retryCount;
+                          }}
+                          style={{
+                            opacity: 0,
+                            transition: 'opacity 0.3s ease-in-out'
+                          }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       </div>
