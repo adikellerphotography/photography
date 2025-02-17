@@ -275,12 +275,12 @@ export default function Home() {
                   y: 0,
                   scale: 1,
                   transition: {
-                    duration: 0.6,
-                    delay: index * 0.15,
+                    duration: index === 0 ? 0.3 : 0.6,
+                    delay: index === 0 ? 0 : index * 0.15,
                     ease: "easeOut",
                   },
                 }}
-                viewport={{ once: true, margin: "-50px" }}
+                viewport={{ once: true, margin: index === 0 ? "-100px" : "-50px" }}
                 whileHover={{ scale: 1.02 }}
               >
                 <Link
@@ -337,15 +337,12 @@ export default function Home() {
                                 }
                               }
                             }}
-                            loading={
-                              index === 0
-                                ? "eager"
-                                : index < 6
-                                  ? "eager"
-                                  : "lazy"
-                            }
-                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            loading={index === 0 ? "eager" : "lazy"}
+                            sizes={index === 0 
+                              ? "(max-width: 640px) 100vw" 
+                              : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"}
                             fetchpriority={index === 0 ? "high" : "auto"}
+                            importance={index === 0 ? "high" : "auto"}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent">
                             <div className="absolute bottom-0 left-0 right-0 p-4">
