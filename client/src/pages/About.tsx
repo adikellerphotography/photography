@@ -31,55 +31,21 @@ export default function About() {
           <div className="mb-12 w-full max-w-[300px] mx-auto">
             <AspectRatio ratio={1}>
               <div className="relative w-full h-full overflow-hidden rounded-full">
-                <AnimatePresence mode="wait">
-                  {!imageLoaded && (
-                    <motion.div
-                      key="placeholder"
-                      initial={{ opacity: 0.5 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="absolute inset-0 bg-muted animate-pulse"
-                    />
-                  )}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: imageLoaded ? 1 : 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="w-full h-full"
-                  >
-                    <img
-                      id="about-profile"
-                      src="/attached_assets/IMG_1133.jpg"
-                      alt="Profile"
-                      className="object-cover w-full h-full transform-gpu animate-fadeIn"
-                      width={300}
-                      height={300}
-                      loading="eager"
-                      decoding="sync"
-                      fetchpriority="high"
-                      onError={(e) => {
-                        const img = e.target as HTMLImageElement;
-                        const currentSrc = img.src;
-                        if (currentSrc.includes('attached_assets')) {
-                          img.src = '/assets/IMG_1133.jpg';
-                        } else if (currentSrc.includes('/assets/')) {
-                          img.src = '/IMG_1133.jpg';
-                        }
-                      }}
-                      onLoad={(e) => {
-                        const img = e.target as HTMLImageElement;
-                        img.style.opacity = '1';
-                        setImageLoaded(true);
-                      }}
-                      style={{
-                        willChange: 'transform',
-                        backfaceVisibility: 'hidden',
-                        opacity: '0',
-                        transition: 'opacity 0.3s ease-in-out'
-                      }}
-                    />
-                  </motion.div>
-                </AnimatePresence>
+                <img
+                  id="about-profile"
+                  src="/attached_assets/IMG_1133.jpg"
+                  alt="Profile"
+                  className="object-cover w-full h-full"
+                  width={300}
+                  height={300}
+                  loading="eager"
+                  decoding="sync"
+                  fetchpriority="high"
+                  onError={(e) => {
+                    const img = e.target as HTMLImageElement;
+                    img.src = '/assets/IMG_1133.jpg';
+                  }}
+                />
               </div>
             </AspectRatio>
           </div>
