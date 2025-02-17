@@ -298,13 +298,16 @@ export default function Sessions() {
                             
                             if (retryCount < maxRetries) {
                               img.dataset.retryCount = String(retryCount + 1);
+                              const baseUrl = window.location.origin;
                               const paths = [
+                                `/attached_assets/facebook_posts_image/${group.name.replace(/\s+/g, "_")}/${link.number}.jpg`,
+                                `${baseUrl}/attached_assets/facebook_posts_image/${group.name.replace(/\s+/g, "_")}/${link.number}.jpg`,
                                 `/assets/facebook_posts_image/${group.name.replace(/\s+/g, "_")}/${link.number}.jpg`,
-                                `/public/assets/facebook_posts_image/${group.name.replace(/\s+/g, "_")}/${link.number}.jpg`,
-                                `/facebook_posts_image/${group.name.replace(/\s+/g, "_")}/${link.number}.jpg`,
-                                `/facebook_posts_image/${group.name}/${link.number}.jpg`
+                                `${baseUrl}/assets/facebook_posts_image/${group.name.replace(/\s+/g, "_")}/${link.number}.jpg`
                               ];
-                              img.src = paths[retryCount];
+                              setTimeout(() => {
+                                img.src = paths[retryCount] + '?retry=' + Date.now();
+                              }, Math.min(1000 * retryCount, 3000));
                             } else {
                               img.src = '/my_site_logo.png';
                               img.classList.add('opacity-50');
@@ -314,11 +317,15 @@ export default function Sessions() {
                             const img = e.target as HTMLImageElement;
                             img.classList.remove('opacity-50');
                             delete img.dataset.retryCount;
+                            img.style.opacity = '1';
                           }}
                           style={{
-                            opacity: 1,
-                            transition: 'opacity 0.3s ease-in-out'
+                            opacity: 0,
+                            transition: 'opacity 0.3s ease-in-out',
+                            backgroundColor: 'rgba(0,0,0,0.05)'
                           }}
+                          loading={index < 8 ? "eager" : "lazy"}
+                          decoding={index < 8 ? "sync" : "async"}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       </div>
