@@ -294,7 +294,7 @@ export default function Home() {
                             src={category.firstPhoto.imageUrl}
                             alt={category.name}
                             className="object-cover w-full h-full transition-transform duration-300 hover:scale-105"
-                            decoding="async"
+                            decoding={index < 3 ? "sync" : "async"}
                             style={{
                               objectPosition: "center center",
                               WebkitBackfaceVisibility: "hidden",
@@ -314,35 +314,19 @@ export default function Home() {
                               delete img.dataset.retryCount;
                             }}
                             onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              const retryCount = Number(
-                                target.dataset.retryCount || "0",
-                              );
-                              const maxRetries = 3;
-                              const categoryPath = category.name.replace(
-                                /\s+/g,
-                                "_",
-                              );
-
-                              if (retryCount < maxRetries) {
-                                target.dataset.retryCount = String(
-                                  retryCount + 1,
-                                );
-                                const paths = getFallbackPaths(categoryPath);
-                                const nextPath = paths[retryCount];
-                                if (nextPath) {
-                                  setTimeout(() => {
-                                    target.src = `${nextPath}?retry=${retryCount + 1}`;
-                                  }, Math.min(retryCount * 1000, 3000));
-                                }
+                              const img = e.target as HTMLImageElement;
+                              const retryCount = Number(img.dataset.retryCount || 0);
+                              if (retryCount < 3) {
+                                img.dataset.retryCount = String(retryCount + 1);
+                                setTimeout(() => {
+                                  img.src = `${img.src}?retry=${retryCount + 1}`;
+                                }, Math.min(1000 * 2 ** retryCount, 3000));
                               }
                             }}
-                            loading={index === 0 ? "eager" : "lazy"}
-                            sizes={index === 0 
-                              ? "(max-width: 640px) 100vw" 
-                              : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"}
-                            fetchpriority={index === 0 ? "high" : "auto"}
-                            importance={index === 0 ? "high" : "auto"}
+                            loading={index < 3 ? "eager" : "lazy"}
+                            fetchpriority={index < 3 ? "high" : "auto"}
+                            importance={index < 3 ? "high" : "auto"}
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent">
                             <div className="absolute bottom-0 left-0 right-0 p-4">
