@@ -8,10 +8,6 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { ArrowUp } from "lucide-react";
 import { useState, useEffect } from "react";
 
-// Preload the image
-const preloadImage = new Image();
-preloadImage.src = '/attached_assets/IMG_1133.jpg';
-
 export default function About() {
   const { t } = useTranslation();
   const { language } = useLanguage();
@@ -58,14 +54,12 @@ export default function About() {
                       width={300}
                       height={300}
                       loading="eager"
-                      decoding="sync"
+                      decoding="async"
                       fetchpriority="high"
-                      importance="high"
                       onLoad={() => setImageLoaded(true)}
                       style={{
                         willChange: 'transform',
-                        backfaceVisibility: 'hidden',
-                        WebkitBackfaceVisibility: 'hidden'
+                        backfaceVisibility: 'hidden'
                       }}
                     />
                   </motion.div>
