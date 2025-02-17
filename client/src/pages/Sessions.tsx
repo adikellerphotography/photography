@@ -274,7 +274,7 @@ export default function Sessions() {
                   </Button>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                  {group.links.map((link) => (
+                  {group.links.map((link, index) => (
                     <motion.a
                       key={`${group.name}-${link.number}`}
                       href={link.url}
