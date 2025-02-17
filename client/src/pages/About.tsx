@@ -41,9 +41,19 @@ export default function About() {
                   loading="eager"
                   decoding="sync"
                   fetchpriority="high"
+                  style={{
+                    transform: 'translate3d(0, 0, 0)',
+                    backfaceVisibility: 'hidden',
+                    perspective: 1000,
+                    WebkitTransform: 'translate3d(0, 0, 0)',
+                    WebkitBackfaceVisibility: 'hidden',
+                    WebkitPerspective: 1000
+                  }}
                   onError={(e) => {
                     const img = e.target as HTMLImageElement;
-                    img.src = '/assets/IMG_1133.jpg';
+                    if (!img.src.includes('/assets/')) {
+                      img.src = '/assets/IMG_1133.jpg';
+                    }
                   }}
                 />
               </div>
