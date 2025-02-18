@@ -30,8 +30,12 @@ const configureStaticFiles = (app: Express) => {
       res.setHeader('Accept-Ranges', 'bytes');
       res.setHeader('Vary', 'Accept-Encoding');
       res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+      res.setHeader('Cross-Origin-Resource-Policy', 'same-site');
       res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+      res.setHeader('Access-Control-Max-Age', '86400');
       res.setHeader('X-Content-Type-Options', 'nosniff');
+      res.setHeader('Timing-Allow-Origin', '*');
     },
     maxAge: 31536000000,
     lastModified: true,

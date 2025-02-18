@@ -100,8 +100,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     staleTime: 5 * 60 * 1000,
   });
 
-  const preloadImage = async (photo: Photo): Promise<void> => {
-    if (!photo.imageUrl) return;
+  const preloadImage = async (photo: Photo): Promise<boolean> => {
+    if (!photo.imageUrl) return false;
 
     const paths = getImagePaths(photo);
     const thumbPaths = getImagePaths(photo, true);
@@ -111,8 +111,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     const maxRetries = 5;
     const maxTimeout = 8000;
 
-    if (loadedImages.has(paths[0])) return;
-    if (failedImages.has(paths[0]) && retryCount >= maxRetries) return;
+    if (loadedImages.has(paths[0])) return true;
+    if (failedImages.has(paths[0]) && retryCount >= maxRetries) return false;
 
     try {
       const img = new Image();
@@ -182,6 +182,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
         tryNextPath();
       });
+      return true;
     } catch (error) {
       console.error(`Error loading image for ${photo.imageUrl}:`, error);
       setRetryAttempts(prev => ({ ...prev, [paths[0]]: retryCount + 1 }));
@@ -193,6 +194,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
           preloadImage(photo);
         }, Math.min(1000 * Math.pow(2, retryCount), 5000));
       }
+      return false;
     }
   };
 
@@ -209,9 +211,19 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       running++;
       const photo = preloadQueue.shift();
       if (photo) {
-        await preloadImage(photo);
-        running--;
-        if (!cancelled) processNext();
+        try {
+          const result = await preloadImage(photo);
+          if (result) {
+            setLoadedImages(prev => new Set(prev).add(getImagePaths(photo)[0]));
+          }
+        } catch (error) {
+          console.error('Failed to preload image:', error);
+        } finally {
+          running--;
+          if (!cancelled) {
+            setTimeout(processNext, 100); // Add delay between loads
+          }
+        }
       }
     };
 

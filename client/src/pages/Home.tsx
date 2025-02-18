@@ -41,8 +41,8 @@ export default function Home() {
   // Fixed images for each category from galleries folder
   const customImages: Record<string, { img: string; thumb: string }> = {
     "Bat Mitsva": {
-      img: `/attached_assets/galleries/Bat_Mitsva/001.jpeg`,
-      thumb: `/attached_assets/galleries/Bat_Mitsva/001-thumb.jpeg`,
+      img: `/api/photos/Bat_Mitsva/001.jpeg`,
+      thumb: `/api/photos/Bat_Mitsva/001-thumb.jpeg`,
     },
     Horses: {
       img: `/attached_assets/galleries/Horses/058.jpeg`,
