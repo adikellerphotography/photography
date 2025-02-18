@@ -48,7 +48,7 @@ const configureStaticFiles = (app: Express) => {
       const { category, filename } = req.params;
       const categoryPath = decodeURIComponent(category).replace(/\s+/g, '_');
       const imagePath = path.join(assetsPath, 'galleries', categoryPath, filename);
-      
+
       try {
         await fs.access(imagePath, fs.constants.R_OK);
         res.sendFile(imagePath, staticOptions);
@@ -342,20 +342,35 @@ export function registerRoutes(app: Express): Server {
       };
 
       // Always use galleries path
-      const imagePath = path.join(process.cwd(), 'attached_assets', 'galleries', categoryPath, filename);
+      const baseDir = path.join(process.cwd(), 'attached_assets', 'galleries', categoryPath);
 
       try {
-        await fs.access(imagePath, fs.constants.R_OK);
-        console.log('Serving image from:', imagePath);
-        res.set(commonHeaders).sendFile(imagePath);
-        return;
-      } catch (err) {
-        console.log(`Gallery image not found: ${imagePath}`);
+        // Get actual files in directory
+        const files = await fs.readdir(baseDir);
+
+        // Try to find case-insensitive match
+        const actualFile = files.find(file => 
+          file.toLowerCase() === filename.toLowerCase()
+        );
+
+        if (actualFile) {
+          const imagePath = path.join(baseDir, actualFile);
+          await fs.access(imagePath, fs.constants.R_OK);
+          console.log('Serving image from:', imagePath);
+          res.set(commonHeaders).sendFile(imagePath);
+          return;
+        }
+
         res.status(404).json({ 
           error: 'Image not found',
-          path: imagePath
+          path: filename
         });
-        return;
+      } catch (err) {
+        console.error(`Error serving image: ${filename}`, err);
+        res.status(404).json({ 
+          error: 'Image not found',
+          path: filename
+        });
       }
 
     } catch (error) {

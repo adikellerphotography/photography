@@ -28,7 +28,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     const fileName = photo.imageUrl;
     const baseFileName = fileName.replace(/\.(jpeg|jpg)$/, '');
     const categoryPath = category?.replace(/\s+/g, '_');
-    
+
     // Generate paths with both jpeg and jpg extensions
     const paths = [
       `/api/photos/${encodeURIComponent(categoryPath)}/${fileName}`,
@@ -114,7 +114,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
           const currentPath = allPaths[currentPathIndex];
           // Add cache busting and retry information
           const urlWithCache = `${currentPath}?t=${timestamp}&r=${retryCount}-${currentRetry}-${Math.random().toString(36).substring(7)}`;
-          
+
           // Try to verify the image exists first
           try {
             const response = await fetch(currentPath, { method: 'HEAD' });
@@ -303,6 +303,21 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                       decoding={index < 6 ? "sync" : "async"}
                       fetchpriority={index < 6 ? "high" : "low"}
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      onError={(e) => {
+                        const img = e.target as HTMLImageElement;
+                        const retryCount = Number(img.dataset.retryCount || 0);
+                        if (retryCount < 3) {
+                          img.dataset.retryCount = String(retryCount + 1);
+                          // Try different path variations
+                          const paths = [
+                            img.src,
+                            img.src.replace('/api/photos/', '/attached_assets/galleries/'),
+                            img.src.replace('/api/photos/', '/assets/'),
+                            img.src.replace('.jpeg', '.jpg')
+                          ];
+                          img.src = paths[retryCount];
+                        }
+                      }}
                     />
                   )}
                 </div>
