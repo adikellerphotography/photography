@@ -22,6 +22,29 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   const galleryRef = useRef<HTMLDivElement>(null);
   const imageCache = useRef<Record<string, HTMLImageElement>>({});
   const photoRefs = useRef<HTMLDivElement[]>([]);
+  const observer = useRef<IntersectionObserver | null>(null);
+
+  useEffect(() => {
+    observer.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const img = entry.target as HTMLImageElement;
+            if (img.dataset.src) {
+              img.src = img.dataset.src;
+              observer.current?.unobserve(img);
+            }
+          }
+        });
+      },
+      {
+        rootMargin: '50px 0px',
+        threshold: 0.1
+      }
+    );
+
+    return () => observer.current?.disconnect();
+  }, []);
 
   const getImagePaths = (photo: Photo, isThumb = false): string[] => {
     if (!photo?.imageUrl) return [];
@@ -299,10 +322,15 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                       className={`relative w-full h-full transition-all duration-500 ${
                         isLoaded ? 'opacity-100 group-hover:scale-110' : 'opacity-0'
                       } object-cover`}
-                      loading={index < 6 ? "eager" : "lazy"}
-                      decoding={index < 6 ? "sync" : "async"}
-                      fetchpriority={index < 6 ? "high" : "low"}
+                      loading="lazy"
+                      decoding="async"
+                      fetchpriority={index < 3 ? "high" : "low"}
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      onLoad={(e) => {
+                        const img = e.target as HTMLImageElement;
+                        img.style.opacity = '1';
+                        setLoadedImages(prev => new Set(prev).add(mainPath));
+                      }}
                       onError={(e) => {
                         const img = e.target as HTMLImageElement;
                         const retryCount = Number(img.dataset.retryCount || 0);
