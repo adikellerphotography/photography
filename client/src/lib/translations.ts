@@ -78,7 +78,7 @@ export const translations = {
     about: {
       title: "About Me",
       welcome:
-        "My name is Adi Keller and welcome to my photography world. I'm passionate about capturing life's precious moments and turning them into lasting memories. Since 2018, I've dedicated myself to professional photography, creating timeless images that speak to the heart.",
+        "My name is Adi Keller and welcome to my photography world. I'm passionate about capturing life's precious moments and turning them into lasting memories. Since 2018, I've dedicated myself to professional photography, creating timeless images that speak to the heart",
       approachTitle: "My Approach",
       approach:
         "Every photo session is unique, and I strive to create a comfortable and enjoyable experience. I meticulously prepare for each session, bringing tailored posing ideas designed to reveal your authentic personality. My sessions are conducted exclusively outdoors, utilizing natural light to create soft, flattering photographs that capture genuine moments and tell your personal story.",
