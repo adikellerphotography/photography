@@ -57,11 +57,19 @@ export default function CategoryCard({ name, description, imageUrl, thumbnailUrl
                 className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
-                  if (!target.dataset.retryCount || parseInt(target.dataset.retryCount) < 3) {
-                    target.dataset.retryCount = target.dataset.retryCount ? (parseInt(target.dataset.retryCount) + 1).toString() : "1";
+                  const retryCount = parseInt(target.dataset.retryCount || '0');
+                  const paths = [
+                    displayUrl,
+                    displayUrl.replace('attached_assets/', ''),
+                    displayUrl.replace('attached_assets/', 'assets/'),
+                    `/api/photos/${name.replace(/\s+/g, '_')}/${displayUrl.split('/').pop()}`
+                  ];
+                  
+                  if (retryCount < paths.length) {
+                    target.dataset.retryCount = (retryCount + 1).toString();
                     setTimeout(() => {
-                      target.src = displayUrl;
-                    }, 1000);
+                      target.src = paths[retryCount] + `?retry=${retryCount}`;
+                    }, Math.min(1000 * Math.pow(2, retryCount), 3000));
                   } else {
                     target.style.display = 'none';
                     const parent = target.parentElement;
