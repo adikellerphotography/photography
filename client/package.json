@@ -2,7 +2,7 @@
     "name": "your-project-name",
     "version": "1.0.0",
     "private": true,
-    "homepage": "https://adikeller.github.io",
+    "homepage": "https://adikellerphotography.github.io",
     "scripts": {
         "build": "react-scripts build",
         "predeploy": "npm run build",
