@@ -76,6 +76,18 @@ export default function Pricing() {
         price: t("pricing.packages.feminine.price"),
         description: t("pricing.packages.feminine.description") || "Feminine photography session",
         features: t("pricing.packages.feminine.features", { returnObjects: true }) || defaultFeatures
+      },
+      {
+        name: "Modeling",
+        price: t("pricing.packages.modeling.price"),
+        description: t("pricing.packages.modeling.description") || "Modeling photography session",
+        features: t("pricing.packages.modeling.features", { returnObjects: true }) || defaultFeatures
+      },
+      {
+        name: "Intimate",
+        price: t("pricing.packages.intimate.price") || "1450₪",
+        description: t("pricing.packages.intimate.description") || "Intimate photography session",
+        features: t("pricing.packages.intimate.features", { returnObjects: true }) || defaultFeatures
       }
     ];
   };
@@ -133,7 +145,7 @@ export default function Pricing() {
                     {pkg.name === "Femininity" && <Heart weight="bold" className="w-9 h-9 text-white" />}
                     {pkg.name === "Yoga" && <FlowerLotus weight="bold" className="w-9 h-9 text-white" />}
                     {pkg.name === "Modeling" && <Camera weight="bold" className="w-9 h-9 text-white" />}
-                    {pkg.name === "Artful Nude" && <ProhibitInset weight="bold" className="w-9 h-9 text-white" />}
+                    {pkg.name === "Intimate" && <ProhibitInset weight="bold" className="w-9 h-9 text-white" />}
                   </div>
                   <div className="relative flex items-center justify-start w-full h-full">
                     <span className="pl-[calc(25%+1rem)] text-base font-medium text-black">{language === 'he' ? t(`categories.${pkg.name}`) : pkg.name}</span>

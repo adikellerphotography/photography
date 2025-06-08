@@ -203,6 +203,22 @@ export const translations = {
             "All raw material included",
           ],
         },
+        intimate: {
+          name: "Intimate",
+          price: "1450₪",
+          description: [
+            "In intimate photography I focus on allowing your body to express itself naturally and authentically my approach combines strict adherence to privacy and modesty a delicate balance between feminine softness and strength and personalized adaptation to your self-expression",
+            "I come prepared with ideas tailored to the location taking into account the clothing items you've chosen and aligning with your personal vision for the photos and expectations alignment",
+            "During the photoshoot we'll go through scene after scene to create a rich variety of images we'll use various accessories to enrich the photos change clothing items for visual diversity and use a range of different poses",
+            "The goal is to create a diverse and rich set of images that reflects your unique intimacy in all its shades",
+          ],
+          features: [
+            "1.5 hours session (before sunset)",
+            "1 location",
+            "25 edited photos",
+            "All raw material included",
+          ],
+        },
         additional: {
           name: "Service Details",
           price: "",
