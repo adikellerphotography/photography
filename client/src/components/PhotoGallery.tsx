@@ -60,9 +60,9 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       `/assets/${encodeURIComponent(categoryPath)}/${fileName}`,
       `/assets/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
       `/assets/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
-      `/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${fileName}`,
-      `/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
-      `/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
+      `/photography/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${fileName}`,
+      `/photography/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
+      `/photography/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
       `/galleries/${encodeURIComponent(categoryPath)}/${fileName}`,
       `/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
       `/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
@@ -351,7 +351,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                           // Try different path variations
                           const paths = [
                             img.src,
-                            img.src.replace('/api/photos/', '/attached_assets/galleries/'),
+                            img.src.replace('/api/photos/', '/photography/attached_assets/galleries/'),
                             img.src.replace('/api/photos/', '/assets/'),
                             img.src.replace('.jpeg', '.jpg')
                           ];

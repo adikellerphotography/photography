@@ -65,7 +65,7 @@ const configureStaticFiles = (app: Express) => {
   });
 
   // Serve files from multiple paths to ensure availability
-  app.use('/attached_assets', express.static(assetsPath, staticOptions));
+  app.use('/photography/attached_assets', express.static(assetsPath, staticOptions));
   app.use('/assets', express.static(path.join(assetsPath, 'galleries'), staticOptions));
   app.use('/galleries', express.static(path.join(assetsPath, 'galleries'), staticOptions));
 };

@@ -54,8 +54,8 @@ export async function scanGalleries(targetPath?: string) { // Renamed for clarit
           const thumbName = `${baseName}-thumb${ext}`;
           const thumbExists = imageFiles.includes(thumbName);
           
-          const imageUrl = `/attached_assets/galleries/${dir}/${imageFile}`;
-          const thumbnailUrl = thumbExists ? `/attached_assets/galleries/${dir}/${thumbName}` : imageUrl;
+          const imageUrl = `/photography/attached_assets/galleries/${dir}/${imageFile}`;
+          const thumbnailUrl = thumbExists ? `/photography/attached_assets/galleries/${dir}/${thumbName}` : imageUrl;
           
           await db.insert(photos).values({
             id,
@@ -134,14 +134,14 @@ export async function scanFacebookPostsImages() {
             id,
             title: `${displayName} Portrait Session`,
             category: displayName,
-            imageUrl: `/attached_assets/facebook_posts_image/${dir}/${imageFile}`,
-            thumbnailUrl: `/attached_assets/facebook_posts_image/${dir}/${imageFile}`,
+            imageUrl: `/photography/attached_assets/facebook_posts_image/${dir}/${imageFile}`,
+            thumbnailUrl: `/photography/attached_assets/facebook_posts_image/${dir}/${imageFile}`,
             displayOrder: id
           }).onConflictDoUpdate({
             target: [photos.id],
             set: {
-              imageUrl: `/attached_assets/facebook_posts_image/${dir}/${imageFile}`,
-              thumbnailUrl: `/attached_assets/facebook_posts_image/${dir}/${imageFile}`,
+              imageUrl: `/photography/attached_assets/facebook_posts_image/${dir}/${imageFile}`,
+              thumbnailUrl: `/photography/attached_assets/facebook_posts_image/${dir}/${imageFile}`,
               displayOrder: id
             }
           });

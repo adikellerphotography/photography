@@ -49,7 +49,7 @@ export default function About() {
                   >
                     <img
                       id="about-profile"
-                      src="/attached_assets/IMG_1133.jpg"
+                      src="/photography/attached_assets/IMG_1133.jpg"
                       alt="Profile"
                       className="object-cover w-full h-full transform-gpu animate-fadeIn"
                       width={300}

@@ -45,41 +45,41 @@ export default function Home() {
       thumb: `/api/photos/Bat_Mitsva/001-thumb.jpeg`,
     },
     Horses: {
-      img: `/attached_assets/galleries/Horses/058.jpeg`,
-      thumb: `/attached_assets/galleries/Horses/058-thumb.jpeg`,
+      img: `/photography/attached_assets/galleries/Horses/058.jpeg`,
+      thumb: `/photography/attached_assets/galleries/Horses/058-thumb.jpeg`,
     },
     Kids: {
-      img: `/attached_assets/galleries/Kids/021.jpeg`,
-      thumb: `/attached_assets/galleries/Kids/021-thumb.jpeg`,
+      img: `/photography/attached_assets/galleries/Kids/021.jpeg`,
+      thumb: `/photography/attached_assets/galleries/Kids/021-thumb.jpeg`,
     },
     Family: {
-      img: `/attached_assets/galleries/Family/016.jpeg`,
-      thumb: `/attached_assets/galleries/Family/016-thumb.jpeg`,
+      img: `/photography/attached_assets/galleries/Family/016.jpeg`,
+      thumb: `/photography/attached_assets/galleries/Family/016-thumb.jpeg`,
     },
     Femininity: {
-      img: `/attached_assets/galleries/Femininity/014.jpeg`,
-      thumb: `/attached_assets/galleries/Femininity/014-thumb.jpeg`,
+      img: `/photography/attached_assets/galleries/Femininity/014.jpeg`,
+      thumb: `/photography/attached_assets/galleries/Femininity/014-thumb.jpeg`,
     },
     Yoga: {
-      img: `/attached_assets/galleries/Yoga/064.jpeg`,
-      thumb: `/attached_assets/galleries/Yoga/064-thumb.jpeg`,
+      img: `/photography/attached_assets/galleries/Yoga/064.jpeg`,
+      thumb: `/photography/attached_assets/galleries/Yoga/064-thumb.jpeg`,
     },
     Modeling: {
-      img: `/attached_assets/galleries/Modeling/010.jpeg`,
-      thumb: `/attached_assets/galleries/Modeling/010-thumb.jpeg`,
+      img: `/photography/attached_assets/galleries/Modeling/010.jpeg`,
+      thumb: `/photography/attached_assets/galleries/Modeling/010-thumb.jpeg`,
     },
     "Intimate": {
-      img: `/attached_assets/galleries/Intimate/023.jpeg`,
-      thumb: `/attached_assets/galleries/Intimate/023-thumb.jpeg`,
+      img: `/photography/attached_assets/galleries/Intimate/023.jpeg`,
+      thumb: `/photography/attached_assets/galleries/Intimate/023-thumb.jpeg`,
     },
   };
 
   // Fallback paths for images
   const getFallbackPaths = (categoryPath: string) => {
     return [
-      `/attached_assets/galleries/${categoryPath}/016.jpeg`,
+      `/photography/attached_assets/galleries/${categoryPath}/016.jpeg`,
       `/assets/galleries/${categoryPath}/016.jpeg`,
-      `/attached_assets/galleries/${categoryPath}/001.jpeg`,
+      `/photography/attached_assets/galleries/${categoryPath}/001.jpeg`,
     ];
   };
 

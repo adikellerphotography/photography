@@ -111,8 +111,8 @@ async function scanGalleries(targetPath) {
           const id = parseInt(baseName) || imageIndex + 1;
           const thumbName = `${baseName}-thumb${ext}`;
           const thumbExists = imageFiles.includes(thumbName);
-          const imageUrl = `/attached_assets/galleries/${dir}/${imageFile}`;
-          const thumbnailUrl = thumbExists ? `/attached_assets/galleries/${dir}/${thumbName}` : imageUrl;
+          const imageUrl = `/photography/attached_assets/galleries/${dir}/${imageFile}`;
+          const thumbnailUrl = thumbExists ? `/photography/attached_assets/galleries/${dir}/${thumbName}` : imageUrl;
           await db.insert(photos).values({
             id,
             title: `${displayName} Portrait Session`,
@@ -192,7 +192,7 @@ var configureStaticFiles = (app) => {
       next(error);
     }
   });
-  app.use("/attached_assets", express.static(assetsPath, staticOptions));
+  app.use("/photography/attached_assets", express.static(assetsPath, staticOptions));
   app.use("/assets", express.static(path2.join(assetsPath, "galleries"), staticOptions));
   app.use("/galleries", express.static(path2.join(assetsPath, "galleries"), staticOptions));
 };
