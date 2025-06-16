@@ -30,7 +30,7 @@ export default function Home() {
     "Femininity",
     "Yoga",
     "Modeling",
-    "Artful Nude",
+    "Intimate",
   ];
   const allowedCategories = categoryOrder.filter(
     (cat) => !excludedCategories.includes(cat.toLowerCase()),
@@ -68,9 +68,9 @@ export default function Home() {
       img: `/attached_assets/galleries/Modeling/010.jpeg`,
       thumb: `/attached_assets/galleries/Modeling/010-thumb.jpeg`,
     },
-    "Artful Nude": {
-      img: `/attached_assets/galleries/Artful_Nude/023.jpeg`,
-      thumb: `/attached_assets/galleries/Artful_Nude/023-thumb.jpeg`,
+    "Intimate": {
+      img: `/attached_assets/galleries/Intimate/023.jpeg`,
+      thumb: `/attached_assets/galleries/Intimate/023-thumb.jpeg`,
     },
   };
 

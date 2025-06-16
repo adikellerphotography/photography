@@ -135,7 +135,7 @@ export default function Gallery() {
     "Femininity", 
     "Yoga",
     "Modeling",
-    "Artful Nude"
+    "Intimate"
   ];
 
   const processedCategories = categories

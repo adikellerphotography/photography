@@ -37,7 +37,7 @@ export default function CategoryCard({ name, description, imageUrl, thumbnailUrl
         return <Yoga {...iconProps} />;
       case "Modeling":
         return <PersonStanding {...iconProps} />;
-      case "Artful Nude":
+      case "Intimate":
         return <Paintbrush {...iconProps} />;
       default:
         return null;

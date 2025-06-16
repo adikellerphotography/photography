@@ -431,5 +431,11 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
+  // Serve static assets
+  app.use('/assets', express.static(path.join(process.cwd(), 'attached_assets')));
+  app.use('/assets/galleries', express.static(path.join(process.cwd(), 'attached_assets/galleries')));
+  app.use('/assets/facebook_posts_image', express.static(path.join(process.cwd(), 'attached_assets/facebook_posts_image')));
+  app.use('/api/static', express.static(path.join(process.cwd(), 'attached_assets')));
+
   return httpServer;
 }

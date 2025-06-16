@@ -54,11 +54,11 @@ export default function Contact() {
     if (img) {
       const currentSrc = img.src;
       if (currentSrc.includes('attached_assets')) {
+        img.src = '/api/static/my_site_logo.png';
+      } else if (currentSrc.includes('/api/static/')) {
         img.src = '/assets/my_site_logo.png';
       } else if (currentSrc.includes('/assets/')) {
         img.src = '/my_site_logo.png';
-      } else if (currentSrc.includes('/my_site_logo.png')){
-        img.src = '/fallback-logo.png'; //Add a fallback
       } else {
         setImageError(true);
       }
@@ -71,7 +71,7 @@ export default function Contact() {
         {!imageError ? (
           <img 
             id="site-logo"
-            src="/attached_assets/my_site_logo.png"
+            src="/api/static/my_site_logo.png"
             alt="Site Logo"
             className="w-[52.5%] md:w-[37.5%] animate-fadeIn"
             onError={handleImageError}
