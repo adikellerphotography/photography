@@ -1,6 +1,6 @@
 import { StrictMode, useEffect } from "react";
 import { createRoot } from "react-dom/client";
-import { HashRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import App from './App';
 import "./index.css";
 
@@ -67,8 +67,8 @@ if ('caches' in window) {
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <HashRouter>
+    <BrowserRouter basename="/photography">
       <AppWrapper />
-    </HashRouter>
-  </StrictMode>,
+    </BrowserRouter>
+  </StrictMode>
 );
