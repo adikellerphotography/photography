@@ -16,7 +16,12 @@ export default function Home() {
   const { data: categories, isLoading: categoriesLoading } = useQuery<
     Category[]
   >({
-    queryKey: ["/api/categories"],
+    queryKey: ["/photography/attached_assets/categories.json"],
+    queryFn: async () => {
+      const response = await fetch("/photography/attached_assets/categories.json");
+      if (!response.ok) throw new Error("Failed to fetch categories");
+      return response.json();
+    },
   });
 
   const { t } = useTranslation();
