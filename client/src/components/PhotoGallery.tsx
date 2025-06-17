@@ -54,9 +54,9 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
     // Generate paths with both jpeg and jpg extensions
     const paths = [
-      `/api/photos/${encodeURIComponent(categoryPath)}/${fileName}`,
-      `/api/photos/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
-      `/api/photos/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
+      `/photography/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${fileName}`,
+      `/photography/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
+      `/photography/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
       `/assets/${encodeURIComponent(categoryPath)}/${fileName}`,
       `/assets/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
       `/assets/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
@@ -70,7 +70,7 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
 
     // Prefix /photography to static asset paths (not to /api/...)
     const fixedPaths = paths.map(p =>
-      p.startsWith('/api/') ? p : `/photography${p}`
+      p.startsWith('/api/') || p.startsWith('/photography/') ? p : `/photography${p}`
     );
 
     // Also try with different casing of extensions
@@ -88,10 +88,10 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
   };
 
   const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({
-    queryKey: ["/api/photos", category],
+    queryKey: ["/photography/attached_assets/galleries", category],
     queryFn: async () => {
       try {
-        const response = await fetch(`/api/photos?category=${encodeURIComponent(category || '')}`);
+        const response = await fetch(`/photography/attached_assets/galleries?category=${encodeURIComponent(category || '')}`);
         if (!response.ok) throw new Error('Failed to fetch photos');
         const data = await response.json();
         return data.filter((photo: Photo) => photo && photo.imageUrl);
@@ -356,8 +356,8 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
                           // Try different path variations
                           const paths = [
                             img.src,
-                            img.src.replace('/api/photos/', '/photography/attached_assets/galleries/'),
-                            img.src.replace('/api/photos/', '/assets/'),
+                            img.src.replace('/photography/attached_assets/galleries/', '/photography/attached_assets/galleries/'),
+                            img.src.replace('/photography/attached_assets/galleries/', '/assets/'),
                             img.src.replace('.jpeg', '.jpg')
                           ];
                           img.src = paths[retryCount];

@@ -177,7 +177,7 @@ var configureStaticFiles = (app) => {
     dotfiles: "ignore",
     index: false
   };
-  app.use("/api/photos/:category/:filename", async (req, res, next) => {
+  app.use("/photography/attached_assets/galleries/:category/:filename", async (req, res, next) => {
     try {
       const { category, filename } = req.params;
       const categoryPath = decodeURIComponent(category).replace(/\s+/g, "_");
@@ -396,12 +396,12 @@ function registerRoutes(app) {
       res.status(500).send("Error processing image");
     }
   });
-  app.get("/api/photos", getPhotos);
+  app.get("/photography/attached_assets/galleries", getPhotos);
   app.get("/api/categories", getCategories);
   app.get("/api/before-after", getBeforeAfterSets);
-  app.post("/api/photos/scan", scanPhotos);
-  app.post("/api/photos/:id/like", togglePhotoLike);
-  app.get("/api/photos/:category/:filename", async (req, res) => {
+  app.post("/photography/attached_assets/galleries/scan", scanPhotos);
+  app.post("/photography/attached_assets/galleries/:id/like", togglePhotoLike);
+  app.get("/photography/attached_assets/galleries/:category/:filename", async (req, res) => {
     try {
       const { category, filename } = req.params;
       const categoryPath = decodeURIComponent(category).replace(/\s+/g, "_");

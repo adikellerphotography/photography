@@ -208,9 +208,9 @@ export default function Gallery() {
   };
 
   const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({
-    queryKey: ["/api/photos", activeCategory],
+    queryKey: ["/photography/attached_assets/galleries", activeCategory],
     queryFn: async () => {
-      const response = await fetch(`/api/photos?category=${encodeURIComponent(activeCategory)}`);
+      const response = await fetch(`/photography/attached_assets/galleries?category=${encodeURIComponent(activeCategory)}`);
       if (!response.ok) throw new Error('Failed to fetch photos');
       const data = await response.json();
       const filteredPhotos = data.filter((photo: Photo) => photo && photo.imageUrl);

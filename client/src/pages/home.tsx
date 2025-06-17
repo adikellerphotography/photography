@@ -41,8 +41,8 @@ export default function Home() {
   // Fixed images for each category from galleries folder
   const customImages: Record<string, { img: string; thumb: string }> = {
     "Bat Mitsva": {
-      img: `/api/photos/Bat_Mitsva/001.jpeg`,
-      thumb: `/api/photos/Bat_Mitsva/001-thumb.jpeg`,
+      img: `/photography/attached_assets/galleries/Bat_Mitsva/001.jpeg`,
+      thumb: `/photography/attached_assets/galleries/Bat_Mitsva/001-thumb.jpeg`,
     },
     Horses: {
       img: `/photography/attached_assets/galleries/Horses/058.jpeg`,
@@ -85,8 +85,8 @@ export default function Home() {
 
   const processedCategories = categories?.map((category) => {
     const categoryPath = category.name.replace(/\s+/g, "_");
-    const defaultImage = `/api/photos/${encodeURIComponent(categoryPath)}/001.jpeg`;
-    const defaultThumb = `/api/photos/${encodeURIComponent(categoryPath)}/001-thumb.jpeg`;
+    const defaultImage = `/photography/attached_assets/galleries/${encodeURIComponent(categoryPath)}/001.jpeg`;
+    const defaultThumb = `/photography/attached_assets/galleries/${encodeURIComponent(categoryPath)}/001-thumb.jpeg`;
 
     const imageConfig = customImages[category.name] || {
       img: defaultImage,
