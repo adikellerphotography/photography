@@ -68,8 +68,13 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       `/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
     ];
 
+    // Prefix /photography to static asset paths (not to /api/...)
+    const fixedPaths = paths.map(p =>
+      p.startsWith('/api/') ? p : `/photography${p}`
+    );
+
     // Also try with different casing of extensions
-    return [...paths, ...paths.map(p => p.replace(/\.(jpeg|jpg)$/i, ext => ext.toUpperCase()))].filter(Boolean);
+    return [...fixedPaths, ...fixedPaths.map(p => p.replace(/\.(jpeg|jpg)$/i, ext => ext.toUpperCase()))].filter(Boolean);
   };
 
   // Add verification function

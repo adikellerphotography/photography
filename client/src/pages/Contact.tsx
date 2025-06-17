@@ -49,16 +49,10 @@ export default function Contact() {
   };
 
   const handleImageError = () => {
-    // Try alternative paths if the first one fails
     const img = document.querySelector('#site-logo') as HTMLImageElement;
     if (img) {
-      const currentSrc = img.src;
-      if (currentSrc.includes('attached_assets')) {
-        img.src = '/api/static/my_site_logo.png';
-      } else if (currentSrc.includes('/api/static/')) {
-        img.src = '/assets/my_site_logo.png';
-      } else if (currentSrc.includes('/assets/')) {
-        img.src = '/my_site_logo.png';
+      if (!img.src.includes('/photography/assets/my_site_logo.png')) {
+        img.src = '/photography/assets/my_site_logo.png';
       } else {
         setImageError(true);
       }
@@ -71,7 +65,7 @@ export default function Contact() {
         {!imageError ? (
           <img 
             id="site-logo"
-            src="/api/static/my_site_logo.png"
+            src="/photography/assets/my_site_logo.png"
             alt="Site Logo"
             className="w-[52.5%] md:w-[37.5%] animate-fadeIn"
             onError={handleImageError}
