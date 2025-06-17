@@ -18,7 +18,12 @@ export default function Gallery() {
   const { language } = useLanguage();
   const { t } = useTranslation();
   const { data: categories, isLoading: categoriesLoading } = useQuery<Category[]>({
-    queryKey: ["/api/categories"],
+    queryKey: ["/photography/attached_assets/categories.json"],
+    queryFn: async () => {
+      const response = await fetch("/photography/attached_assets/categories.json");
+      if (!response.ok) throw new Error("Failed to fetch categories");
+      return response.json();
+    },
   });
 
   const [location] = useLocation();

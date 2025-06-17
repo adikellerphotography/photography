@@ -297,14 +297,14 @@ export default function Pricing() {
                 <DialogTitle>{language === 'he' ? 'ניר גיל - מחירון אלבומים' : 'Nir Gil - Album Pricing'}</DialogTitle>
               </DialogHeader>
               <div className="relative">
-                <img src="/api/static/nir_gil.jpg" alt="Nir Gil Album Pricing" className="w-full" />
+                <img src="/photography/attached_assets/nir_gil.jpg" alt="Nir Gil Album Pricing" className="w-full" />
                 <Button
                   variant="outline"
                   size="icon"
                   className="absolute top-4 right-4 z-20 bg-background/80 backdrop-blur-sm"
                   onClick={() => {
                     const link = document.createElement('a');
-                    link.href = "/api/static/nir_gil.jpg";
+                    link.href = "/photography/attached_assets/nir_gil.jpg";
                     link.download = 'nir_gil_pricing.jpg';
                     link.target = '_blank';
                     document.body.appendChild(link);
@@ -328,14 +328,14 @@ export default function Pricing() {
                 <DialogTitle>{language === 'he' ? 'אנסטסיה כץ - מחירון אלבומים' : 'Anastasia Katsz - Album Pricing'}</DialogTitle>
               </DialogHeader>
               <div className="relative">
-                <img src="/api/static/anastasia_katz.jpg" alt="Anastasia Album Pricing" className="w-full" />
+                <img src="/photography/attached_assets/anastasia_katz.jpg" alt="Anastasia Album Pricing" className="w-full" />
                 <Button
                   variant="outline"
                   size="icon"
                   className="absolute top-4 right-4 z-20 bg-background/80 backdrop-blur-sm"
                   onClick={() => {
                     const link = document.createElement('a');
-                    link.href = "/api/static/anastasia_katz.jpg";
+                    link.href = "/photography/attached_assets/anastasia_katz.jpg";
                     link.download = 'anastasia_pricing.jpg';
                     link.target = '_blank';
                     document.body.appendChild(link);

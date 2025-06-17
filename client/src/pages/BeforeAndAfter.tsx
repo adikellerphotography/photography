@@ -40,7 +40,12 @@ export default function BeforeAndAfter() {
   };
 
   const { data: comparisons = mockData, isLoading, error } = useQuery<ComparisonSet[]>({
-    queryKey: ["/api/before-after"],
+    queryKey: ["/photography/attached_assets/before-after.json"],
+    queryFn: async () => {
+      const response = await fetch("/photography/attached_assets/before-after.json");
+      if (!response.ok) throw new Error("Failed to fetch before-after data");
+      return response.json();
+    },
     initialData: mockData,
     retry: false
   });
