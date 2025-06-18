@@ -15,120 +15,8 @@ import { ArrowUp } from "lucide-react";
 const Gallery: FC = () => {
   const { language } = useLanguage();
   const { t } = useTranslation();
-  const { data: categories, isLoading: categoriesLoading } = useQuery<Category[]>({
-    queryKey: ["/photography/attached_assets/categories.json"],
-    queryFn: async () => {
-      const response = await fetch("/photography/attached_assets/categories.json");
-      if (!response.ok) throw new Error("Failed to fetch categories");
-      return response.json();
-    },
-  });
-
-  const [location] = useLocation();
-  const searchParams = new URLSearchParams(window.location.search);
-  const categoryFromUrl = searchParams.get("category");
-  const [activeCategory, setActiveCategory] = useState<string>("");
-  const [showLeftScroll, setShowLeftScroll] = useState(false);
-  const [showRightScroll, setShowRightScroll] = useState(false);
-  const tabsListRef = useRef<HTMLDivElement>(null);
-
-  const [touchStartX, setTouchStartX] = useState<number | null>(null);
-  const [touchStartY, setTouchStartY] = useState<number | null>(null);
-  const [currentX, setCurrentX] = useState<number | null>(null);
-  const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(null);
-  const [isHorizontalSwipe, setIsHorizontalSwipe] = useState<boolean | null>(null);
-  const [lastScrollPosition, setLastScrollPosition] = useState<number>(0);
-  const galleryRef = useRef<HTMLDivElement>(null);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    const x = e.touches[0].clientX;
-    setTouchStartX(x);
-    setCurrentX(x);
-    setTouchStartY(e.touches[0].clientY);
-    setIsHorizontalSwipe(null);
-    setSwipeDirection(null);
-    setLastScrollPosition(window.scrollY);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    const target = e.target as HTMLElement;
-    if (target.closest('[role="dialog"]')) return;
-    if (!touchStartX || !touchStartY || !processedCategories) return;
-
-    const x = e.touches[0].clientX;
-    const currentY = e.touches[0].clientY;
-    const diffX = touchStartX - x;
-    const diffY = touchStartY - currentY;
-
-    setCurrentX(x);
-    setSwipeDirection(diffX > 0 ? "left" : "right");
-
-    if (isHorizontalSwipe === null && (Math.abs(diffX) > 10 || Math.abs(diffY) > 10)) {
-      setIsHorizontalSwipe(Math.abs(diffX) > Math.abs(diffY));
-    }
-
-    if (isHorizontalSwipe && Math.abs(diffX) > 50) {
-      const currentIndex = processedCategories.findIndex(
-        (c) => c.name === activeCategory
-      );
-      let newIndex = diffX > 0 ? currentIndex + 1 : currentIndex - 1;
-
-      if (newIndex < 0) {
-        newIndex = processedCategories.length - 1;
-      } else if (newIndex >= processedCategories.length) {
-        newIndex = 0;
-      }
-
-      const newCategory = processedCategories[newIndex].name;
-      setActiveCategory(newCategory);
-
-      if (tabsListRef.current) {
-        const tabTrigger = tabsListRef.current.querySelector(
-          `[value="${newCategory}"]`
-        ) as HTMLButtonElement;
-
-        if (tabTrigger) {
-          tabTrigger.click();
-          const container = tabsListRef.current;
-          const scrollLeft = Math.max(0, tabTrigger.offsetLeft - 16);
-
-          container.scrollTo({
-            left: scrollLeft,
-            behavior: "smooth",
-          });
-
-          const allTriggers = container.querySelectorAll('[role="tab"]');
-          allTriggers.forEach((trigger) => {
-            trigger.setAttribute("aria-selected", "false");
-            trigger.classList.remove("bg-gray-100/10");
-          });
-          tabTrigger.setAttribute("aria-selected", "true");
-          tabTrigger.classList.add("bg-gray-100/10");
-        }
-      }
-
-      const newUrl = `/gallery?category=${encodeURIComponent(newCategory)}`;
-      window.history.pushState({ category: newCategory }, "", newUrl);
-      setTouchStartX(null);
-      setTouchStartY(null);
-      setIsHorizontalSwipe(null);
-      
-      // Wait for the new category to render then restore scroll
-      setTimeout(() => {
-        window.scrollTo({
-          top: lastScrollPosition,
-          behavior: 'instant'
-        });
-      }, 100);
-    }
-  };
-
-  const handleTouchEnd = () => {
-    setTouchStartX(null);
-    setTouchStartY(null);
-    setIsHorizontalSwipe(null);
-  };
-
+  
+  // Define category order at the top level
   const excludedCategories = ["before_and_after", "facebook_posts_image"];
   const categoryOrder = [
     "Bat Mitsva",
@@ -141,26 +29,45 @@ const Gallery: FC = () => {
     "Intimate"
   ];
 
+  const { data: categories = [], isLoading: categoriesLoading, error: categoriesError } = useQuery<Category[]>({
+    queryKey: ["/photography/attached_assets/categories.json"],
+    queryFn: async () => {
+      console.log('Fetching categories...');
+      const response = await fetch("/photography/attached_assets/categories.json");
+      if (!response.ok) {
+        console.error('Failed to fetch categories:', response.statusText);
+        throw new Error("Failed to fetch categories");
+      }
+      const data = await response.json();
+      console.log('Categories loaded:', data);
+      return data;
+    },
+  });
+
+  const [location] = useLocation();
+  const searchParams = new URLSearchParams(window.location.search);
+  const categoryFromUrl = searchParams.get("category");
+  const [activeCategory, setActiveCategory] = useState<string>("");
+
   const processedCategories = categories
     ?.filter(
-      (category, index, self) =>
+      (category) =>
         !excludedCategories.includes(category.name.toLowerCase()) &&
-        categoryOrder.includes(category.name) &&
-        self.findIndex(
-          (c) => c.name.toLowerCase() === category.name.toLowerCase()
-        ) === index
+        categoryOrder.includes(category.name)
     )
     .sort((a, b) => 
       categoryOrder.indexOf(a.name) - categoryOrder.indexOf(b.name)
     ) || [];
 
+  // Set default category when categories are loaded
   useEffect(() => {
     if (!categoriesLoading && processedCategories.length > 0) {
-      if (categoryFromUrl && processedCategories.some((c) => c.name === categoryFromUrl)) {
+      if (categoryFromUrl && processedCategories.some(c => c.name === categoryFromUrl)) {
+        console.log('Setting category from URL:', categoryFromUrl);
         setActiveCategory(categoryFromUrl);
-      } else if (!activeCategory) {
-        // Set to first category by default
+      } else if (!activeCategory || !processedCategories.some(c => c.name === activeCategory)) {
         const defaultCategory = processedCategories[0].name;
+        console.log('Setting default category:', defaultCategory);
         setActiveCategory(defaultCategory);
         const newUrl = `/gallery?category=${encodeURIComponent(defaultCategory)}`;
         window.history.replaceState({ category: defaultCategory }, "", newUrl);
@@ -168,29 +75,41 @@ const Gallery: FC = () => {
     }
   }, [categoryFromUrl, processedCategories, categoriesLoading, activeCategory]);
 
-  const checkScroll = () => {
-    if (tabsListRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = tabsListRef.current;
-      setShowLeftScroll(scrollLeft > 0);
-      setShowRightScroll(scrollLeft < scrollWidth - clientWidth - 10);
-    }
-  };
+  const { data: photos = [], isLoading: photosLoading, error: photosError } = useQuery<Photo[]>({
+    queryKey: ["/photography/attached_assets/galleries", activeCategory],
+    queryFn: async () => {
+      if (!activeCategory) return [];
+      try {
+        const formattedCategory = activeCategory.replace(/\s+/g, '_');
+        console.log('Fetching photos for category:', formattedCategory);
+        const response = await fetch(`/photography/attached_assets/galleries/${formattedCategory}/photos.json`);
+        if (!response.ok) {
+          console.error(`Failed to fetch photos for ${activeCategory}:`, response.statusText);
+          return [];
+        }
+        const data = await response.json();
+        console.log('Photos loaded:', data.length);
+        const filteredPhotos = data.filter((photo: Photo) => photo && photo.imageUrl);
+        console.log('Filtered photos:', filteredPhotos.length);
 
-  useEffect(() => {
-    checkScroll();
-    window.addEventListener("resize", checkScroll);
-    return () => window.removeEventListener("resize", checkScroll);
-  }, [categories]);
-
-  const scroll = (direction: "left" | "right") => {
-    if (tabsListRef.current) {
-      const scrollAmount = 200;
-      tabsListRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
-    }
-  };
+        return filteredPhotos.map((photo: Photo) => ({
+          ...photo,
+          imageUrl: photo.imageUrl.startsWith('http') ? photo.imageUrl : 
+                   photo.imageUrl.startsWith('/photography') ? photo.imageUrl : 
+                   `/photography${photo.imageUrl}`,
+          thumbnailUrl: photo.thumbnailUrl ? 
+                       (photo.thumbnailUrl.startsWith('http') ? photo.thumbnailUrl : 
+                        photo.thumbnailUrl.startsWith('/photography') ? photo.thumbnailUrl : 
+                        `/photography${photo.thumbnailUrl}`) :
+                       photo.imageUrl
+        }));
+      } catch (error) {
+        console.error('Error loading photos:', error);
+        return [];
+      }
+    },
+    enabled: !!activeCategory,
+  });
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -210,40 +129,6 @@ const Gallery: FC = () => {
     },
   };
 
-  const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({
-    queryKey: ["/photography/attached_assets/galleries", activeCategory],
-    queryFn: async () => {
-      if (!activeCategory) return [];
-      try {
-        const formattedCategory = activeCategory.replace(/\s+/g, '_');
-        const response = await fetch(`/photography/attached_assets/galleries/${formattedCategory}/photos.json`);
-        if (!response.ok) {
-          console.error(`Failed to fetch photos for ${activeCategory}`);
-          return [];
-        }
-        const data = await response.json();
-        const filteredPhotos = data.filter((photo: Photo) => 
-          photo && photo.imageUrl && photo.thumbnailUrl);
-
-        // Ensure all image URLs start with /photography if they don't start with a full URL
-        return filteredPhotos.map((photo: Photo) => ({
-          ...photo,
-          imageUrl: photo.imageUrl.startsWith('http') ? photo.imageUrl : 
-                   photo.imageUrl.startsWith('/photography') ? photo.imageUrl : 
-                   `/photography${photo.imageUrl}`,
-          thumbnailUrl: (photo.thumbnailUrl || '').startsWith('http') ? photo.thumbnailUrl : 
-                       (photo.thumbnailUrl || '').startsWith('/photography') ? photo.thumbnailUrl : 
-                       photo.thumbnailUrl ? `/photography${photo.thumbnailUrl}` : photo.imageUrl
-        }));
-      } catch (error) {
-        console.error('Error loading photos:', error);
-        return [];
-      }
-    },
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
-    cacheTime: 10 * 60 * 1000, // Keep in cache for 10 minutes
-  });
-
   const scrollY = window.scrollY;
   const scrollToTop = () => {
     window.scrollTo({
@@ -253,7 +138,7 @@ const Gallery: FC = () => {
   };
 
 
-  if (categoriesLoading || !processedCategories.length || isLoading) {
+  if (categoriesLoading || !processedCategories.length || photosLoading) {
     return (
       <div className="min-h-screen pt-16">
         <div className="container mx-auto px-4 py-16">
