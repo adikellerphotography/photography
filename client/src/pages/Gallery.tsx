@@ -109,6 +109,27 @@ const Gallery: FC = () => {
     enabled: !!activeCategory,
   });
 
+  // Helper function to shuffle array
+  const shuffleArray = <T,>(array: T[]): T[] => {
+    // Create a copy of the array to avoid modifying the original
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+  // State to hold shuffled photos
+  const [shuffledPhotos, setShuffledPhotos] = useState<Photo[]>([]);
+
+  // Effect to shuffle photos when they change
+  useEffect(() => {
+    if (photos.length > 0) {
+      setShuffledPhotos(shuffleArray(photos));
+    }
+  }, [photos]);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -261,7 +282,7 @@ const Gallery: FC = () => {
                       <CardContent className="pt-6">
                         <PhotoGallery 
                           category={category.name} 
-                          photos={photos.filter((photo: Photo) => photo && photo.imageUrl)} 
+                          photos={shuffledPhotos.filter((photo: Photo) => photo && photo.imageUrl)} 
                         />
                       </CardContent>
                     </Card>
