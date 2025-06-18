@@ -171,12 +171,7 @@ const Gallery: FC = () => {
   }
 
   return (
-    <div
-      className="min-h-screen pt-16 overflow-x-hidden"
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
+    <div className="min-h-screen pt-16 overflow-x-hidden">
       <nav className="fixed top-[60px] w-full z-[100] bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b py-3">
           <div className="container max-w-5xl mx-auto">
             <div className="flex flex-wrap justify-center gap-1.5">
@@ -233,21 +228,18 @@ const Gallery: FC = () => {
               category.name === activeCategory && (
                 <motion.div
                   key={category.id}
-                  initial={{ opacity: 0, x: swipeDirection === "left" ? 300 : -300 }}
+                  initial={{ opacity: 0, x: 300 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: swipeDirection === "left" ? -300 : 300 }}
+                  exit={{ opacity: 0, x: -300 }}
                   transition={{ type: "spring", stiffness: 200, damping: 25 }}
                   className="relative"
                 >
                   <motion.div
-                    initial={{
-                      opacity: 0,
-                      x: swipeDirection === "left" ? 300 : -300,
-                    }}
+                    initial={{ opacity: 0, x: 300 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{
                       opacity: 0,
-                      x: touchStartX && touchStartX - (currentX || 0) > 0 ? -300 : 300,
+                      x: -300,
                       transition: {
                         duration: 0.2,
                       },
