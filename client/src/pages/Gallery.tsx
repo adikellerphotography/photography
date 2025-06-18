@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { FC, useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/hooks/use-language";
@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowUp } from "lucide-react";
 
 
-export default function Gallery() {
+const Gallery: FC = () => {
   const { language } = useLanguage();
   const { t } = useTranslation();
   const { data: categories, isLoading: categoriesLoading } = useQuery<Category[]>({
@@ -214,26 +214,34 @@ export default function Gallery() {
     queryKey: ["/photography/attached_assets/galleries", activeCategory],
     queryFn: async () => {
       if (!activeCategory) return [];
-      // Convert activeCategory to the correct format (e.g., "Bat Mitsva" -> "Bat_Mitsva")
-      const formattedCategory = activeCategory.replace(/\s+/g, '_');
-      const response = await fetch(`/photography/attached_assets/galleries/${formattedCategory}/photos.json`);
-      if (!response.ok) {
-        console.error(`Failed to fetch photos for ${activeCategory}`);
+      try {
+        const formattedCategory = activeCategory.replace(/\s+/g, '_');
+        const response = await fetch(`/photography/attached_assets/galleries/${formattedCategory}/photos.json`);
+        if (!response.ok) {
+          console.error(`Failed to fetch photos for ${activeCategory}`);
+          return [];
+        }
+        const data = await response.json();
+        const filteredPhotos = data.filter((photo: Photo) => 
+          photo && photo.imageUrl && photo.thumbnailUrl);
+
+        // Ensure all image URLs start with /photography if they don't start with a full URL
+        return filteredPhotos.map((photo: Photo) => ({
+          ...photo,
+          imageUrl: photo.imageUrl.startsWith('http') ? photo.imageUrl : 
+                   photo.imageUrl.startsWith('/photography') ? photo.imageUrl : 
+                   `/photography${photo.imageUrl}`,
+          thumbnailUrl: (photo.thumbnailUrl || '').startsWith('http') ? photo.thumbnailUrl : 
+                       (photo.thumbnailUrl || '').startsWith('/photography') ? photo.thumbnailUrl : 
+                       photo.thumbnailUrl ? `/photography${photo.thumbnailUrl}` : photo.imageUrl
+        }));
+      } catch (error) {
+        console.error('Error loading photos:', error);
         return [];
       }
-      const data = await response.json();
-      const filteredPhotos = data.filter((photo: Photo) => photo && photo.imageUrl);
-
-      // Shuffle photos only once when fetched
-      for (let i = filteredPhotos.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [filteredPhotos[i], filteredPhotos[j]] = [filteredPhotos[j], filteredPhotos[i]];
-      }
-
-      return filteredPhotos;
     },
-    staleTime: Infinity,
-    cacheTime: Infinity,
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    cacheTime: 10 * 60 * 1000, // Keep in cache for 10 minutes
   });
 
   const scrollY = window.scrollY;
@@ -402,3 +410,5 @@ export default function Gallery() {
     </div>
   );
 }
+
+export default Gallery;
