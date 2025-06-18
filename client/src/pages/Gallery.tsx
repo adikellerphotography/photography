@@ -11,6 +11,12 @@ import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { ArrowUp } from "lucide-react";
 
+// Helper function to create URLs with the correct base path
+const createGalleryUrl = (categoryName: string) => {
+  // Check if the URL includes /photography/ to determine if we're in production
+  const basePath = window.location.pathname.includes('/photography/') ? '/photography' : '';
+  return `${basePath}/gallery?category=${encodeURIComponent(categoryName)}`;
+};
 
 const Gallery: FC = () => {
   const { language } = useLanguage();
@@ -65,7 +71,7 @@ const Gallery: FC = () => {
         const defaultCategory = processedCategories[0].name;
         setActiveCategory(defaultCategory);
         // Update URL to include the default category
-        const newUrl = `/photography/gallery?category=${encodeURIComponent(defaultCategory)}`;
+        const newUrl = createGalleryUrl(defaultCategory);
         window.history.replaceState({ category: defaultCategory }, "", newUrl);
       }
     }
@@ -182,7 +188,7 @@ const Gallery: FC = () => {
                   size="sm"
                   onClick={() => {
                     setActiveCategory(category.name);
-                    const newUrl = `/photography/gallery?category=${encodeURIComponent(category.name)}`;
+                    const newUrl = createGalleryUrl(category.name);
                     window.history.pushState({ category: category.name }, "", newUrl);
                     window.scrollTo({ 
                       top: 0,
