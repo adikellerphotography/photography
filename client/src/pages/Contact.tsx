@@ -67,7 +67,7 @@ export default function Contact() {
             id="site-logo"
             src="/photography/assets/my_site_logo.png"
             alt="Site Logo"
-            className="w-[52.5%] md:w-[15%] animate-fadeIn"
+            className="w-[52.5%] md:w-[22%] animate-fadeIn"
             onError={handleImageError}
           />
         ) : (
