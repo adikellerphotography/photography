@@ -58,9 +58,10 @@ const Gallery: FC = () => {
   useEffect(() => {
     if (!categoriesLoading && processedCategories.length > 0) {
       if (categoryFromUrl && processedCategories.some(c => c.name === categoryFromUrl)) {
+        // If URL has a valid category, use it
         setActiveCategory(categoryFromUrl);
-      } else if (!activeCategory || !processedCategories.some(c => c.name === activeCategory)) {
-        // If no category is selected or the current category is invalid, set to first category
+      } else {
+        // If no valid category in URL, use first category
         const defaultCategory = processedCategories[0].name;
         setActiveCategory(defaultCategory);
         // Update URL to include the default category
@@ -68,7 +69,7 @@ const Gallery: FC = () => {
         window.history.replaceState({ category: defaultCategory }, "", newUrl);
       }
     }
-  }, [categories, categoriesLoading]);
+  }, [categoriesLoading, processedCategories, categoryFromUrl]);
 
   // Fetch photos for active category
   const { data: photos = [], isLoading: photosLoading } = useQuery<Photo[]>({
