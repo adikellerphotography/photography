@@ -18,13 +18,10 @@ export default function Gallery() {
   const { language } = useLanguage();
   const { t } = useTranslation();
   const { data: categories, isLoading: categoriesLoading } = useQuery<Category[]>({
-    queryKey: ["/photography/client/public/attached_assets/categories.json"],
+    queryKey: ["/photography/attached_assets/categories.json"],
     queryFn: async () => {
-      const response = await fetch("/photography/client/public/attached_assets/categories.json");
-      if (!response.ok) {
-        console.error("Failed to fetch categories");
-        throw new Error("Failed to fetch categories");
-      }
+      const response = await fetch("/photography/attached_assets/categories.json");
+      if (!response.ok) throw new Error("Failed to fetch categories");
       return response.json();
     },
   });
@@ -218,12 +215,9 @@ export default function Gallery() {
   const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({
     queryKey: ["/photography/attached_assets/galleries", activeCategory],
     queryFn: async () => {
-      // Load static JSON file for each category
-      const response = await fetch(`/photography/client/public/attached_assets/galleries/${encodeURIComponent(activeCategory)}/photos.json`);
-      if (!response.ok) {
-        console.error(`Failed to fetch photos for ${activeCategory}`);
-        throw new Error('Failed to fetch photos');
-      }
+      // Instead of making an API call, load a static JSON file for each category
+      const response = await fetch(`/photography/attached_assets/galleries/${encodeURIComponent(activeCategory)}/photos.json`);
+      if (!response.ok) throw new Error('Failed to fetch photos');
       const data = await response.json();
       const filteredPhotos = data.filter((photo: Photo) => photo && photo.imageUrl);
 
