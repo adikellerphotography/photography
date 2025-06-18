@@ -5,11 +5,9 @@ import { useLanguage } from "@/hooks/use-language";
 import { useTranslation } from "@/hooks/use-translation";
 import PhotoGallery from "@/components/PhotoGallery";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { Category, Photo } from "@/lib/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLocation } from "wouter";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ArrowUp } from "lucide-react";
 
@@ -157,18 +155,18 @@ export default function Gallery() {
     ) || [];
 
   useEffect(() => {
-    if (processedCategories.length > 0) {
+    if (!categoriesLoading && processedCategories.length > 0) {
       if (categoryFromUrl && processedCategories.some((c) => c.name === categoryFromUrl)) {
         setActiveCategory(categoryFromUrl);
       } else if (!activeCategory) {
-        setActiveCategory(processedCategories[0].name);
-        const newUrl = `/gallery?category=${encodeURIComponent(
-          processedCategories[0].name
-        )}`;
-        window.history.replaceState(null, "", newUrl);
+        // Set to first category by default
+        const defaultCategory = processedCategories[0].name;
+        setActiveCategory(defaultCategory);
+        const newUrl = `/gallery?category=${encodeURIComponent(defaultCategory)}`;
+        window.history.replaceState({ category: defaultCategory }, "", newUrl);
       }
     }
-  }, [categoryFromUrl, processedCategories, activeCategory]);
+  }, [categoryFromUrl, processedCategories, categoriesLoading, activeCategory]);
 
   const checkScroll = () => {
     if (tabsListRef.current) {
@@ -215,9 +213,14 @@ export default function Gallery() {
   const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({
     queryKey: ["/photography/attached_assets/galleries", activeCategory],
     queryFn: async () => {
-      // Instead of making an API call, load a static JSON file for each category
-      const response = await fetch(`/photography/attached_assets/galleries/${encodeURIComponent(activeCategory)}/photos.json`);
-      if (!response.ok) throw new Error('Failed to fetch photos');
+      if (!activeCategory) return [];
+      // Convert activeCategory to the correct format (e.g., "Bat Mitsva" -> "Bat_Mitsva")
+      const formattedCategory = activeCategory.replace(/\s+/g, '_');
+      const response = await fetch(`/photography/attached_assets/galleries/${formattedCategory}/photos.json`);
+      if (!response.ok) {
+        console.error(`Failed to fetch photos for ${activeCategory}`);
+        return [];
+      }
       const data = await response.json();
       const filteredPhotos = data.filter((photo: Photo) => photo && photo.imageUrl);
 
