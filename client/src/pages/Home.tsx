@@ -28,7 +28,7 @@ export default function Home() {
 
   const excludedCategories = ["before_and_after", "facebook_posts_image"];
   const categoryOrder = [
-    "Bat Mitsva",
+    "Bat Mitzvah",
     "Horses",
     "Family",
     "Kids",
@@ -45,9 +45,9 @@ export default function Home() {
   // Category image configuration with ranges
   // Fixed images for each category from galleries folder
   const customImages: Record<string, { img: string; thumb: string }> = {
-    "Bat Mitsva": {
-      img: `/photography/attached_assets/galleries/Bat_Mitsva/001.jpeg`,
-      thumb: `/photography/attached_assets/galleries/Bat_Mitsva/001-thumb.jpeg`,
+    "Bat Mitzvah": {
+      img: `/photography/attached_assets/galleries/Bat_Mitzvah/001.jpeg`,
+      thumb: `/photography/attached_assets/galleries/Bat_Mitzvah/001-thumb.jpeg`,
     },
     Horses: {
       img: `/photography/attached_assets/galleries/Horses/058.jpeg`,
@@ -216,7 +216,7 @@ export default function Home() {
                       "radial-gradient(circle at 30% 30%, rgb(255 255 255 / 0.1), transparent)",
                   }}
                 />
-                <Link href="/gallery?category=Bat%20Mitsva">
+                <Link href="/gallery?category=Bat%20Mitzvah">
                   <button className="p-4 rounded-full hover:bg-accent transition-colors text-white">
                     <Camera className="w-6 h-6" />
                   </button>
