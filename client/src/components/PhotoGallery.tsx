@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useQuery } from "@tanstack/react-query";
 import type { Photo } from "@/lib/types";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -11,9 +10,10 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 interface PhotoGalleryProps {
   category?: string;
+  photos: Photo[];
 }
 
-export default function PhotoGallery({ category }: PhotoGalleryProps) {
+export default function PhotoGallery({ category, photos }: PhotoGalleryProps) {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
@@ -50,22 +50,13 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     if (!photo?.imageUrl) return [];
     const fileName = photo.imageUrl;
     const baseFileName = fileName.replace(/\.(jpeg|jpg)$/, '');
-    const categoryPath = category?.replace(/\s+/g, '_');
+    const categoryPath = category?.replace(/\s+/g, '_') || '';
 
     // Generate paths with both jpeg and jpg extensions
     const paths = [
       `/photography/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${fileName}`,
       `/photography/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
-      `/photography/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
-      `/assets/${encodeURIComponent(categoryPath)}/${fileName}`,
-      `/assets/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
-      `/assets/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
-      `/photography/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${fileName}`,
-      `/photography/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
-      `/photography/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
-      `/galleries/${encodeURIComponent(categoryPath)}/${fileName}`,
-      `/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpeg`,
-      `/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`,
+      `/photography/attached_assets/galleries/${encodeURIComponent(categoryPath)}/${baseFileName}${isThumb ? '-thumb' : ''}.jpg`
     ];
 
     // Prefix /photography to static asset paths (not to /api/...)
@@ -77,7 +68,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
     return [...fixedPaths, ...fixedPaths.map(p => p.replace(/\.(jpeg|jpg)$/i, ext => ext.toUpperCase()))].filter(Boolean);
   };
 
-  // Add verification function
   const verifyImageExists = async (url: string): Promise<boolean> => {
     try {
       const response = await fetch(url, { method: 'HEAD' });
@@ -86,24 +76,6 @@ export default function PhotoGallery({ category }: PhotoGalleryProps) {
       return false;
     }
   };
-
-  const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({
-    queryKey: ["/photography/attached_assets/galleries", category],
-    queryFn: async () => {
-      try {
-        const response = await fetch(`/photography/attached_assets/galleries?category=${encodeURIComponent(category || '')}`);
-        if (!response.ok) throw new Error('Failed to fetch photos');
-        const data = await response.json();
-        return data.filter((photo: Photo) => photo && photo.imageUrl);
-      } catch (error) {
-        console.error('Error fetching photos:', error);
-        throw error;
-      }
-    },
-    retry: 3,
-    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
-    staleTime: 5 * 60 * 1000,
-  });
 
   const preloadImage = async (photo: Photo): Promise<boolean> => {
     if (!photo.imageUrl) return false;

@@ -6,7 +6,7 @@ import { useTranslation } from "@/hooks/use-translation";
 import PhotoGallery from "@/components/PhotoGallery";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { Category } from "@/lib/types";
+import type { Category, Photo } from "@/lib/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLocation } from "wouter";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -215,7 +215,8 @@ export default function Gallery() {
   const { data: photos = [], isLoading, refetch } = useQuery<Photo[]>({
     queryKey: ["/photography/attached_assets/galleries", activeCategory],
     queryFn: async () => {
-      const response = await fetch(`/photography/attached_assets/galleries?category=${encodeURIComponent(activeCategory)}`);
+      // Instead of making an API call, load a static JSON file for each category
+      const response = await fetch(`/photography/attached_assets/galleries/${encodeURIComponent(activeCategory)}/photos.json`);
       if (!response.ok) throw new Error('Failed to fetch photos');
       const data = await response.json();
       const filteredPhotos = data.filter((photo: Photo) => photo && photo.imageUrl);
@@ -372,7 +373,10 @@ export default function Gallery() {
                   >
                     <Card>
                       <CardContent className="pt-6">
-                        <PhotoGallery category={category.name} photos={photos} />
+                        <PhotoGallery 
+                          category={category.name} 
+                          photos={photos.filter((photo: Photo) => photo && photo.imageUrl)} 
+                        />
                       </CardContent>
                     </Card>
                   </motion.div>
