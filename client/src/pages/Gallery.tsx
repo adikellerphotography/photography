@@ -29,25 +29,20 @@ const Gallery: FC = () => {
     "Intimate"
   ];
 
-  const { data: categories = [], isLoading: categoriesLoading, error: categoriesError } = useQuery<Category[]>({
-    queryKey: ["/photography/attached_assets/categories.json"],
-    queryFn: async () => {
-      console.log('Fetching categories...');
-      const response = await fetch("/photography/attached_assets/categories.json");
-      if (!response.ok) {
-        console.error('Failed to fetch categories:', response.statusText);
-        throw new Error("Failed to fetch categories");
-      }
-      const data = await response.json();
-      console.log('Categories loaded:', data);
-      return data;
-    },
-  });
-
   const [location] = useLocation();
   const searchParams = new URLSearchParams(window.location.search);
   const categoryFromUrl = searchParams.get("category");
-  const [activeCategory, setActiveCategory] = useState<string>("");
+  const [activeCategory, setActiveCategory] = useState<string>(categoryFromUrl || "");
+  
+  const { data: categories = [], isLoading: categoriesLoading } = useQuery<Category[]>({
+    queryKey: ["/photography/attached_assets/categories.json"],
+    queryFn: async () => {
+      const response = await fetch("/photography/attached_assets/categories.json");
+      if (!response.ok) throw new Error("Failed to fetch categories");
+      const data = await response.json();
+      return data;
+    },
+  });
 
   const processedCategories = categories
     ?.filter(
@@ -63,36 +58,32 @@ const Gallery: FC = () => {
   useEffect(() => {
     if (!categoriesLoading && processedCategories.length > 0) {
       if (categoryFromUrl && processedCategories.some(c => c.name === categoryFromUrl)) {
-        console.log('Setting category from URL:', categoryFromUrl);
         setActiveCategory(categoryFromUrl);
       } else if (!activeCategory || !processedCategories.some(c => c.name === activeCategory)) {
+        // If no category is selected or the current category is invalid, set to first category
         const defaultCategory = processedCategories[0].name;
-        console.log('Setting default category:', defaultCategory);
         setActiveCategory(defaultCategory);
+        // Update URL to include the default category
         const newUrl = `/gallery?category=${encodeURIComponent(defaultCategory)}`;
         window.history.replaceState({ category: defaultCategory }, "", newUrl);
       }
     }
-  }, [categoryFromUrl, processedCategories, categoriesLoading, activeCategory]);
+  }, [categories, categoriesLoading]);
 
-  const { data: photos = [], isLoading: photosLoading, error: photosError } = useQuery<Photo[]>({
+  // Fetch photos for active category
+  const { data: photos = [], isLoading: photosLoading } = useQuery<Photo[]>({
     queryKey: ["/photography/attached_assets/galleries", activeCategory],
     queryFn: async () => {
       if (!activeCategory) return [];
       try {
         const formattedCategory = activeCategory.replace(/\s+/g, '_');
-        console.log('Fetching photos for category:', formattedCategory);
         const response = await fetch(`/photography/attached_assets/galleries/${formattedCategory}/photos.json`);
         if (!response.ok) {
-          console.error(`Failed to fetch photos for ${activeCategory}:`, response.statusText);
+          console.error(`Failed to fetch photos for ${activeCategory}`);
           return [];
         }
         const data = await response.json();
-        console.log('Photos loaded:', data.length);
-        const filteredPhotos = data.filter((photo: Photo) => photo && photo.imageUrl);
-        console.log('Filtered photos:', filteredPhotos.length);
-
-        return filteredPhotos.map((photo: Photo) => ({
+        return data.map((photo: Photo) => ({
           ...photo,
           imageUrl: photo.imageUrl.startsWith('http') ? photo.imageUrl : 
                    photo.imageUrl.startsWith('/photography') ? photo.imageUrl : 
