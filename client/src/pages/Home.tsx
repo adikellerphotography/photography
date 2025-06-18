@@ -216,7 +216,7 @@ export default function Home() {
                       "radial-gradient(circle at 30% 30%, rgb(255 255 255 / 0.1), transparent)",
                   }}
                 />
-                <Link href="/gallery">
+                <Link href="/photography/gallery?category=Bat%20Mitsva">
                   <button className="p-4 rounded-full hover:bg-accent transition-colors text-white">
                     <Camera className="w-6 h-6" />
                   </button>
