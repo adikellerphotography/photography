@@ -390,8 +390,8 @@ export function registerRoutes(app: Express): Server {
     try {
       const { category } = req.params;
       const categoryMappings: Record<string, string> = {
-        'Bat_Mitsva': 'bat_mitsva',
-        'Bar_Mitsva': 'bar_mitsva',
+        'Bat_Mitzvah': 'bat_mitzvah',
+        'Bar_Mitzvah': 'bar_mitzvah',
         'Women': 'feminine',
         'Kids': 'kids',
         'Family': 'family',

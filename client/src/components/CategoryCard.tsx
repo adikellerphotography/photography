@@ -1,4 +1,3 @@
-
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
@@ -22,8 +21,8 @@ export default function CategoryCard({ name, description, imageUrl, thumbnailUrl
   const getCategoryIcon = (categoryName: string) => {
     const iconProps = { className: "w-5 h-5 mr-2" };
     switch (categoryName) {
-      case "Bat Mitsva":
-      case "Bar Mitsva":
+      case "Bat Mitzvah":
+      case "Bar Mitzvah":
         return <User {...iconProps} />;
       case "Horses":
         return <Horse {...iconProps} />;

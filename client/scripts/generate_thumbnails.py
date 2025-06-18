@@ -3,7 +3,7 @@ from PIL import Image
 
 def generate_thumbnails(base_path, max_size=800):
     """
-    Generate thumbnails for all images in galleries except Bat_Mitsva
+    Generate thumbnails for all images in galleries except Bat_Mitzvah
     base_path: Path to galleries folder
     max_size: Maximum width or height for thumbnails
     """
@@ -12,8 +12,8 @@ def generate_thumbnails(base_path, max_size=800):
     
     # Process each gallery folder
     for gallery in os.listdir(galleries_path):
-        # Skip Bat_Mitsva and any hidden folders
-        # if gallery == 'Bat_Mitsva' or gallery.startswith('.'):
+        # Skip Bat_Mitzvah and any hidden folders
+        # if gallery == 'Bat_Mitzvah' or gallery.startswith('.'):
         #     continue
             
         gallery_path = os.path.join(galleries_path, gallery)

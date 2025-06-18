@@ -42,7 +42,7 @@ export default function Pricing() {
 
     return [
       {
-        name: "Bat Mitsva",
+        name: "Bat Mitzvah",
         price: t("pricing.packages.batMitzvah.price"),
         description: t("pricing.packages.batMitzvah.description") || "Experiential photography session",
         features: t("pricing.packages.batMitzvah.features", { returnObjects: true }) || defaultFeatures
@@ -138,7 +138,7 @@ export default function Pricing() {
                   onClick={() => handlePackageSelect(pkg.name)}
                 >
                   <div className="absolute left-0 top-0 bottom-0 h-full w-[25%] bg-[#E67E00] flex items-center justify-center">
-                    {pkg.name === "Bat Mitsva" && <Crown weight="bold" className="w-9 h-9 text-white" />}
+                    {pkg.name === "Bat Mitzvah" && <Crown weight="bold" className="w-9 h-9 text-white" />}
                     {pkg.name === "Horses" && <Horse weight="bold" className="w-9 h-9 text-white" />}
                     {pkg.name === "Family" && <Users weight="bold" className="w-9 h-9 text-white" />}
                     {pkg.name === "Kids" && <Baby weight="bold" className="w-9 h-9 text-white" />}

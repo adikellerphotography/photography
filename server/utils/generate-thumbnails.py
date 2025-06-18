@@ -30,7 +30,7 @@ def generate_thumbnail(image_path, thumb_path, max_size=400):
         return False
 
 def process_galleries(base_path):
-    """Process all galleries except Bat_Mitsva."""
+    """Process all galleries except Bat_Mitzvah."""
     galleries_path = Path(base_path) / 'client' / 'public' / 'attached_assets' / 'galleries'
     
     if not galleries_path.exists():
@@ -39,7 +39,7 @@ def process_galleries(base_path):
 
     # Process each gallery
     for gallery in galleries_path.iterdir():
-        if gallery.is_dir() and gallery.name != 'Bat_Mitsva':
+        if gallery.is_dir() and gallery.name != 'Bat_Mitzvah':
             print(f"\nProcessing gallery: {gallery.name}")
             
             # Get all jpeg/jpg files

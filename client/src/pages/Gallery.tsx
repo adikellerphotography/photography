@@ -25,7 +25,7 @@ const Gallery: FC = () => {
   // Define category order at the top level
   const excludedCategories = ["before_and_after", "facebook_posts_image"];
   const categoryOrder = [
-    "Bat Mitsva",
+    "Bat Mitzvah",
     "Horses",
     "Family",
     "Kids",

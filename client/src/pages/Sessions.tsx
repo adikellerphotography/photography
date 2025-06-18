@@ -18,7 +18,7 @@ interface SessionGroup {
 
 const sessionGroups: SessionGroup[] = [
   {
-    name: "Bat Mitsva",
+    name: "Bat Mitzvah",
     links: [
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0AdZNygWpqm9eNFCZsUjZDvfmJb1v7Pt8dEwd1Qk6rXoD2pAdNyuqrjwHK5zyxxT1l", number: 1 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0Wv5Zw2GtAbd9n9cJJhSKYfnK9RKxkQwF4Nqm23uy4xC4ciwcDXoRkVVrKkrBvfWBl", number: 2 },
@@ -37,7 +37,7 @@ const sessionGroups: SessionGroup[] = [
     ]
   },
   {
-    name: "Bar Mitsva",
+    name: "Bar Mitzvah",
     links: [
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid02xdnAC3JMLTsdV5tkycYqmv2fxUbeXHZRhaJgi41QwCTf4FiiLECQ9WknNrvawnSMl", number: 1 },
       { url: "https://www.facebook.com/adi.keller.16/posts/pfbid0ADeC9JEBXd6Xrgqk43sC6WxS6AnJmNizZgLgrtNymyhMrbK98eMxao6UpvYYXawfl", number: 2 },
@@ -165,7 +165,7 @@ export default function Sessions() {
     groupName: string;
   } | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string>("Bat Mitsva");
+  const [selectedCategory, setSelectedCategory] = useState<string>("Bat Mitzvah");
   const groupRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const [scrollY, setScrollY] = useState(0);
 

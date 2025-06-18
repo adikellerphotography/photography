@@ -15,7 +15,7 @@ export default function Navbar() {
 
   const navigationItems = [
     { href: "/", label: language === "en" ? "Home" : "בית", icon: Home },
-    { href: "/gallery?category=Bat%20Mitsva", label: language === "en" ? "Gallery" : "גלריה", icon: Image },
+    { href: "/gallery?category=Bat%20Mitzvah", label: language === "en" ? "Gallery" : "גלריה", icon: Image },
     { href: "/before-and-after", label: language === "en" ? "Before & After" : "לפני ואחרי", icon: FlipHorizontal },
     { href: "/sessions", label: language === "en" ? "My Sessions" : "גלריות", icon: Aperture },
     { href: "/reflection", label: language === "en" ? "Reflection Project" : "פרויקט השתקפות", icon: SplitSquareVertical },

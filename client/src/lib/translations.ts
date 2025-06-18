@@ -53,7 +53,8 @@ export const translations = {
       galleryTitle: "Photo Galleries",
     },
     categories: {
-      "Bat Mitsva": "Bat Mitsva",
+      "Bat Mitzvah": "Bat Mitzvah",
+      "Bar Mitzvah": "Bar Mitzvah",
       Family: "Family",
       Events: "Events",
       Portraits: "Portraits",
@@ -273,7 +274,7 @@ export const translations = {
     sessions: {
       title: "Photography Sessions",
       description: "Double-Click to open Facebook post",
-      batmitzva: "Bat Mitsva",
+      batmitzvah: "Bat Mitzvah",
       feminine: "Feminine",
       sea: "Sea",
       nature: "Nature",
@@ -298,8 +299,8 @@ export const translations = {
       galleryTitle: "גלריות תמונות",
     },
     categories: {
-      "Bat Mitsva": "בת מצווה",
-      "Bar Mitsva": "בר מצווה",
+      "Bat Mitzvah": "בת מצווה",
+      "Bar Mitzvah": "בר מצווה",
       Family: "משפחה",
       Events: "אירועים",
       Portraits: "פורטרטים",
@@ -504,8 +505,8 @@ export const translations = {
     sessions: {
       title: "גלריות צילום",
       description: "לחיצה כפולה לפתיחת פוסט בפייסבוק",
-      "Bat Mitsva": "בת מצווה",
-      "Bar Mitsva": "בר מצווה",
+      "Bat Mitzvah": "בת מצווה",
+      "Bar Mitzvah": "בר מצווה",
       Horses: "סוסים",
       Kids: "ילדים",
       Family: "משפחה",
