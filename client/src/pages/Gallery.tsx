@@ -65,7 +65,7 @@ const Gallery: FC = () => {
         const defaultCategory = processedCategories[0].name;
         setActiveCategory(defaultCategory);
         // Update URL to include the default category
-        const newUrl = `/gallery?category=${encodeURIComponent(defaultCategory)}`;
+        const newUrl = `/photography/gallery?category=${encodeURIComponent(defaultCategory)}`;
         window.history.replaceState({ category: defaultCategory }, "", newUrl);
       }
     }
@@ -182,7 +182,7 @@ const Gallery: FC = () => {
                   size="sm"
                   onClick={() => {
                     setActiveCategory(category.name);
-                    const newUrl = `/gallery?category=${encodeURIComponent(category.name)}`;
+                    const newUrl = `/photography/gallery?category=${encodeURIComponent(category.name)}`;
                     window.history.pushState({ category: category.name }, "", newUrl);
                     window.scrollTo({ 
                       top: 0,
