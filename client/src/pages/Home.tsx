@@ -82,9 +82,9 @@ export default function Home() {
   // Fallback paths for images
   const getFallbackPaths = (categoryPath: string) => {
     return [
-      `/photography/attached_assets/galleries/${categoryPath}/016.jpeg`,
-      `/photography/assets/galleries/${categoryPath}/016.jpeg`,
-      `/photography/attached_assets/galleries/${categoryPath}/001.jpeg`,
+      `/attached_assets/galleries/${categoryPath}/016.jpeg`,
+      `/assets/galleries/${categoryPath}/016.jpeg`,
+      `/attached_assets/galleries/${categoryPath}/001.jpeg`,
     ];
   };
 
