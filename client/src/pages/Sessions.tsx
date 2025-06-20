@@ -286,7 +286,7 @@ export default function Sessions() {
                     >
                       <div className="absolute inset-0 rounded-xl overflow-hidden bg-black/20">
                         <img
-                          src={`/photography/attached_assets/facebook_posts_image/${group.name.replace(/\s+/g, "_")}/${link.number}.jpg`}
+                          src={`/attached_assets/facebook_posts_image/${group.name.replace(/\s+/g, "_")}/${link.number}.jpg`}
                           alt={`${group.name} session ${link.number}`}
                           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                           loading="lazy"
@@ -300,8 +300,8 @@ export default function Sessions() {
                               img.dataset.retryCount = String(retryCount + 1);
                               const baseUrl = window.location.origin;
                               const paths = [
-                                `/photography/attached_assets/facebook_posts_image/${group.name.replace(/\s+/g, "_")}/${link.number}.jpg`,
-                                `${baseUrl}/photography/attached_assets/facebook_posts_image/${group.name.replace(/\s+/g, "_")}/${link.number}.jpg`,
+                                `/attached_assets/facebook_posts_image/${group.name.replace(/\s+/g, "_")}/${link.number}.jpg`,
+                                `${baseUrl}/attached_assets/facebook_posts_image/${group.name.replace(/\s+/g, "_")}/${link.number}.jpg`,
                                 `/assets/facebook_posts_image/${group.name.replace(/\s+/g, "_")}/${link.number}.jpg`,
                                 `${baseUrl}/assets/facebook_posts_image/${group.name.replace(/\s+/g, "_")}/${link.number}.jpg`
                               ];

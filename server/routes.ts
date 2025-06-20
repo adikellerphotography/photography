@@ -47,7 +47,7 @@ const configureStaticFiles = (app: Express) => {
   };
 
   // Primary path for gallery images
-  app.use('/photography/attached_assets/galleries/:category/:filename', async (req, res, next) => {
+  app.use('/attached_assets/galleries/:category/:filename', async (req, res, next) => {
     try {
       const { category, filename } = req.params;
       const categoryPath = decodeURIComponent(category).replace(/\s+/g, '_');
@@ -65,7 +65,7 @@ const configureStaticFiles = (app: Express) => {
   });
 
   // Serve files from multiple paths to ensure availability
-  app.use('/photography/attached_assets', express.static(assetsPath, staticOptions));
+  app.use('/attached_assets', express.static(assetsPath, staticOptions));
   app.use('/assets', express.static(path.join(assetsPath, 'galleries'), staticOptions));
   app.use('/galleries', express.static(path.join(assetsPath, 'galleries'), staticOptions));
 };
@@ -327,12 +327,12 @@ export function registerRoutes(app: Express): Server {
   });
 
   // API Routes
-  app.get("/photography/attached_assets/galleries", getPhotos);
+  app.get("/attached_assets/galleries", getPhotos);
   app.get("/api/categories", getCategories);
   app.get("/api/before-after", getBeforeAfterSets);
-  app.post("/photography/attached_assets/galleries/scan", scanPhotos);
-  app.post("/photography/attached_assets/galleries/:id/like", togglePhotoLike);
-  app.get('/photography/attached_assets/galleries/:category/:filename', async (req, res) => {
+  app.post("/attached_assets/galleries/scan", scanPhotos);
+  app.post("/attached_assets/galleries/:id/like", togglePhotoLike);
+  app.get('/attached_assets/galleries/:category/:filename', async (req, res) => {
     try {
       const { category, filename } = req.params;
       const categoryPath = decodeURIComponent(category).replace(/\s+/g, '_');

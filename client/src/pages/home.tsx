@@ -16,9 +16,9 @@ export default function Home() {
   const { data: categories, isLoading: categoriesLoading } = useQuery<
     Category[]
   >({
-    queryKey: ["/photography/attached_assets/categories.json"],
+    queryKey: ["/attached_assets/categories.json"],
     queryFn: async () => {
-      const response = await fetch("/photography/attached_assets/categories.json");
+      const response = await fetch("/attached_assets/categories.json");
       if (!response.ok) throw new Error("Failed to fetch categories");
       return response.json();
     },
@@ -46,36 +46,36 @@ export default function Home() {
   // Fixed images for each category from galleries folder
   const customImages: Record<string, { img: string; thumb: string }> = {
     "Bat Mitzvah": {
-      img: `/photography/attached_assets/galleries/Bat_Mitzvah/001.jpeg`,
-      thumb: `/photography/attached_assets/galleries/Bat_Mitzvah/001-thumb.jpeg`,
+      img: `/attached_assets/galleries/Bat_Mitzvah/001.jpeg`,
+      thumb: `/attached_assets/galleries/Bat_Mitzvah/001-thumb.jpeg`,
     },
     Horses: {
-      img: `/photography/attached_assets/galleries/Horses/058.jpeg`,
-      thumb: `/photography/attached_assets/galleries/Horses/058-thumb.jpeg`,
+      img: `/attached_assets/galleries/Horses/058.jpeg`,
+      thumb: `/attached_assets/galleries/Horses/058-thumb.jpeg`,
     },
     Kids: {
-      img: `/photography/attached_assets/galleries/Kids/021.jpeg`,
-      thumb: `/photography/attached_assets/galleries/Kids/021-thumb.jpeg`,
+      img: `/attached_assets/galleries/Kids/021.jpeg`,
+      thumb: `/attached_assets/galleries/Kids/021-thumb.jpeg`,
     },
     Family: {
-      img: `/photography/attached_assets/galleries/Family/016.jpeg`,
-      thumb: `/photography/attached_assets/galleries/Family/016-thumb.jpeg`,
+      img: `/attached_assets/galleries/Family/016.jpeg`,
+      thumb: `/attached_assets/galleries/Family/016-thumb.jpeg`,
     },
     Femininity: {
-      img: `/photography/attached_assets/galleries/Femininity/014.jpeg`,
-      thumb: `/photography/attached_assets/galleries/Femininity/014-thumb.jpeg`,
+      img: `/attached_assets/galleries/Femininity/014.jpeg`,
+      thumb: `/attached_assets/galleries/Femininity/014-thumb.jpeg`,
     },
     Yoga: {
-      img: `/photography/attached_assets/galleries/Yoga/064.jpeg`,
-      thumb: `/photography/attached_assets/galleries/Yoga/064-thumb.jpeg`,
+      img: `/attached_assets/galleries/Yoga/064.jpeg`,
+      thumb: `/attached_assets/galleries/Yoga/064-thumb.jpeg`,
     },
     Modeling: {
-      img: `/photography/attached_assets/galleries/Modeling/010.jpeg`,
-      thumb: `/photography/attached_assets/galleries/Modeling/010-thumb.jpeg`,
+      img: `/attached_assets/galleries/Modeling/010.jpeg`,
+      thumb: `/attached_assets/galleries/Modeling/010-thumb.jpeg`,
     },
     "Intimate": {
-      img: `/photography/attached_assets/galleries/Intimate/023.jpeg`,
-      thumb: `/photography/attached_assets/galleries/Intimate/023-thumb.jpeg`,
+      img: `/attached_assets/galleries/Intimate/023.jpeg`,
+      thumb: `/attached_assets/galleries/Intimate/023-thumb.jpeg`,
     },
   };
 
@@ -90,8 +90,8 @@ export default function Home() {
 
   const processedCategories = categories?.map((category) => {
     const categoryPath = category.name.replace(/\s+/g, "_");
-    const defaultImage = `/photography/attached_assets/galleries/${encodeURIComponent(categoryPath)}/001.jpeg`;
-    const defaultThumb = `/photography/attached_assets/galleries/${encodeURIComponent(categoryPath)}/001-thumb.jpeg`;
+    const defaultImage = `/attached_assets/galleries/${encodeURIComponent(categoryPath)}/001.jpeg`;
+    const defaultThumb = `/attached_assets/galleries/${encodeURIComponent(categoryPath)}/001-thumb.jpeg`;
 
     const imageConfig = customImages[category.name] || {
       img: defaultImage,

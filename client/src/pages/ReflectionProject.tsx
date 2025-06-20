@@ -22,8 +22,8 @@ const mockData: ComparisonSet[] = [
     name: "George",
     oldAge: 75,
     youngAge: 21,
-    beforeImage: `/photography/attached_assets/reflection_project/2-2.jpg`,
-    afterImage: `/photography/attached_assets/reflection_project/2-1.jpg`,
+    beforeImage: `/attached_assets/reflection_project/2-2.jpg`,
+    afterImage: `/attached_assets/reflection_project/2-1.jpg`,
     title: "George's Reflection"
   },
   {
@@ -31,8 +31,8 @@ const mockData: ComparisonSet[] = [
     name: "Effi",
     oldAge: 75,
     youngAge: 25,
-    beforeImage: `/photography/attached_assets/reflection_project/1-2.jpg`,
-    afterImage: `/photography/attached_assets/reflection_project/1-1.jpg`,
+    beforeImage: `/attached_assets/reflection_project/1-2.jpg`,
+    afterImage: `/attached_assets/reflection_project/1-1.jpg`,
     title: "Effi's Reflection"
   },
   {
@@ -40,8 +40,8 @@ const mockData: ComparisonSet[] = [
     name: "Shmarya",
     oldAge: 80,
     youngAge: 20,
-    beforeImage: `/photography/attached_assets/reflection_project/3-2.jpg`,
-    afterImage: `/photography/attached_assets/reflection_project/3-1.jpg`,
+    beforeImage: `/attached_assets/reflection_project/3-2.jpg`,
+    afterImage: `/attached_assets/reflection_project/3-1.jpg`,
     title: "Shmarya's Reflection"
   }
 ];

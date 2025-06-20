@@ -13,8 +13,8 @@ import { ArrowUp } from "lucide-react";
 
 // Helper function to create URLs with the correct base path
 const createGalleryUrl = (categoryName: string) => {
-  // Check if the URL includes /photography/ to determine if we're in production
-  const basePath = window.location.pathname.includes('/photography/') ? '/photography' : '';
+  // Site is always served from root on custom domain
+  const basePath = '';
   return `${basePath}/gallery?category=${encodeURIComponent(categoryName)}`;
 };
 
@@ -92,14 +92,10 @@ const Gallery: FC = () => {
         const data = await response.json();
         return data.map((photo: Photo) => ({
           ...photo,
-          imageUrl: photo.imageUrl.startsWith('http') ? photo.imageUrl : 
-                   photo.imageUrl.startsWith('/photography') ? photo.imageUrl : 
-                   `/photography${photo.imageUrl}`,
-          thumbnailUrl: photo.thumbnailUrl ? 
-                       (photo.thumbnailUrl.startsWith('http') ? photo.thumbnailUrl : 
-                        photo.thumbnailUrl.startsWith('/photography') ? photo.thumbnailUrl : 
-                        `/photography${photo.thumbnailUrl}`) :
-                       photo.imageUrl
+          imageUrl: photo.imageUrl.startsWith('http') ? photo.imageUrl : photo.imageUrl,
+          thumbnailUrl: photo.thumbnailUrl ?
+                       (photo.thumbnailUrl.startsWith('http') ? photo.thumbnailUrl : photo.thumbnailUrl)
+                       : photo.imageUrl
         }));
       } catch (error) {
         console.error('Error loading photos:', error);

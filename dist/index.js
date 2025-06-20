@@ -111,8 +111,8 @@ async function scanGalleries(targetPath) {
           const id = parseInt(baseName) || imageIndex + 1;
           const thumbName = `${baseName}-thumb${ext}`;
           const thumbExists = imageFiles.includes(thumbName);
-          const imageUrl = `/photography/attached_assets/galleries/${dir}/${imageFile}`;
-          const thumbnailUrl = thumbExists ? `/photography/attached_assets/galleries/${dir}/${thumbName}` : imageUrl;
+          const imageUrl = `/attached_assets/galleries/${dir}/${imageFile}`;
+          const thumbnailUrl = thumbExists ? `/attached_assets/galleries/${dir}/${thumbName}` : imageUrl;
           await db.insert(photos).values({
             id,
             title: `${displayName} Portrait Session`,
@@ -177,7 +177,7 @@ var configureStaticFiles = (app) => {
     dotfiles: "ignore",
     index: false
   };
-  app.use("/photography/attached_assets/galleries/:category/:filename", async (req, res, next) => {
+  app.use("/attached_assets/galleries/:category/:filename", async (req, res, next) => {
     try {
       const { category, filename } = req.params;
       const categoryPath = decodeURIComponent(category).replace(/\s+/g, "_");
@@ -192,7 +192,7 @@ var configureStaticFiles = (app) => {
       next(error);
     }
   });
-  app.use("/photography/attached_assets", express.static(assetsPath, staticOptions));
+  app.use("/attached_assets", express.static(assetsPath, staticOptions));
   app.use("/assets", express.static(path2.join(assetsPath, "galleries"), staticOptions));
   app.use("/galleries", express.static(path2.join(assetsPath, "galleries"), staticOptions));
 };
@@ -396,12 +396,12 @@ function registerRoutes(app) {
       res.status(500).send("Error processing image");
     }
   });
-  app.get("/photography/attached_assets/galleries", getPhotos);
+  app.get("/attached_assets/galleries", getPhotos);
   app.get("/api/categories", getCategories);
   app.get("/api/before-after", getBeforeAfterSets);
-  app.post("/photography/attached_assets/galleries/scan", scanPhotos);
-  app.post("/photography/attached_assets/galleries/:id/like", togglePhotoLike);
-  app.get("/photography/attached_assets/galleries/:category/:filename", async (req, res) => {
+  app.post("/attached_assets/galleries/scan", scanPhotos);
+  app.post("/attached_assets/galleries/:id/like", togglePhotoLike);
+  app.get("/attached_assets/galleries/:category/:filename", async (req, res) => {
     try {
       const { category, filename } = req.params;
       const categoryPath = decodeURIComponent(category).replace(/\s+/g, "_");

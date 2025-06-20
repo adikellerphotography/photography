@@ -67,7 +67,7 @@ if ('caches' in window) {
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Router base="/photography">
+    <Router base="/">
       <AppWrapper />
     </Router>
   </StrictMode>
