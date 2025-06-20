@@ -27,9 +27,7 @@ const PhotoGallery: FC<PhotoGalleryProps> = ({ category, photos }) => {
     if (photo.thumbnailUrl) {
       paths.unshift(photo.thumbnailUrl); // Try thumbnail first
     }
-    return paths.map(path => 
-      path.startsWith('http') || path.startsWith('/photography') ? path : `/photography${path}`
-    );
+    return paths.map(path => path.startsWith('http') ? path : path);
   };
 
   const handleImageLoad = (photo: Photo) => {
