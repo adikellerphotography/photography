@@ -3,64 +3,64 @@
     "id": "bat-mitzvah",
     "name": "Bat Mitzvah",
     "firstPhoto": {
-      "imageUrl": "/photography/attached_assets/galleries/Bat_Mitzvah/001.jpeg",
-      "thumbnailUrl": "/photography/attached_assets/galleries/Bat_Mitzvah/001-thumb.jpeg"
+      "imageUrl": "/attached_assets/galleries/Bat_Mitzvah/001.jpeg",
+      "thumbnailUrl": "/attached_assets/galleries/Bat_Mitzvah/001-thumb.jpeg"
     }
   },
   {
     "id": "family",
     "name": "Family",
     "firstPhoto": {
-      "imageUrl": "/photography/attached_assets/galleries/Family/001.jpeg",
-      "thumbnailUrl": "/photography/attached_assets/galleries/Family/001-thumb.jpeg"
+      "imageUrl": "/attached_assets/galleries/Family/001.jpeg",
+      "thumbnailUrl": "/attached_assets/galleries/Family/001-thumb.jpeg"
     }
   },
   {
     "id": "femininity",
     "name": "Femininity",
     "firstPhoto": {
-      "imageUrl": "/photography/attached_assets/galleries/Femininity/001.jpeg",
-      "thumbnailUrl": "/photography/attached_assets/galleries/Femininity/001-thumb.jpeg"
+      "imageUrl": "/attached_assets/galleries/Femininity/001.jpeg",
+      "thumbnailUrl": "/attached_assets/galleries/Femininity/001-thumb.jpeg"
     }
   },
   {
     "id": "horses",
     "name": "Horses",
     "firstPhoto": {
-      "imageUrl": "/photography/attached_assets/galleries/Horses/030.jpeg",
-      "thumbnailUrl": "/photography/attached_assets/galleries/Horses/030-thumb.jpeg"
+      "imageUrl": "/attached_assets/galleries/Horses/030.jpeg",
+      "thumbnailUrl": "/attached_assets/galleries/Horses/030-thumb.jpeg"
     }
   },
   {
     "id": "intimate",
     "name": "Intimate",
     "firstPhoto": {
-      "imageUrl": "/photography/attached_assets/galleries/Intimate/001.jpeg",
-      "thumbnailUrl": "/photography/attached_assets/galleries/Intimate/001-thumb.jpeg"
+      "imageUrl": "/attached_assets/galleries/Intimate/001.jpeg",
+      "thumbnailUrl": "/attached_assets/galleries/Intimate/001-thumb.jpeg"
     }
   },
   {
     "id": "kids",
     "name": "Kids",
     "firstPhoto": {
-      "imageUrl": "/photography/attached_assets/galleries/Kids/001.jpeg",
-      "thumbnailUrl": "/photography/attached_assets/galleries/Kids/001-thumb.jpeg"
+      "imageUrl": "/attached_assets/galleries/Kids/001.jpeg",
+      "thumbnailUrl": "/attached_assets/galleries/Kids/001-thumb.jpeg"
     }
   },
   {
     "id": "modeling",
     "name": "Modeling",
     "firstPhoto": {
-      "imageUrl": "/photography/attached_assets/galleries/Modeling/001.jpeg",
-      "thumbnailUrl": "/photography/attached_assets/galleries/Modeling/001-thumb.jpeg"
+      "imageUrl": "/attached_assets/galleries/Modeling/001.jpeg",
+      "thumbnailUrl": "/attached_assets/galleries/Modeling/001-thumb.jpeg"
     }
   },
   {
     "id": "yoga",
     "name": "Yoga",
     "firstPhoto": {
-      "imageUrl": "/photography/attached_assets/galleries/Yoga/001.jpeg",
-      "thumbnailUrl": "/photography/attached_assets/galleries/Yoga/001-thumb.jpeg"
+      "imageUrl": "/attached_assets/galleries/Yoga/001.jpeg",
+      "thumbnailUrl": "/attached_assets/galleries/Yoga/001-thumb.jpeg"
     }
   }
 ]

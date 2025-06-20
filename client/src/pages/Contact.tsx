@@ -51,8 +51,8 @@ export default function Contact() {
   const handleImageError = () => {
     const img = document.querySelector('#site-logo') as HTMLImageElement;
     if (img) {
-      if (!img.src.includes('/photography/assets/my_site_logo.png')) {
-        img.src = '/photography/assets/my_site_logo.png';
+      if (!img.src.includes('/assets/my_site_logo.png')) {
+        img.src = '/assets/my_site_logo.png';
       } else {
         setImageError(true);
       }
@@ -65,7 +65,7 @@ export default function Contact() {
         {!imageError ? (
           <img 
             id="site-logo"
-            src="/photography/assets/my_site_logo.png"
+            src="/assets/my_site_logo.png"
             alt="Site Logo"
             className="w-[52.5%] md:w-[22%] animate-fadeIn"
             onError={handleImageError}

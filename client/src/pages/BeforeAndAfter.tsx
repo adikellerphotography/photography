@@ -16,8 +16,8 @@ interface ComparisonSet {
 
 const mockData: ComparisonSet[] = Array.from({ length: 28 }, (_, i) => ({
   id: i + 1,
-  beforeImage: `/photography/attached_assets/before_and_after/${i}-1 Large.jpeg`,
-  afterImage: `/photography/attached_assets/before_and_after/${i}-2 Large.jpeg`,
+  beforeImage: `/attached_assets/before_and_after/${i}-1 Large.jpeg`,
+  afterImage: `/attached_assets/before_and_after/${i}-2 Large.jpeg`,
   title: `Before & After ${i + 1}`
 }));
 
@@ -40,9 +40,9 @@ export default function BeforeAndAfter() {
   };
 
   const { data: comparisons = mockData, isLoading, error } = useQuery<ComparisonSet[]>({
-    queryKey: ["/photography/attached_assets/before-after.json"],
+    queryKey: ["/attached_assets/before-after.json"],
     queryFn: async () => {
-      const response = await fetch("/photography/attached_assets/before-after.json");
+      const response = await fetch("/attached_assets/before-after.json");
       if (!response.ok) throw new Error("Failed to fetch before-after data");
       return response.json();
     },

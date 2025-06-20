@@ -61,7 +61,7 @@ export default function CategoryCard({ name, description, imageUrl, thumbnailUrl
                     displayUrl,
                     displayUrl.replace('attached_assets/', ''),
                     displayUrl.replace('attached_assets/', 'assets/'),
-                    `/photography/attached_assets/galleries/${name.replace(/\s+/g, '_')}/${displayUrl.split('/').pop()}`
+                    `/attached_assets/galleries/${name.replace(/\s+/g, '_')}/${displayUrl.split('/').pop()}`
                   ];
                   
                   if (retryCount < paths.length) {

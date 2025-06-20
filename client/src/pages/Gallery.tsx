@@ -41,9 +41,9 @@ const Gallery: FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>(categoryFromUrl || "");
   
   const { data: categories = [], isLoading: categoriesLoading } = useQuery<Category[]>({
-    queryKey: ["/photography/attached_assets/categories.json"],
+    queryKey: ["/attached_assets/categories.json"],
     queryFn: async () => {
-      const response = await fetch("/photography/attached_assets/categories.json");
+      const response = await fetch("/attached_assets/categories.json");
       if (!response.ok) throw new Error("Failed to fetch categories");
       const data = await response.json();
       return data;
@@ -79,12 +79,12 @@ const Gallery: FC = () => {
 
   // Fetch photos for active category
   const { data: photos = [], isLoading: photosLoading } = useQuery<Photo[]>({
-    queryKey: ["/photography/attached_assets/galleries", activeCategory],
+    queryKey: ["/attached_assets/galleries", activeCategory],
     queryFn: async () => {
       if (!activeCategory) return [];
       try {
         const formattedCategory = activeCategory.replace(/\s+/g, '_');
-        const response = await fetch(`/photography/attached_assets/galleries/${formattedCategory}/photos.json`);
+        const response = await fetch(`/attached_assets/galleries/${formattedCategory}/photos.json`);
         if (!response.ok) {
           console.error(`Failed to fetch photos for ${activeCategory}`);
           return [];
