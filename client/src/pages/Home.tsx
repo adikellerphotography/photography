@@ -140,7 +140,7 @@ export default function Home() {
 
   return (
     <motion.div
-      className="min-h-screen pt-16"
+      className="min-h-screen pt-6"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -151,9 +151,9 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="relative container mx-auto px-4 pt-8 pb-8 flex flex-col justify-center items-center"
+            className="relative container mx-auto px-4 pt-4 pb-8 flex flex-col justify-center items-center"
           >
-            <div className="flex justify-center gap-12 mb-8">
+            <div className="flex justify-center gap-12 mb-4">
               <div className="relative">
                 <motion.div
                   initial={{ scale: 0, opacity: 0 }}
